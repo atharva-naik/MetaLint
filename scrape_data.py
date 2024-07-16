@@ -2,7 +2,7 @@ import json
 from github import Github
 
 # Replace with your GitHub token
-token = "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"
+token = json.load(open("access_tokens.json"))["GHB_PAT_1"]
 
 # Authenticate using your GitHub token
 g = Github(token)
