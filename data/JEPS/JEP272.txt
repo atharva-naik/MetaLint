@@ -1,0 +1,150 @@
+JEP 272: Platform-Specific Desktop FeaturesJEP 272: Platform-Specific Desktop FeaturesOwnerAlexander ZvegintsevTypeFeatureScopeSEStatusClosed / DeliveredRelease9Componentclient-libs / java.awtDiscussionawt dash dev at openjdk dot java dot netEffortMDurationMReviewed byPetr Pchelko, Sergey BylokhovEndorsed byKevin RushforthCreated2014/06/30 15:52Updated2017/06/28 15:03Issue8048731Summary
+Define a new public API to access platform-specific desktop features such
+as interacting with a task bar or dock, or listening for system or
+application events.
+Goals
+In the forthcoming release of JDK 9, internal APIs such as those in the
+Mac OS X com.apple.eawt package will no longer be
+accessible. The goal of this JEP is to provide suitable
+replacements for these inaccessible APIs and, also, introduce related
+platform-specific features. We plan to implement the new features on
+those platforms that have the necessary support. Where feasible, the API
+will be designed to be cross-platform so that each feature can be
+implemented on as wide a range of platforms as possible.
+apple.applescript classes are being removed without providing any replacement.
+Non-Goals
+We do not intend to provide direct replacements for all of the internal
+OS X APIs present in JDK 8. Specifically, we will not provide a
+replacement for the com.apple.concurrent package. Is it also not a goal
+to maintain compatibility with those internal APIs for which we do
+provide substitutes.
+Description
+This JEP contains two sub-tasks:
+Provide public API to replace the functionality in com.apple.{eawt,eio}
+The intent of this subtask is to avoid loss of functionality for OS X
+developers.  We will provide replacements for the APIs in the
+JDK-internal com.apple.eawt and com.apple.eio packages.
+Provide access to similar features on other platforms
+In addition to features specific to OS X, there are similar features that
+can be supported on other platforms, including Windows and Linux:
+
+
+Login/logout and screen lock handlers: Provide event listeners on
+system login/logout (or screen lock/unlock) to allow an application
+to start a persistent task or save its state when needed.
+
+
+Task bar/dock interactions
+
+
+Request user attention: Allow an application to request the
+attention of the user, using platform capabilities such as blinking
+the application icon in the taskbar or bouncing the icon in the
+dock.
+
+
+Indicate task progress: Display a progress bar or other indicator
+in the task bar/dock.
+
+
+Action shortcuts: Provide action shortcuts that are accessible by a
+pop-up menu, for example, Windows jump-lists.
+
+
+
+
+Support for these features will be determined by platform capabilities.
+API
+We propose to add the public API for these two sub-tasks to the existing
+java.awt.Desktop class. The target supported platforms are Mac OS X,
+Windows, Linux.
+Proposed API sketch:
+package java.awt;
+
+public class Desktop {
+
+    /* ... */
+
+    /**
+     * Adds sub-types of {@link AppEventListener} to listen for notifications
+     * from the native system.
+     *
+     * @param listener
+     * @see AppForegroundListener
+     * @see AppHiddenListener
+     * @see AppReOpenedListener
+     * @see AppScreenSleepListener
+     * @see AppSystemSleepListener
+     * @see AppUserSessionListener
+     */
+
+    public void addAppEventListener(final AppEventListener listener) {}
+
+    /**
+     * Requests user attention to this application (usually through bouncing the Dock icon).
+     * Critical requests will continue to bounce the Dock icon until the app is activated.
+     *
+     */
+    public void requestUserAttention(final boolean critical) {}
+
+    /**
+     * Attaches the contents of the provided PopupMenu to the application's Dock icon.
+     */
+    public void setDockMenu(final PopupMenu menu) {}
+
+    /**
+     * Changes this application's Dock icon to the provided image.
+     */
+    public void setDockIconImage(final Image image) {}
+
+
+    /**
+     * Affixes a small system provided badge to this application's Dock icon. Usually a number.
+     */
+    public void setDockIconBadge(final String badge) {}
+
+    /**
+     * Displays or hides a progress bar or other indicator in
+     * the dock.
+     *
+     * @see DockProgressState.NORMAL
+     * @see DockProgressState.PAUSED
+     * @see DockProgressState.ERROR
+     *
+     * @see #setDockProgressValue
+     */
+    public void setDockProgressState(int state) {}
+
+    /**
+     * Sets the progress bar's current value to {@code n}.
+     */
+    public void setDockProgressValue(int n) {}
+
+    /**
+     * Tests whether a feature is supported on the current platform.
+     */
+
+    public boolean isSupportedFeature(Feature f) {}
+
+    /* ... */
+}
+Testing
+Testing will be limited to additional manual tests written to use the new
+API. Tests will need to check whether the new features are supported on
+platforms where they are expected to be supported, and that they fail
+gracefully on platforms with no support.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

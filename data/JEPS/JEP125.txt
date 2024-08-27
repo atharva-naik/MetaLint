@@ -1,0 +1,56 @@
+JEP 125: Network Interface Aliases, Events, and DefaultsJEP 125: Network Interface Aliases, Events, and DefaultsOwnerMichael McMahonTypeFeatureScopeSEStatusClosed / WithdrawnComponentcore-libs / java.netDiscussionnet dash dev at openjdk dot java dot netEffortMDurationMEndorsed byBrian GoetzCreated2011/09/23 20:00Updated2017/09/04 15:30Issue8046115Summary
+Extend the existing network-interface APIs to support interface aliases,
+up/down transition events, and default interface preferences.
+Motivation
+These enhancements will allow Java SE to work well in devices with multiple
+network interface types (e.g., both wifi and cellular) whose status varies over
+time depending upon the networks available.
+Description
+
+
+Define aliasing support so that network interfaces can be referred to by
+well-known names such as "cellular" rather than hardware platform-specific
+OS device names.
+
+
+Provide the ability to listen for network interface up/down transitions.
+
+
+Provide an API to list one or more default network interfaces that will be
+used when sockets are created if the socket being created is not bound to
+a specific local address (and hence network interface).  This needs to be
+done in such a way that socket creation performed by library code on
+behalf of the application will be affected as well.  In other words, if an
+application is using, say, the JAX-RS client API, the socket(s) created by
+the JAX-RS implementation should be affected by this API.  If a list of
+more than one interfaces is provided, it should be treated as an ordered
+preference list.  Ideally it should be possible to provide this API in
+such a way as to allow different applications running within the same VM
+to have different default network interface settings.
+
+
+Dependences
+Solving this problem may depend on some higher level abstraction of an
+application being defined in Java SE 8.  Otherwise, it would depend on some
+existing entity like class loaders.
+Impact
+
+Portability: It is not clear at this stage how easy this will be to
+implement and how reliant it will be on services available on particular
+operating systems.
+
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

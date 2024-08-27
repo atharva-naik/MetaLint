@@ -1,0 +1,102 @@
+JEP 404: Generational Shenandoah (Experimental)JEP 404: Generational Shenandoah (Experimental)AuthorsBernd Mathiske, Kelvin Nilsen, William Kemper, and Ramki RamakrishnaOwnerWilliam KemperTypeFeatureScopeImplementationStatusCandidateRelease24Componenthotspot / gcDiscussionhotspot dash gc dash dev at openjdk dot java dot netEffortLDurationLReviewed byAleksey Shipilev, Roman KennkeEndorsed byVladimir KozlovCreated2021/02/01 22:49Updated2024/07/31 17:33Issue8260865Summary
+Enhance the Shenandoah garbage collector with experimental generational collection capabilities to improve sustainable throughput, load-spike resilience, and memory utilization.
+Goals
+The main goal is to provide an experimental generational mode, without breaking non-generational Shenandoah, with the intent to make the generational mode the default in a future release.
+Other goals are set relative to non-generational Shenandoah:
+
+
+Reduce the sustained memory footprint without sacrificing the low GC pauses.
+
+
+Reduce CPU and power usage.
+
+
+Decrease the risk of incurring degenerated and full collections during allocation spikes.
+
+
+Sustain high throughput.
+
+
+Continue to support compressed object pointers.
+
+
+Initially support x64 and AArch64, with support for other instruction sets added as this experimental mode progresses to readiness as the default option.
+
+
+Non-Goals
+
+
+It is not a goal to replace non-generational Shenandoah, which will continue to be the default mode of operation with no regressions in its performance or functionality.
+
+
+It is not a goal to improve performance for every conceivable workload. The generational system will dynamically adapt to approximate a non-generational system as needed but, for some workloads, starting out and remaining with a single generation may still be a superior option. Nevertheless, we expect the majority of use cases to benefit from generational collection.
+
+
+It is not a goal to improve CPU and power usage compared to traditional stop-the-world GCs. If longer pauses can be tolerated, other collectors such as G1 may still provide more energy-efficient behavior. Generational Shenandoah can only approximate but never match the efficiency tactics of stop-the-world GCs given its mandates to keep pause times much lower and to avoid stop-the-world compactions entirely. However, Generational Shenandoah will fare much closer to current generational stop-the-world GCs in this respect than non-generational Shenandoah.
+
+
+It is not a goal to maximize mutator throughput. If longer pauses can be tolerated, other collectors such as the Parallel collector may still provide superior throughput on certain platforms.
+
+
+In the initial release, ergonomic heuristics may not provide optimal behavior on all workloads.
+
+
+Success Metrics
+
+
+Generational Shenandoah is benchmarked against non-generational Shenandoah using SPECjbb2015, HyperAlloc, Extremem and Dacapo.
+
+
+Operational envelopes (i.e., combinations of allocation rate, heap occupancy, and pause time target) for HyperAlloc, Extremem, and similar workloads are compared to non-generational Shenandoah. Successful runs reduce or eliminate the number for allocation stalls and the need for full or degenerated collections.
+
+
+Motivation
+Garbage collectors with concurrent compaction are capable of completely blending GC pause times into the single-digit millisecond range of other common JVM pauses, while also leaving mutator execution speed nearly unfettered. Non-generational Shenandoah garbage collection already provides this ideal GC behavior for latency-sensitive Java applications. However, it can only achieve this within limited operational envelopes (i.e., combinations of heap occupancy and allocation rate).
+A classic approach to minimize the average GC cost is to adopt the generational hypothesis that most objects die young, and concentrate cycles on dealing with young and therefore mostly dead objects. Compared to the generational collectors G1, CMS, and Parallel, non-generational Shenandoah tends to require more heap headroom and work harder to recover space occupied by unreachable objects.
+Region-based generational collectors are capable of dynamically adapting their generation sizes and copying policy in response to changes in object demographics, allowing the collector to adjust for workloads that do not honor the generational hypothesis. Even when surviving objects are copied in the young generation more often than would be necessary, this cost is often dwarfed by the reduced frequency of marking long-lived objects in comparison with non-generational collectors.
+A concurrent collector that is also generational and can dynamically adjust its young generation’s size and related operational parameters can both achieve low pause times and stay competitive in other performance aspects.
+Description
+This enhancement of the Shenandoah garbage collector separates the Java heap into two generations. As in other generational collectors, GC efforts focus on the young generation, i.e., the one in which allocations by the mutator occur and where ephemeral objects can be reclaimed with reduced effort. We propose the following approach for an initial implementation.
+The collection algorithms operating on each generation are closely based on non-generational Shenandoah. Within the young generation, Generational Shenandoah uses the same heuristics as traditional Shenandoah to distinguish areas of memory that hold newly allocated objects from areas of memory holding objects that survived one or more recent young-generation collections.
+Each generation is formed by a subset of the Shenandoah heap’s regions. At any given time, a region is considered either free or dedicated to either the young or the old generation. The size of each generation is given by its occupied regions plus a quota of free regions. Overreach into the free quota of the respective other generation is tolerated, but it accelerates collection triggering and can lead to degenerated and full collections. We are actively refining the algorithms to control collection-phase scheduling, young-generation sizing, tenuring age, and other auto-tuning mechanisms.
+Shenandoah has a unique Load Reference Barrier (LRB) that supports 32-bit builds and compressed 32-bit object pointers (“compressed oops”) in 64-bit builds. To constrain impact on the mutator we use this same LRB for both generations, without any changes, and use a single evacuator for both old and young collection efforts. Typical evacuation phases collect garbage either exclusively from young regions or from a combination of young and old regions. This behavior mimics G1’s young and mixed collections. The principal improvement over G1 is that Generational Shenandoah’s young and mixed collections are concurrent with the mutator.
+The generation-specific marking phases are largely decoupled from each other. Concurrent old-generation marking proceeds in the background during the time that young-generation marking and evacuation occurs multiple times. Old-generation marking can be preempted to execute higher priority young-generation collections.  Once old-generation marking completes, subsequent evacuations and reference updates include old-generation regions until the entire old-generation collection set has been processed.
+For the remembered-set implementation, we use existing card marking code as borrowed from the Parallel and CMS GC implementations and supplement this with new code that allows remembered set scanning to run concurrently with mutator execution.
+Non-generational Shenandoah’s existing SATB barriers are generalized to serve the combined needs of young-generation and old-generation concurrent marking. The post-processing of SATB buffers treats references to old-generation memory differently than references to young-generation memory, but the fast path through these barriers remains unchanged.
+Usage
+The new generational feature is part of the Shenandoah code base, but it has no runtime effect unless it is activated by the JVM command line options
+-XX:+UnlockExperimentalVMOptions -XX:ShenandoahGCMode=generational
+in which case Shenandoah will use its generational mode.
+The project wiki will provide details on how to configure and tune the JVM for effective generational-mode operation of applications running with Shenandoah GC.
+Alternatives
+Azul Systems’ C4 collector is already generational, but not available in open source. A generational mode of ZGC has been implemented in JDK21. Neither of these options supports compressed object pointers.  However, the vast majority of Java heaps that we see (e.g., in cloud services) are well below 32 GB in size and thus able to take advantage of this space-saving and performance-improving feature.
+Testing
+Most existing functional and stress tests are collector-agnostic and can be reused as-is. We will integrate additional test run configurations for the new generational mode along with new mode-specific functional, performance, and stress tests.
+The current focus of performance optimization is on x86 and AArch64 with Linux. SAP has ported generational mode to PowerPC and tested on that platform. CI tests are run on Linux, macOS, and Windows. Support for generational mode for other platforms can be implemented and optimized later.
+Risks and Assumptions
+
+
+Remembered-set operations, in particular scanning, may add to pause times.
+
+
+Remembered-set-related barriers may add to mutator overhead.
+
+
+Heuristics to automatically configure generation sizes, the object promotion policy, and the timing as well as the balancing of efforts dedicated to young- and old-generation collections are still under development and testing with real-world workloads. Meanwhile, manual tuning may be needed for optimal performance.
+
+
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

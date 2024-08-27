@@ -1,0 +1,516 @@
+JEP 477: Implicitly Declared Classes and Instance Main Methods (Third Preview)JEP 477: Implicitly Declared Classes and Instance Main Methods (Third Preview)AuthorsRon Pressler, Jim Laskey, & Gavin BiermanOwnerGavin BiermanTypeFeatureScopeSEStatusClosed / DeliveredRelease23Componentspecification / languageDiscussionamber dash dev at openjdk dot orgEffortSDurationSRelates toJEP 463: Implicitly Declared Classes and Instance Main Methods (Second Preview)JEP 476: Module Import Declarations (Preview)Reviewed byBrian GoetzEndorsed byBrian GoetzCreated2024/01/09 17:02Updated2024/07/08 15:12Issue8323335Summary
+Evolve the Java programming language so that beginners can write their first
+programs without needing to understand language features designed for large
+programs. Far from using a separate dialect of the language, beginners can write
+streamlined declarations for single-class programs and then seamlessly expand
+their programs to use more advanced features as their skills grow. Experienced
+developers can likewise enjoy writing small programs succinctly, without the
+need for constructs intended for programming in the large. This is a
+preview language feature.
+History
+Implicitly declared classes and instance main methods were first proposed as a
+preview feature by JEP 445, delivered in
+JDK 21. The feature was previewed again by
+JEP 463, with significant changes based on
+feedback, and delivered in JDK 22.
+We here propose to preview the feature for a third time, with two additions:
+
+
+Implicitly declared classes automatically import three static methods for
+simple textual I/O with the console. These methods are declared in the new
+top-level class java.io.IO.
+
+
+Implicitly declared classes automatically import, on demand, all of the
+public top-level classes and interfaces of the packages exported by the
+java.base module.
+
+
+Goals
+
+
+Offer a smooth on-ramp to Java programming, so that instructors can
+introduce concepts in a gradual manner.
+
+
+Help students write basic programs in a concise manner, and grow their code
+gracefully as their skills grow.
+
+
+Reduce the ceremony of writing other kinds of small programs, such as
+scripts and command-line utilities.
+
+
+Do not introduce a separate dialect of the Java language.
+
+
+Do not introduce a separate toolchain; small Java programs should be
+compiled and run with the same tools as large programs.
+
+
+Motivation
+The Java programming language excels for large, complex applications developed
+and maintained over many years by large teams. It has rich features for data
+hiding, reuse, access control, namespace management, and modularity which allow
+components to be cleanly composed while being developed and maintained
+independently. With these features, components can expose well-defined
+interfaces for their interaction with other components while hiding internal
+implementation details so as to permit the independent evolution of each.
+Indeed, the object-oriented paradigm itself is designed for plugging together
+pieces that interact through well-defined protocols and abstract away
+implementation details. This composition of large components is called
+programming in the large.
+The Java programming language is also, however, intended to be a first language.
+When programmers first start out they do not write large programs, in a team —
+they write small programs, alone. They have no need for encapsulation and
+namespaces, useful to separately evolve components written by different people.
+When teaching programming, instructors start with the basic
+programming in the small concepts of variables, control flow, and subroutines.
+At that stage there is no need for the programming-in-the-large concepts of
+classes, packages, and modules. Making the language more welcoming to newcomers
+is in the interest of Java veterans but they, too, may enjoy writing small
+programs more concisely, without any programming-in-the-large constructs.
+Consider the classic Hello,
+World! example that
+is often a beginner's first program:
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}
+There is too much clutter here — too much code, too many concepts, and too many
+constructs — for what the program does.
+
+
+The class declaration and the mandatory public access modifier are
+programming-in-the-large constructs. They are useful when encapsulating a
+code unit with a well-defined interface to external components, but
+pointless in this little example.
+
+
+The String[] args parameter also exists to interface the code with an
+external component, in this case the operating system's shell. It is
+mysterious and unhelpful here, especially since it is not used in small
+programs such as HelloWorld.
+
+
+The static modifier is part of the language's class-and-object model. For
+the beginner, static is not just mysterious but harmful: To add more
+methods or fields to this program, the beginner must either declare them all
+as static — thereby propagating an idiom which is neither common nor a
+good habit — or else confront the difference between static and instance
+members and learn how to instantiate an object.
+
+
+The beginner may be further puzzled by the mysterious incantation
+System.out.println, and wonder why a simple function call does not
+suffice. Even in first-week programs, the beginner may be forced to learn
+how to import basic utility classes for essential functionality, and wonder
+why they could not be provided automatically.
+
+
+The new programmer encounters these concepts at the worst possible time, before
+they learn about variables and control flow, and when they cannot appreciate the
+utility of programming-in-the-large constructs for keeping a large program well
+organized. Instructors often offer the admonition, "don't worry about that,
+you'll understand it later." This is unsatisfying to them and their students
+alike, and leaves students with the enduring impression that the language is
+complicated.
+The motivation for this work is not merely to reduce ceremony. We aim to help
+programmers that are new to the Java language, or to programming in general,
+learn the language in a manner that introduces concepts in the right order:
+Start with the fundamental programming-in-the-small concepts, such as doing
+simple textual I/O and processing arrays with for loops, and proceed to
+advanced programming-in-the-large concepts only when they are actually
+beneficial and can be more easily grasped.
+The motivation for this work is, moreover, not only to help beginning
+programmers. We aim to help everyone who writes small programs, whether they be
+students, system administrators writing command-line utilities, or domain
+experts prototyping core algorithms that will eventually be used in the heart of
+an enterprise-scale software system.
+We propose to make it easier to write small programs not by changing the
+structure of the Java language — code is still enclosed in methods, which are
+enclosed in classes, which are enclosed in packages, which are enclosed in
+modules — but by hiding such details until they are useful. We offer an on-ramp,
+that is, a gradual incline that merges gracefully onto the highway. As beginners
+move on to larger programs, they need not discard what they learned in the early
+stages, but, rather, they see how it all fits within the larger picture. As
+experienced developers proceed from prototype to production, they can smoothly
+grow their code into components of larger programs.
+Description
+First, we enhance the protocol by which Java programs are launched to allow
+instance main methods. Such methods are not static, need not be public,
+and need not have a String[] parameter. Then we can simplify the Hello,
+World! program to:
+class HelloWorld {
+    void main() {
+        System.out.println("Hello, World!");
+    }
+}
+Second, we allow a compilation
+unit,
+i.e., a source file, to implicitly declare a class:
+void main() {
+    System.out.println("Hello, World!");
+}
+Third, in implicitly declared classes we automatically import useful methods for
+textual input and output, thereby avoiding the mysterious System.out.println:
+void main() {
+    println("Hello, World!");
+}
+Finally, for programs that go beyond Hello, World! and need, for example,
+basic data structures or file I/O, in implicitly declared classes we
+automatically import, on demand, all of the public top-level classes and
+interfaces of the packages exported by the java.base module.
+This is a preview language feature, disabled by default
+To try the examples below in JDK 23 you must enable preview features:
+
+
+Compile the program with javac --release 23 --enable-preview Main.java and
+run it with java --enable-preview Main; or,
+
+
+When using the source code launcher, run the
+program with java --enable-preview Main.java; or,
+
+
+When using jshell, start it with
+jshell --enable-preview.
+
+
+The launch protocol
+New programmers just want to write and run a computer program. The Java
+Language
+Specification
+(JLS), however, focuses on defining the meaning of a compilation unit, that
+is, a source file with a package declaration, import declarations, and
+class declarations. All that the JLS has to say about a Java program
+is this:
+
+The Java Virtual Machine starts execution by invoking the method main of
+some specified class or interface, passing it a single argument which is an
+array of strings.
+
+The JLS further says:
+
+The manner in which the initial class or interface is specified to the Java
+Virtual Machine is beyond the scope of this specification, but it is typical,
+in host environments that use command lines, for the fully qualified name of
+the class or interface to be specified as a command line argument and for
+following command line arguments to be used as strings to be provided as the
+argument to the method main.
+
+The actions of choosing the class containing the main method, assembling its
+dependencies in the form of a module path or a class path (or both), loading the
+class, initializing it, and invoking the main method with its arguments
+constitute the launch protocol. In the JDK it is implemented by the
+launcher, i.e., the java executable.
+A flexible launch protocol
+We enhance the launch protocol to offer more flexibility in the declaration of a
+program's entry point and, in particular, to allow instance main methods, as
+follows:
+
+
+Allow the main method of a launched class to have public, protected,
+or default (i.e., package) access.
+
+
+If the launched class contains a main method with a String[] parameter
+then choose that method.
+
+
+Otherwise, if the class contains a main method with no parameters then
+choose that method.
+
+
+In either case, if the chosen method is static then simply invoke it.
+
+
+Otherwise, the chosen method is an instance method and the launched class
+must have a zero-parameter, non-private constructor (i.e., of public,
+protected, or package access). Invoke that constructor and then invoke the
+main method of the resulting object. If there is no such constructor then
+report an error and terminate.
+
+
+If there is no suitable main method then report an error and terminate.
+
+
+These changes allow us to write Hello, World! with no access modifiers, no
+static modifiers, and no String[] parameter, so the introduction of these
+constructs can be postponed until they are needed:
+class HelloWorld {
+    void main() {
+        System.out.println("Hello, World!");
+    }
+}
+Implicitly declared classes
+In the Java language, every class resides in a package and every package resides
+in a module. These namespacing and encapsulation constructs apply to all code,
+but small programs that do not need them can omit them. A program that does not
+need class namespaces can omit the package statement, making its classes
+implicit members of the unnamed package; classes in the unnamed package cannot
+be referenced explicitly by classes in named packages. A program that does not
+need to encapsulate its packages can omit the module declaration, making its
+packages implicit members of the unnamed module; packages in the unnamed module
+cannot be referenced explicitly by packages in named modules.
+Before classes serve their main purpose as templates for the construction of
+objects, they serve only as namespaces for methods and fields. We should not
+require beginners to confront the concept of classes before they are comfortable
+with the more basic building blocks of variables, control flow, and subroutines,
+before they embark on learning object orientation, and when they are still
+writing simple, single-file programs. Even though every method resides in a
+class, we can stop requiring explicit class declarations for code that does not
+need it — just as we do not require explicit package or module declarations for
+code that does not need them.
+Henceforth, if the Java compiler encounters a source file with a method that is
+not enclosed in a class declaration then it will consider that method, any other
+such methods, and any unenclosed fields and any classes in the file to form the
+body of an implicitly declared class.
+An implicitly declared class (or implicit class, for short) is a final,
+top-level class. It extends Object and does not implement any interfaces. An
+implicit class cannot be referenced by name, so there can be no method
+references to its static methods; the this keyword can still be used,
+however, as can method references to instance methods.
+Instances of an implicit class cannot be constructed directly, since the code of
+an implicit class cannot reference the class by name. Such a class is useful
+only as a standalone program or as an entry point to a program. Thus an
+implicit class must have a main method that can be launched as described
+above. This requirement is enforced by the Java
+compiler.
+An implicit class resides in the unnamed package, and the unnamed package
+resides in the unnamed module. While there can be only one unnamed package
+(barring multiple class loaders) and only one unnamed module, there can be
+multiple implicit classes in the unnamed module. Every implicit class contains a
+main method and so represents a program, thus multiple such classes in the
+unnamed package represent multiple programs.
+An implicit class is almost exactly like an explicitly declared class. Its
+members can have the same modifiers (e.g., private and static) and the
+modifiers have the same defaults (e.g., package access and instance
+membership). One key difference is that while an implicit class has a default
+zero-parameter constructor, it can have no other constructor.
+With these changes we can now write Hello, World! as:
+void main() {
+    System.out.println("Hello, World!");
+}
+Top-level members are interpreted as members of the implicit class, so we can
+also write the program as:
+String greeting() { return "Hello, World!"; }
+
+void main() {
+    System.out.println(greeting());
+}
+or, using a field, as:
+String greeting = "Hello, World!";
+
+void main() {
+    System.out.println(greeting);
+}
+If an implicit class has an instance main method rather than a static main
+method then launching it is equivalent to embedding it in an anonymous class
+declaration:
+new Object() {
+    // the implicit class's body
+}.main();
+A source file named HelloWorld.java containing an implicit class can be
+launched with the source-code launcher, like so:
+$ java HelloWorld.java
+The Java compiler will compile the file to the class file HelloWorld.class,
+and then the launcher will launch that file. The compiler chooses HelloWorld
+for the class name as an implementation detail, but that name still cannot be
+used directly in source code.
+The javadoc tool can generate documentation for an implicit class, even though
+an implicit class cannot be referenced by name from other classes and thus
+cannot be used to define an API. Still, the ability to generate documentation
+for the members of an implicit class may be useful, both for beginners learning
+to document their code, and for experienced developers prototyping code intended
+to be used in a larger program, or writing a reusable script for execution by
+the source code launcher.
+Interacting with the console
+Many beginner programs need to interact with the console. Writing to the console
+ought to be a simple method invocation, but in reality it requires using the
+qualified name System.out.println. This is mildly painful for experienced
+developers, but deeply mysterious to the beginner: What is System, what is
+out, and what are the dots for?
+Even worse is reading from the console which, again, ought to be a simple method
+invocation. Since writing to the console involves System.out, it seems
+reasonable to try reading from System.in. But reading a String from
+System.in requires all this code:
+try {
+    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    String line = reader.readLine();
+    ...
+} catch (IOException ioe) {
+    ...
+}
+Experienced developers are used to this boilerplate, but for the beginner this
+code contains yet more mysterious concepts, leading to a plethora of questions:
+What are try and catch for, why both BufferedReader and
+InputStreamReader, and what is an IOException?  There are other approaches,
+but none is significantly better, especially for the beginner.
+To simplify the writing of interactive small programs, we make three methods
+available for use in the body of every implicit class:
+public static void println(Object obj);
+public static void print(Object obj);
+public static String readln(String prompt);
+A beginner can now write Hello, World! as:
+void main() {
+    println("Hello, World!");
+}
+They can then easily move on to the simplest of interactive programs:
+void main() {
+    String name = readln("Please enter your name: ");
+    print("Pleased to meet you, ");
+    println(name);
+}
+We achieve this effect by declaring a new top-level class in the java.io
+package named, simply, IO. It declares the above three
+static methods for textual I/O with the console, and nothing else. Every
+implicitly declared class automatically imports these static methods, as if
+the declaration
+import static java.io.IO.*;
+appears at the start of every source file containing an implicit class.
+The new class java.io.IO is a preview API in JDK 23.
+Automatic import of the java.base module
+Many other classes declared in the Java API are useful in small programs. They
+can, of course, be imported explicitly at the start of the source file:
+import java.util.List;
+
+void main() {
+    var authors = List.of("James", "Bill", "Guy", "Alex", "Dan", "Gavin");
+    for (var name : authors) {
+        println(name + ": " + name.length());
+    }
+}
+Experienced developers will find this natural, though for convenience some might
+be inclined to use import-on-demand declarations (i.e., import java.util.*). For beginners, however, any form of import is another source of
+mystery, requiring an understanding of the package hierarchy of the Java API.
+To further simplify the writing of small programs, we make all of the public
+top-level classes and interfaces of the packages exported by the java.base
+module available for use in the body of every implicit class, as if they were
+imported on demand. Popular APIs in commonly used packages such as java.io,
+java.math, and java.util are thus immediately usable, without any fuss. In
+the above example, the import java.util.List declaration can be removed since
+the interface will be imported automatically.
+JEP 476, Module Import Declarations,
+proposes a new import declaration, import module M, which imports, on demand,
+all of the public top-level class and interfaces of the packages exported by
+module M. Thus every implicitly declared class can be considered to
+implicitly import the java.base module, as if the declaration
+import module java.base;
+appears at the start of every source file containing an implicit class.
+Growing a program
+A small program written as an implicit class is much more focused on what the
+program actually does, omitting concepts and constructs it does not need. Even
+so, all members are interpreted just as in an ordinary class. To evolve an
+implicit class into an ordinary class, all we need to do is wrap its
+declaration, excluding any import declarations, inside an explicit class
+declaration, and add the automatic imports. For example, this implicit class:
+void main() {
+    var authors = List.of("James", "Bill", "Guy", "Alex", "Dan", "Gavin");
+    for (var name : authors) {
+        println(name + ": " + name.length());
+    }
+}
+can be grown into this top-level class:
+import static java.io.IO.*;
+import java.util.List;          // alternatively: import module java.base;
+
+class NameLengths {
+    void main() {
+        var authors = List.of("James", "Bill", "Guy", "Alex", "Dan", "Gavin");
+        for (var name : authors) {
+            println(name + ": " + name.length());
+        }
+    }
+}
+The main method does not change in any way. Turning a small program into one
+that can serve as a component in a larger program is straightforward.
+Eliminating the main method altogether may seem like the next natural step,
+but it would work against the goal of gracefully evolving small Java programs to
+larger ones and would impose some non-obvious restrictions (see
+below). Dropping the void method result would, similarly,
+create a distinct Java dialect.
+Alternatives
+
+
+Use JShell for small programs — A JShell session is not a program but a
+sequence of code snippets. Declarations typed into jshell are implicitly
+viewed as static members of some unspecified class, with some unspecified
+access level, and statements execute in a context in which all previous
+declarations are in scope.
+This is convenient for experimentation — which is the primary use case for
+JShell — but not a good model for writing small programs. Evolving a batch
+of working declarations in JShell into a real program leads to a
+non-idiomatic style of code because it declares each method, class, and
+variable as static. JShell is a great tool for exploration and debugging,
+but it is not the on-ramp programming model we are looking for.
+
+
+Interpret code units as static members — Methods and fields are
+non-static by default. Interpreting top-level members in an implicit class
+as static would change the meaning of the code units in such a class —
+introducing, in effect, a distinct Java dialect. To preserve the meaning of
+such members when we evolve an implicit class into an ordinary class we
+would have to add explicit static modifiers. When we scale up from a
+handful of methods to a simple class we want to use classes as classes, not
+merely containers of static members.
+
+
+ Interpret code units as locals — We can already declare
+local variables within methods. Assume that we could also declare local
+methods, i.e., methods within other methods. Then we could interpret the
+body of a small program as the body of a main method, with variables
+interpreted as local variables rather than fields, and methods interpreted
+as local methods rather than class members. This would allow us to eschew
+the main method altogether and write top-level statements.
+The problem with this approach is that, in the Java language, locals behave
+differently from fields, and in a more restricted way to boot: Locals can
+only be accessed from inside lambda bodies or inner classes when they are
+effectively final. The proposed design allows us to separate locals and
+fields in the same manner as they have always been. The burden of writing a
+main method is not onerous, even for beginners.
+
+
+Introduce package-level methods and fields — We could achieve a user
+experience similar to that shown above by allowing package-level methods and
+fields to be declared in a file without an explicit package or class
+declaration. However, such a feature would have a far wider impact on how
+Java code is written in general.
+
+
+Different automatic imports — Rather than have implicit classes import
+all 54 packages in the java.base module on demand, we could instead
+have them import some subset of those packages. But, which subset should
+that be?
+Every reader will have suggestions for which packages to auto-import into
+every small program: java.io and java.util would be near-universal
+suggestions; java.util.stream and java.util.function would be common;
+and java.math, java.net, and java.time would each have supporters. For
+the JShell tool, we managed to find ten java.* packages which are broadly
+useful when experimenting with one-off Java code, but it is difficult to see
+which subset of java.* packages deserves to be permanently and
+automatically imported into every small program. The list would, moreover,
+change change as the Java Platform evolves; e.g., java.util.stream and
+java.util.function were introduced only in Java 8. Developers would
+likely become reliant on IDEs to remind them of which automatic imports are
+in effect — an undesirable outcome.
+Importing all of the packages exported by the java.base module is a
+consistent and reasonable choice for implicit classes.
+
+
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

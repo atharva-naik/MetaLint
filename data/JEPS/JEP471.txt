@@ -1,0 +1,426 @@
+JEP 471: Deprecate the Memory-Access Methods in sun.misc.Unsafe for RemovalJEP 471: Deprecate the Memory-Access Methods in sun.misc.Unsafe for RemovalAuthorRon Pressler & Alex BuckleyOwnerRon PresslerTypeFeatureScopeJDKStatusClosed / DeliveredRelease23Componentcore-libsDiscussionjdk dash dev at openjdk dot orgReviewed byAlan Bateman, Brian Goetz, Mark Reinhold, Maurizio Cimadamore, Paul SandozEndorsed byAlan BatemanCreated2024/01/05 15:46Updated2024/05/31 10:40Issue8323072Summary
+Deprecate the memory-access methods in sun.misc.Unsafe for removal in a future release. These unsupported methods have been superseded by standard APIs, namely the VarHandle API (JEP 193, JDK 9)
+and the Foreign Function & Memory API (JEP 454, JDK 22). We strongly encourage library developers to migrate from sun.misc.Unsafe to supported replacements, so that applications can migrate smoothly to modern JDK releases.
+Goals
+
+
+Prepare the ecosystem for the removal of the memory-access methods in sun.misc.Unsafe in a future JDK release.
+
+
+Help developers realize when their applications rely, directly or indirectly, on the memory-access methods in sun.misc.Unsafe.
+
+
+Non-Goals
+
+
+It is not a goal to remove the sun.misc.Unsafe class entirely. A small number of its methods are not used for memory access; these will be deprecated and removed separately.
+
+
+It is not a goal to change other sun.* classes in the jdk.unsupported module.
+
+
+Motivation
+The sun.misc.Unsafe class was introduced in 2002 as a way for Java classes in the JDK to perform low-level operations. Most of its methods — 79 out of 87 — are for accessing memory, either in the JVM's garbage-collected heap or in off-heap memory, which is not controlled by the JVM. As the name of the class suggests, these memory-access methods are unsafe: They can lead to undefined behavior, including JVM crashes. Therefore, they were not exposed as a standard API. They were neither envisaged for use by a broad range of clients nor intended to be permanent. Rather, they were introduced with the assumption that they were exclusively for use within the JDK, and that callers within the JDK would perform exhaustive safety checks before using them, and that safe standard APIs for this functionality would eventually be added to the Java Platform.
+However, with no way in 2002 to prevent sun.misc.Unsafe from being used outside the JDK, its memory-access methods became a handy tool for library developers who wanted more power and performance than standard APIs could offer. For example, sun.misc.Unsafe::compareAndSwap can perform a CAS (compare-and-swap) operation on a field without the overhead of the java.util.concurrent.atomic API, while sun.misc.Unsafe::setMemory can manipulate off-heap memory without the 2GB limitation of java.nio.ByteBuffer. Libraries that do rely on ByteBuffer to manipulate off-heap memory, such as Apache Hadoop and Cassandra, use sun.misc.Unsafe::invokeCleaner to improve efficiency by deallocating off-heap memory promptly.
+Unfortunately, not all libraries are diligent at performing safety checks before calling the memory-access methods, so there is a risk of failures and crashes in applications. Some uses of the methods are unnecessary, driven by the ease of copy-and-paste from online forums. Other uses of the methods may cause the JVM to disable optimizations, resulting in worse performance than if  ordinary Java arrays had been used. Nevertheless, because use of the memory-access methods is so widespread, sun.misc.Unsafe was not encapsulated alongside other low-level APIs in JDK 9 (JEP 260). It remains available out-of-the-box in JDK 22, pending the availability of safe supported alternatives.
+Over the past several years, we have introduced two standard APIs that are safe and performant replacements for the memory-access methods in sun.misc.Unsafe:
+
+
+java.lang.invoke.VarHandle, introduced in JDK 9 (JEP 193), provides methods to safely and efficiently manipulate on-heap memory, i.e., fields of objects, static fields of classes, and elements of arrays.
+
+
+java.lang.foreign.MemorySegment, introduced in JDK 22 (JEP 454), provides methods to safely and efficiently access off-heap memory, sometimes in cooperation with VarHandle.
+
+
+These standard APIs guarantee no undefined behavior, promise long-term stability, and have high-quality integration with the tooling and documentation of the Java Platform (examples of their use are given below). Given the availability of these APIs, it is now appropriate to deprecate and eventually remove the memory-access methods in sun.misc.Unsafe.
+Removing the memory-access methods in sun.misc.Unsafe is part of a long-term coordinated effort to ensure that the Java Platform has integrity by default. Other initiatives include placing restrictions on the Java Native Interface (JNI, JEP 472) and on the dynamic loading of agents (JEP 451). These efforts will make the Java Platform more secure and more performant. They will also reduce the risk of application developers becoming trapped on older JDK releases due to libraries that break on newer releases when unsupported APIs are changed.
+Description
+The memory-access methods of sun.misc.Unsafe can be divided into three categories:
+
+Methods for accessing on-heap memory (on-heap),
+Methods for accessing off-heap memory (off-heap), and
+Methods for accessing both on-heap and off-heap memory (bimodal — a bimodal method takes a parameter which either refers to an object on the heap or is null to signify off-heap access).
+
+We will deprecate and remove the methods in phases, where each phase takes place in a separate JDK feature release:
+
+
+Deprecate all of the memory-access methods — on-heap, off-heap, and bimodal — for removal. This will cause compile-time deprecation warnings for code that refers to the methods, alerting library developers to their forthcoming removal. A new command-line option, described below, will enable application developers and users to receive runtime warnings when the methods are used.
+Distinct from deprecation warnings, javac has issued warnings about the use of sun.misc.Unsafe since 2006:
+warning: Unsafe is internal proprietary API and may be removed in a future release
+These warnings will continue to be issued, and cannot be suppressed.
+
+
+Issue a warning at run time, as detailed below, when a memory-access method is used, whether directly or via reflection. This will alert application developers and users to the forthcoming removal of the methods, and the need to upgrade libraries.
+
+
+Throw an exception when a memory-access method is used, whether directly or via reflection. This will further alert application developers and users to the imminent removal of the methods.
+
+
+Remove on-heap methods. These methods will be removed first because they have had standard replacements since JDK 9 in 2017.
+
+
+Remove off-heap and bimodal methods. These methods will be removed later because they have only had standard replacements since JDK 22 in 2023.
+
+
+As to timing, we plan to implement
+
+Phase 1, via this JEP, in JDK 23;
+Phase 2, issuing run-time warnings, in or before JDK 25;
+Phase 3, throwing exceptions by default, in JDK 26 or later; and
+Phases 4 and 5, which will remove the methods, in releases following JDK 26.
+
+We may implement phases 4 and 5 simultaneously, if appropriate, when the time arrives.
+Allowing use of the memory-access methods in sun.misc.Unsafe
+The vast majority of Java developers do not use sun.misc.Unsafe explicitly in their own code. However, many applications depend, directly or indirectly, on libraries that use the memory-access methods of sun.misc.Unsafe. Starting in JDK 23, application developers can assess how the deprecation and removal of these methods will affect libraries by running with a new command line option, --sun-misc-unsafe-memory-access={allow|warn|debug|deny}. This option is similar, in spirit and in form, to the --illegal-access option introduced by JEP 261 in JDK 9. It works as follows:
+
+
+--sun-misc-unsafe-memory-access=allow allows use of the memory-access methods with no warnings at run time.
+
+
+--sun-misc-unsafe-memory-access=warn allows use of the memory-access methods, but issues a warning on the first occasion that any memory-access method is used, whether directly or via reflection. That is, at most one warning is issued regardless of which memory-access methods are used and how many times any particular method is used.
+
+
+--sun-misc-unsafe-memory-access=debug allows use of the memory-access methods, but issues a one-line warning and a stack trace on every occasion that any memory-access method is used, whether directly or via reflection.
+
+
+--sun-misc-unsafe-memory-access=deny disallows use of the memory-access methods by throwing an UnsupportedOperationException on every occasion that any such method is used, whether directly or via reflection.
+
+
+An example of the warnings enabled by the option value warn is:
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::setMemory has been called by com.foo.bar.Server (file:/tmp/foobarserver/thing.jar)
+WARNING: Please consider reporting this to the maintainers of com.foo.bar.Server
+WARNING: sun.misc.Unsafe::setMemory will be removed in a future release
+The default value of the --sun-misc-unsafe-memory-access option will change from release to release as we proceed through the phases described above:
+
+
+allow is the default value in phase 1, as if every invocation of the java launcher includes --sun-misc-unsafe-memory-access=allow.
+
+
+warn will be the default value in phase 2. It will be possible in phase 2 to revert the value from warn to allow, thus avoiding the warning.
+
+
+deny will be the default value in phase 3. It will be possible in phase 3 to revert the value from deny to warn in order to receive a warning rather than exceptions. It will not be possible to use allow to avoid the warning.
+
+
+In phase 5, when all of the memory-access methods have been removed, --sun-misc-unsafe-memory-access will be ignored. Eventually it will be removed.
+
+
+The following tools in the JDK can help advanced developers understand how their code uses deprecated methods in sun.misc.Unsafe:
+
+
+javac gives a deprecation warning whenever source code uses a memory-access method in sun.misc.Unsafe. Each deprecation warning can be suppressed in code with @SuppressWarnings("removal").
+
+
+When JDK Flight Recorder (JFR) is enabled on the command line, a jdk.DeprecatedInvocation event is recorded whenever a terminally deprecated method is invoked. This event can be used to identify uses of the memory-access methods in sun.misc.Unsafe.
+For example, here is how to create a JFR recording and then display the jdk.DeprecatedInvocation events:
+$ java -XX:StartFlightRecording:filename=recording.jfr ...
+$ jfr print --events jdk.DeprecatedInvocation recording.jfr
+This event is not recorded when JFR is started at run time with jcmd or the JFR API. Further details on this event and its limitations can be found in the corresponding JDK 22 release note.
+
+
+sun.misc.Unsafe memory-access methods and their replacements
+On-heap methods
+
+long objectFieldOffset(Field f)
+long staticFieldOffset(Field f)
+Object staticFieldBase(Field f)
+int arrayBaseOffset(Class<?> arrayClass)
+int arrayIndexScale(Class<?> arrayClass)
+
+These methods exist to obtain offsets or scales which are then used with the bimodal methods (below) to read and write fields or array elements. These use cases are now addressed by VarHandle and MemorySegment::ofArray.
+In rare circumstances, these methods are used on their own to examine and manipulate the physical layouts of objects in memory (see examples here). There is no supported replacement for this use case; see below for further discussion.
+The first three methods above were deprecated in JDK 18.
+The fields associated with these methods are also deprecated for removal:
+
+int INVALID_FIELD_OFFSET
+int ARRAY_[TYPE]_BASE_OFFSET
+int ARRAY_[TYPE]_INDEX_SCALE
+
+Off-heap methods
+
+
+long allocateMemory(long bytes) — replaced by Arena::allocate or an FFM downcall to the C library's malloc() function
+
+
+long reallocateMemory(long address, long bytes) — Downcall to realloc()
+
+
+void freeMemory(long address) — Arena::close or downcall to free()
+
+
+void invokeCleaner(java.nio.ByteBuffer directBuffer) — MemorySegment::asByteBuffer
+
+
+void setMemory(long address, long bytes, byte value) — MemorySegment::fill
+
+
+void copyMemory(long srcAddress, long destAddress, long bytes) — MemorySegment::copy
+
+
+[type] get[Type](long address) — MemorySegment.get(ValueLayout.Of[Type] layout, long offset)
+
+
+void put[Type](long address, [type] x) — MemorySegment.set(ValueLayout.of[Type] layout, long offset, [type] value)
+
+
+long getAddress(long address) — MemorySegment.get(ValueLayout.OfAddress layout, long offset)
+
+
+void putAddress(long address, long x) — MemorySegment.set(ValueLayout.ofAddress layout, long offset, MemorySegment value)
+
+
+int addressSize() (and int ADDRESS_SIZE) — ValueLayout.ADDRESS.byteSize()
+
+
+Bimodal memory-access methods
+
+
+[type] get[Type](Object o, long offset) — replaced by VarHandle::get
+
+
+void put[Type](Object o, long offset, [type] x) — VarHandle::set
+
+
+[type] get[Type]Volatile(Object o, long offset) — VarHandle::getVolatile
+
+
+void put[Type]Volatile(Object o, long offset, [type] x) — VarHandle::setVolatile
+
+
+void putOrdered[Type](Object o, long offset, [type] x) — VarHandle::setRelease
+
+
+[type] getAndAdd[Type](Object o, long offset, [type] delta) — VarHandle::getAndAdd
+
+
+[type] getAndSet[Type](Object o, long offset, [type] newValue) — VarHandle::getAndSet
+
+
+boolean compareAndSwap[Type](Object o, long offset, [type] expected, [type] x) — VarHandle::compareAndSet
+
+
+void setMemory(Object o, long offset, long bytes, byte value) — MemorySegment::fill or Arrays::fill
+
+
+void copyMemory(Object srcBase, long srcOffset, Object destBase, long destOffset, long bytes) —  MemorySegment::copy or System::arrayCopy
+
+
+Migration examples
+On-heap memory access
+Suppose class Foo has an int field that we wish to double atomically. We can do that using sun.misc.Unsafe:
+class Foo {
+
+    private static final Unsafe UNSAFE = ...;    // A sun.misc.Unsafe object
+
+    private static final long X_OFFSET;
+
+    static {
+        try {
+            X_OFFSET = UNSAFE.objectFieldOffset(Foo.class.getDeclaredField("x"));
+        } catch (Exception ex) { throw new AssertionError(ex); }
+    }
+
+    private int x;
+
+    public boolean tryToDoubleAtomically() {
+        int oldValue = x;
+        return UNSAFE.compareAndSwapInt(this, X_OFFSET, oldValue, oldValue * 2);
+    }
+
+}
+We can improve that to use the standard VarHandle API:
+class Foo {
+
+    private static final VarHandle X_VH;
+
+    static {
+        try {
+            X_VH = MethodHandles.lookup().findVarHandle(Foo.class, "x", int.class);
+        } catch (Exception ex) { throw new AssertionError(ex); }
+    }
+
+    private int x;
+
+    public boolean tryAtomicallyDoubleX() {
+        int oldValue = x;
+        return X_VH.compareAndSet(this, oldValue, oldValue * 2);
+    }
+
+}
+We can use sun.misc.Unsafe to perform a volatile write of an array element:
+class Foo {
+
+    private static final Unsafe UNSAFE = ...;
+
+    private static final int ARRAY_BASE = UNSAFE.arrayBaseOffset(int[].class);
+    private static final int ARRAY_SCALE = UNSAFE.arrayIndexScale(int[].class);
+
+    private int[] a = new int[10];
+
+    public void setVolatile(int index, int value) {
+        if (index < 0 || index >= a.length)
+            throw new ArrayIndexOutOfBoundsException(index);
+        UNSAFE.putIntVolatile(a, ARRAY_BASE + ARRAY_SCALE * index, value);
+    }
+
+}
+We can improve that to use VarHandle:
+class Foo {
+
+    private static final VarHandle AVH = MethodHandles.arrayElementVarHandle(int[].class);
+
+    private int[] a = new int[10];
+
+    public void setVolatile(int index, int value) {
+        AVH.setVolatile(a, index, value);
+    }
+
+}
+Off-heap memory access
+Here is a class that uses sun.misc.Unsafe to allocate an off-heap buffer and perform three operations: a volatile write of an int, a bulk initialization of a subset of the buffer, and a copy of the buffer data into a Java int array:
+class OffHeapIntBuffer {
+
+    private static final Unsafe UNSAFE = ...;
+
+    private static final int ARRAY_BASE = UNSAFE.arrayBaseOffset(int[].class);
+    private static final int ARRAY_SCALE = UNSAFE.arrayIndexScale(int[].class);
+
+    private final long size;
+    private long bufferPtr;
+
+    public OffHeapIntBuffer(long size) {
+        this.size = size;
+        this.bufferPtr = UNSAFE.allocateMemory(size * ARRAY_SCALE);
+    }
+
+    public void deallocate() {
+        if (bufferPtr == 0) return;
+        UNSAFE.freeMemory(bufferPtr);
+        bufferPtr = 0;
+    }
+
+    private boolean checkBounds(long index) {
+        if (index < 0 || index >= size)
+            throw new IndexOutOfBoundsException(index);
+        return true;
+    }
+
+    public void setVolatile(long index, int value) {
+        checkBounds(index);
+        UNSAFE.putIntVolatile(null, bufferPtr + ARRAY_SCALE * index, value);
+    }
+
+    public void initialize(long start, long n) {
+        checkBounds(start);
+        checkBounds(start + n-1);
+        UNSAFE.setMemory(bufferPtr + start * ARRAY_SCALE, n * ARRAY_SCALE, 0);
+    }
+
+    public int[] copyToNewArray(long start, int n) {
+        checkBounds(start);
+        checkBounds(start + n-1);
+        int[] a = new int[n];
+        UNSAFE.copyMemory(null, bufferPtr + start * ARRAY_SCALE, a, ARRAY_BASE, n * ARRAY_SCALE);
+        return a;
+    }
+
+}
+We can improve that to use the standard Arena and MemorySegment APIs:
+class OffHeapIntBuffer {
+
+    private static final VarHandle ELEM_VH = ValueLayout.JAVA_INT.arrayElementVarHandle();
+
+    private final Arena arena;
+    private final MemorySegment buffer;
+
+    public OffHeapIntBuffer(long size) {
+        this.arena  = Arena.ofShared();
+        this.buffer = arena.allocate(ValueLayout.JAVA_INT, size);
+    }
+
+    public void deallocate() {
+        arena.close();
+    }
+
+    public void setVolatile(long index, int value) {
+        ELEM_VH.setVolatile(buffer, 0L, index, value);
+    }
+
+    public void initialize(long start, long n) {
+        buffer.asSlice(ValueLayout.JAVA_INT.byteSize() * start,
+                       ValueLayout.JAVA_INT.byteSize() * n)
+              .fill((byte) 0);
+    }
+
+    public int[] copyToNewArray(long start, int n) {
+        return buffer.asSlice(ValueLayout.JAVA_INT.byteSize() * start,
+                              ValueLayout.JAVA_INT.byteSize() * n)
+                     .toArray(ValueLayout.JAVA_INT);
+    }
+
+}
+Risks and Assumptions
+
+
+Over the years, methods in sun.misc.Unsafe that are unrelated to memory access have been deprecated for removal after standard replacements were introduced, and many of them have already been removed:
+
+
+sun.misc.Unsafe::defineClass was removed in JDK 11 after java.lang.invoke.MethodHandles.Lookup::defineClass was introduced in JDK 9.
+
+
+sun.misc.Unsafe::defineAnonymousClass was removed in JDK 17 after MethodHandles.Lookup::defineHiddenClass was introduced in in JDK 15.
+
+
+sun.misc.Unsafe::{ensureClass,shouldBe}Initialized were removed in JDK 22 after MethodHandles.Lookup::ensureInitialized was introduced in JDK 15.
+
+
+Six miscellaneous methods in sun.misc.Unsafe were deprecated for removal in JDK 22 after standard replacements were available.
+
+
+We have seen very little impact in the Java ecosystem from the removal of these relatively obscure methods. However, the memory-access methods are much better known. This proposal assumes that removing them will impact libraries. Accordingly, for maximum visibility, we are proposing their deprecation and removal via the JEP process rather than simply with a CSR request and a release note.
+
+
+This proposal assumes that library developers will migrate from unsupported methods in sun.misc.Unsafe to supported methods in java.*.
+
+We recommend in the strongest possible terms that library developers do not migrate from unsupported methods in sun.misc.Unsafe to unsupported methods found elsewhere inside the JDK.
+
+Library developers who ignore this recommendation will force their users to run with --add-exports or --add-opens options on the command line. This is not merely inconvenient, but risky: JDK internals can change from release to release without notice, breaking libraries which depend on the internals, thereby breaking applications which depend on the libraries.
+
+
+A risk of this proposal is that some libraries use the on-heap memory-access methods of sun.misc.Unsafe in ways that cannot be replicated by the standard APIs available in JDK 23. For example, a library may use Unsafe::objectFieldOffset to obtain the offset of a field in an object, then use Unsafe::putInt to write an int value at that offset regardless of whether the field is an int. The standard VarHandle API cannot examine or manipulate objects at such a low level because it refers to fields by name and type, not by offset.
+Use cases that rely on field offsets are, in effect, revealing or exploiting implementation details of the JVM. In our view, such use cases do not need to be supported by a standard API.
+
+
+A library may use UNSAFE.getInt(array, arrayBase + offset) to access array elements in the heap without bounds checking. This idiom is typically used for random access, since sequential access to array elements, whether via ordinary array-index operations the MemorySegment API, already benefits from the JIT's bounds-check elimination.
+In our view, random access to array elements without bounds checking is not a use case that needs to be supported by a standard API. Random access via array-index operations or the MemorySegment API  has a small loss of performance compared to the on-heap memory access methods of sun.misc.Unsafe, but a large gain in safety and maintainability. In particular, the use of standard APIs is guaranteed to work reliably on all platforms and all JDK releases, even if the JVM's implementation of arrays changes in the future.
+
+
+Future Work
+After deprecating the 79 memory-access methods for removal, sun.misc.Unsafe will contain only three methods that are not deprecated:
+
+
+pageSize, which will be deprecated and removed separately. Library developers are encouraged to obtain the memory page size directly from the OS via a downcall.
+
+
+throwException, which will be deprecated and removed separately. This method was historically used by methods in the JDK to wrap checked exceptions in unchecked exceptions, but those methods, e.g., Class::newInstance, are now deprecated.
+
+
+allocateInstance, which will remain as the only method in sun.misc.Unsafe in the medium term. It is used by some serialization libraries for deserialization. Providing a standard replacement is a long-term project.
+
+
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

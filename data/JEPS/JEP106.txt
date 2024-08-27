@@ -1,0 +1,47 @@
+JEP 106: Add Javadoc to javax.toolsJEP 106: Add Javadoc to javax.toolsOwnerJonathan GibbonsTypeFeatureScopeSEStatusClosed / DeliveredRelease8Componenttools / javadoc(tool)JSR199 MRDiscussioncompiler dash dev at openjdk dot java dot netEffortSDurationSEndorsed byBrian GoetzCreated2011/07/21 20:00Updated2015/02/13 19:41Issue8046096Summary
+Extend the javax.tools API to provide access to javadoc.
+Motivation
+It is increasingly common to want to invoke tools via an API, as part
+of a larger software environment, instead of by exec-ing a new process.
+This provides improved performance by avoiding the need to start
+additional JVMs, and by providing an API for more type-safe invocation.
+Description
+The API changes are relatively small, but the implementation behind the
+new methods involves some amount of refactoring the existing implementation.
+The primary task is to change all existing uses of java.io.File into
+corresponding uses of javax.tools.FileObject. Much of this work has
+already been done in JDK 7, but the remaining work has had to be deferred
+because of a probably dependence on the new NIO API.
+Testing
+Unit (jtreg) tests will be provided to exercise the new functionality.
+There will not be any platform-specific requirements.
+Risks and Assumptions
+Generally speaking, javadoc is very old code, that has not had much TLC
+in a long time. There is a risk that the refactoring will not be as simple
+as expected.
+Dependences
+Up to now, there has been a probable dependence on the new NIO API,
+but that has now become available in JDK 7.
+Impact
+
+JCP: maintenance review of JSR 199
+Compatibility: minimal
+Documentation: API docs only
+Internationalization: minimal
+Localization: minimal
+
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

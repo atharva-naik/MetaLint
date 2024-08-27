@@ -1,0 +1,46 @@
+JEP 146: Improve Fatal Error LogsJEP 146: Improve Fatal Error LogsOwnerTom RodriguezTypeFeatureScopeImplementationStatusClosed / WithdrawnComponenthotspot / runtimeDiscussionhostspot dash dev at openjdk dot java dot netEffortSDurationSReviewed byJesper WilhelmssonEndorsed byMikael VidstedtCreated2011/11/09 20:00Updated2018/03/22 18:31Issue8046136Summary
+Improve HotSpot's fatal error logs (hs_err files) by including
+additional historical information and also some context-dependent
+information.
+Motivation
+Fatal error logs are a critical tool for triaging bugs.  Adding more
+useful information to them may allow bugs to be evaluated more quickly.
+Description
+This project has provided a set of classes that are used to store
+information that is put into the crash dump in the case of a crash.
+EventLog is the base event log dumping class that is registered for dumping
+at crash time. EventLog is a very generic interface that normally shouldn't
+be used directly, but rather through its subclasses.
+The EventLogBase is a template subclass of EventLog that provides
+basic ring buffer functionality. Most event loggers should subclass this,
+possibly providing a more featureful log function if the existing copy
+semantics aren't appropriate. The provided name is used as the label of
+the log when it is dumped during a crash.
+The information that has been added to the crash dump is for instance
+historical information of recent compilation and GC history.
+Context-dependent information includes, for example, what bytecode
+is being processed and what the inline tree looks like when a crash
+occurs during compilation.
+Two new flags was added to control the event log:
+-XX:LogEvents={true/false}
+Enable the various ring buffer event logs. Defaults to true.
+-XX:LogEventsBufferEntries=n
+Set the size of the ring buffer. Defaults to 10.
+Testing
+Exercising this code will require causing crashes in various contexts,
+so initially some forced crashing may be required.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

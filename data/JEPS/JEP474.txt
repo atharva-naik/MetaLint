@@ -1,0 +1,80 @@
+JEP 474: ZGC: Generational Mode by DefaultJEP 474: ZGC: Generational Mode by DefaultOwnerAxel Boldt-ChristmasTypeFeatureScopeImplementationStatusClosed / DeliveredRelease23Componenthotspot / gcDiscussionhotspot dash gc dash dev at openjdk dot orgEffortXSReviewed byStefan Karlsson, Vladimir KozlovEndorsed byVladimir KozlovCreated2024/02/26 11:16Updated2024/07/31 08:49Issue8326667Summary
+Switch the default mode of the Z Garbage Collector (ZGC) to the generational mode.
+Deprecate the non-generational mode, with the intent to remove it in a future release.
+Goals
+
+
+Signal the intent that future development will focus on Generational ZGC.
+
+
+Reduce the maintenance cost of supporting two different modes.
+
+
+Non-Goals
+
+It is not a goal to remove non-generational ZGC from the targeted release.
+
+Motivation
+Maintaining non-generational ZGC slows the development of new features. As stated in JEP 439: Generational ZGC:
+
+Generational ZGC should be a better solution for most use cases than non-generational ZGC. We should eventually be able to replace the latter with the former in order to reduce long-term maintenance costs.
+
+Description
+Make Generational ZGC the default mode of ZGC by changing the default value of the ZGenerational option from false to true. Deprecate the non-generational mode by deprecating the ZGenerational option.
+After these changes the following behavior will be observed based on the provided command-line arguments:
+
+
+-XX:+UseZGC
+
+Generational ZGC is used.
+
+
+
+-XX:+UseZGC -XX:+ZGenerational
+
+Generational ZGC is used.
+A warning that the ZGenerational option is deprecated is issued.
+
+
+
+-XX:+UseZGC -XX:-ZGenerational
+
+Non-generational ZGC is used.
+A warning that the ZGenerational option is deprecated is issued.
+A warning that the non-generational mode is deprecated for removal is issued.
+
+
+
+Workloads that switch to Generational ZGC may experience differences in log output and in the data available from the serviceability and management APIs.
+Testing
+We will ensure that existing tests are unaffected by the deprecated option warning and that they pass in the same configurations as before this change.
+Risks and Assumptions
+This JEP shares its Risk and Assumptions with JEP 439: Generational ZGC.
+Generational ZGC will perform differently than non-generational ZGC.  The main risk this presents is that some workloads are non-generational by nature, and thus could see a slight performance degradation. We believe that this is a sufficiently small set of workloads that it does not justify the cost of maintaining two separate versions of ZGC over the long term.
+Specific risks include:
+
+
+Users may be required to adjust configurations that are tuned for non-generational ZGC.
+
+
+The deprecation warning messages might cause issues.
+
+
+Workloads that are tightly coupled to JVM internals, GC logs, and the data available via management interfaces may require extra attention.
+
+
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

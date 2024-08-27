@@ -1,0 +1,36 @@
+JEP 241: Remove the jhat ToolJEP 241: Remove the jhat ToolOwnerStaffan LarsenTypeFeatureScopeJDKStatusClosed / DeliveredRelease9Componentcore-svc / toolsDiscussionserviceability dash dev at openjdk dot java dot netEffortXSDurationXSReviewed byMikael VidstedtEndorsed byMikael VidstedtCreated2014/09/24 14:28Updated2016/09/06 17:22Issue8059039Summary
+Remove the antiquated jhat tool.
+Motivation
+jhat was added in JDK 6, based upon the java.net HAT project.
+jhat is an experimental, unsupported, and out-of-date tool.  Superior
+heap visualizers and analyzers have now been available for many years.
+Description
+Stop building and shipping the jhat tool in the JDK.
+Document this change in the appropriate release notes.  Very few people
+are using this tool, so the impact on users should be minimal.  The tool
+has long been marked for removal in the documentation with the words:
+
+NOTE: This tool is experimental and may not be available in future
+versions of the JDK.
+
+Testing
+Existing jhat tests will need to be removed.
+Some existing tests for hprof file creation use jhat to validate the
+files.  We'll need to preserve the jhat hprof file parser/validator
+for use in these tests.  That does not mean, however, that the code has
+to be in the product, rather it should be part of the tests.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

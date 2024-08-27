@@ -1,0 +1,38 @@
+JEP 226: UTF-8 Property Resource BundlesJEP 226: UTF-8 Property Resource BundlesOwnerNaoto SatoTypeFeatureScopeSEStatusClosed / DeliveredRelease9Componentcore-libs / java.util:i18nDiscussioni18n dash dev at openjdk dot java dot netEffortSDurationMReviewed byBrian GoetzEndorsed byBrian GoetzCreated2014/05/20 17:06Updated2022/01/14 12:13Issue8043553Summary
+Define a means for applications to specify property files encoded in UTF-8,
+and extend the ResourceBundle API to load them.
+Motivation
+The platform has for a long time provided a properties-file format that is
+based on ISO-8859-1 and provides an escape mechanism for characters that
+cannot be represented in that encoding. This format is supported by the
+standard resource-bundle lookup mechanism. As noted in the related RFEs, this
+format is difficult to use because it requires continuous conversion between
+its escaped form and text in character encodings that are directly editable.
+Description
+Change the default file encoding for ResourceBundle class to load properties
+files from ISO-8859-1 to UTF-8. By doing so, applications no longer need to
+convert the properties files using the escape mechanism. Existing properties
+files are rarely affected by this change, since ISO-8859-1's U+0000-U+007F are
+compatible with UTF-8, and characters whose code points are over U+00FF should
+have been escaped.  If an exception occurs on reading a properties file in
+UTF-8, either a MalformedInputException or an UnmappableCharacterException,
+the properties file is read again from scratch, reverting to using ISO-8859-1
+encoding. In order for a rare occasion where a ISO-8859-1 properties file can
+be recognized as a valid UTF-8 file, this JEP provides a means to explicitly
+designate the encoding either ISO-8859-1 or UTF-8, by setting the system
+property "java.util.PropertyResourceBundle.encoding".
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

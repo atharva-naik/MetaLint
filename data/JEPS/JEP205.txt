@@ -1,0 +1,59 @@
+JEP 205: New Controls for JavaFXJEP 205: New Controls for JavaFXAuthorStephen NorthoverOwnerSteve NorthoverTypeFeatureScopeJDKStatusClosed / DeliveredRelease8u40Componentclient-libsDiscussionopenjfx dash dev at openjdk dot java dot netEffortMDurationMRelates toJEP 209: JavaFX Scene Builder UpdateReviewed byKevin RushforthEndorsed byRichard BairCreated2014/05/16 19:48Updated2015/03/03 04:22Issue8043350Summary
+Add a spinner control, a formatted-text control, and a standard set of
+alert dialogs to JavaFX.
+Motivation
+JavaFX needs to be complete and comprehensive, otherwise adoption is
+compromised.  A spinner is a standard UI control that appears in many
+different applications.  Business applications need formatted-text
+controls to validate input.  Most application need to warn the user
+occasionally, or request "ok/cancel" confirmations.  In order to be
+complete and compelling, comprehensive UI applications require this
+functionality.
+Description
+Adding new controls to JavaFX follows a standard implementation template.
+Each JavaFX control consists of the control itself and the public API it
+provides, a behavior class that handles input events and similar
+functionality, and a skin class for the final presentation.  The skin
+class is configured using CSS, and standard CSS classes are defined so
+that the control can be manipulated from a CSS file.
+A spinner is a well-known UI control which can be thought of as a kind of
+combo box.  Using a spinner, a single value can be selected from a list
+of values.  Values are often chosen using up- and down-arrow affordances.
+Spinner controls typically display and manipulate numeric values but can
+also display strings which often represent the elements of an
+enumeration.
+A filtered-text control is often (but not necessarily) implemented as
+subclass of a single-line text field.  This allows the editing features of the
+control to be inherited while adding API to restrict and format the characters
+that can be displayed and typed.   Filtered-text provides the basis for
+complex formatting.  For example, it is possible to implemented formatting
+masks such as (###) ###-#### that might specify a phone number.
+Standard alert dialogs are common on the desktop and provide a
+well-understood interaction pattern.  Alerts notify the user that
+something has happened.  Typically, they consist of an icon that
+indicates the severity of the notification (i.e., warning, error, or
+information).  On some platforms alerts are implemented as top-level
+windows, modal to their parent; on other platforms they are attached to
+the parent window frame and slide in when requested.
+Testing
+JavaFX has standard set of unit test for testing controls.  There are
+also full-scale examples such as Ensemble that provide sample code for
+each control.  SceneBuilder is a large JavaFX application that allows
+programmers to drag and drop controls from a palette.  The controls
+described here will be added to the existing frameworks and will be
+tested using the standard JavaFX SQE process.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

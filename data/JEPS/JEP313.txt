@@ -1,0 +1,45 @@
+JEP 313: Remove the Native-Header Generation Tool (javah)JEP 313: Remove the Native-Header Generation Tool (javah)OwnerJonathan GibbonsTypeFeatureScopeJDKStatusClosed / DeliveredRelease10Componenttools / javahDiscussioncompiler dash dev at openjdk dot java dot netEffortXSReviewed byBrian Goetz, Joe DarcyEndorsed byBrian GoetzCreated2017/06/23 17:28Updated2018/01/10 22:02Issue8182758Summary
+Remove the javah tool from the JDK.
+Motivation
+The tool has been superseded by superior functionality in javac, added in JDK 8
+(JDK-7150368).
+This functionality provides the ability to write native header files at the time
+that Java source code is compiled, thereby eliminating the need for a separate
+tool.
+Focusing on the support provided by javac eliminates the need to upgrade
+javah to support recent new paradigms, such as API access via the
+Compiler API in javax.tools.*, or the new java.util.spi.ToolProvider SPI added in JDK 9.
+Description
+Implementing the removal will include removing the affected files from
+the Mercurial repositories, including documentation files, as well as
+supporting makefile changes.
+Testing
+Any testing will be limited to verifying the javah command is
+not present.
+Risks and Assumptions
+There are no engineering issues with excising javah from the JDK,
+because the tool is no longer used by JDK, or when building the JDK.
+Users have been warned of the pending removal since JDK 9,
+in which a warning is generated each time the javah tool is invoked.
+Dependences
+There are no direct JDK dependences on the javah tool. Externally,
+there are some derivatives of javah, such as the Ant
+javah task,
+but just as users of the javah command are recommended to
+use javac -h, so too are users of these dependences are recommended to
+use instead the corresponding support provided for javac.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

@@ -1,0 +1,315 @@
+JEP 476: Module Import Declarations (Preview)JEP 476: Module Import Declarations (Preview)AuthorJim Laskey & Gavin BiermanOwnerGavin BiermanTypeFeatureScopeSEStatusClosed / DeliveredRelease23Componentspecification / languageDiscussionamber dash dev at openjdk dot orgEffortSDurationSRelates toJEP 477: Implicitly Declared Classes and Instance Main Methods (Third Preview)Reviewed byAlex Buckley, Brian GoetzEndorsed byBrian GoetzCreated2023/08/28 16:57Updated2024/07/08 15:18Issue8315129Summary
+Enhance the Java programming language with the ability to succinctly import all
+of the packages exported by a module. This simplifies the reuse of modular
+libraries, but does not require the importing code to be in a module
+itself. This is a preview language feature.
+Goals
+
+
+Simplify the reuse of modular libraries by allowing entire modules to be
+imported at once.
+
+
+Avoid the noise of multiple type-import-on-demand declarations (e.g.,
+import com.foo.bar.*) when using diverse parts of the API exported by a
+module.
+
+
+Allow beginners to more easily use third-party libraries and fundamental
+Java classes without having to learn where they are located in a package
+hierarchy.
+
+
+Do not require developers who use the module import feature to modularize
+their own code.
+
+
+Motivation
+Classes and interfaces in the java.lang package, such as Object, String,
+and Comparable, are essential to every Java program. For this reason, the Java
+compiler automatically imports, on demand, all the classes and interfaces in the
+java.lang package, as if
+import java.lang.*;
+appears at the beginning of every source file.
+As the Java Platform has evolved, classes and interfaces such as List, Map,
+Stream, and Path have become almost as essential. However, none of these are
+in java.lang, so they are not automatically imported; rather, developers have
+to keep the compiler happy by writing a plethora of import declarations at the
+beginning of every source file. For example, the following code converts an
+array of strings into a map from capital letters to strings, but the imports
+take almost as many lines as the code:
+import java.util.Map;                   // or import java.util.*;
+import java.util.function.Function;     // or import java.util.function.*;
+import java.util.stream.Collectors;     // or import java.util.stream.*;
+import java.util.stream.Stream;         // (can be removed)
+
+String[] fruits = new String[] { "apple", "berry", "citrus" };
+Map<String, String> m =
+    Stream.of(fruits)
+          .collect(Collectors.toMap(s -> s.toUpperCase().substring(0,1),
+                                    Function.identity()));
+Developers have diverse views as to whether to prefer single-type-import or
+type-import-on-demand declarations. Many
+prefer
+single-type imports in large, mature codebases where clarity is paramount. However, in early-stage
+situations where convenience trumps clarity, developers often prefer on-demand
+imports; for example,
+
+
+When prototyping code and running it with the java launcher;
+
+
+When exploring a new API in JShell, such as
+Stream Gatherers or the
+Foreign Function & Memory API; or
+
+
+When learning to program with new features that work in concert with new
+APIs, such as virtual threads and their executors.
+
+
+Since Java 9, modules have allowed a set of packages to be grouped together for
+reuse under a single name. The exported packages of a module are intended to
+form a cohesive and coherent API, so it would be convenient if developers could
+import on-demand from the entire module, that is, from all of the packages
+exported by the module. It would be as if all the exported packages are imported
+in one go.
+For example, importing the java.base module on-demand would give immediate
+access to List, Map, Stream, and Path, without having to manually import
+java.util on-demand, and java.util.stream on-demand, and java.nio.file
+on-demand.
+The ability to import at the level of modules would be especially helpful when
+APIs in one module have a close relationship with APIs in another module. This
+is common in large multi-module libraries such as the JDK. For example, the
+java.sql
+module provides database access via its java.sql and javax.sql packages, but one
+of its interfaces,
+java.sql.SQLXML, declares public methods whose signatures use interfaces from the
+javax.xml.transform package in the java.xml module.
+Developers who call these methods in java.sql.SQLXML typically import both the
+java.sql package and the javax.xml.transform package.  To facilitate this
+extra import, the java.sql module depends on the java.xml module
+transitively, so that a
+program which depends on the java.sql module depends automatically on the
+java.xml module. In this scenario, it would be convenient if importing the
+java.sql module on-demand would also automatically import the java.xml
+module on-demand. Automatically importing on-demand from transitive dependencies
+would be a further convenience when prototyping and exploring.
+Description
+A module import declaration has the form
+import module M;
+It imports, on demand, all of the public top-level classes and interfaces in
+
+
+The packages exported by the module M to the current module, and
+
+
+The packages exported by the modules that are read by the current module due
+to reading the module M.
+
+
+The second clause allows a program to use the API of a module, which might refer
+to classes and interfaces from other modules, without having to import all of
+those other modules.
+For example:
+
+
+import module java.base has the same effect as 54 on-demand package imports, one
+for each of the
+packages
+exported by the java.base module. It is as if the source file contains
+import java.io.* and import java.util.* and so on.
+
+
+import module java.sql has the same effect as import java.sql.* and
+import javax.sql.* plus on-demand package imports for the indirect exports of the java.sql module.
+
+
+This is a preview language feature, disabled by default
+To try the examples below in JDK 23, you must enable preview features:
+
+
+Compile the program with javac --release 23 --enable-preview Main.java and
+run it with java --enable-preview Main; or,
+
+
+When using the source code launcher, run the
+program with java --enable-preview Main.java; or,
+
+
+When using jshell, start it with
+jshell --enable-preview.
+
+
+Syntax and semantics
+We extend the grammar of import declarations (JLS §7.5) to include import module clauses:
+ImportDeclaration:
+  SingleTypeImportDeclaration
+  TypeImportOnDemandDeclaration
+  SingleStaticImportDeclaration
+  StaticImportOnDemandDeclaration
+  ModuleImportDeclaration
+
+ModuleImportDeclaration:
+  import module ModuleName;
+import module takes a module name, so it is not possible to import packages
+from the unnamed module, i.e., from the class path. This aligns with requires
+clauses in module declarations, i.e., module-info.java files, which take
+module names and cannot express a dependence on the unnamed module.
+import module can be used in any source file. The source file need
+not be associated with an explicit module. For example, java.base and
+java.sql are part of the standard Java runtime, and can be imported by
+programs which are not themselves developed as modules. (For technical
+background, see JEP 261.)
+It is sometimes useful to import a module that does not export any packages,
+because the module transitively requires other modules that do export
+packages. For example, the
+java.se
+module does not export any packages, but it requires 19 other modules
+transitively, so the effect of import module java.se is to import the
+packages which are exported by those modules, and so on, recursively —
+specifically, the 123 packages listed as the indirect exports of the java.se module.
+Ambiguous imports
+Since importing a module has the effect of importing multiple packages, it is
+possible to import classes with the same simple name from different packages.
+The simple name is ambiguous, so using it will cause a compile-time error.
+For example, in this source file the simple name Element is ambiguous:
+import module java.desktop;   // exports javax.swing.text,
+                              // which has a public Element interface,
+                              // and also exports javax.swing.text.html.parser,
+                              // which has a public Element class
+
+...
+Element e = ...               // Error - Ambiguous name!
+...
+As another example, in this source file the simple name List is ambiguous:
+import module java.base;      // exports java.util, which has a public List interface
+import module java.desktop;   // exports java.awt, which a public List class
+
+...
+List l = ...                  // Error - Ambiguous name!
+...
+As a final example, in this source file the simple name Date is ambiguous:
+import module java.base;      // exports java.util, which has a public Date class
+import module java.sql;       // exports java.sql, which has a public Date class
+
+...
+Date d = ...                  // Error - Ambiguous name!
+...
+Resolving ambiguities is straightforward: Use a single-type-import
+declaration. For example, to resolve the ambiguous Date of the previous
+example:
+import module java.base;      // exports java.util, which has a public Date class
+import module java.sql;       // exports java.sql, which has a public Date class
+
+import java.sql.Date;         // resolve the ambiguity of the simple name Date!
+
+...
+Date d = ...                  // Ok!  Date is resolved to java.sql.Date
+...
+A worked example
+Here is an example of how import module works. Suppose C.java is a source
+file associated with module M0:
+// C.java
+package q;
+import module M1;             // What does this import?
+class C { ... }
+where module M0 has the following declaration:
+module M0 { requires M1; }
+The meaning of import module M1 depends on the exports of M1 and any
+modules that M1 requires transitively.
+module M1 {
+    exports p1;
+    exports p2 to M0;
+    exports p3 to M3;
+    requires transitive M4;
+    requires M5;
+}
+
+module M3 { ... }
+
+module M4 { exports p10; }
+
+module M5 { exports p11; }
+The effect of import module M1 is to
+
+
+Import the public top level classes and interfaces from package p1,
+since M1 exports p1 to everyone;
+
+
+Import the public top level classes and interfaces from package p2,
+since M1 exports p2 to M0, the module with which C.java is
+associated; and
+
+
+Import the public top level classes and interfaces from package p10,
+since M1 requires transitively M4, which exports p10.
+
+
+Nothing from packages p3 or p11 is imported by C.java.
+Implicitly declared classes
+This JEP is co-developed with JEP 477: Implicitly Declared Classes and
+Instance main Methods, which specifies that
+all public top level classes and interfaces in all packages exported by the
+java.base module are automatically imported on-demand in implicitly declared
+classes. In other words, it is as if import module java.base appears at the
+beginning of every such class, versus import java.lang.* at the beginning of
+every ordinary class.
+The JShell tool automatically imports ten
+packages on-demand. The list of packages is ad-hoc. We therefore propose to
+change JShell to automatically import module java.base.
+Alternatives
+
+
+An alternative to import module ... is to automatically import more
+packages than just java.lang. This would bring more classes into scope,
+i.e., usable by their simple names, and delay the need for beginners to
+learn about imports of any kind. But, which additional packages should we
+import automatically?
+Every reader will have suggestions for which packages to auto-import from
+the omnipresent java.base module: java.io and java.util would be
+near-universal suggestions; java.util.stream and java.util.function
+would be common; and java.math, java.net, and java.time would each
+have supporters. For the JShell tool, we managed to find ten java.*
+packages which are broadly useful when experimenting with one-off Java code,
+but it is difficult to see which subset of java.* packages deserves to be
+permanently and automatically imported into every Java program. The list
+would, moreover, change change as the Java Platform evolves; e.g.,
+java.util.stream and java.util.function were introduced only in
+Java 8.  Developers would likely become reliant on IDEs to remind them
+of which automatic imports are in effect — an undesirable outcome.
+
+
+An important use case for this feature is to automatically import on-demand
+from the java.base module in implicitly declared classes. This could
+alternatively be achieved by automatically importing the 54 packages
+exported by java.base. However, when an implicit class is migrated to an
+ordinary explicit class, which is the expected lifecycle, the developer
+would either have to write 54 on-demand package imports, or else figure
+out which imports are necessary.
+
+
+Risks and Assumptions
+Using one or more module import declarations leads to a risk of name ambiguity
+due to different packages declaring members with the same simple name. This
+ambiguity is not detected until the ambiguous simple name is used in a program,
+when a compile-time error will occur. The ambiguity can be resolved by adding a
+single-type-import declaration, but managing and resolving such name ambiguities
+could be burdensome and lead to code that is brittle and difficult to read and
+maintain.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

@@ -1,0 +1,197 @@
+JEP 402: Enhanced Primitive Boxing (Preview)JEP 402: Enhanced Primitive Boxing (Preview)OwnerDan SmithTypeFeatureScopeSEStatusDraftDiscussionvalhalla dash dev at openjdk dot java dot netEffortXLDurationLReviewed byBrian GoetzCreated2021/01/13 22:40Updated2024/03/04 22:34Issue8259731Summary
+Use boxing to support language enhancements that treat primitive types more like
+reference types.
+This is a preview language and VM feature.
+Goals
+Allow boxing of primitive values when they are used as the "receiver" of a
+field access, method invocation, or method reference.
+Allow unboxed return types when overriding a method with a reference-typed
+return.
+Support primitive types as type arguments, implemented via boxing at the
+boundaries with generic code.
+Support conversions between primitive- and reference-typed arrays, with
+automatic boxing and unboxing on reads and writes.
+Motivation
+Java's classes and interfaces provide an expressive mechanism to model data and
+associated operations. But the primitive types of the language—booleans,
+integers, and floating-point numbers—do not make use of this mechanism. Instead,
+they support a predetermined set of operations and conversions, and cannot
+otherwise interoperate with other types.
+As a workaround, the standard library provides wrapper classes, instances of
+which store a single primitive value and present it as an object. In Java 5,
+implicit boxing and unboxing conversions were introduced, automatically
+converting the primitive values to wrapper class instances, and vice versa, as
+required by the program.
+Conventionally, boxing is to be avoided when possible, because wrapper class
+instances perform significantly worse than bare primitives and can introduce
+subtle dependencies on object identity.
+But the value objects feature, enhanced with
+[null-restricted types][jep-storage], eliminates most of these problems.  As a
+result, boxing can be used more liberally, and arbitrary distinctions in the
+Java language between primitive and reference types can be minimized.
+Ideally, it should be possible to eliminate most of the limitations of
+primitives, using boxing as needed to allow developers to use primitive types
+much like other types.
+Description
+The features described below are preview features, enabled with the
+--enable-preview compile-time and runtime flags.
+Member accesses
+An expression of a primitive type may appear to the left of a . in a field
+access or method invocation, and to the left of :: in a method reference. The
+members of the corresponding wrapper class are searched for a matching field or
+method.
+int i = 12;
+int iSize = i.SIZE;
+double iAsDouble = i.doubleValue();
+Supplier<String> iSupp = i::toString;
+(To do: does a literal to the left of the . introduce any parsing problems?)
+At run time, boxing is applied to the primitive value before the member access
+occurs.
+The name of a primitive type may also be used in a field access, method
+invocation, or method reference.
+int max = int.MAX_VALUE;
+int zeros = int.numberOfLeadingZeros(max);
+ToIntFunction<String> parser = int::parseInt;
+Primitive return overriding
+A method with a primitive return type may override a method with a reference
+return type, or vice versa, as long as the boxed or unboxed return type of the
+overriding method would be a legal return type.
+interface Option {
+    String name();
+    Object value();
+}
+
+interface BooleanOption extends Option {
+    String name();
+    boolean value();
+}
+When the overridden method is invoked, the result is boxed or unboxed before
+returning. (This is implemented via a bridge method that performs the
+conversion.)
+Primitive type arguments
+A primitive type can be used as a type argument.
+In order to properly handle null, the [nullness][nullness-jep] of type
+variable uses affects how primitive type argument substitution behaves. A
+null-restricted or parametric type variable use (T!, T*) maps to the
+primitive type (int). A nullable type variable use (T?) maps to the nullable
+boxed type (Integer?). And an unspecified-nullness type variable use maps to
+an unspecified-nullness boxed type (Integer).
+interface Foo<T> {
+    T* get(); // Foo<char> returns char
+    T! getNonNull(); // Foo<char> returns char
+    T? getOrNull(); // Foo<char> returns Character?
+    T getOrAlternate(Supplier<T> alt); Foo<char> returns Character
+}
+For the purpose of bounds checking—testing for either parameterized type
+well-formedness or wildcard containment—boxing conversion is applied to the
+primitive type before the comparison to bounding types.
+At the use site of a primitive-parameterized type, boxing and unboxing is
+implicit as needed for primitive values to interoperate with reference-typed
+type variables. Within the body of the generic class or method, type variables
+continue to be understood to range over reference types.
+A new kind of unchecked boxing conversion and unchecked unboxing conversion
+allows Foo<int> to be converted to Foo<Integer!>, and vice versa. (This
+applies to both top level type arguments and types mentioned as nested type
+arguments or wildcard bounds.) These conversions can be thought of as lazily
+boxing and unboxing at the generic API boundaries.
+At run time, generics continue to be implemented via erasure, so a List<int>
+is no more performant than a List<Object>—unlike in many other uses of boxing,
+these Integer instances will be heap-allocated. But future JVM enhancements
+will allow for specialized performance optimizations for primitive
+parameterizations (see Dependencies).
+Overriding, overloading, and type arguments inference
+In general, it has always been the case that a primitive type in a method
+signature is distinct from the boxed type. The two methods can be overloaded,
+and the compiler prefers to invoke the overload (if any) that doesn't require
+any boxing/unboxing conversions.
+However, a type variable instantiated with a primitive type requires special
+treatment.
+If a class extends a primitive-parameterized class type, then superclass methods
+with the corresponding type variable as a parameter type effectively represent
+both the boxed and unboxed variants of the signature. Either the primitive
+type or its boxed counterpart may be used to override the method. The usual rule
+about conflicting erased signatures applies: a method that doesn't override
+the superclass method may conflict with it if the method makes use of either the
+primitive type or its boxed counterpart.
+Just like the handling of overriding with different return types, overriding in
+this case is implemented via bridge methods that perform any necessary
+boxing/unboxing. For binary compatibility, a bridge method is always generated
+with the boxed type instantiation of parameter and return types.
+interface Box<T> {
+    T get();
+    void set(T val);
+}
+
+interface IntBox extends Box<int>
+                 // formerly extends Box<Integer>
+{
+    int get();
+    void set(int val);
+}
+
+class AnIntBox implements IntBox {
+    int val;
+    public Integer get() { return val; }
+    public void set(Integer val) { this.val = val; }
+}
+Type argument inference may produce primitive results if primitive types appear
+at the use site. Primitive types are boxed before comparing them to other types.
+For the purpose of overload resolution, type variables instantiated with
+primitive types are treated like reference types (for example, a method with an
+explicit parameter type int is preferred over a method with a generic
+parameter type instantiated with int).
+<T> List<T> pair(T x, T y);
+<T> List<T> singleton(T x);
+IntList singleton(int x);
+
+var l1 = pair(1, 2); // List<int>
+List<Integer> l2 = pair(1, 2); // List<Integer>
+var l3 = pair(1, 2.0); // List<Number & Comparable & ...>
+var l4 = singleton(23); // IntList
+var l5 = singleton((Integer) 23); // List<Integer>
+Covariant arrays
+Unchecked boxing and unboxing conversions also allow an int[] to be
+treated as an Integer![], and vice versa.
+int[] ints = new int[]{ 1, 2, 3 };
+Object[] objs = ints;
+assert objs[2] instanceof Integer;
+
+Integer![] integers = new Integer![]{ 4, 5, 6 };
+ints = integers;
+assert ints[2] == 6;
+At run time, this behavior requires JVM support: arrays allocated as int[]
+need to respond to aaload and aastore, while arrays allocated as Integer[]
+need to respond to iaload and iastore. Since the encoding of values stored
+in the array ought to be the same in either case, the behavior of these accessor
+instructions doesn't actually need to change, but verification must allow for
+these conversions.
+Alternatives
+It's tempting to entirely eliminate the distinction between primitive and
+reference types, making int and Integer! equivalent. But the distinction
+can't be eliminated at the JVM level, so certain seams are unavoidable.
+Compatibility with the existing language rules (such as method overloading)
+and previously-compiled binaries (which reference primitive types) also makes a
+wholesale transition difficult.
+Dependencies
+This JEP depends on Value Classes and Objects, which establishes the
+semantics of identity-free objects. Some details also depend on
+Null-Restricted Value Class Types, which separates nullness from
+boxing and introduces null-restricted type arguments.
+In the future, JVM class and method specialization (JEP 218, with
+revisions) will allow generic classes and methods to specialize field, array,
+and local variable layouts when parameterized by primitive types.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

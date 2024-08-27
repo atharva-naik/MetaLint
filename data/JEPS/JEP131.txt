@@ -1,0 +1,38 @@
+JEP 131: PKCS#11 Crypto Provider for 64-bit WindowsJEP 131: PKCS#11 Crypto Provider for 64-bit WindowsOwnerValerie PengTypeFeatureScopeJDKStatusClosed / DeliveredRelease8Componentsecurity-libs / javax.crypto:pkcs11Discussionsecurity dash dev at openjdk dot java dot netEffortSDurationSEndorsed byBrian GoetzCreated2011/05/03 20:00Updated2017/06/14 19:12Issue8046121Summary
+Include the SunPKCS11 provider in the JDK for 64-bit Windows.
+Motivation
+More and more vendors are providing native PKCS#11 libraries for 64-bit
+Windows.  Shipping the SunPKCS11 provider in the JDK for 64-bit Windows will
+allow Java applications to use such libraries on that platform.
+Description
+Modify the current build process to build the SunPKCS11 provider binary on
+64-bit Windows.  The provider will be placed in the relevant subdirectory but
+will not be configured by default. To use the provider, an application would
+have to supply its own configuration file that specifies the location of the
+native PKCS#11 library along with additional directives according to the
+specification in the SunPKCS11 Reference Guide.
+Testing
+Find a suitable 64-bit PKCS#11 library and run existing regression tests
+against it. If the 64-bit library does not support certain functionality
+covered by the existing regression tests then some adjustments will be
+required.
+Impact
+
+Documentation: Update the SunPKCS11 Reference guide accordingly, i.e., add
+64-bit Windows to the supported-platform list.
+
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

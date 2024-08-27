@@ -1,0 +1,46 @@
+JEP 133: Unicode 6.2JEP 133: Unicode 6.2OwnerYuka KamiyaTypeFeatureScopeSEStatusClosed / DeliveredRelease8Componentcore-libsDiscussioni18n dash dev at openjdk dot java dot netEffortSDurationSEndorsed byBrian GoetzCreated2011/07/22 20:00Updated2019/05/13 22:54Issue8046123Summary
+Extend existing platform APIs to support version 6.2 of the
+Unicode Standard.
+Non-Goals
+Two related Unicode specifications are not covered by this JEP:
+
+UTS #10, Unicode Collation Algorithm
+UTS #46, Unicode IDNA Compatibility Processing
+
+Description
+Java SE 7 supports the Unicode Standard 6.0.0, which was the latest version
+of that standard at that time.  After that we supported Unicode 6.1.0
+released in February 2012 in JDK 8 and are now planning to support
+Unicode 6.2.0 released on September 2012.
+Specifically, the following were the primary changes in Unicode 6.1.0:
+
+add 11 new blocks to java.lang.Character.UnicodeBlock,
+add 7 new scripts to java.lang.Character.UnicodeScript, and
+support over 700 new characters in j.l.Character, String, and other
+classes.
+
+And the main change in Unicode 6.2.0 is to support a new Turkish currency
+sign(U+20BA).
+Testing
+Need to verify that the latest Unicode data is correctly used by classes such
+as java.lang.Character, java.lang.String and java.text.BreakIterator.
+Risks and Assumptions
+If a version newer than 6.2.0 is released in the JDK 8 time frame then this JEP
+will most likely be updated to specify that version.
+Dependences
+This feature depends on the Unicode Standard of the Unicode Consortium.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

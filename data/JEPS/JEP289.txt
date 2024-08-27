@@ -1,0 +1,32 @@
+JEP 289: Deprecate the Applet APIJEP 289: Deprecate the Applet APIOwnerDaniil TitovTypeFeatureScopeSEStatusClosed / DeliveredRelease9Componentclient-libsDiscussionjdk9 dash dev at openjdk dot java dot netEffortXSDurationXSRelates toJEP 398: Deprecate the Applet API for RemovalReviewed byAndy Herrick, David Dehaven, Kevin Rushforth, Stuart MarksEndorsed byKevin RushforthCreated2016/02/09 22:36Updated2020/11/10 21:14Issue8149502Summary
+Deprecate the Applet API, which is rapidly becoming irrelevant as web-browser vendors remove support for Java browser plug-ins.  Guide developers to alternative technologies such as Java Web Start or installable applications.
+Motivation
+To run a Java applet in a web browser requires the use of a browser plug-in.  As of late 2015, however, many browser vendors have either already removed plug-in support or else announced timelines for such removal.  Once browser plug-ins disappear, there will be no reason to use the Applet API.
+Description
+Add the @Deprecated(since="9") annotation to the following classes:
+
+java.applet.AppletStub
+java.applet.Applet
+java.applet.AudioClip
+java.applet.AppletContext
+javax.swing.JApplet
+
+We do not intend to remove the Applet API in the next major release, hence we will not specify forRemoval = true in these annotations.  If at some later point we do propose to remove this API then we will add forRemoval = true to these annotations at least one major release in advance.
+The appletviewer tool will also be deprecated.  A deprecation warning will be printed to the standard error stream when the tool is started.
+Risks and Assumptions
+These annotations will cause deprecation warnings to be emitted by the Java compiler for all code that uses this API.  If warnings are treated as errors, they will result in the build failure.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

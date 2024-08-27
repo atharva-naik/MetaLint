@@ -1,0 +1,159 @@
+JEP 435: Asynchronous Stack Trace VM APIJEP 435: Asynchronous Stack Trace VM APIOwnerJohannes BechbergerTypeFeatureScopeJDKStatusCandidateComponenthotspot / svcDiscussionserviceability dash dev at openjdk dot orgEffortSDurationSReviewed byAndrei Pangin, Christoph Langer, Jaroslav BachoríkCreated2022/04/04 11:02Updated2023/06/15 18:16Issue8284289Summary
+Define an efficient and reliable API to collect stack traces asynchronously and include information on both Java and native stack frames.
+Goals
+
+
+Provide a well-tested API for profilers to obtain information on Java and native frames.
+
+
+Support asynchronous, e.g., calling from signal handlers, and synchronous usage
+
+
+Do not affect performance when the API is not in use.
+
+
+Do not significantly increase memory requirements compared to the existing AsyncGetCallTrace API.
+
+
+Motivation
+The AsyncGetCallTrace API is used by almost all available profilers, both open-source and commercial, including, e.g.,  async-profiler. Yet it has three major disadvantages:
+
+It is an internal API, not exported in any header, and
+It only returns information about Java frames, namely their method and bytecode indices.
+It cannot be used to walk collect stack traces in a separate thread, outside a signal handler, to implement JFR-like sampling.
+
+These issues make implementing profilers and related tooling more difficult. Some additional information can be extracted from the HotSpot VM via complex code, but other useful information is hidden and impossible to obtain:
+
+Whether a compiled Java frame is inlined (currently only obtainable for the topmost compiled frames),
+The compilation level of a Java frame (i.e., compiled by C1 or C2), and
+Information on C/C++ frames that are not at the top of the stack.
+
+Such data can be helpful when profiling and tuning a VM for a given application, and for profiling code that uses JNI heavily.
+Description
+We propose a new AsyncGetStackTrace API, modeled on the AsyncGetCallTrace API:
+void AsyncGetStackTrace(ASGST_CallTrace *trace, jint depth, void* ucontext, uint32_t options);
+This API can be called by profilers to obtain the stack trace of a thread, but it does not guarantee to obtain all frames and works on best-effort basis. Its implementation will be at least as stable as AsyncGetCallTrace or the JFR stack walking code, due to fuzzing and stability tests in the JDK and extensive safety checks in the implementation itself. The VM fills in information about the frames, the number of frames, and the trace kind. The API can be used safely from a separate thread, which is the recommended usage, but can also be used in a signal handler. You have explicitly tell the API to walk the same thread via the ASGST_WALK_SAME_THREAD option, this assumes that the passed ucontext comes always from the same thread. The caller of the API should allocate the CallTrace array with sufficient memory for the requested stack depth. Walked threads are required to be halted during stack walking.
+Parameters:
+
+trace — buffer for structured data to be filled in by the VM
+depth — maximum depth of the call stack trace
+ucontext — ucontext_t of the thread where the stack walking should start
+options — bit set for options
+
+Currently, only the lowest two of the options are considered, all other bits are considered to be 0:
+enum ASGST_Options {
+ ASGST_INCLUDE_NON_JAVA_FRAMES = 1,
+  ASGST_WALK_SAME_THREAD  = 2
+};
+ASGST_INCLUDE_NON_JAVA_FRAMES enables the inclusion of non-Java frames, that are otherwise skipped.
+ASGST_WALK_SAME_THREAD enables the profiler user to walk the stack for the same thread, i.e. directly in a signal handler),
+this disables protections that are only enabled in separate thread mode.
+There are different kinds of traces depending on the purpose of the currently running code in the walked thread:
+enum ASGST_TRACE_KIND {
+ ASGST_JAVA_TRACE = 1
+};
+
+ASGST_JAVA_TRACE: A kind for a fully functioning Java thread (which runs Java code)
+
+All other kinds (up to 8 in total, values have to be powers of two), are implementation specific and should
+not represent traces that contain Java frames.
+The trace struct
+typedef struct {
+  JNIEnv *env_id;      // Env where trace was recorded
+  jint num_frames;                // number of frames in this trace,
+                                  // (< 0 indicates the frame is not walkable).
+  uint8_t kind;                   // kind of the trace, if non zero intialized, it is a bit mask for accepted kinds
+  jint state;                     // thread state (jvmti->GetThreadState), if non zero initialized,
+                                  // it is a bit mask for accepted states, non Java kind traces are always accepted
+                                  // and get state -1
+  ASGST_CallFrame *frames;        // frames that make up this trace. Callee followed by callers.
+  void* frame_info;               // more information on frames
+} ASGST_CallTrace;
+is filled in by the VM. Its num_frames field contains the actual number of frames in the frames array or an error code. The frame_info field in that structure can later be used to store more information, but is currently nullptr.
+The kind and state field serve a dual purpose: They are bitmasks for the allowed kinds and states (same as JVMTI GetThreadState) if non-zero and allow profilers to constrain the kinds of obtained traces and states of walked threads. If the walking is aborted because of a mismatching kind or state, then the error code ASGST_WRONG_KIND and ASGST_WRONG_STATE are set. The kind field only contains valid information if no error except the ASGST_WRONG_KIND occurred. The kind field only contains valid information if no error except the ASGST_WRONG_STATE occurred.
+The error codes from 0 to -5 are defined as follows:
+enum ASGST_Error {
+  ASGST_NO_JAVA_FRAME         =   0,
+  ASGST_THREAD_EXIT           =  -1,   // dying thread
+  ASGST_NO_THREAD             = -2,  // related to walking the separate in a separate thread
+  ASGST_WRONG_STATE           = -3, // trace not obtained because of wrong state (is not included in the passed allowed states)
+  ASGST_WRONG_KIND            = -4, // same but with kind
+};
+All other error codes (< -5) are implementation specific and should be documented by any vendor.
+Every CallFrame is the element of a union since the information stored for Java and non-Java frames differs:
+typedef union {
+  uint8_t type;     // to distinguish between JavaFrame and NonJavaFrame
+  ASGST_JavaFrame java_frame;
+  ASGST_NonJavaFrame non_java_frame;
+} ASGST_CallFrame;
+There are several distinguishable frame types:
+enum ASGST_FrameTypeId {
+  ASGST_FRAME_JAVA         = 1, // JIT compiled and interpreted
+  ASGST_FRAME_JAVA_INLINED = 2, // inlined JIT compiled
+  ASGST_FRAME_JAVA_NATIVE        = 3, // barrier frames between Java and C/C++
+  ASGST_FRAME_NON_JAVA            = 4  // C/C++/... frames
+};
+The first two types are for Java frames, for which we store the following information in a struct of type JavaFrame:
+typedef struct {
+  uint8_t type;            // frame type
+  int8_t comp_level;      // compilation level, 0 is interpreted, -1 is undefined, > 1 is JIT compiled
+  uint16_t bci;            // 0 <= bci < 65536, 65535 (= -1) if the bci is >= 65535 or not available (like in native frames)
+  ASGST_Method method;
+} ASGST_JavaFrame;         // used for FRAME_JAVA, FRAME_JAVA_INLINED and FRAME_JAVA_NATIVE
+The comp_level indicates the compilation level of the method related to the frame, the meaning of this number is implementation specific.
+ASGST_Method is an implementation-specific id of a method that is distinct from the jmethodID.
+There are multiple signal-safe methods to work with the method id:
+struct ASGST_MethodInfo {
+  char* class_name;
+  jint class_name_len;
+  char* generic_class_name;
+  jint generic_class_name_len;
+  char* method_name;
+  jint method_name_len;
+  char* signature;
+  jint signature_len;
+  char* generic_signature;
+  jint generic_signature_len;
+  jint modifiers;
+};
+void ASGST_GetMethodInfo(ASGST_Method method, ASGST_MethodInfo* info);
+Obtain the method information for a given ASGST_Method and store it in the pre-allocated info struct.
+It stores the actual length in the _len fields and at a null-terminated string in the string fields.
+It is safe to call from signal handlers. A field set \0 if the information is not available.
+A conversion from ASGST_Method to jmethodID is available via
+jmethodID ASGST_MethodToJMethodID(ASGST_Method method); and
+ASGST_Method jMethodIDToASGST_Method(jmethodID method);,
+but using these methods is not signal-safe.
+Obtaining the jclass for a given method can be done via
+jclass ASGST_GetClass(ASGST_Method method);,
+but you have to be aware, that this method is not signal-safe and
+that the resulting jclass pointer has a limited lifetime.
+Information on all other frames is stored in NonJavaFrame structs:
+typedef struct {
+  uint8_t type;      // frame type
+  void *pc;          // current program counter inside this frame, might be a nullptr for JVM internal frames like stub frames, …
+} ASGST_NonJavaFrame; // used for FRAME_NON_JAVA
+Although the API provides more information, the amount of space required per frame (e.g., 16 bytes on x86) is the same as for the existing AsyncGetCallTrace API.
+We propose to place the above declarations in a new header file, profile.h, which will be placed in the include directory of the JDK image. The header’s license should include the Classpath Exception so that it is consumable by third-party profiling tools.
+The implementation can be found in the jdk-sandbox repository, and a demo combining it with a modified async-profiler can be found here.
+Risks and Assumptions
+Returning information on C/C++ frames leaks implementation details, but this is also true for the Java frames of AsyncGetCallTrace since they leak details of the implementation of standard library files and include native wrapper frames.
+Testing
+The implementation contains several stress and fuzzing tests to identify stability problems on all supported platforms, sampling the renaissance benchmark suite repeatedly with small profiling intervals (<= 0.1ms). The fuzzing tests check that AsyncGetStackTrace can be called with modified stack and frame pointers without crashing the VM. We also added several tests which cover the basic usage of the API.
+Alternatives
+WIP: Provide an iterator-based API that supports walking at safe points and incremental tracing.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

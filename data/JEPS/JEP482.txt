@@ -1,0 +1,510 @@
+JEP 482: Flexible Constructor Bodies (Second Preview)JEP 482: Flexible Constructor Bodies (Second Preview)AuthorArchie Cobbs & Gavin BiermanOwnerArchie CobbsTypeFeatureScopeSEStatusClosed / DeliveredRelease23Componentspecification / languageDiscussionamber dash dev at openjdk dot orgRelates toJEP 447: Statements before super(...) (Preview)Reviewed byAlex Buckley, Brian GoetzEndorsed byBrian GoetzCreated2024/02/13 22:18Updated2024/07/08 14:28Issue8325803Summary
+In constructors in the Java programming language, allow statements to appear
+before an explicit constructor invocation, i.e., super(..) or this(..). The
+statements cannot reference the instance under construction, but they can
+initialize its fields. Initializing fields before invoking another constructor
+makes a class more reliable when methods are overridden. This is a preview
+language feature.
+History
+This feature was originally proposed, with a different title, by
+JEP 447, and delivered as a preview feature
+in JDK 22. We here propose to preview it for a second time, with one
+significant change:
+
+Allow a constructor body to initialize fields in the same
+class before explicitly invoking a
+constructor. This enables a constructor in a subclass to ensure that a
+constructor in a superclass never executes code which sees the default
+value
+of a field in the subclass (e.g., 0, false, or null). This can occur
+when, due to overriding, the superclass constructor invokes a method in the
+subclass that uses the field.
+
+Goals
+
+
+Give developers greater freedom to express the behavior of constructors,
+enabling the more natural placement of logic that currently must be factored
+into auxiliary static methods, auxiliary intermediate constructors, or
+constructor arguments.
+
+
+Preserve the existing guarantee that constructors run in top-down order
+during class instantiation, ensuring that code in a subclass constructor
+cannot interfere with superclass instantiation.
+
+
+Motivation
+The constructors of a class are responsible for creating valid instances of that
+class. For example, suppose that instances of a Person class have an age
+field whose value must always be less than 130. A constructor which takes an
+age-related parameter (e.g., a birth date) must validate it and either write it
+to the age field, thereby ensuring a valid instance, or else throw an
+exception.
+The constructors of a class are, furthermore, responsible for ensuring validity
+in the presence of subclassing. For example, suppose that Employee is a
+subclass of Person.  Every Employee constructor will invoke, either
+implicitly or explicitly, a Person constructor. Working together, the
+constructors must ensure a valid instance: The Employee constructor is
+responsible for the fields declared in the Employee class, while the Person
+constructor is responsible for the fields declared in the Person class. Since
+code in the Employee constructor might refer to fields initialized by the
+Person constructor, the latter must run first.
+In general, then, constructors must run from the top down: A constructor in a
+superclass must run first, ensuring the validity of the fields declared in that
+class, before a constructor in a subclass runs.
+To guarantee that constructors run from the top down, the Java language requires
+that, in a constructor body, the first statement be an explicit invocation of
+another
+constructor,
+i.e., super(..) or this(..). If no explicit constructor invocation appears
+in the constructor body, then the compiler inserts
+super()
+as the first statement in the constructor body.
+The language further requires that, for any explicit constructor invocation,
+none of its arguments can use the instance under construction in any way.
+These two requirements guarantee some predictability and hygiene in the
+construction of new instances, but they are heavy-handed because they outlaw
+certain familiar programming patterns. The following examples illustrate the
+issues.
+Example: Validating superclass constructor arguments
+Sometimes we need to validate an argument that is passed to a superclass
+constructor. We can validate the argument after calling the superclass
+constructor, but that means potentially doing unnecessary work:
+public class PositiveBigInteger extends BigInteger {
+
+    public PositiveBigInteger(long value) {
+        super(value);                 // Potentially unnecessary work
+        if (value <= 0) throw new IllegalArgumentException(..);
+    }
+
+}
+It would be better to declare a constructor that fails fast, by validating its
+argument before it invokes the superclass constructor. Today we can only do that
+by calling an auxiliary method in-line, as part of the super(..) call:
+public class PositiveBigInteger extends BigInteger {
+
+    private static long verifyPositive(long value) {
+        if (value <= 0) throw new IllegalArgumentException(..);
+        return value;
+    }
+
+    public PositiveBigInteger(long value) {
+        super(verifyPositive(value));
+    }
+
+}
+The code would be more readable if we could place the validation logic in the
+constructor body:
+public class PositiveBigInteger extends BigInteger {
+
+    public PositiveBigInteger(long value) {
+        if (value <= 0) throw new IllegalArgumentException(..);
+        super(value);
+    }
+
+}
+Example: Preparing superclass constructor arguments
+Sometimes we must perform non-trivial computation to prepare arguments for a
+superclass constructor. Again, we must resort to calling an auxiliary method
+in-line, as part of the super(..) call. For example, suppose a constructor
+takes a Certificate argument but must convert it to a byte array for a
+superclass constructor:
+public class Sub extends Super {
+
+    private static byte[] prepareByteArray(Certificate certificate) {
+        var publicKey = certificate.getPublicKey();
+        if (publicKey == null) throw new IllegalArgumentException(..);
+        return switch (publicKey) {
+            case RSAKey rsaKey -> ...
+            case DSAPublicKey dsaKey -> ...
+            default -> ...
+        };
+    }
+
+    public Sub(Certificate certificate) {
+        super(prepareByteArray(certificate));
+    }
+
+}
+The code would be more readable if we could prepare the arguments directly in
+the constructor body:
+public Sub(Certificate certificate) {
+        var publicKey = certificate.getPublicKey();
+        if (publicKey == null) throw ...
+        byte[] certBytes = switch (publicKey) {
+            case RSAKey rsaKey -> ...
+            case DSAPublicKey dsaKey -> ...
+            default -> ...
+        };
+        super(certBytes );
+    }
+Example: Sharing superclass constructor arguments
+Sometimes we need to pass the same value to a superclass constructor more than
+once, in different arguments. The only way to do this is via an auxiliary
+constructor:
+public class Super {
+    public Super(C x, C y) { ... }
+}
+
+public class Sub extends Super {
+    private Sub(C x)   { super(x, x); }     // Pass the argument twice to Super's constructor
+    public  Sub(int i) { this(new C(i)); }  // Prepare the argument for Super's constructor
+}
+The code would be more maintainable if we could arrange for the sharing in the
+constructor body, obviating the need for an auxiliary constructor:
+public class Sub extends Super {
+    public Sub(int i) {
+        var x = new C(i);
+        super(x, x);
+    }
+}
+Summary
+In all of these examples, the constructor body that we would like to write
+contains statements that do not use the instance being constructed before the
+explicit constructor invocation. Unfortunately, the constructor bodies are
+rejected by the compiler — even though all of them are safe.
+If the Java language could guarantee top down construction with more flexible
+rules then constructor bodies would be easier to write and easier to
+maintain. Constructor bodies could more naturally do argument validation,
+argument preparation, and argument sharing without calling upon clumsy auxiliary
+methods or constructors.  It is time to move beyond the simplistic syntactic
+requirement, enforced since Java 1.0, that super(..) or this(..) must
+be the first statement in a constructor body.
+Description
+We revise the grammar of a constructor
+body
+to allow statements before an explicit constructor invocation, that is, from:
+ConstructorBody:
+    { [ExplicitConstructorInvocation] [BlockStatements] }
+to:
+ConstructorBody:
+    { [BlockStatements] ExplicitConstructorInvocation [BlockStatements] }
+    { [BlockStatements] }
+Eliding some details, an explicit constructor invocation is either super(..)
+or this(..).
+The statements that appear before an explicit constructor invocation constitute
+the prologue of the constructor body.
+The statements that appear after an explicit constructor invocation constitute
+the epilogue of the constructor body.
+An explicit constructor invocation in a constructor body may be omitted. In this
+case the prologue is empty, and all the statements in the constructor body
+constitute the epilogue.
+A return statement is permitted in the epilogue of a constructor body if it
+does not include an expression. That is, return; is allowed but return e; is
+not. It is a compile-time error for a return statement to appear in the
+prologue of a constructor body.
+Throwing an exception in the prologue or epilogue of a constructor body is
+permitted. Throwing an exception in the prologue will be typical in fail-fast
+scenarios.
+This is a preview language feature, disabled by default
+To try the examples below in JDK 23, you must enable preview features:
+
+
+Compile the program with javac --release 23 --enable-preview Main.java and
+run it with java --enable-preview Main; or,
+
+
+When using the source code launcher, run the
+program with java --enable-preview Main.java; or,
+
+
+When using jshell, start it with
+jshell --enable-preview.
+
+
+Early construction contexts
+In the Java language, code that appears in the argument list of an explicit
+constructor invocation is said to appear in a static
+context.
+This means that the arguments to the explicit constructor invocation are treated
+as if they were code in a static method; in other words, as if no instance is
+available. The technical restrictions of a static context are stronger than
+necessary, however, and they prevent code that is useful and safe from appearing
+as constructor arguments.
+Rather than revise the concept of a static context, we introduce the concept of
+an early construction context that covers both the argument list of an
+explicit constructor invocation and any statements that appear before it in the
+constructor body, i.e., in the prologue. Code in an early construction context
+must not use the instance under construction, except to initialize fields that
+do not have their own initializers.
+This means that any explicit or implicit use of this to refer to the current
+instance, or to access fields or invoke methods of the current instance, is
+disallowed in an early construction context:
+class A {
+
+    int i;
+
+    A() {
+
+        System.out.print(this);  // Error - refers to the current instance
+
+        var x = this.i;          // Error - explicitly refers to field of the current instance
+        this.hashCode();         // Error - explicitly refers to method of the current instance
+
+        var x = i;               // Error - implicitly refers to field of the current instance
+        hashCode();              // Error - implicitly refers to method of the current instance
+
+        super();
+
+    }
+
+}
+Similarly, any field access, method invocation, or method reference qualified by
+super is disallowed in an early construction context:
+class B {
+    int i;
+    void m() { ... }
+}
+
+class C extends B {
+
+    C() {
+        var x = super.i;         // Error
+        super.m();               // Error
+        super();
+    }
+
+}
+Using enclosing instances in early construction contexts
+When class declarations are nested, the code of an inner class can refer to the
+instance of an enclosing class. This is because the instance of the enclosing
+class is created before the instance of the inner class. The code of the inner
+class — including constructor bodies — can access fields and invoke methods of
+the enclosing instance, using either simple names or qualified this
+expressions.
+Accordingly, operations on an enclosing instance are permitted in an early
+construction context.
+In the code below, the declaration of Inner is nested in the declaration of
+Outer, so every instance of Inner has an enclosing instance of Outer. In
+the constructor of Inner, code in the early construction context can refer to
+the enclosing instance and its members, either via simple names or via
+Outer.this.
+class Outer {
+
+    int i;
+
+    void hello() { System.out.println("Hello"); }
+
+    class Inner {
+
+        int j;
+
+        Inner() {
+            var x = i;             // OK - implicitly refers to field of enclosing instance
+            var y = Outer.this.i;  // OK - explicitly refers to field of enclosing instance
+            hello();               // OK - implicitly refers to method of enclosing instance
+            Outer.this.hello();    // OK - explicitly refers to method of enclosing instance
+            super();
+        }
+
+    }
+
+}
+By contrast, in the constructor of Outer shown below, code in the early
+construction context cannot instantiate the Inner class with new Inner().
+This expression is really this.new Inner(), meaning that it uses the current
+instance of Outer as the enclosing instance for the Inner object. Per the
+earlier rule, any explicit or implicit use of this to refer to the current
+instance is disallowed in an early construction context.
+class Outer {
+
+    class Inner {}
+
+    Outer() {
+        var x = new Inner();       // Error - implicitly refers to the current instance of Outer
+        var y = this.new Inner();  // Error - explicitly refers to the current instance of Outer
+        super();
+    }
+
+}
+Early assignment to fields
+Accessing fields of the current instance is disallowed in an early construction
+context, but what about assigning to fields of the current instance while it
+is still under construction?
+Allowing such assignments would be useful as a way for a constructor in a
+subclass to defend against a constructor in a superclass seeing uninitialized
+fields in the subclass. This can occur when a constructor in a superclass
+invokes a method in the superclass that is overridden by a method in the
+subclass. Although the Java language allows constructors to invoke overridable
+methods,
+it is considered bad practice: Item 19 of Effective Java (Third
+Edition)
+advises that "Constructors must not invoke overridable methods." To see why it
+is considered bad practice, consider the following class hierarchy:
+class Super {
+
+    Super() { overriddenMethod(); }
+
+    void overriddenMethod() { System.out.println("hello"); }
+
+}
+
+class Sub extends Super {
+
+    final int x;
+
+    Sub(int x) {
+        /* super(); */    // Implicit invocation
+        this.x = x;
+    }
+
+    @Override
+    void overriddenMethod() { System.out.println(x); }
+
+}
+What does new Sub(42) print? You might expect it to print 42, but it
+actually prints 0. This is because the Super constructor is implicitly
+invoked before the field assignment in the Sub constructor body. The Super
+constructor then invokes overriddenMethod, causing that method in Sub to run
+before the Sub constructor body has had a chance to assign 42 to the field.
+As a result, the method in Sub sees the default value of the field, which is
+0.
+This pattern is a source of many bugs and errors. While it is considered bad
+programming practice, it is not uncommon, and it presents a conundrum for
+subclasses — especially when modifying the superclass is not an option.
+We solve the conundrum by allowing the Sub constructor to initialize the field
+in Sub before invoking the Super constructor explicitly. The example can be
+rewritten as follows, where only the Sub class is changed:
+class Super {
+
+    Super() { overriddenMethod(); }
+
+    void overriddenMethod() { System.out.println("hello"); }
+
+}
+
+class Sub extends Super {
+
+    final int x;
+
+    Sub(int x) {
+        this.x = x;    // Initialize the field
+        super();       // Then invoke the Super constructor explicitly
+    }
+
+    @Override
+    void overriddenMethod() { System.out.println(x); }
+
+}
+Now, new Sub(42) will print 42, because the field in Sub is assigned to
+42 before overriddenMethod is invoked.
+In a constructor body, a simple
+assignment
+to a field declared in the same class is allowed in an early construction
+context, provided the field declaration lacks an initializer. This means that a
+constructor body can initialize the class's own fields in an early construction
+context, but not the fields of a superclass.
+As discussed earlier, a constructor body cannot read any of the fields of the
+current instance — whether declared in the same class as the constructor, or in
+a superclass — until after the explicit constructor invocation, i.e., in the
+epilogue.
+Records
+Constructors of record
+classes
+are already subject to more restrictions than constructors of normal classes. In
+particular,
+
+
+Canonical record constructors must not contain any explicit constructor
+invocation, and
+
+
+Non-canonical record constructors must contain an alternate constructor
+invocation (this(..)) and not a superclass constructor invocation
+(super(..)).
+
+
+These restrictions remain. Otherwise, record constructors will benefit from the
+changes described above, primarily because non-canonical record constructors
+will be able to contain statements before the alternative constructor
+invocation.
+Enums
+Constructors of enum
+classes
+can contain alternate constructor invocations but not superclass constructor
+invocations. Enum classes will benefit from the changes described above,
+primarily because their constructors will be able to contain statements before
+the alternate constructor invocation.
+Testing
+
+
+We will test the compiler changes with existing unit tests, unchanged except
+for those tests that verify changed behavior, plus new positive and negative
+test cases as appropriate.
+
+
+We will compile all JDK classes using the previous and new versions of the
+compiler and verify that the resulting bytecode is identical.
+
+
+No platform-specific testing should be required.
+
+
+Risks and Assumptions
+The changes we propose above are source- and behavior-compatible. They strictly
+expand the set of legal Java programs while preserving the meaning of all
+existing Java programs.
+These changes, though modest in themselves, represent a significant change in
+the long-standing requirement that a constructor invocation, if present, must
+always appear as the first statement in a constructor body. This requirement is
+deeply embedded in code analyzers, style checkers, syntax highlighters,
+development environments, and other tools in the Java ecosystem. As with any
+language change, there may be a period of pain as tools are updated.
+Dependencies
+Flexible constructor bodies in the Java language depend on the ability of the
+JVM to verify and execute arbitrary code that appears before constructor
+invocations in constructors, so long as that code does not reference the
+instance under construction. Fortunately, the JVM already supports a more
+flexible treatment of constructor bodies:
+
+
+Multiple constructor invocations may appear in a constructor body provided
+on any code path there is exactly one invocation;
+
+
+Arbitrary code may appear before constructor invocations so long as that
+code does not reference the instance under construction except to assign
+fields; and
+
+
+Explicit constructor invocations may not appear within a try block, i.e.,
+within a bytecode exception range.
+
+
+The JVM's rules still ensure top-down initialization:
+
+
+Superclass initialization always happens exactly once, either directly via a
+superclass constructor invocation or indirectly via an alternate constructor
+invocation; and
+
+
+Uninitialized instances are off-limits except for field assignments, which
+do not affect outcomes, until superclass initialization is complete.
+
+
+As a result, we do not require any changes to the Java Virtual Machine
+Specification, only to the Java Language Specification.
+The mismatch between the JVM, which allows flexible constructor bodies, and the
+traditional Java language, which is more restrictive, is an historical artifact.
+Originally the JVM was more restrictive, but this led to issues with the
+initialization of compiler-generated fields for new language features such as
+inner classes and captured free variables. To accommodate compiler-generated
+code, we relaxed the JVM Specification many years ago, but we never revised the
+Java Language Specification to leverage this new flexibility.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

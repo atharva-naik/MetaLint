@@ -1,0 +1,46 @@
+JEP 206: Modernize the JavaFX Media Stack on Mac OS XJEP 206: Modernize the JavaFX Media Stack on Mac OS XAuthorMarty ThompsonOwnerDavid DehavenTypeFeatureScopeJDKStatusClosed / DeliveredRelease8u40Componentclient-libsDiscussionopenjfx dash dev at openjdk dot java dot netEffortLDurationLReviewed bySteve NorthoverEndorsed byRichard BairCreated2014/05/21 22:33Updated2015/02/26 14:06Issue8043697Summary
+Port the JavaFX media stack on Mac OS X from QTKit and Quicktime, which
+have been deprecated, to the newer AVFoundation framework.
+Motivation
+Customers need to be able to release Java applications on the Mac App
+Store.  The use of deprecated features blocks Mac App Store submission,
+and we need to remove the QuickTime dependency so that developers using
+the JavaFX media stack can gain Mac App Store acceptance.  Further, it is
+expected that the Quicktime APIs and QTKit will be removed in a future OS
+X update, which will render media playback inoperable.
+Description
+The JavaFX media stack uses QTKit, which was intended to replace
+QuickTime but never quite did so.  When parts of iOS started migrating to
+OS X, AVFoundation was brought over as a complete QuickTime replacement
+and since then all media API development at Apple has focused solely on
+AVFoundation and its associated technologies.  QTKit has now been
+deprecated in OS X 10.9 and Apple requires developers to move to the
+newer AVFoundation framework.
+The JavaFX media stack already has a platform abstraction layer
+specifically for situations such as this.  This layer has already been
+used to port the stack to AVFoundation on OS X during as a proof of
+concept.  This path was abandoned since at the time, in OS X 10.6,
+AVFoundation wasn't fully ported and did not fulfill all of our
+requirements.  AVFoundation has since matured and the essential missing
+pieces are now in place.
+Testing
+This will require new unit tests for the Mac-specific media player.
+Existing functional tests should require no change.  We will submit a
+media-based JavaFX sample application to the Mac App Store to verify the
+complete removal of QTKit dependencies and acceptable use of the new
+AVFoundation APIs.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

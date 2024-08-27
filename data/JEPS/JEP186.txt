@@ -1,0 +1,50 @@
+JEP 186: Collection LiteralsJEP 186: Collection LiteralsOwnerBrian GoetzTypeFeatureScopeJDKStatusClosed / WithdrawnComponentspecification / languageDiscussionlambda dash dev at openjdk dot java dot netEffortSDurationSRelates toJEP 269: Convenience Factory Methods for CollectionsCreated2013/06/20 20:00Updated2022/06/28 14:04Issue8046176Summary
+A collection literal is a syntactic expression form that evaluates to
+an aggregate type, such as an array, List, or Map.  Many languages
+support collection literals.  A List literal in Java might look like:
+List<Integer> list = #[ 1, 2, 3 ];
+Collection literals were proposed for Project Coin and naturally
+complement the library additions in Java SE 8.  Collection literals can
+reduce boilerplate code, improve performance, and increase safety.
+Goals
+This is a research JEP.  The sole goal of this JEP is to explore the
+design space sufficiently to be able to propose a feature JEP (or
+recommend that the feature not be pursued.)
+Non-Goals
+It is not a goal of this research JEP to produce a production-ready
+implementation or specification.
+Success Metrics
+This research JEP will be judged successful if it produces a design that
+we wish to move forward to a feature JEP, or else certainty that we do
+not wish to proceed with this feature.
+Motivation
+Collection literals can increase programmer productivity, code
+readability, and code safety.
+Description
+Being able to initialize arrays, lists, sets, and maps with a compact
+expression offers many benefits, including:
+
+Clarity (smaller, simpler code);
+Dynamic footprint (the size is known, so a space-efficient
+implementation can be chosen); and
+Safety (the resulting object can be made immutable).
+
+While a minimal solution that works for arrays, Lists, and Maps would
+be "trivial", we would like to explore beyond such a simple-minded
+solution, leveraging target typing and which might enable an extensible
+set of types to exploit this feature.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

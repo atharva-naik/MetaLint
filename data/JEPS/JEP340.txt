@@ -1,0 +1,28 @@
+JEP 340: One AArch64 Port, Not TwoJEP 340: One AArch64 Port, Not TwoOwnerBob VandetteTypeFeatureScopeJDKStatusClosed / DeliveredRelease12ComponenthotspotDiscussionhotspot dash dev at openjdk dot java dot netEffortSDurationSReviewed byKaren Kinnear, Vladimir KozlovEndorsed byVladimir KozlovCreated2018/08/07 18:58Updated2021/08/28 00:30Issue8209093Summary
+Remove all of the sources related to the arm64 port while retaining the 32-bit ARM port and the 64-bit aarch64 port.
+Motivation
+Removing this port will allow all contributors to focus their efforts on a single 64-bit ARM implementation, and eliminate the duplicate work required to maintain two ports.
+Description
+Two 64-bit ARM ports exist in the JDK.  The main sources for these are in the src/hotspot/cpu/arm and open/src/hotspot/cpu/aarch64 directories.  Although both ports produce aarch64 implementations, for the sake of this JEP we shall refer to the former, which was contributed by Oracle, as arm64, and the latter as aarch64.
+Here are the tasks that will be completed as part of this JEP:
+
+Remove all arm64-specific sources and #ifdefs related to 64-bit versus 32-bit builds in open/src/hotspot/cpu/arm
+Scan the remaining JDK sources for #ifdefs related to this port
+Remove the build option for building this port.  Make the aarch64 port the default build for the 64-bit ARM architecture.
+Validate that the remaining 32-bit ARM port continues to build and run the conformance tests with no regressions that did not exist prior to the changes related to this JEP.
+
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

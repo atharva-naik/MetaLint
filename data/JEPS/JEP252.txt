@@ -1,0 +1,270 @@
+JEP 252: Use CLDR Locale Data by DefaultJEP 252: Use CLDR Locale Data by DefaultAuthorNaoto Sato & Alex BuckleyOwnerNaoto SatoTypeFeatureScopeJDKStatusClosed / DeliveredRelease9Componentcore-libs / java.util:i18nDiscussioni18n dash dev at openjdk dot java dot netEffortMDurationMReviewed byAlan Bateman, Brian Goetz, Mark ReinholdEndorsed byBrian GoetzCreated2014/05/20 17:14Updated2024/06/25 15:14Issue8043554Summary
+Use the locale data in the Common Locale Data Repository (CLDR) to format dates, times, currencies, languages, countries, and time zones in the standard Java APIs. CLDR, which is maintained by the Unicode Consortium, provides locale data of higher quality than the legacy data in JDK 8. Locale-sensitive applications may be affected by the switch to CLDR locale data, and, in the future, by revisions of the CLDR locale data.
+History
+The original text of this JEP, written in 2014 for JDK 9, did not provide adequate guidance to developers. We rewrote it in 2024 to add such guidance and to include information about JDK 21 and JDK 23.
+Goals
+
+
+Support industry standards for localization in the Java Platform, on an ongoing basis.
+
+
+Ensure that locale-sensitive Java APIs can work with contemporary internationalized data, such as the names of countries and time zones.
+
+
+Provide a migration path for applications that cannot immediately work with CLDR locale data.
+
+
+Non-Goals
+
+
+It is not a goal to make every localized application work unchanged on JDK 9.
+
+
+It is not a goal to remove the JDK's legacy locale data in JDK 9.
+
+
+It is not a goal to mandate use of the same CLDR locale data by all implementations of the Java Platform.
+
+
+Motivation
+The Java Platform offers APIs that help to localize Java programs, i.e., adapt them to different languages and countries. The APIs, principally in the java.text and java.util packages, are locale-sensitive: They depend upon a Locale that tailors an operation to a specific language, country, calendar system, and other cultural norms. Each locale is associated with locale data that describes how dates, times, currencies, languages, countries, and time zones are presented. In the example below, words such as "Thursday" and "March", as well as the pattern "EEEE, MMMM, d, y", come from the locale data for Locale.US, while "木曜日" and the pattern "y年M月d日EEEE" come from the locale data for Locale.JAPAN:
+jshell> Date today = new Date();
+today ==> Thu Mar 14 09:49:43 PDT 2024
+
+jshell> import java.text.*;
+
+jshell> DateFormat.getDateInstance(DateFormat.FULL, Locale.US).format(today);
+$2 ==> "Thursday, March 14, 2024"
+
+jshell> DateFormat.getDateInstance(DateFormat.FULL, Locale.JAPAN).format(today);
+$3 ==> "2024年3月14日木曜日"
+JDK 8 contains locale data for about 160 locales, originally created in the 1990s by Sun Microsystems and its industry partners. While cutting edge for its time, this locale data has various problems:
+
+
+Locale data, like time zone data, is inherently tied to constantly-evolving international standards such as the ISO list of country names. Keeping the JDK's locale data in sync with these standards is time consuming.
+
+
+Locale data needs to be extensible in order to support new date and time formats, new currencies, new time zones, and so forth. The JDK's locale data is not extensible, so supporting, e.g., a new date format that consists of a month and a year, requires costly changes to the Java API.
+
+
+Most platforms developed in the 1990s started with essentially the same locale data as the JDK, but over time the maintainers of each platform fixed and enhanced their locale data in different ways. For example, the JDK added its own abbreviations for the names of some time zones. Such idiosyncratic changes can cause problems when information is exchanged between localized applications on different platforms.
+
+
+The Unicode Consortium created the Common Locale Data Repository (CLDR) in 2003 to address quality and extensibility issues with locale data. CLDR contains locale data for over 500 locales. It is released every six months, to stay in sync with regional and cultural developments, and changes to its content are managed through a formal public process. Locale data is described with a domain-specific markup language, LDML, which ensures that CLDR is well structured and extensible. As a result, CLDR has been adopted by all major operating systems.
+JDK 8 was the first Java release to contain CLDR locale data as well as the legacy locale data from the 1990s, though it used the legacy data by default. Given the high quality and widespread adoption of CLDR, the entire Java ecosystem would benefit if JDK 9 switched to using CLDR locale data by default. It is neither realistic nor advantageous for the JDK to keep using its own legacy locale data when CLDR exists as a superior alternative. JDK 9 and later releases will continue to contain the legacy locale data in order to ease migration for localized applications.
+Description
+In JDK 8 and later, there are two built-in providers of locale data: JRE, which provides the legacy locale data from the 1990s, and CLDR, which provides the CLDR locale data from the Unicode Consortium.
+JDK 8, by default, selects only the JRE provider at run time, so locale-sensitive Java APIs use only legacy locale data.
+JDK 9, by default, will give priority to the CLDR provider at run time, so locale-sensitive Java APIs will use CLDR locale data in preference to legacy locale data.
+The use of CLDR locale data is an implementation characteristic of JDK 9; it is not mandated by the Java Platform Specification. Other implementations of the Platform need not use CLDR locale data by default, and they need not even provide it as an option. This approach is in line with how the Java Platform works in other areas of internationalization, such as the handling of time zones (see below).
+Regardless of provider, the locale data for the US country locale, the ENGLISH language locale, and the technical root locale is contained in the java.base module; all other locale data is contained in the jdk.localedata module. Developers who use the jlink tool to build custom run-time images can save space by selecting which locales to include in a run-time image.
+Where locale data is used
+Applications represent dates, times, currencies, languages, countries, and time zones with objects of the following classes:
+
+java.time: Instant, LocalDate, LocalTime, LocalDateTime, ZonedDateTime, ZoneId
+java.util: Calendar, Currency, Date, TimeZone
+
+Locale-sensitive APIs convert these objects to and from strings, so that a date, time, currency, language, country, or time zone can be denoted in plain text. The APIs use locale data in both directions: to convert an object to a string (formatting), and to convert a string to an object (parsing). The default behavior of these APIs will change after the switch to CLDR locale data.
+The Calendar, Currency, and TimeZone classes in the java.util package are inherently locale-sensitive because they are instantiated with reference to a specific locale. They provide formatting and parsing methods which use the locale data for that specific locale. In contrast, java.util.Date and the six classes in the java.time package are not locale-sensitive because they are not instantiated with reference to a specific locale. Companion classes provide their locale-sensitive API, e.g., the java.text.DateFormat class is responsible for formatting and parsing Date objects. Some general-purpose I/O classes also provide locale-sensitive APIs for formatting. Here are the companion and I/O classes that provide locale-sensitive APIs:
+
+java.io: PrintStream, PrintWriter
+java.text: BreakIterator, Collator, DateFormat, DateFormatSymbols, DecimalFormatSymbols, NumberFormat
+java.time.format: DateTimeFormatter
+java.util: Formatter, Scanner
+
+Some APIs that are critical to localization are not locale-sensitive and thus are unaffected by the switch to CLDR locale data:
+
+
+java.util.Locale declares constants for various languages and countries, such as the ENGLISH language and the UK country. None of the constants or their string representations are affected by the switch to CLDR locale data.
+
+
+java.util.ResourceBundle provides locale-specific data to applications, but has no formatting or parsing methods of its own.
+
+
+java.util.Date has a toString() method whose result is deliberately locale-insensitive, as are the same methods in  java.time.LocalDate, java.time.LocalDateTime, and so forth.
+
+
+How applications are affected by CLDR locale data
+Applications that expect locale-sensitive APIs to use legacy locale data will see different results when formatting, and possibly exceptions when parsing, when the APIs use CLDR locale data in JDK 9.
+It is impractical to list all the differences between the legacy and CLDR locale data, but here are seven notable differences that will be visible to applications (no significance is implied by the order of this list):
+
+
+UK country locale: The separator between date components is a hyphen in JRE but a space in CLDR.
+
+
+ENGLISH language locale (countries that use English, such as UK, US, and CANADA):
+
+
+The separator between a date and a time is a space in JRE but a comma in CLDR.
+
+
+The full names of time zones are different: They are abbreviated in JRE but unabbreviated in CLDR. For example, PDT in JRE but Pacific Daylight Time in CLDR.
+
+
+The value NaN is represented with � (Unicode replacement character U+FFFD) in JRE  but NaN in CLDR.
+
+
+
+
+GERMANY country locale: The short names of months (except May) are different. They are Jan, Feb, Mär, Apr, Jun, Jul, Aug, Sep, Okt, Nov, Dez in JRE but Jan., Feb., März, Apr., Juni, Juli, Aug., Sep., Okt., Nov., Dez. in CLDR.
+
+
+ITALY country locale: The currency symbol (EURO) is a prefix for monetary amounts in JRE but a suffix in CLDR.
+
+
+FRENCH language locale: The Lithuanian language name is lithuanien in JRE but lituanien in CLDR.
+
+
+Here are examples of these differences:
+System.out.println(DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK)
+                             .format(new Date()));
+// JDK 8:  15-Mar-2024
+// JDK 9:  15 Mar 2024
+
+System.out.println(DateFormat.getDateTimeInstance(DateFormat.SHORT,
+                                                  DateFormat.SHORT,
+                                                  Locale.ENGLISH)
+                             .format(new Date()));
+// JDK 8:  3/19/24 2:35 PM
+// JDK 9:  3/19/24, 2:35 PM
+
+System.out.println(DateFormat.getTimeInstance(DateFormat.FULL, Locale.ENGLISH)
+                             .format(new Date()));
+// JDK 8:  2:27:03 PM PDT
+// JDK 9:  2:27:03 PM Pacific Daylight Time
+
+System.out.println(NumberFormat.getInstance(Locale.ENGLISH).format(Double.NaN));
+// JDK 8:  �
+// JDK 9:  NaN
+
+System.out.println(new SimpleDateFormat("dd MMM", Locale.GERMANY)
+                       .format(new GregorianCalendar(2024, Calendar.MARCH, 19)
+                       .getTime()));
+// JDK 8:  19 Mär
+// JDK 9:  19 März
+
+System.out.println(NumberFormat.getCurrencyInstance(Locale.ITALY).format(100));
+// JDK 8:  € 100,00
+// JDK 9:  100,00 €
+
+System.out.println(new Locale("lt").getDisplayName(Locale.FRENCH));
+// JDK 8:  lithuanien
+// JDK 9:  lituanien
+Prior to deploying on JDK 9 or later where CLDR locale data is used by default, we strongly encourage you to check for compatibility issues by running your applications on JDK 8 with the CLDR provider selected. Do this by starting the Java 8 runtime with
+$ java -Djava.locale.providers=CLDR,JRE ...
+so that CLDR locale data has priority over legacy locale data.
+If your code uses locale-sensitive APIs, we strongly encourage you to revise it, as necessary, to align with CLDR locale data as soon as possible. Code that interacts with locale-sensitive APIs must work properly when dates, times, currencies, languages, countries, and time zones are formatted and parsed using CLDR locale data.
+The impact on code can depend on whether the string representations of dates, times, etc., are exchanged with or stored in systems outside the application. For example, suppose an application has a Date object that it needs to persist, so it formats the Date for the UK locale and stores the resulting string in a database. If the application, later in the same session, retrieves the string from the database and parses it as a Date in the UK locale, there will be no impact from the switch to CLDR locale data. The application will get the same Date that it started with, since both formatting and parsing are performed on the same JDK, with the same locale data.
+However, suppose the application ran on JDK 8 when it stored the string in the database, but runs on JDK 17 when it retrieves the string. The Date object was formatted as a string using legacy locale data, but the string will be parsed as a Date using CLDR locale data. The code will trigger a java.text.ParseException because, e.g., the hyphenated string "15-Mar-2024" does not match the dd MMM yyyy pattern used for UK dates in CLDR. As a result of the exception, the application could fail or behave in unexpected ways.
+Beyond the code of the application itself, code used for testing the application may be impacted by the switch to CLDR locale data. Unit tests frequently include hard-coded date/time strings that the application is expected to parse in a locale-sensitive way. If the tests were written with JDK 8 and the application is migrated to JDK 9 or later then the tests could fail.
+Continuing to use legacy locale data
+If it is impractical to revise code to format and parse strings using CLDR locale data, there are three measures that you can take to continue formatting and parsing strings using legacy locale data:
+
+
+Force locale-sensitive APIs to use legacy locale data at startup. Do this by starting the Java runtime with
+$ java -Djava.locale.providers=JRE,CLDR ...
+The system property value COMPAT can be used as a synonym for JRE, e.g., -Djava.locale.providers=COMPAT,CLDR ...
+Forcing the use of legacy locale data must be treated as a temporary measure. In a release after JDK 9, only CLDR locale data will be available.
+
+
+Modify your code to always format and parse strings with the same patterns as those in legacy locale data.
+For example, suppose your code uses the locale-sensitive SimpleDateFormat API to format Date objects. On JDK 8, the code might have obtained a SimpleDateFormat as follows:
+SimpleDateFormat fmt
+    = (SimpleDateFormat)DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK);
+// prints "19-Mar-2024" on JDK 8 but "19 Mar 2024" on JDK 9
+System.out.println(fmt.format(new Date()));
+You could modify the code to create a SimpleDateFormat directly, passing the desired pattern (date components separated by hyphens) to the constructor of SimpleDateFormat:
+SimpleDateFormat fmt = new SimpleDateFormat("dd-MMM-yyyy", Locale.UK);
+// prints "19-Mar-2024", even on JDK 9
+System.out.println(fmt.format(new Date()));
+This solution can work well for small applications, or for large applications that store formats in singleton variables whose use is rigorously enforced across the codebase.
+
+
+Create a custom locale data provider and include it in the application. This provider can override the CLDR provider so that locale-sensitive APIs, when formatting and parsing strings, give priority to the patterns defined by the custom provider.
+For example, here is a custom locale data provider that can be used on JDK 9 to reinstate the hyphen-separated pattern for UK dates from JDK 8:
+package com.example.localization;
+import java.text.*;
+import java.text.spi.*;
+import java.util.*;
+
+public class HyphenatedUKDates extends DateFormatProvider {
+
+     @Override
+     public Locale[] getAvailableLocales() {
+         return new Locale[]{Locale.UK};
+     }
+
+     @Override
+     public DateFormat getDateInstance(int style, Locale locale) {
+         assert locale.equals(Locale.UK);
+         switch (style) {
+             case DateFormat.FULL:
+                 return new SimpleDateFormat("EEEE, d MMMM yyyy");
+             case DateFormat.LONG:
+                 return new SimpleDateFormat("dd MMMM yyyy");
+             case DateFormat.MEDIUM:
+                 return new SimpleDateFormat("dd-MMM-yyyy");
+             case DateFormat.SHORT:
+                 return new SimpleDateFormat("dd/MM/yy");
+             default:
+                 throw new IllegalArgumentException("style not supported");
+         }
+     }
+
+     @Override
+     public DateFormat getDateTimeInstance(int dateStyle, int timeStyle,
+                                           Locale locale)
+     {
+         ...
+     }
+
+     @Override
+     public DateFormat getTimeInstance(int style, Locale locale) {
+         ...
+     }
+
+}
+
+
+Future plans for legacy locale data
+In a release after JDK 9, we will stop shipping legacy locale data entirely. We will gradually degrade support for legacy locale data:
+
+
+JDK 21: If JRE or COMPAT is specified in the value of the system property java.locale.providers at startup, then the Java runtime will issue a warning message about the forthcoming removal of legacy locale data.
+
+
+JDK 23: We will no longer include the legacy locale data in the JDK. Specifying JRE or COMPAT via -Djava.locale.providers=... will have no effect whatsoever.
+
+
+Risks and Assumptions
+
+
+A risk of switching from legacy locale data to CLDR locale data is that some applications will break due to the different behavior of locale-sensitive APIs. Breakage may occur due to unexpected values being returned from the APIs, or from the APIs throwing exceptions that applications are not prepared to deal with. We assume that, globally, the percentage of applications affected by breakage will be small.
+
+
+We assume that adopting CLDR locale data is an ongoing process, where each successive JDK release adopts the latest CLDR version available from the Unicode Consortium.
+A risk of tracking CLDR in this way is that CLDR locale data could change incompatibly over time. This risk is generally outweighed by the benefits of providing the most up-to-date locale data, which is bound to change as cultures evolve their norms and conventions. This risk is further outweighed by the benefits of using exactly the same locale data as other platforms. Accordingly, the JDK will incorporate CLDR locale data from the Unicode Consortium as-is; we will not modify it unless there are exceptional circumstances.
+Update, October 2020: An example of this risk is that the short name for September in the UK locale changed from Sep to Sept in CLDR version 38, which shipped in JDK 16.
+
+
+We believe it is undesirable to standardize on the use of CLDR in the Java Platform. We do not propose to mandate either the use of CLDR in general, or the use of a specific version of CLDR in a specific release of the Java Platform.
+Internationalization is driven by standards from official and quasi-official organizations, such as the BCP 47 language tags from IETF, the TZ time zone database from IANA, and the CLDR locale data from the Unicode Consortium. When it comes to incorporating these standards into the Java Platform, there is a tradeoff between predictability (implementations of a new version of the Platform are required to use a given version of the standard) and flexibility (implementations of an old version of the Platform can be updated to use a new version of the standard without having to alter the Platform Specification).
+Based on our experience tracking these standards over many years, we value flexibility over predictability. For example, the IANA time zone data changes as frequently as several times per year, and it is essential to backport new versions of the data to older releases as quickly as possible. Accordingly, the Java Platform allows but does not mandate the use of IANA time zone data; if it were mandated, updating older releases would require tedious and costly JCP Maintenance Releases to adopt new versions of the data into the Platform Specifications. Based on our experience tracking CLDR, we believe it is appropriate to treat the use of CLDR locale data in the same way: CLDR is the canonical choice, but it is not mandatory. (Unfortunately, the use of CLDR locale data was inadvertently listed as a standard feature in the Java SE 9 Platform Specification.)
+This contrasts with the Unicode character set, whose use is mandated because it concerns a fundamental issue in every Java program, and because retroactive changes that require Maintenance Releases are relatively rare.
+
+
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

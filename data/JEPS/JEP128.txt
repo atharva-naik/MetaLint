@@ -1,0 +1,108 @@
+JEP 128: Unicode BCP 47 Locale MatchingJEP 128: Unicode BCP 47 Locale MatchingAuthorNaoto SatoOwnerYuka KamiyaTypeFeatureScopeSEStatusClosed / DeliveredRelease8Componentcore-libs / java.util:i18nDiscussioni18n dash dev at openjdk dot java dot netEffortMDurationLEndorsed byBrian GoetzCreated2011/07/15 20:00Updated2017/10/23 21:19Issue8046118Summary
+Define APIs so that applications that use BCP 47 language tags (see
+RFC 5646) can match them to a user's language preferences in a
+way that conforms to RFC 4647.
+Motivation
+It's a common scenario across applications, platforms, and/or protocols to need
+to specify a set of language tags (i.e., a range of languages), and match a
+given language tag against such a set, e.g., a user's preferred set of
+languages.  Java SE 8 will provide a full BCP 47 implementation according to
+RFC 5646.
+Description
+Implement the functionality defined in RFC 4647, whose description
+is as follows:
+
+This document describes a syntax, called a "language-range", for specifying
+items in a user's list of language preferences.  It also describes different
+mechanisms for comparing and matching these to language tags.  Two kinds of
+matching mechanisms, filtering and lookup, are defined.  Filtering produces a
+(potentially empty) set of language tags, whereas lookup produces a single
+language tag.  Possible applications include language negotiation or content
+selection.
+
+The basic ideas of the API to be proposed are:
+
+
+Implement the Language Range with a Collection<String>, and the Language
+Priority List with a List<String>.
+
+
+Provide a few methods that implement the following:
+
+Basic filtering: Take the Basic Language Range and the Language Priority
+List, and returning the filtered set of Language Tags.
+Extended filtering: Take the Extended Language Range and the Language
+Priority List, and return the filtered set of Language Tags.
+Lookup: Take the Basic Language Range and the Language Priority List,
+and return the best matched Language Tag.
+
+
+
+Example: Here's a person who speaks Japanese("ja") as mother tongue,
+English("en") and German("de") as the second languages.  He lives in Japan.
+And, here's an application which happens to have localization resource data for
+English, French, New Caledonian Javanese, and Japanese.
+The above situation could be expressed like this with the new API:
+/* Basic language ranges for this user's language priority list: 
+ *   ja-JP: Japanese used in Japan
+ *   en-jp: English used in Japan
+ *   de-JP: German used in Japan
+ *
+ * The order expresses the priority of each language for the user.
+ * Note that each sub tag (e.g. "jp") are case insensitive and used after
+ * normalization.
+ */
+List<String> list1 = Arrays.asList("ja-JP", "en-jp", "de-JP");
+
+/* Extended language ranges for this user's language priority list: 
+ *   ja-*-JP: Japanese used in Japan
+ *   en-*-jp: English used in Japan
+ *   de-*-JP: German used in Japan
+ *
+ * The order expresses the priority of each language for the user.
+ * Note that each sub tag (e.g. "jp") are case insensitive and used after
+ * normalization.
+ */
+List<String> list2 = Arrays.asList("ja-*-JP", "en-*-jp", "de-*-JP");
+
+/* The app's language ranges:
+ *   en-US: English used in the USA
+ *   en-JP: Japanese used in the USA
+ *   fr-FR: French used in France,
+ *   de-de: German used in Germany
+ *   de-CH: German used in Switzerland
+ *   de-jp: German used in Japan
+ *   jas-JP: New Caledonian Javanese used in Japan
+ *   ja-US: Japanese used in the USA
+ */  ja-Latn-JP: Japanese used in Japan, written in Latin alphabet
+Collection<String> ranges =
+    Arrays.asList("en-US", "en-JP", "fr-FR", "de-DE", "de-CH", "de-JP",
+                  "ja-US", "jas-JP", "ja-Latn-JP");
+
+// Matching 1: Basic filtering returns a list of "en-JP" and
+// "de-JP".
+List<Locale> tags1 = Locale.filterBasic(list1, ranges);
+
+// Matching 2: Extended filtering returns a list of "ja-Latn-JP",
+// "en-JP", and "de-JP".
+List<Locale> tags2 = Locale.filterExtended(list2, ranges);
+
+// Matching 3: Look up returns "en-JP".
+Locale locale = Locale.lookup(list1, ranges);
+</code>
+Note that the API introduced here is a draft and may be changed later.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

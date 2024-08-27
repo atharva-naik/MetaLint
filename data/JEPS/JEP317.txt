@@ -1,0 +1,29 @@
+JEP 317: Experimental Java-Based JIT CompilerJEP 317: Experimental Java-Based JIT CompilerOwnerIgor VeresovTypeFeatureScopeJDKStatusClosed / DeliveredRelease10Componenthotspot / compilerDiscussionhotspot dash compiler dash dev at openjdk dot java dot netEffortMDurationMReviewed byJohn Rose, Mikael Vidstedt, Vladimir KozlovEndorsed byVladimir KozlovCreated2017/10/20 20:03Updated2018/03/28 01:58Issue8189751Summary
+Enable the Java-based JIT compiler, Graal, to be used as an experimental JIT compiler on the Linux/x64 platform.
+Non-Goals
+It is not a goal to meet or beat the performance of the existing JIT compilers.
+Motivation
+Graal, a Java-based JIT compiler, is the basis of the experimental Ahead-of-Time (AOT) compiler introduced in JDK 9.  Enabling it to be used as an experimental JIT compiler is one of the initiatives of Project Metropolis, and is the next step in investigating the feasibility of a Java-based JIT for the JDK.
+Description
+Enable Graal to be used as an experimental JIT compiler, starting with the Linux/x64 platform.  Graal will use the JVM compiler interface (JVMCI) introduced in JDK 9.  Graal is already in the JDK, so enabling it as an experimental JIT will primarily be a testing and debugging effort.
+To enable Graal as the JIT compiler, use the following options on the java command line:
+-XX:+UnlockExperimentalVMOptions -XX:+UseJVMCICompiler
+Testing
+Standard testing for compilers is planned for this work.  This includes running all HotSpot and JDK tests with various flag options on Linux/x64.  In addition to these standard tests,  unit tests developed specifically for Graal will be run.  Support to run these unit tests in the jtreg framework will be implemented.   Initial performance testing and benchmarking will be performed as part of this effort.
+Risks and Assumptions
+Issues with slower startup performance and increased Java heap usage of this experimental offering could impact and/or limit initial developer evaluation.  Some applications and benchmarks will see performance gaps in Graal compared with the existing HotSpot JIT compilers.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

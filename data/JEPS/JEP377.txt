@@ -1,0 +1,63 @@
+JEP 377: ZGC: A Scalable Low-Latency Garbage Collector (Production)JEP 377: ZGC: A Scalable Low-Latency Garbage Collector (Production)OwnerPer LidenTypeFeatureScopeImplementationStatusClosed / DeliveredRelease15Componenthotspot / gcDiscussionhotspot dash gc dash dev at openjdk dot java dot net Relates toJEP 351: ZGC: Uncommit Unused Memory (Experimental)JEP 333: ZGC: A Scalable Low-Latency Garbage Collector (Experimental)JEP 364: ZGC on macOS (Experimental)JEP 365: ZGC on Windows (Experimental)JEP 439: Generational ZGCReviewed byErik Österlund, Mikael Vidstedt, Stefan KarlssonEndorsed byMikael VidstedtCreated2018/08/20 06:16Updated2023/03/06 23:17Issue8209683Summary
+Change the Z Garbage Collector from an experimental feature into a product feature.
+Non-Goals
+This JEP does not propose to change the default GC, which remains G1.
+Motivation
+ZGC was integrated into JDK 11 by JEP 333. New features of such size and complexity are best introduced carefully and gradually, so we made it an experimental feature. This helped set user expectations and allowed users to provide feedback without having to download or build a separate JDK binary, which would have been the case if ZGC development had continued outside of the JDK.
+Since its introduction in JDK 11 we’ve received positive feedback, we’ve ironed out many bugs, and we’ve added a number of features and enhancements. To highlight some of the more important ones:
+
+Concurrent class unloading
+Uncommitting unused memory (JEP 351)
+Maximum heap size increased from 4TB to 16TB
+Minimum heap size decreased to 8MB
+-XX:SoftMaxHeapSize
+Support for the JFR leak profiler
+Support for class-data sharing
+Limited and discontiguous address spaces
+Support for placing the heap on NVRAM
+Improved NUMA awareness
+Multi-threaded heap pre-touching
+
+Furthermore, all commonly used platforms are now supported:
+
+Linux/x86_64 (JEP 333)
+Linux/aarch64 (8214527)
+Windows (JEP 365)
+macOS (JEP 364)
+
+Testing of ZGC suggests that it is stable and, as of this writing, we have received no new ZGC-specific bugs for a few months. With the stability, feature set, and platform support that ZGC has today, it is time to remove its experimental status and make it a product feature.
+Description
+ZGC is enabled today via the -XX:+UnlockExperimentalVMOptions -XX:+UseZGC command-line options. Making ZGC a product (non-experimental) feature means that the -XX:+UnlockExperimentalVMOptions option will no longer be needed.
+Turning ZGC into a product (non-experimental) feature is mainly a matter of changing the UseZGC command-line option type from experimental to product. In addition, we will also change the following ZGC-specific options, currently marked experimental, to product. We will not change the default values for these options.
+ZAllocationSpikeTolerance
+ZCollectionInterval
+ZFragmentationLimit
+ZMarkStackSpaceLimit
+ZProactive
+ZUncommit
+ZUncommitDelay
+The following ZGC-specific JFR events, currently marked experimental, will also be changed to product.
+ZAllocationStall
+ZPageAllocation
+ZPageCacheFlush
+ZRelocationSet
+ZRelocationSetGroup
+ZUncommit
+Testing
+Testing of ZGC was added as part of JEP 333, and additional tests have been added since then. No additional tests will be developed as part of this JEP.
+Some tests currently supply the -XX:+UnlockExperimentalVMOptions command-line option when enabling ZGC. This will no longer be needed, and these tests will be adjusted accordingly.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

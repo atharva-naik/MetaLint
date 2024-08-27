@@ -1,0 +1,38 @@
+JEP 140: Limited doPrivilegedJEP 140: Limited doPrivilegedAuthorSean MullanOwnerJeffrey NisewangerTypeFeatureScopeSEStatusClosed / DeliveredRelease8Componentsecurity-libsDiscussionsecurity dash dev at openjdk dot java dot netEffortSDurationSBlocksJEP 183: HTTP Cross-Origin Resource SharingJEP 184: HTTP URL PermissionsEndorsed byBrian GoetzCreated2011/08/25 20:00Updated2014/07/10 20:54Issue8046130Summary
+Enable code to assert a subset of its privileges without otherwise preventing
+the full access-control stack walk to check for other permissions.
+Motivation
+This is very useful when you need to enable some permissions while allowing
+others to continue the stack walk.
+Description
+Add a java.security.AccessController.doPrivileged method that takes a
+permission argument.
+For example, some bootstrap JRE code could assert a privilege to GET a
+configuration file via http:
+AccessController.doPrivileged(anon class...,
+                              new URLPermission(url,
+                                                request props ...,
+                                                "GET") ...
+A checkPermission() for a matching URLPermission (done by the http
+handler) would stop walking the access-control context (acc) stack at that
+doPrivileged() invocation and succeed.  A check for a non-matching
+URLPermission or some other permission, however, would match the JRE class's
+generally assigned privileges and continue walking the full acc stack as if the
+limited doPrivileged() had not been invoked.
+These limited privileges are also captured by getAccessControlContext() and
+by thread inheritance.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

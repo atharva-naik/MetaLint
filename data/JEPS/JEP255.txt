@@ -1,0 +1,74 @@
+JEP 255: Merge Selected Xerces 2.11.0 Updates into JAXPJEP 255: Merge Selected Xerces 2.11.0 Updates into JAXPOwnerJoe WangTypeFeatureScopeJDKStatusClosed / DeliveredRelease9Componentxml / jaxpDiscussioncore dash libs dash dev at openjdk dot java dot netEffortMDurationMReviewed byAlan Bateman, Lance Andersen, Roger RiggsEndorsed byBrian GoetzCreated2014/05/28 04:16Updated2017/05/26 01:32Issue8044086Summary
+Upgrade the version of the Xerces XML parser included in the JDK with
+important changes from Xerces 2.11.0.
+Non-Goals
+The JDK's copy of Xerces contains many changes and improvements that are
+JDK-specific.  It is not a goal to completely synchronize the JDK
+codebase with that of the Apache Xerces Project.
+Success Metrics
+
+
+Classes in the selected categories are fully updated.
+
+
+Incompatibilities are not introduced.  Any conflicts with the
+existing JDK code are resolved so as to prefer the existing JDK code.
+
+
+Regressions do not occur.
+
+
+Motivation
+The JDK contains the older Xerces 2.7.1 parser.  During the development
+of JDK 7, it was updated with all critical and many major changes from
+Xerces 2.10.0.  Since then, Xerces 2.11.0 was released.  Upgrading to the
+latest release will help improve the quality of the JDK implementation.
+Description
+Update the JDK with changes in the following categories from Xerces 2.11.0:
+
+Datatypes,
+DOM L3 Serializer,
+XPointer,
+Catalog Resolver, and
+XML Schema Validation (including bug fixes, but not the XML Schema
+1.1 development code).
+
+There will be no changes to the JAXP public API.
+This update will be done in batches.  Not every revision may be tested
+individually.
+Testing
+
+
+Relevant tests in Xerces may be merged into the existing test suite.
+
+
+New tests will be developed to ensure sufficient coverage of the
+changes.
+
+
+Significant testing will be required to ensure that the update does
+not introduce regressions relative to the existing implementation.
+
+
+Risks and Assumptions
+Since the integration of Xerces 2.7.1 into JDK 6, many JDK-specific bug
+fixes, improvements, and feature additions were implemented independently
+of the Apache Xerces Project.  This includes the incorporation of the
+StAX parser, which shared and modified the scanner implementation from
+Xerces.  Some Xerces patches therefore may need to be modified to resolve
+conflicts.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

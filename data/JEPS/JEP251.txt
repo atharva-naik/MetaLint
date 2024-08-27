@@ -1,0 +1,98 @@
+JEP 251: Multi-Resolution ImagesJEP 251: Multi-Resolution ImagesAuthorsAlexander Scherbatiy, Jim GrahamOwnerAlexandr ScherbatiyTypeFeatureScopeSEStatusClosed / DeliveredRelease9Componentclient-libs / 2dDiscussion2d dash dev at openjdk dot java dot netEffortMDurationMReviewed byJim Graham, Philip RaceEndorsed byKevin RushforthCreated2014/06/05 08:23Updated2017/06/28 15:07Issue8046010Summary
+Define a multi-resolution image API so that images with resolution
+variants can easily be manipulated and displayed.
+Description
+The new API, to be defined in the java.awt.image package, will allow a
+set of images with different resolutions to be encapsulated into a single
+multi-resolution image.
+The basic operations on a multi-resolution image are:
+
+
+Retrieve a resolution-specific image variant based on a given DPI
+metric and set of image transformations, and
+
+
+Retrieve all of the variants in the image.
+
+
+Aside from these operations a multi-resolution image will otherwise
+behave in the same way as an ordinary image.  The java.awt.Graphics
+class will retrieve the necessary variant from a multi-resolution image
+based upon the current display DPI metric and any applied
+transformations.
+Proposed API sketch:
+package java.awt.image;
+
+/**
+ * This interface is designed to provide a set of images at various resolutions.
+ *
+ * The {@code MultiResolutionImage} interface should be implemented by any
+ * class whose instances are intended to provide image resolution variants
+ * according to the given image width and height.
+ *
+ * @since 1.9
+ */
+public interface MultiResolutionImage {
+
+    /**
+     * Gets a specific image that is the best variant to represent
+     * this logical image at the indicated size.
+     *
+     * @param destImageWidth the width of the destination image, in pixels.
+     * @param destImageHeight the height of the destination image, in pixels.
+     * @return image resolution variant.
+     *
+     * @since 1.9
+     */
+    Image getResolutionVariant(float destImageWidth, float destImageHeight);
+
+    /**
+     * Gets a readable list of all resolution variants.
+     * Note that many implementations might return an unmodifiable list.
+     *
+     * @return list of resolution variants.
+     * @since 1.9
+     */
+    public List<Image> getResolutionVariants();
+}
+Alternatives
+In the current Java 2D API there is no way to detect if a high-resolution
+display is being used.  At the very least, the DPI scale factor must be
+provided.  Developers could use the scale factor to draw an image with
+the necessary resolution, but that can be very tedious.
+Testing
+The new API will need to be tested on Mac OS X with a Retina display and
+on Windows with a HiDPI display.
+The following scenarios can be tested:
+
+
+Create a multi-resolution image from a set of images,
+
+
+Create a multi-resolution image from images on the file system that
+follow the usual scaling naming conventions,
+
+
+Create a multi-resolution image based on another multi-resolution
+image, and
+
+
+Draw multi-resolution images with different DPI metrics and applied
+transform.
+
+
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks
