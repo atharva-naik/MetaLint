@@ -1,0 +1,61 @@
+JEP 177: Optimize java.text.DecimalFormat.formatJEP 177: Optimize java.text.DecimalFormat.formatAuthorJoseph D. DarcyOwnerJoe DarcyTypeFeatureScopeJDKStatusClosed / DeliveredRelease8Componentcore-libsDiscussioncore dash libs dash dev at openjdk dot java dot netEffortMDurationLReviewed byAlan Bateman, Olivier LagneauEndorsed byMark ReinholdCreated2013/02/10 20:00Updated2014/11/03 23:59Issue8046167Summary
+Optimize java.text.DecimalFormat.format by taking advantage of
+numerical properties of integer and floating-point arithmetic to
+accelerate cases with two or three digits after the decimal point.
+Goals
+Make common usages of DecimalFormat faster.
+Success Metrics
+At least a 2X speedup on micro-benchmarks of interest.
+Description
+The decimal format conversions of most interest are for those with two
+and three digits after the decimal point.  Rather than perform expensive
+floating-point divisions to isolate and round the fractional digits, a
+floating-point multiply of the fractional portion by 100.0 or 1000.0 can
+be performed, the product converted to an integer value, and then the
+resulting integer converted to decimal.  While this process is faster,
+care must be taken to avoid double-rounding and other numerical hazards.
+Case analysis using properties of which fractional decimal values can be
+exactly represented in binary reduces rounding post-multiply to a look up
+table style computation.
+Testing
+Besides running existing JCK and regression tests, new tests targeting
+the boundary cases of the optimized code path will be developed.  In
+addition, the performance of the code will be assessed using
+micro-benchmarks on contemporary hardware platforms.
+Risks and Assumptions
+Exploratory work with the optimized implementation revealing a
+long-standing numerical bug in DecimalFormat: some near half-way cases
+did not round correctly. The specification of DecimalFormat is being
+amended in Java SE 8 to clearly require correct rounding all the time.
+Impact
+
+
+Compatibility: On JDK 7, (correct) but altered numerical behavior
+will only be enabled under an aggressive optimization flag to limit
+behavioral compatibility impact in that release train.  In Java SE 8,
+the correct numerical behavior will always be required by the
+specification.
+
+
+Performance/scalability: Many common cases will go faster with the
+new algorithm; other cases will fall back to using the older code.
+
+
+TCK: Some new test cases in JCK 8 would be helpful.
+
+
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

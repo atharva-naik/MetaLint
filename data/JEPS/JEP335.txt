@@ -1,0 +1,53 @@
+JEP 335: Deprecate the Nashorn JavaScript Engine for RemovalJEP 335: Deprecate the Nashorn JavaScript Engine for RemovalOwnerJim LaskeyTypeFeatureScopeJDKStatusClosed / DeliveredRelease11Componentcore-libs / jdk.nashornDiscussionjdk dash dev at openjdk dot java dot netEffortSRelates toJEP 372: Remove the Nashorn JavaScript EngineReviewed byAlex Buckley, Brian Goetz, Dalibor TopicEndorsed byMark ReinholdCreated2018/05/08 14:23Updated2024/04/25 15:47Issue8202786Summary
+Deprecate the Nashorn JavaScript script engine and APIs, and the jjs
+tool, with the intent to remove them in a future release.
+Motivation
+The Nashorn JavaScript engine was first incorporated into JDK 8 via
+JEP 174 as a replacement for the Rhino
+scripting engine.  When it was released, it was a complete implementation of
+the ECMAScript-262 5.1 standard.
+With the rapid pace at which ECMAScript language constructs, along with APIs,
+are adapted and modified, we have found Nashorn challenging to maintain.
+Non-Goals
+This deprecation does not affect, in any way, the javax.script API.
+Description
+Two JDK modules will be
+terminally deprecated, that is, annotated with @Deprecated(forRemoval=true):
+
+
+jdk.scripting.nashorn -- contains the jdk.nashorn.api.scripting and
+jdk.nashorn.api.tree packages.
+
+
+jdk.scripting.nashorn.shell -- contains the jjs tool. Running jjs
+will display a warning:
+Warning: The jjs tool is planned to be removed from a future JDK release.
+
+
+A separate JEP will be filed for the actual removal of the types and modules
+in a future JDK feature release.
+Alternatives
+An alternative is for a set of credible developers to express a clear desire to
+maintain Nashorn going forward. If that happens before this JEP is integrated
+then this JEP can be withdrawn. If that happens after this JEP is integrated,
+but before Nashorn is removed, then a follow-on JEP can revert the deprecation.
+Risks and Assumptions
+The risk of removing Nashorn is that certain applications will no longer run
+because of the expectation that JavaScript is present.  The breadth of Nashorn
+usage has not been easy to track. It is hoped that feedback for this JEP might
+provide better insight into actual Nashorn usage.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

@@ -1,0 +1,60 @@
+JEP 267: Unicode 8.0JEP 267: Unicode 8.0OwnerYuka KamiyaTypeFeatureScopeSEStatusClosed / DeliveredRelease9Componentcore-libs / java.langDiscussioni18n dash dev at openjdk dot java dot netEffortSDurationSReviewed byBrian GoetzEndorsed byBrian GoetzCreated2015/03/13 04:55Updated2019/05/13 22:53Issue8075115Summary
+Upgrade existing platform APIs to support version 8.0 of the
+Unicode Standard.
+Goals
+Support the latest version of Unicode, with changes to the following
+classes:
+
+Character and String in the java.lang package,
+NumericShaper in the java.awt.font package, and
+Bidi, BreakIterator, and Normalizer in the java.text
+package.
+
+Non-Goals
+Two related Unicode specifications will not be implemented by this JEP:
+
+UTS #10, Unicode Collation Algorithm, and
+UTS #46, Unicode IDNA Compatibility Processing.
+
+Motivation
+Unicode is an evolving industry standard, so we must keep Java to date
+with the latest version.
+Description
+This is a follow-on to JEP 227, which introduced
+Unicode 7.0 in JDK 9.  Unicode 8.0 adds an additional
+~8,000 characters, 10 blocks, and 6 scripts.
+Testing
+We will need to verify that the latest Unicode data is correctly used by
+the relevant classes.
+Risks and Assumptions
+
+
+Unicode 8 was released in June 2015.  While fairly late in JDK 9
+development, it is important to always implement the latest Unicode
+standard.  Deferring until JDK 10 would put us more than three years
+behind.
+
+
+It's possible that a minor update to the Unicode Standard (e.g.,
+8.0.X) will be released before JDK 9 ships, in which case we may want
+to consider incorporating that version.
+
+
+Dependences
+This feature depends on the Unicode Standard of the Unicode
+Consortium.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

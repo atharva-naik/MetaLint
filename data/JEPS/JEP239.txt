@@ -1,0 +1,24 @@
+JEP 239: Update JavaFX/WebView to Newer Version of WebKitJEP 239: Update JavaFX/WebView to Newer Version of WebKitAuthorantOwnerVictor DyakovTypeFeatureScopeJDKStatusClosed / DeliveredRelease8u60Componentjavafx / webDiscussionopenjfx dash dev at openjdk dot java dot netEffortXLDurationXLReviewed byKevin Rushforth, Victor DyakovEndorsed byRichard BairCreated2014/06/04 21:19Updated2016/08/24 21:12Issue8044852Summary
+Update the JavaFX WebView component to use the latest version of WebKit.
+Motivation
+WebView currently uses WebKit 123058, plus the no-JIT patch for Windows
+x64 (123107), released on 2012/7/19.  We need to update to the latest
+version to pick up bug and security fixes made in the C code.
+Testing
+WebView already has many automated and manual tests which SQE runs to
+assure quality.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

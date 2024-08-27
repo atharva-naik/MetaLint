@@ -1,0 +1,36 @@
+JEP 327: Unicode 10JEP 327: Unicode 10OwnerRachna GoelTypeFeatureScopeSEStatusClosed / DeliveredRelease11Componentcore-libs / java.langDiscussioni18n dash dev at openjdk dot java dot netEffortMDurationMReviewed byAlan Bateman, Naoto SatoEndorsed byBrian GoetzCreated2017/06/19 16:43Updated2018/08/07 09:18Issue8182490Summary
+Upgrade existing platform APIs to support version 10.0 of the Unicode Standard.
+Goals
+Support the latest version of Unicode, mainly in the following classes:
+
+Character and String in the java.lang package,
+NumericShaper in the java.awt.font package, and
+Bidi, BreakIterator, and Normalizer in the java.text package.
+
+Non-Goals
+Four related Unicode specifications will not be implemented by this JEP:
+
+UTS #10, Unicode Collation Algorithm
+UTS #39, Unicode Security Mechanisms
+UTS #46, Unicode IDNA Compatibility Processing
+UTS #51, Unicode Emoji
+
+Motivation
+Unicode is an evolving industry standard, so we must keep Java to date with the latest version.
+Description
+Java SE 10 implements Unicode 8.0. Unicode 9.0 adds 7,500 characters and six new scripts, and Unicode 10.0.0 adds 8,518 characters and four new scripts. This upgrade will include the Unicode 9.0 changes, and thus will add a total of 16,018 characters and ten new scripts.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

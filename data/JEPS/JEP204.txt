@@ -1,0 +1,82 @@
+JEP 204: JavaFX AccessibilityJEP 204: JavaFX AccessibilityAuthorStephen NorthoverOwnerSteve NorthoverTypeFeatureScopeJDKStatusClosed / DeliveredRelease8u40Componentclient-libsDiscussionopenjfx dash dev at openjdk dot java dot netEffortXLDurationXLRelates toJEP 209: JavaFX Scene Builder UpdateReviewed byKevin RushforthEndorsed byRichard BairCreated2014/05/16 18:55Updated2016/06/07 23:34Issue8043344Summary
+Enhance existing JavaFX controls to support assistive technologies and
+provide a public API so that developers can write their own accessible
+controls.
+Motivation
+Accessibility technology is provided by most operating systems to help
+users with disabilities or special needs more easily operate their
+computers.  For example, a user who is having trouble seeing the screen
+might invoke a screen reader to read aloud the items in a list box.
+Accessibility is a key feature of any widget toolkit and is often a hard
+requirement before a technology can be adopted by government or industry.
+Description
+When we talk about accessibility, most of the time we are referring to
+the screen reader.  This is the area where the majority of the work is
+needed.  In addition to screen-reader support, all controls must be
+traversable using the keyboard.  Further, a special high-contrast mode
+must be supported that makes controls more visible to users.
+Accessibility is challenging to implement in a widget toolkit because it
+often touches many different software layers.  In JavaFX, the Glass layer
+is an abstraction for the operating system.  The Prism layer puts pixels
+on the screen while the Quantum layer knits Glass and Prism together.
+The Graphics component provides a scene graph and other functionality
+above Glass and Prism.  Controls are built on top of these layers.  All
+of these layers will need to be modified to implement accessibility in
+JavaFX.
+Native code is required to interface with operating-system accessibility
+APIs.  The native APIs differ across operating systems.  This requires a
+layer of abstraction either in native code or in Java, and an internal
+API with different implementations to access native code.  In JavaFX
+terms, the same way that Glass wraps native concepts, such as a top level
+window, it must also wrap accessible concepts such as "the selection in a
+control has changed".  This internal API must be the same for clients of
+Glass such as Quantum, but the implementation is vastly different.
+Each JavaFX control, and the various different concepts it implements,
+must be surfaced to the screen reader.  This can cause an explosion of
+the API.  To put this in JavaFX Glass terms, Glass wraps native top-level
+windows but does not attempt to wrap native controls such as the native
+table.  Accessibility must expose the concepts and behavior of a large
+set of controls.  Attributes of each unique control must be modeled in
+Glass.  For example, all table-like controls must be selectable and
+traversable and indicate when interesting properties, such as selection,
+have changed.  Glass is, essentially, providing a portable API to native
+functionality which is always a tricky thing to do (see attempts by the
+widget toolkits AWT and SWT).  Fortunately, the number of attributes that
+must be exposed per control is considerably smaller than the complete API
+of a typical native control.
+Accessibility has the further requirement that custom controls written by
+third parties must also be accessible.  This requires the FX API to
+indicate which parts of a custom control represent the row in a table or
+the selection in a text control.  The Accessibility API is used by both
+built-in and custom controls.
+The following links describe a very early prototype that is already in
+progress:
+Keyboard navigation,
+accessibility exploration.
+Testing
+It is very difficult to automate testing for screen readers.  Therefore,
+testing is likely to be intensive and manual.  No special software is
+required to test accessibility because assistive support such as screen
+readers is built into the platforms.  Sometimes the platform technologies
+are augmented or replaced by offerings from third party
+assistive-technology vendors.  These vendors are expected to ensure that
+their respective technologies work.  JavaFX will implement the standard
+operating-system API so no special shared library such as the Java Access
+Bridge is required.  Third-party programs that use the standard API will
+work, provided that they use the API in a manner that is consistent and
+compatible with their built-in native counterparts.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

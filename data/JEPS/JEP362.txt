@@ -1,0 +1,78 @@
+JEP 362: Deprecate the Solaris and SPARC PortsJEP 362: Deprecate the Solaris and SPARC PortsOwnerMikael VidstedtTypeFeatureScopeImplementationStatusClosed / DeliveredRelease14Discussionjdk dash dev at openjdk dot java dot netEffortSDurationSRelates toJEP 381: Remove the Solaris and SPARC PortsReviewed byBrian Goetz, Mark Reinhold, Stuart Marks, Vladimir KozlovEndorsed byMark ReinholdCreated2019/09/26 20:05Updated2021/08/27 23:59Issue8231554Summary
+Deprecate the Solaris/SPARC, Solaris/x64, and Linux/SPARC ports, with the
+intent to remove them in a future release.
+Goals
+
+
+Enhance the build system to issue an error message when an attempt is
+made to configure a build for one of the deprecated ports.  The error
+message will be suppressible via a new configuration option.
+
+
+Mark the ports, and related port-specific features, as deprecated for
+removal in the relevant JDK documentation.
+
+
+Non-Goals
+It is not a goal of this JEP to change the status of the affected ports
+in any prior release.  The earliest release to which this JEP could be
+targeted is JDK 14.
+Motivation
+Dropping support for these ports will enable contributors in the OpenJDK
+Community to accelerate the development of new features that will move
+the platform forward.
+Description
+Build-configuration changes
+An attempt to configure a Solaris and/or SPARC build will produce the
+following output:
+$ bash ./configure
+...
+checking compilation type... native
+configure: error: The Solaris and SPARC ports are deprecated and may be removed in a future release. \
+Use --enable-deprecated-ports=yes to suppress this error.
+configure exiting with result code 1
+$
+The new build-configuration option --enable-deprecated-ports=yes will
+suppress the error and continue:
+$ bash ./configure --enable-deprecated-ports=yes
+...
+checking compilation type... native
+configure: WARNING: The Solaris and SPARC ports are deprecated and may be removed in a future release.
+...
+Build performance summary:
+* Cores to use:   32
+* Memory limit:   96601 MB
+
+The following warnings were produced. Repeated here for convenience:
+WARNING: The Solaris and SPARC ports are deprecated and may be removed in a future release.
+$
+The error/warning will be issued when configuring a build for Solaris and SPARC (including Solaris/SPARC, Solaris/x64, Linux/SPARC).
+Solaris-specific features deprecated for removal
+
+The OracleUcrypto JCE Provider in the jdk.crypto.ucrypto module
+(8234870)
+The jdk.net.SocketFlow socket option
+(8234871)
+
+Alternatives
+Just as with JEP 291 (Deprecate the CMS Garbage Collector) and
+JEP 335 (Deprecate the Nashorn JavaScript Engine), an alternative
+is for a set of credible developers to express a clear desire to maintain these
+ports going forward.  If that happens before this JEP is integrated then this
+JEP can be withdrawn.  If that happens after this JEP is integrated, but before
+the ports are removed, then a follow-on JEP can revert the deprecation.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

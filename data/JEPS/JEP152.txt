@@ -1,0 +1,62 @@
+JEP 152: Crypto Operations with Network HSMsJEP 152: Crypto Operations with Network HSMsOwnerVincent RyanTypeFeatureScopeSEStatusClosed / WithdrawnComponentsecurity-libs / javax.cryptoDiscussionsecurity dash dev at openjdk dot java dot netEffortMDurationMEndorsed byBrian GoetzCreated2011/08/31 20:00Updated2024/07/25 20:26Issue8046142Summary
+Improve support for Hardware Security Modules (HSMs) by choosing crypto
+providers based upon key metadata and by supporting functions such as
+key-zeroing and atomic generate-and-set operations.
+Goals
+
+
+Enable the JCE framework to select a crypto provider based on the
+supplied key.
+
+
+Enable lifecycle metadata to be associated with a key.
+
+
+Enable deleted keys to be explicitly zeroed.
+
+
+Motivation
+The current crypto-provider ordering mechanism is too coarse grained --
+it moves all crypto operations to the HSM provider.  This does not work
+well for network HSMs because it is expensive to move all the data across
+the network just to do a crypto operation on it -- especially since this
+network channel is usually over SSL, so the data requires an additional
+round of encryption and decryption in software.
+Description
+Currently, crypto providers have no way to determine which provider
+generated a key.  Consequently, before performing a crypto operation, the
+JCE framework cycles through each of the providers listed in the security
+policy until successful.  To eliminate this inefficient behaviour we need
+to introduce a mechanism to associate the provider that generated a key
+with the key itself.  That way, the framework can inspect the key to
+immediately determine the correct provider.
+A beneficial side-effect of this enhancement is that it introduces a
+mechanism to override the default ordering of providers, on a per-key
+basis. This is useful when several providers offering similar algorithms
+have been configured for the platform.
+Alternatives
+The only alternative at the moment is to explicitly hardcode the required
+crypto provider in the application code. This approach is unwieldly,
+inflexible and does not scale well.
+Testing
+Access to a variety of HSMs may be required for validation and testing.
+Impact
+
+Compatibility: Minimal
+Documentation: Minimal; need to document the new behaviour
+
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

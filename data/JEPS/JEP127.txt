@@ -1,0 +1,64 @@
+JEP 127: Improve Locale Data Packaging and Adopt Unicode CLDR DataJEP 127: Improve Locale Data Packaging and Adopt Unicode CLDR DataOwnerNaoto SatoTypeFeatureScopeJDKStatusClosed / DeliveredRelease8Componentcore-libs / java.util:i18nDiscussioni18n dash dev at openjdk dot java dot netEffortMDurationLEndorsed byBrian GoetzCreated2011/07/15 20:00Updated2024/07/12 11:25Issue8046117Summary
+Create a tool to convert LDML (Locale Data Markup Language) files into a format
+usable directly by the runtime library, define a way to package the results
+into modules, and then use these to incorporate the de-facto standard locale
+data published by the Unicode Consortium's CLDR project into the JDK.
+Description
+
+
+Develop a tool to generate locale data files for the runtime from the LDML
+format, assuming that interpreting LDML at runtime isn't feasible due to
+performance constraints.  The output file format shall be opaque so as to
+allow for future extensions.
+
+
+Develop a mechanism to package and install locale data in the form of
+modules.
+
+
+Support some locale elements from underlying platforms.  For example, if
+the user preference for the date format specifies the Japanese calendar
+then the Java runtime should use that information to select the Japanese
+calendar as the default calendar.  (See 6337471: desktop/system locale
+preferences support)
+
+
+Provide a mechanism to manage the user's locale data preference through
+some kind of UI, in an application (through an SPI), or at the OS level
+(e.g., through the Java control panel in Windows).
+
+
+Testing
+Need to verify that the installed locale data is correctly returned via
+locale-sensitive APIs such as DateFormat/NumberFormat, etc.
+Risks and Assumptions
+Since the JDK's collation API does not yet support the Unicode Collation
+Algorithm, on which LDML is based, collation data contained in LDML files will
+not be supported.
+Impact
+
+
+Compatibility: Some of the locale data in CLDR won't be compatible with the
+JDK's own locale data.  There should be some mechanism for users to specify
+their preference.
+
+
+Localization: Developers working on localization will be able to add/modify
+locale data from CLDR in an established way.
+
+
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

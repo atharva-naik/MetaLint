@@ -1,0 +1,47 @@
+JEP 291: Deprecate the Concurrent Mark Sweep (CMS) Garbage CollectorJEP 291: Deprecate the Concurrent Mark Sweep (CMS) Garbage CollectorOwnerJon MasamitsuTypeFeatureScopeJDKStatusClosed / DeliveredRelease9Componenthotspot / gcDiscussionhotspot dash gc dash dev at openjdk dot java dot netRelates toJEP 363: Remove the Concurrent Mark Sweep (CMS) Garbage CollectorReviewed byMikael VidstedtCreated2015/11/11 23:08Updated2020/04/06 21:19Issue8142518Summary
+Deprecate the Concurrent Mark Sweep (CMS) garbage collector, with the
+intent to stop supporting it in a future major release.
+Goals
+Accelerate the development of other garbage collectors in HotSpot.
+Motivation
+Dropping support for CMS and then removing the CMS code, or at least more
+thoroughly segregating it, will reduce the maintenance burden of the GC
+code base and accelerate new development.  The G1 garbage collector is
+intended, in the long term, to be a replacement for most uses of CMS.
+Description
+Deprecate CMS so that a warning message is issued when it is requested
+on the command line, via the -XX:+UseConcMarkSweepGC option.
+This JEP does not specify the major release in which support for CMS
+will be dropped.  The decision of when to do that will be informed by
+the extent to which the G1 collector proves to be a suitable replacement
+for CMS.  In the meantime, CMS users are encouraged to migrate to the G1
+collector (-XX:+UseG1GC).
+Testing
+Verify that the intended deprecation message is emitted when the CMS
+collector is requested.
+Risk and Assumptions
+
+
+For some applications CMS is a very good fit and might always
+outperform G1.
+
+
+When support of CMS is ended, CMS will not be available in new
+releases.
+
+
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

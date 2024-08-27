@@ -1,0 +1,31 @@
+JEP 242: JVM Trace Events for Failed AllocationsJEP 242: JVM Trace Events for Failed AllocationsOwnerMarcus LarssonTypeFeatureScopeJDKStatusClosed / DeliveredRelease8u60Componenthotspot / gcDiscussionhotspot dash dev at openjdk dot java dot netEffortMDurationMReviewed byMikael VidstedtEndorsed byMikael VidstedtCreated2014/10/10 02:37Updated2015/06/25 17:29Issue8060092Summary
+Add trace events to expose information about threads that trigger
+garbage-collection operations and threads that are waiting for such
+operations to complete.
+Description
+We will define one new trace event.  This event will be sent by threads for
+which an allocation has failed such that garbage collection is now
+required.
+In the case of multiple threads triggering GCs at the same time, every
+thread will send the event.  Only one of them will succeed in
+triggering a GC, however, and that thread will send a garbage collection
+event.  This way one can trace the information about allocations waiting
+on a GC by looking at the allocation-requiring-gc events (the new event)
+preceding the garbage collection event.
+The event will contain the allocation size and the id of the pending GC operation.
+The performance impact of generating these events will be negligible.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

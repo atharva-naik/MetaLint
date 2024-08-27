@@ -1,0 +1,167 @@
+JEP 325: Switch Expressions (Preview)JEP 325: Switch Expressions (Preview)AuthorBrian GoetzOwnerJan LahodaTypeFeatureScopeSEStatusClosed / DeliveredRelease12Componentspecification / languageDiscussionamber dash dev at openjdk dot java dot netEffortMDurationMRelates toJEP 361: Switch ExpressionsJEP 354: Switch Expressions (Second Preview)Reviewed byAlex Buckley, Brian GoetzEndorsed byBrian GoetzCreated2017/12/04 08:56Updated2022/03/11 20:22Issue8192963Summary
+Extend the switch statement so that it can be used as either a statement or an expression, and that both forms can use either a "traditional" or "simplified" scoping and control flow behavior. These changes will simplify everyday coding, and also prepare the way for the use of pattern matching (JEP 305) in switch. This is a preview language feature in JDK 12.
+Please note: this JEP is superseded by JEP 354, which targets JDK 13.
+Motivation
+As we prepare to enhance the Java programming language to support pattern matching (JEP 305), several irregularities of the existing switch statement -- which have long been an irritation to users -- become impediments. These include the default control flow behavior (fall through) of switch blocks, the default scoping of switch blocks (the block is treated as one single scope) and that switch works only as a statement, even though it is commonly more natural to express multi-way conditionals as expressions.
+The current design of Java's switch statement follows closely languages such as C and C++, and supports fall-through semantics by default. Whilst this traditional control flow is often useful for writing low-level code (such as parsers for binary encodings), as switch is used in higher-level contexts, its error-prone nature starts to outweigh its flexibility.
+For example, in the following code, the many break statements make it unnecessarily verbose, and this visual noise often masks hard to debug errors, where missing break statements mean that accidental fall-through occurs.
+switch (day) {
+    case MONDAY:
+    case FRIDAY:
+    case SUNDAY:
+        System.out.println(6);
+        break;
+    case TUESDAY:
+        System.out.println(7);
+        break;
+    case THURSDAY:
+    case SATURDAY:
+        System.out.println(8);
+        break;
+    case WEDNESDAY:
+        System.out.println(9);
+        break;
+}
+We propose to introduce a new form of switch label, written "case L ->" to signify that only the code to the right of the label is to be executed if the label is matched. For example, the previous code can now be written:
+switch (day) {
+    case MONDAY, FRIDAY, SUNDAY -> System.out.println(6);
+    case TUESDAY                -> System.out.println(7);
+    case THURSDAY, SATURDAY     -> System.out.println(8);
+    case WEDNESDAY              -> System.out.println(9);
+}
+(This example also uses multiple case labels: we propose to support multiple comma-separated labels in a single switch label.)
+The code to the right of a "case L ->" switch label is restricted to be an expression, a block, or (for convenience) a throw statement. This has the pleasing consequence that should an arm introduce a local variable, it must be contained in a block and thus not in scope for any of the other arms in the switch block. This eliminates another annoyance with "traditional" switch blocks where the scope of a local variable is the entire switch block.
+switch (day) {
+    case MONDAY:
+    case TUESDAY:
+        int temp = ...
+        break;
+    case WEDNESDAY:
+    case THURSDAY:
+        int temp2 = ...     // Why can't I call this temp?
+        break;
+    default:
+        int temp3 = ...     // Why can't I call this temp?
+}
+Many existing switch statements are essentially simulations of switch expressions, where each arm either assigns to a common target variable or returns a value:
+int numLetters;
+switch (day) {
+    case MONDAY:
+    case FRIDAY:
+    case SUNDAY:
+        numLetters = 6;
+        break;
+    case TUESDAY:
+        numLetters = 7;
+        break;
+    case THURSDAY:
+    case SATURDAY:
+        numLetters = 8;
+        break;
+    case WEDNESDAY:
+        numLetters = 9;
+        break;
+    default:
+        throw new IllegalStateException("Wat: " + day);
+}
+Expressing this as a statement is roundabout, repetitive, and error-prone. The author meant to express that we should compute a value of numLetters for each day. It should be possible to say that directly, using a switch expression, which is both clearer and safer:
+int numLetters = switch (day) {
+    case MONDAY, FRIDAY, SUNDAY -> 6;
+    case TUESDAY                -> 7;
+    case THURSDAY, SATURDAY     -> 8;
+    case WEDNESDAY              -> 9;
+};
+In turn, extending switch to support expressions raises some additional needs, such as extending flow analysis (an expression must always compute a value or complete abruptly), and allowing some case arms of a switch expression to throw an exception rather than yield a value.
+Description
+In additional to "traditional" switch blocks, we propose to add a new "simplified" form, with new "case L ->" switch labels. If a label is matched, then only the expression or statement to the right of an arrow label is executed; there is no fall through. For example, given the method:
+static void howMany(int k) {
+    switch (k) {
+        case 1 -> System.out.println("one");
+        case 2 -> System.out.println("two");
+        case 3 -> System.out.println("many");
+    }
+}
+The following code:
+howMany(1);
+howMany(2);
+howMany(3);
+results in the following output:
+one
+two
+many
+We will extend the switch statement so that it can additionally be used as an expression. In the common case, a switch expression will look like:
+T result = switch (arg) {
+    case L1 -> e1;
+    case L2 -> e2;
+    default -> e3;
+};
+A switch expression is a poly expression; if the target type is known, this type is pushed down into each arm. The type of a switch expression is its target type, if known; if not, a standalone type is computed by combining the types of each case arm.
+Most switch expressions will have a single expression to the right of the "case L ->" switch label. In the event that a full block is needed, we have extended the break statement to take an argument, which becomes the value of the enclosing switch expression.
+int j = switch (day) {
+    case MONDAY  -> 0;
+    case TUESDAY -> 1;
+    default      -> {
+        int k = day.toString().length();
+        int result = f(k);
+        break result;
+    }
+};
+A switch expression can, like a switch statement, also use a "traditional" switch block with "case L:" switch labels (implying fall-through semantics). In this case values would be yielded using the break with value statement:
+int result = switch (s) {
+    case "Foo": 
+        break 1;
+    case "Bar":
+        break 2;
+    default:
+        System.out.println("Neither Foo nor Bar, hmmm...");
+        break 0;
+};
+The two forms of break (with and without value) are analogous to the two forms of return in methods. Both forms of return terminate the execution of the method immediately; in a non-void method, additionally a value must be provided which is yielded to the invoker of the method. (Ambiguities between the break expression-value and break label forms can be handled relatively easily.)
+The cases of a switch expression must be exhaustive; for any possible value there must be a matching switch label. In practice this normally means simply that a default clause is required; however, in the case of an enum switch expression that covers all known cases (and eventually, switch expressions over sealed types), a default clause can be inserted by the compiler that indicates that the enum definition has changed between compile-time and runtime. (This is what developers do by hand today, but having the compiler insert it is both less intrusive and likely to have a more descriptive error message than the ones written by hand.)
+Furthermore, a switch expression must complete normally with a value, or throw an exception. This has a number of consequences. First, the compiler checks that for every switch label, if it is matched then a value can be yielded.
+int i = switch (day) {
+    case MONDAY -> {
+        System.out.println("Monday"); 
+        // ERROR! Block doesn't contain a break with value
+    }
+    default -> 1;
+};
+i = switch (day) {
+    case MONDAY, TUESDAY, WEDNESDAY: 
+        break 0;
+    default: 
+        System.out.println("Second half of the week");
+        // ERROR! Group doesn't contain a break with value
+};
+A further consequence is that the control statements, break, return and continue, cannot jump through a switch expression, such as in the following:
+z: 
+    for (int i = 0; i < MAX_VALUE; ++i) {
+        int k = switch (e) { 
+            case 0:  
+                break 1;
+            case 1:
+                break 2;
+            default: 
+                continue z; 
+                // ERROR! Illegal jump through a switch expression 
+        };
+    ...
+    }
+As a target of opportunity, we may expand switch to support switching on primitive types (and their box types) that have previously been disallowed, such as float, double, and long.
+Dependencies
+Pattern Matching (JEP 305) depends on this JEP.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

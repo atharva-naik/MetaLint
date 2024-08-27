@@ -1,0 +1,76 @@
+JEP 256: BeanInfo AnnotationsJEP 256: BeanInfo AnnotationsAuthorSergey MalenkovOwnerSergey BylokhovTypeFeatureScopeJDKStatusClosed / DeliveredRelease9Componentclient-libs / java.beansDiscussionbeans dash dev at openjdk dot java dot netEffortLDurationLReviewed byKevin Rushforth, Richard BairEndorsed byKevin RushforthCreated2014/06/04 16:07Updated2017/02/23 16:49Issue8044826Summary
+Replace @beaninfo Javadoc tags with proper annotations, and process
+those annotations at run time to generate BeanInfo classes dynamically.
+Motivation
+Simplify the creation of custom BeanInfo classes and enable the
+modularization of the client library.
+Description
+Most BeanInfo classes are automatically generated at runtime, but many
+Swing classes still generate BeanInfo classes from @beaninfo Javadoc
+tags at compile time.  We propose to replace the @beaninfo tags with
+the following annotations, and extend the existing introspection
+algorithm to interpret them:
+package java.beans;
+public @interface JavaBean {
+    String description() default "";
+    String defaultProperty() default "";
+    String defaultEventSet() default "";
+}
+
+package java.beans;
+public @interface BeanProperty {
+    boolean bound() default true;
+    boolean expert() default false;
+    boolean hidden() default false;
+    boolean preferred() default false;
+    boolean visualUpdate() default false;
+    String description() default "";
+    String[] enumerationValues() default {};
+}
+
+package javax.swing;
+public @interface SwingContainer {
+    boolean value() default true;
+    String delegate() default "";
+}
+For further detail, see the Javadoc for
+JavaBean,
+BeanProperty, and
+SwingContainer.
+These annotations will set the corresponding feature attributes during
+BeanInfo generation at run time.  It will be easier for developers to
+specify these attributes directly in Bean classes rather than create a
+separate BeanInfo class for every Bean class.  It will also allow the
+removal of the automatically-generated classes, which will make it easier
+to modularize the client library.
+Testing
+We'll need to verify that the new introspection algorithm behaves as
+expected.  We'll also need to verify that the new introspection algorithm
+doesn't break backward compatibility, or else ensure that cases in which
+compatibility is broken are rare.
+Risks and Assumptions
+
+
+The new introspection algorithm may behave somewhat differently, but
+we do not expect any serious backward incompatibilities.
+
+
+We do not expect any performance degradation.  The refactoring of the
+introspection algorithm might improve performance.
+
+
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

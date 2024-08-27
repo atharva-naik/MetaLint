@@ -1,0 +1,924 @@
+JEP 401: Value Classes and Objects (Preview)JEP 401: Value Classes and Objects (Preview)OwnerDan SmithTypeFeatureScopeSEStatusDraftComponentspecificationDiscussionvalhalla dash dev at openjdk dot java dot netEffortXLDurationXLReviewed byBrian GoetzCreated2020/08/13 19:31Updated2024/07/25 00:38Issue8251554
+Summary
+Enhance the Java Platform with value objects, class instances that have
+only final fields and lack object identity.
+This is a preview language and VM feature.
+Goals
+
+
+Allow developers to opt in to a programming model for simple values in
+which objects are distinguished solely by their field values, much as the
+int value 3 is distinguished from the int value 4.
+
+
+Migrate popular classes that represent simple values in the JDK, such as
+Integer, to this programming model. Support compatible migration of
+user-defined classes.
+
+
+Maximize the freedom of the JVM to encode simple values in ways that improve
+memory footprint, locality, and garbage collection efficiency.
+
+
+Non-Goals
+
+
+It is not a goal to introduce a struct feature in the Java language.
+Java continues to operate on just two kinds of data: primitives and objects.
+
+
+It is not a goal to change the treatment of primitive types. Primitive types
+behave like value classes in many ways, but are a distinct concept. A
+separate JEP will provide enhancements to make primitive types more
+class-like and compatible with generics.
+
+
+It is not a goal to guarantee any particular optimization strategy or memory
+layout. This JEP enables many potential optimizations; only some will be
+implemented initially. Future JEPs will pursue optimizations related to
+null exclusion and generic specialization.
+
+
+It is not a goal to automatically treat existing classes as value classes,
+even if they meet the requirements for how value classes are declared
+and used. The behavioral changes require an explicit opt-in.
+
+
+It is not a goal to "fix" the == operator so that programmers can use it
+in place of equals. This JEP redefines == only as much as necessary to
+cope with a new kind of identity-free object. The usual advice to compare
+objects in most contexts using the equals method still applies.
+
+
+Motivation
+Java developers often need to represent simple domain values: the shipping
+address of an order, a log entry from an application, and so on. To do this,
+developers typically declare classes whose main purpose is to "wrap" data,
+stored in final fields. For example, a simple RGB color value could be
+represented with a record, whose fields are
+final by default:
+var orange = new Color(237, 139, 0);
+var blue = new Color(0, 115, 150);
+...
+record Color(byte red, byte green, byte blue) {
+    public Color(int r, int g, int b) {
+        this(checkByte(r), checkByte(g), checkByte(b));
+    }
+    
+    private static byte checkByte(int x) {
+        if (x < 0 || x > 255) throw new IllegalArgumentException();
+        return (byte) (x & 0xff);
+    }
+
+    // Provided automatically: red(), green(), blue(),
+    // toString(), equals(Object), hashCode()
+
+    public Color mix(Color that) {
+        return new Color(avg(red, that.red),
+                         avg(green, that.green),
+                         avg(blue, that.blue));
+    }
+    
+    private static byte avg(byte b1, byte b2) {
+        return (byte) (((b1 & 0xff) + (b2 & 0xff)) / 2);
+    }
+}
+Developers will regard the "essence" of a Color object as a red-green-blue
+triple, but to Java, the essence of an object is its identity. Each execution
+of new Color(...) creates an object with a unique identity, making it
+distinguishable from every other object in the system. An object's identity
+means that developers can share references to an object between different parts
+of a program, and changes to an object's fields in one part of the program can
+be observed in other parts.
+Object identity is problematic for simple domain values
+Object identity is at best irrelevant and at worst harmful to simple domain values:
+
+
+Simple domain values are commonly shared throughout a program, but their
+fields are final, so different parts of a program that have references to a
+given object will never observe any changes in it.
+
+
+While the == operator should not generally be used to compare objects in
+normal program code, programs that use it can observe the distinct identities
+of the objects, regardless of their "essence". For example, two Color
+objects that represent the same red-green-blue triple are not == if they
+were created by different executions of new Color(...)—a frequent source
+of confusion for developers.
+var c = new Color(255, 0, 0);
+var d = c.mix(c); // creates a new Color for the same red-green-blue triple
+if (c == d) ... // false, even though c.equals(d)
+
+
+Confusion around == for objects is so widespread that Java gives special
+treatment to objects of fundamental classes:
+
+
+String literals are
+interned
+automatically. This means that a string literal with a given character
+sequence always produces the same String object, no matter where the string
+literal is used. For example, given String s = "hello"; and String t = "hello";, only one String object for "hello" is created, so
+if (s == t) ... is true.
+
+
+Small integer literals are
+autoboxed
+in a predictable way. This means that a given integer literal always produces
+the same Integer object, no matter where the integer literal is used. For
+example, given Integer x = 5; and Integer y = 5;, only one Integer
+object for 5 is created, so if (x == y) ... is true.
+
+
+This special treatment minimizes the role of object identity for string literals
+and integer literals, but fails to address the confusion around == for
+strings and integers in general. The
+most viewed Java question on StackOverflow
+concerns the use of == with String objects, and
+another high-visibility question
+concerns the use of == with Integer objects.
+This sort of confusion could be avoided for simple domain values if the language
+did not insist that separately-created objects with the same "essence" have
+distinct identities.
+Object identity is expensive at run time
+Java's requirement that every object has identity, even if simple domain values
+don't want it, means worse performance. Typically, the JVM has to allocate
+memory for each newly created object, distinguishing it from every object
+already in the system, and reference that memory location whenever the object
+is used or stored. This causes the garbage collector to work harder, taking
+cycles away from the application, and it means worse [locality of reference]
+(https://en.wikipedia.org/wiki/Locality_of_reference)—for example, an array
+may refer to objects scattered around memory, frustrating the CPU cache as the
+program iterates over the array.
+Modern JVMs have an optimization called
+escape analysis
+that can mitigate these performance concerns. For example, instead of
+allocating memory for a Color x with three byte fields, the JVM can pass
+the three byte values around the program directly. An inlined call to
+x.mix(...) could run without any memory being allocated, even though the mix
+method performs new Color(...). This optimization is valid as long as the
+code never depends on the identity of the object in question. Unfortunately, if
+the program performs an identity-sensitive operation such as x == y, or if the
+object might "escape" into code that the optimization can't observe, the
+optimization must be unraveled.
+In some application domains, developers routinely program for speed by creating
+as few objects as possible, thus de-stressing the garbage collector and
+improving locality. For example, they might encode their RGB colors as three
+byte values rather than as Color objects. Unfortunately, this approach gives
+up the functionality of classes that makes Java code so maintainable:
+meaningful names, private state, data validation by constructors, convenience
+methods, etc. A developer operating on colors represented as byte values might
+accidentally interpret the bits with a BGR encoding, swapping the red and blue
+components and corrupting the resulting image.
+Programming without identity
+Trillions of Java objects are created every day, each one bearing a unique
+identity. We believe the time has come to let Java developers choose which
+objects in the program need identity, and which do not. A class like Color
+that represents simple domain values could opt out of identity, so that there
+would never be two distinct Color objects representing the HTML
+color purple, just as there are never two distinct int values that both
+represent the number 4.
+By opting out of identity, developers are opting in to a programming model that
+provides the best of both worlds: the abstraction of classes with the
+simplicity and performance benefits of primitives.
+Important classes in the JDK, such as the wrapper classes used for boxing, are
+already designed to be "value-based", meaning they discourage
+depending on the identity of instances. With this JEP, these classes can opt
+out of identity entirely. For example, in the case of the class Integer,
+instances will have no identity, == will compare all Integer objects by
+value, and the run-time overhead of the Integer type can dramatically shrink.
+Even when stored in arrays, Integer[] can approach the efficiency of int[].
+Description
+A value object is an object that does not have identity. A value object is an
+instance of a value class. Two value objects are the same according to ==
+if they have the same field values, regardless of when or how they were
+created. Two variables of a value class type may hold references that point to
+different memory locations, but refer to the same value object—much like two
+variables of type int may hold the same int value.
+An identity object is an object that does have identity: a unique property
+associated with the object when it is created. Prior to value classes, every
+object in Java was an identity object. Two identity objects are the same
+according to == if they have the same identity. Two variables of an identity
+class type refer to the same identity object only if they hold references
+pointing to the same memory location.
+At run time, the use of value objects may be optimized in ways that are
+difficult or impossible for identity objects. This is because value objects,
+untethered from any canonical memory location, can be duplicated, re-encoded, or
+re-used whenever it is convenient for the JVM to do so. This freedom allows for
+smaller memory footprint, fewer memory allocations, and better data locality.
+Existing classes that represent simple domain values and that have followed best
+practices to avoid identity dependencies can be easily migrated to be value
+classes, with minimal compatibility impact. This JEP migrates a handful of
+commonly-used classes in the Java Platform, including the primitive wrapper
+classes such as Integer.
+Value classes are a preview language feature, disabled by default.
+To try the examples below in JDK NN you must enable preview features:
+
+
+Compile the program with javac --release NN --enable-preview Main.java and
+run it with java --enable-preview Main; or,
+
+
+When using the source code launcher, run
+the program with java --enable-preview Main.java; or,
+
+
+When using jshell, start it with
+jshell --enable-preview.
+
+
+Programming with value objects
+Programs create value objects by instantiating a class that has been declared
+with the value modifier. In most respects, value objects behave just like any
+other object, but there are some special behaviors that programmers should be
+aware of.
+Value classes
+A class that has no need for identity-related features can opt out of those
+features with the value modifier. Classes with the value modifier
+are value classes; classes without the modifier are identity classes.
+The Color record introduced earlier could be declared a value record. Nothing
+else about the declaration changes.
+value record Color(byte red, byte green, byte blue) {
+    public Color(int r, int g, int b) {
+        this(checkByte(r), checkByte(g), checkByte(b));
+    }
+    
+    private static byte checkByte(int x) {
+        if (x < 0 || x > 255) throw new IllegalArgumentException();
+        return (byte) (x & 0xff);
+    }
+
+    public Color mix(Color that) {
+        return new Color(avg(red, that.red),
+                         avg(green, that.green),
+                         avg(blue, that.blue));
+    }
+    
+    private static byte avg(byte b1, byte b2) {
+        return (byte) (((b1 & 0xff) + (b2 & 0xff)) / 2);
+    }
+}
+A simple class representing US dollar currency values (to two decimal places)
+might also be a good value class candidate. In this case, the author might
+prefer to declare a regular (non-record) class to more closely control the
+internal state. But because the class does not depend on identity-sensitive
+features like unique instance creation, field mutation, or synchronization, it
+can be declared a value class.
+value class USDCurrency implements Comparable<USDCurrency> {
+    private int cs; // implicitly final
+    private USDCurrency(int cs) { this.cs = cs; }
+
+    public USDCurrency(int dollars, int cents) {
+        this(dollars * 100 + (dollars < 0 ? -cents : cents));
+    }
+
+    public int dollars() { return cs/100; }
+    public int cents() { return Math.abs(cs%100); }
+
+    public USDCurrency plus(USDCurrency that) {
+        return new USDCurrency(cs + that.cs);
+    }
+
+    public int compareTo(USDollars that) { ... }
+    public String toString() { ... }
+}
+The instance fields of a value class are implicitly final. (Special rules
+apply to the initialization of value class fields in constructors, as described
+later.) The instance methods of a value class must not be synchronized.
+Many abstract classes have no need for identity-related features and so are also
+good value class candidates. The class java.lang.Number, for example, has no
+fields, nor any code that depends on identity-sensitive features.
+abstract value class Number implements Serializable {
+    public abstract int intValue();
+    public abstract long longValue();
+    public byte byteValue() { return (byte) intValue(); }
+    ...
+}
+The following rules apply to subclassing relationships involving value classes:
+
+
+A concrete value class is implicitly final and may have no subclasses.
+
+
+An abstract value class has chosen not to depend on identity, but this choice
+does not constrain its subclasses: the abstract class may have both value and
+identity subclasses. (And so a variable of the abstract value class type may
+or may not refer to a value object.)
+
+
+Identity classes may only be extended by other identity classes. Once a class
+has expressed a dependency on object identity, its subclasses cannot undo
+this dependency. (Thus, a variable of an identity class type always refers to
+an identity object.)
+
+
+Interfaces may be extended by both value and identity classes, and have no way
+to express a dependency on object identity.
+
+
+The class Object, which sits at the top of the class hierarchy, is
+considered an identity class and has identity instances, but in most respects
+behaves more like an interface and permits value subclasses.
+
+
+Beyond the constraints outlined in this section, a value class declaration is
+just like any other class declaration. The class can declare methods and
+implement interfaces. Users of the class will not typically notice anything
+unusual about the class—aside from identity-sensitive behaviors, everything
+about the objects is the same.
+// value objects are created with 'new'
+USDCurrency d1 = new USDCurrency(100,25);
+
+// value class types may be 'null'
+USDCurrency d2 = null;
+
+// method invocations work as usual
+if (d1.dollars() >= 100)
+    d2 = d1.plus(new USDCurrency(-100,0));
+
+// objects can be viewed as superclass instances
+Object o = d2;
+String s = o.toString(); // "$0.25"
+
+// objects can be viewed as interface instances
+Comparable<USDCurrency> c = d2;
+int i = c.compareTo(d1); // -1
+Value object construction
+Field mutation is closely tied to identity: an object whose field is being
+updated is the same object before and after the update, so the object needs
+some way to be uniquely identified separately from the state of its fields.
+Usually, object identity addresses this need.
+But field mutation is also a necessary part of value object construction: the
+fields of a value object are always final, yet they still start out storing
+zeros and nulls, and some code must be executed to update this state to an
+appropriate value. Without relying on object identity, JVMs are responsible for
+managing some sort of value object "buffer" that can be written into to set up
+the object. Value class constructors do not need to use any special new syntax,
+but they are required to carefully initialize the class's fields without
+exposing developers to observable field mutation and object identity.
+To concretely illustrate the problem, recall that final fields of identity
+classes may be initialized at any point during construction, and nothing
+prevents attempts to read those fields beforehand, revealing their
+pre-initialization values. In the following identity class, fields x and y
+are declared final, yet for a short window during construction they can be
+observed to mutate, illustrated by repeatedly logging the sum() value.
+class IdentityTest {
+    final int x;
+    final int y;
+    
+    public int sum() { return x + y; }
+    
+    public IdentityTest(int x, int y) {
+        System.out.println(sum()); // 0
+        this.x = x;
+        System.out.println(sum()); // 1
+        this.y = y;
+        System.out.println(sum()); // 3
+    }
+}
+Were the IdentityTest constructor to share this with another thread, any
+code in that thread would be able to observe an identity-dependent, mutable
+object.
+To avoid this situation, value classes must set all of their instance fields
+before any code has a chance to observe the new instance. Specifically:
+
+
+In an inversion of the usual pattern, the body of a typical value class
+constructor is executed before transferring control to any superclass
+code. These value class constructors may not refer to this, and may not
+invoke the methods or read from the fields of the new instance. As usual,
+all final fields must be initialized by the end of the constructor.
+
+
+Alternatively, a value class may rely on the enhancements of the
+Flexible Constructor Bodies JEP to explicitly indicate,
+via a super(...) call, at what point in the constructor body control should
+be transferred to the superclass. Code that appears before super(...)
+must initialize all of the value class's instance fields; code that appears
+after super(...) may freely refer to this and the members of the new
+instance.
+
+
+In either case, instance field initializers in value classes are always
+executed on entry to the constructor body, and so are subject to the same
+constraints as constructor code that appears before super(...).
+
+
+In the following test, the fields of a value class are mutated during
+construction, much like the identity class above. But the assignments occur
+earlier during construction, and it is impossible to observe any mutation—the
+first opportunity to log the sum() of the fields is after the super() call,
+when all field values have already been set.
+value class ValueTest {
+    final int x;
+    final int y;
+    
+    public int sum() { return x + y; }
+    
+    public ValueTest(int x, int y) {
+        this.x = x;
+        this.y = y;
+        super();
+        System.out.println(sum()); // 3
+    }
+}
+References between objects
+Value class types are reference types. In Java, any code that operates on an
+object is really operating on a reference to that object; member accesses
+must resolve the reference to locate the object (throwing an exception in the
+case of a null reference). Value objects are no different in this respect.
+It might seem odd to talk about references to objects that have no identity,
+since it is natural to think of an object's memory address as the run time
+representation of its identity. Indeed, stable memory addresses are not
+essential for value objects, and JVM implementations will often try to optimize
+away any indirections to the object data. However, when reasoning about a Java
+program, it's best to imagine all objects continuing to be handled and operated
+on via references.
+Objects can store references to other objects in their fields, creating complex
+relationship graphs. There is no restriction on the types of references between
+value and identity objects. The following value class, for example, stores one
+reference to an identity object and two references to value objects. The third
+field, predecessor, recursively references another object of the same value
+class type (or stores null).
+value class Item {
+    private String name; // identity class type
+    private USDCurrency cost; // value class type
+    private Item predecessor; // this value class type
+
+    public Item(String n, USDCurrency c) {
+        this(n, c, null);
+    }
+    
+    public Item(String n, USDCurrency c, Item p) {
+        ...
+    }
+
+    ...
+}
+There is, however, one important limitation on references between objects: due
+to value classes' strict construction requirements, when a value object's
+fields are initialized, they cannot refer back to the object itself—this is
+not yet referenceable at that point. So it is impossible, for example, to
+create an Item whose predecessor is that same Item. More generally, the
+instance fields of a value object can never be used to create a cycle—at least
+one object in any cycle would have to be an identity object.
+Comparing value objects with ==
+The == operator traditionally tests whether two references are the same. But
+this capability depends on object identity: only identity objects can be
+reliably referenced at a stable location.
+With the introduction of value objects, the == operator must instead test
+whether two referenced objects are the same—that is, one is "substitutable"
+for the other. For identity objects, this is just a different way of describing
+the same test. But in the case of value objects, this means testing that the
+objects, wherever located, represent the same value. The result is true if
+the objects being compared belong to the same class and have the same field
+values, and false otherwise. (Fields with primitive types are compared by
+their bit patterns. Other field values—both identity and value objects—are
+recursively compared with ==.)
+// value objects with the same field values are the same
+USDCurrency d1 = new USDCurrency(3,95);
+USDCurrency d2 = new USDCurrency(3,95).plus(new USDCurrency(0,0));
+
+assert d1 == d2; // true
+
+// objects are still the same when viewed as supertypes
+Object o1 = d1;
+Object o2 = d2;
+assert o1 == o2; // true
+
+// identity objects are unique when created separately
+String s1 = "hamburger";
+String s2 = new String(s1); // new identity
+assert s1 != s2; // true
+
+// == recursively compares identity object fields
+assert new Item(s1, d1) != new Item(s2, d1); // true
+
+// == recursively compares value object fields
+assert new Item(s1, d1) == new Item(s1, d2); // true
+Notice three things about the recursive use of ==:
+
+
+Recursion on identity objects does not perform a "deep" equality test. It
+compares identities. The referenced identity object may even be mutated—by,
+say, adding a value to a referenced List—but if two value objects are ==,
+the nested mutation would not impact the == test.
+
+
+Recursion on value objects does perform a deep comparison of the nested
+objects' fields. The resulting number of comparisons is unbounded: if an
+Item has a predecessor, and that Item has a predecessor, and so on,
+using == on the Item may require a full traversal of the chain of
+references. (Fortunately, as noted in the previous section, this chain will
+never be cyclical.)
+
+
+The ability to compare value objects' fields means that a value object's
+private data is a little more exposed than it might be in an identity
+object: someone who wants to determine a value object's field values can
+(with sufficient time and access) guess at those values, create a new class
+instance wrapping their guess, and use == to test whether the guess was
+correct.
+
+
+When declaring a value class, it's important to keep each of these factors in
+mind. In some cases, an identity class may be a better fit.
+The equals method
+While == tests whether two value objects are the same object, the equals
+method tests whether two objects represent the same data. As for identity
+classes, two value objects may be !=, but still be considered by the class
+author to be equal.
+// distinct identity objects may be equal
+String s1 = "hamburger";
+String s2 = new String(s1); // new identity
+assert s1 != s2; // true
+assert s1.equals(s2); // true
+
+// distinct value objects may be equal
+assert new Item(s1, d1) != new Item(s2, d1); // true
+assert new Item(s1, d1).equals(new Item(s2, d1)); // should be true
+The problem of defining what constitutes "the same data" is left to the class
+author when they implement their equals method. For convenience, the default
+Object.equals implementation aligns with ==, testing whether two objects
+are the same; for simple value classes, this is often good enough. Value
+records are able to provide an even more convenient default implementation,
+comparing record components recursively with equals. But these are just
+starting points, and it's ultimately up to the class author to provide an
+appropriate equals implementation.
+When thinking about equals and ==, its important to remember that a value
+object's internal state (the data it stores) is not always the same as
+its external state (the data it represents). An == test compares internal
+state. This is often not what you're after. Instead, the best advice for
+developers in most cases is to use equals whenever they need to compare
+objects.
+In the following example, the value class Substring implements CharSequence.
+A Substring represents a string lazily, without allocating a char[] in
+memory. Naturally, then, two Substring objects should be considered equal
+if they represent the same string, regardless of differences in their internal
+state.
+value class Substring implements CharSequence {
+   private String str;
+   private int start, end;
+
+   public int length() {
+       return end - start;
+   }
+
+   public char charAt(int i) {
+       return str.charAt(start + i);
+   }
+
+   public String toString() {
+       return str.substring(start, end);
+   }
+   
+   public boolean equals(Object o) {
+      return o instanceof Substring && toString().equals(o.toString());
+   }
+}
+
+Substring s1 = new Substring("ionization", 0, 3);
+Substring s2 = new Substring("ionization", 7, 10);
+assert s1 != s2; // true
+assert s1.equals(s2); // true
+The distinction between internal state and external state helps to explain why
+not all value classes are records, and not all records are value classes: records
+are used to opt out of separate internal state, while value classes are used to opt
+out of identity. Each of these choices can be made orthogonally.
+Other identity-sensitive operations
+In addition to ==, a handful of specialized operations supported by the Java
+platform have historically relied on object identity. When encountering a value
+object, these operations behave as follows:
+
+
+System.identityHashCode: The "identity hash code" of a value object is
+computed by combining the hash codes of the value object's fields. The
+default implementation of Object.hashCode continues to return the same
+value as identityHashCode. (Note that, like ==, this hash code exposes
+information about a value object's private fields that might otherwise be
+hidden by an identity object. Developers should be cautious about storing
+sensitive secrets in value object fields.)
+
+
+Synchronization: Value objects do not have synchronization monitors. At
+compile time, the operand of a synchronized statement must not have a
+concrete value class type. At run time, if an attempt is made to synchronize
+on a value object (for example, where the operand of a synchronized
+statement has type Object), an IdentityException is thrown. Invocations
+of the wait and notify methods of Object will similarly fail at run
+time, because they require callers to first synchronize on the object's
+monitor.
+
+
+Garbage collection: Value objects do not have a traditional life cycle—an
+object may already exist before new, and may appear again after it becomes
+unreachable. So operations that manage the end of an object's lifetime are
+not relevant to value objects. A garbage collector will never call the
+finalize method of a value object. The classes of java.lang.ref throw an
+IdentityException when asked to wrap or operate on a value object.
+
+
+For developers who need to dynamically require identity in their own code, an
+IdentityException may be thrown, and the java.util.Objects class provides
+convenience methods hasIdentity and requireIdentity.
+Run-time optimizations for value objects
+Because there is no need to preserve identity, Java Virtual Machine
+implementations have a lot of freedom to encode value objects at run time in
+ways that optimize memory footprint, locality, and garbage collection
+efficiency. Optimization techniques will typically duplicate, re-encode, or
+re-use value objects to achieve these goals. Re-encoding might be useful, for
+example, to copy a value object into a variable that requires fewer memory loads
+when accessing the object's data.
+This section describes abstractly some of the JVM optimization techniques
+implemented by HotSpot. It is not comprehensive or prescriptive, but offers a
+taste of how value objects enable improved performance.
+Value object scalarization
+Scalarization is one important optimization enabled by the lack of identity. A
+scalarized reference to a value object is reduced to its "essence", a set of the
+object's field values without any enclosing container. A scalarized object is
+essentially "free" at run time, having no impact on the normal object allocation
+and garbage collection processes.
+In HotSpot, scalarization is a JIT compilation technique, affecting the
+representation of references to value objects in the bodies and signatures of
+JIT-compiled methods.
+The following illustrates how the JIT compiler might translate the Color.mix
+method to scalarize its input and output. The "essence" of a Color reference
+is 3 bytes, r, g, and b, along with a boolean to indicate whether the
+reference is null—in which case the other 3 bytes can be ignored. (In this
+pseudocode, the notation { ... } refers to a vector of multiple values that
+can be returned from a scalarized method. Importantly, this is purely
+notational: there is no wrapper at run time.)
+// original method:
+public Color mix(Color that) {
+    return new Color(avg(red, that.red),
+                     avg(green, that.green),
+                     avg(blue, that.blue));
+}
+
+// effectively:
+static { boolean, byte, byte, byte }
+    mix(boolean this_null, byte this_r,
+        byte this_g, byte this_b,
+        boolean that_null, byte that_r,
+        byte that_g, byte that_b) {
+           
+     $checkNull(this_null);
+     $checkNull(that_null);
+     return { false,
+              avg(this_r, that_r),
+              avg(this_g, that_g),
+              avg(this_b, that_b) };
+ }
+
+// original invocation:
+new Color(237, 139, 0).mix(new Color(0, 0, 0));
+
+// effectively:
+$mix(false, 237, 139, 0, false, 0, 0, 0);
+JVMs have used similar techniques to scalarize identity objects in
+local code when the JVM is able to prove that an object's identity is never
+used. But scalarization of value objects is more predictable and far-reaching,
+even across non-inlinable method invocation boundaries.
+One limitation of scalarization is that it is not typically applied to a
+variable with a type that is a supertype of a value class type. Notably, this
+includes method parameters of generic code whose erased type is Object.
+Instead, when an assignment to a supertype occurs, a scalarized value object
+must be converted to an ordinary heap object encoding. But this allocation
+occurs only when necessary, and as late as possible.
+Value object heap flattening
+Heap flattening is another important optimization enabled by value objects'
+lack of identity. The "essence" of a reference to a value object is encoded as a
+compact bit vector, without any pointer to a different memory location. This bit
+vector can then be stored directly in heap storage, in a field or an array of a
+value class type.
+Heap flattening is useful because a flattened value object requires less memory
+than an ordinary object on the heap, and because the data is stored locally,
+avoiding expensive cache misses. These benefits can significantly improve some
+programs' memory footprint and execution time.
+To illustrate, an array of Color references could directly store 32-bit
+encodings of the referenced objects. Note that, as for scalarization, an extra
+flag is needed to keep track of null references.
+// original code:
+Color[] cs = new Color[100];
+cs[5] = new Color(237, 139, 0);
+Color c1 = cs[5];
+Color c2 = cs[6];
+
+// effectively:
+int[] cs = new int[100];
+cs[5] = $flatten(false, 237, 139, 0);
+{ boolean c1_null, byte c1_r, byte c1_g, byte c1_b } =
+    $inflate(cs[5]);
+{ boolean c2_null, byte c2_r, byte c2_g, byte c2_b } =
+    $inflate(cs[6]);
+
+// where:
+int $flatten(boolean val_null, byte val_r,
+              byte val_g, byte val_b) {
+    if (val_null) return 0;
+    else return (1 << 24) | (val_r & 0xff << 16) |
+                (val_g & 0xff << 8) | (val_b & 0xff);
+}
+
+{ boolean, byte, byte, byte } $inflate(int vector) {
+    if (vector == 0) return { true, 0, 0, 0 };
+    else return { false,
+                  vector >> 16 & 0xff,
+                  vector >> 8 & 0xff,
+                  vector & 0xff };
+}
+The details of heap flattening will vary, of course, at the discretion of the
+JVM implementation.
+Heap flattening must maintain the integrity of objects. For example, the
+flattened data must be small enough to read and write atomically, or else it may
+become corrupted. On common platforms, "small enough" may mean as few as 64
+bits, including the null flag. So while many small value classes can be
+flattened, classes that declare, say, 2 int fields or a double field, might
+have to be encoded as ordinary heap objects.
+In the future, 128-bit flattened encodings should be possible on platforms that
+support atomic reads and writes of that size. And the
+Null-Restricted Value Types JEP will enable heap flattening for
+even larger value classes in use cases that are willing to opt out of atomicity
+guarantees.
+Migration of existing classes
+Existing classes that represent simple domain values and that have followed best
+practices to avoid identity dependencies can be easily migrated to be value
+classes, with minimal compatibility impact. When preview features are enabled,
+a handful of commonly-used classes in the JDK, outlined below, are migrated to
+be value classes.
+Preparing for migration
+Developers are encouraged to identify and eventually migrate value class
+candidates in their own code. Records and other classes that represent "simple
+domain values" are potential candidates, along with interface-like abstract
+classes.
+The author of an identity class that is intended to become a value class in a
+future release should consider the following:
+
+
+On migration, all instance fields of the class will implicitly be made
+final and will need to be initialized without any reference to this.
+If that presents difficulties, the class may not be be a good migration
+candidate. If there are any non-private, non-final fields, the change
+will need to be coordinated with any users who might attempt to mutate the
+fields.
+
+
+Similarly, a concrete, non-final class will become final on migration.
+If users have been allowed to both extend and create instances of the class,
+the author must choose to either break subclasses (by adding final), break
+instance creations (by adding abstract along with, say, factory methods
+and a private implementation class), or conclude that the class is not a
+good migration candidate.
+
+
+The equals and hashCode methods should be overridden by the class so
+that their results are consistent before and after migration.
+
+
+Users of the class will be able to observe different == behavior after
+migration. If this is a concern, an ideal migration candidate might declare
+private constructors and provide a factory method that explicitly
+advertises the possibility of results that are == to a previous result.
+(See, for example, the Integer.valueOf factory method.)
+
+
+As described in previous sections, the == and identityHashCode operations
+may allow users to guess or infer the values of private fields, and may
+be noticeably slow for value objects that (probably recursively) encode very
+large structures. If these are concerns for the class, it may not be a good
+migration candidate.
+
+
+Attempts to synchronize on instances or use the java.lang.ref API will
+fail after migration. Of course, the class itself should not declare
+synchronized methods or otherwise use these features. There's not much
+that can be done to prevent users from doing so, but it may be helpful to
+advertise the risk in the class's documentation.
+
+
+If the superclass is not Object, it must be made a value class before this
+class can be migrated. All of the considerations in this section apply to
+the superclass.
+
+
+Impact of migration
+In most respects, an identity class that has addressed the risks outlined in the
+previous section can be compatibly made a value class by simply adding the
+value modifier.
+All existing binaries will continue to link successfully. The only new compiler
+errors will be attempts to synchronize on the value class type.
+There are some behavioral changes that users of the migrated classes may notice:
+
+
+The == operator may treat two instances as the same, where previously they
+were considered different
+
+
+Attempts to synchronize on an instance or use the java.lang.ref API will
+fail with an exception
+
+
+Assumptions about unique ownership of an instance may be violated (for
+example, an identical instance may be created at two different program
+points)
+
+
+Performance will generally improve, but may have different characteristics
+that are surprising
+
+
+Value classes in the standard library
+Some classes in the standard library have been designated
+value-based, with the understanding that they would become
+value classes in a future release.
+Under this JEP, when preview features are enabled, the following standard
+library classes are considered to be value classes, despite not having been
+declared or compiled with the value modifier:
+
+java.lang.Number and the 8 primitive wrapper classes used for boxing
+java.lang.Record
+java.util.Optional, java.util.OptionalInt, etc.
+Most of the public classes of java.time, including java.time.LocalDate and
+java.time.ZonedDateTime
+
+The migration of the primitive wrapper classes should significantly reduce
+boxing-related overhead.
+Alternatives
+As discussed, JVMs have long performed escape analysis to identify objects that
+never rely on identity throughout their lifespan and can be inlined. These
+optimizations are somewhat unpredictable, and do not help with objects that
+escape the scope of the optimization, including storage in fields and arrays.
+Hand-coded optimizations via primitive values are possible to improve
+performance, but as noted in the "Motivation" section, these techniques require
+giving up valuable abstractions.
+The C language and its relatives support flattened storage for structs and
+similar class-like abstractions. For example, the C# language has
+value types.
+Unlike value objects, instances of these abstractions have identity, meaning
+they support operations such as field mutation. As a result, the semantics of
+copying on assignment, invocation, etc., must be carefully specified, leading to
+a more complex user model and less flexibility for runtime implementations. We
+prefer an approach that leaves these low-level details to the discretion of JVM
+implementations.
+Risks and Assumptions
+The feature makes significant changes to the Java object model. Developers may
+be surprised by, or encounter bugs due to, changes in the behavior of operations
+such as == and synchronized. We expect such disruptions to be rare and
+tractable.
+Some changes could potentially affect the performance of identity objects. The
+if_acmpeq test, for example, typically only costs one instruction
+cycle, but will now need an additional check to detect value objects. But the
+identity class case can be optimized as a fast path, and we believe we have
+minimized any performance regressions.
+There is a security risk that == and hashCode can indirectly expose
+private field values. Further, two large trees of value objects can take
+unbounded time to compute ==, potentially a DoS attack risk. Developers need
+to understand these risks.
+Dependencies
+Prerequisites:
+
+
+In anticipation of this feature we already added warnings about potential
+behavioral incompatibilities for value class candidates in javac and
+HotSpot, via JEP 390.
+
+
+Flexible Constructor Bodies (Second Preview) allows
+constructors to execute statements before a super(...) call and allows
+assignments to instance fields in this context. These changes facilitate the
+construction protocol required by value classes.
+
+
+Future work:
+
+
+Null-Restricted Value Class Types (Preview) will build on
+this JEP, allowing programmers to manage the storage of nulls and enable
+more dense heap flattening in fields and arrays.
+
+
+Enhanced Primitive Boxing (Preview) will enhance the language's
+use of primitive types, taking advantage of the lighter-weight
+characteristics of boxing to value objects.
+
+
+JVM class and method specialization (JEP 218, with revisions) will
+allow generic classes and methods to specialize field, array, and local
+variable layouts when parameterized by value class types.
+
+
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

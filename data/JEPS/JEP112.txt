@@ -1,0 +1,56 @@
+JEP 112: Charset Implementation ImprovementsJEP 112: Charset Implementation ImprovementsOwnerXueming ShenTypeFeatureScopeImplementationStatusClosed / DeliveredRelease8Componentcore-libsDiscussioncore dash libs dash dev at openjdk dot java dot netEffortSDurationSEndorsed byBrian GoetzCreated2011/07/28 20:00Updated2015/01/22 17:18Issue8046102Summary
+Improve the maintainability and performance of the standard and extended
+charset implementations.
+Motivation
+
+
+Decrease the size of installed charsets
+
+
+Reduce maintenance cost by generating charset implementations at build time
+from simple text-based mapping tables
+
+
+Improve the performance of encoding/decoding
+
+
+Description
+This is the second part of the sun.nio.cs/ext re-implementation project.  In
+JDK 7 most of the charsets (80%+) were re-implemented to achieve better
+maintainability and performance.  This JEP continues that work to:
+
+
+Re-implement the remaining charsets, mainly the JIS_X_0208/0212 based
+Japanese charsets and couple of IBM double-byte charsets such as IBM964 and
+IBM33722.
+
+
+Implement the sun.nio.cs.ArrayDecoder/Encoder API for the most frequently
+used double-byte charsets to enhance new String(byte[]) and
+String.getBytes() performance.
+
+
+Improve the start-up/access performance of the standard and extended
+charsets providers.
+
+
+Testing
+Need to ensure that the new implementations are completely compatible (for each
+and every code point) with the existing implementation.  Will write new
+automatic unit tests running under current test framework to guarantee
+correctness.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

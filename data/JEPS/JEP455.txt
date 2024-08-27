@@ -1,0 +1,612 @@
+JEP 455: Primitive Types in Patterns, instanceof, and switch (Preview)JEP 455: Primitive Types in Patterns, instanceof, and switch (Preview)OwnerAngelos BimpoudisTypeFeatureScopeSEStatusClosed / DeliveredRelease23Componentspecification / languageDiscussionamber dash dev at openjdk dot orgEffortMDurationMReviewed byAlex Buckley, Brian GoetzEndorsed byBrian GoetzCreated2022/06/15 10:05Updated2024/07/16 14:19Issue8288476Summary
+Enhance pattern matching by allowing primitive type patterns in all
+pattern contexts, and extend instanceof and switch to work with
+all primitive types. This is a preview language feature.
+Goals
+
+
+Enable uniform data exploration by allowing type patterns for all types,
+whether primitive or reference.
+
+
+Align type patterns with instanceof, and align instanceof with safe casting.
+
+
+Allow pattern matching to use primitive type patterns in both nested and
+top-level contexts.
+
+
+Provide easy-to-use constructs that eliminate the risk of losing information
+due to unsafe casts.
+
+
+Following the enhancements to switch in Java 5 (enum switch) and
+Java 7 (string switch), allow switch to process values of any
+primitive type.
+
+
+Non-Goals
+
+It is not a goal to add new kinds of conversions to the Java language.
+
+Motivation
+Multiple restrictions pertaining to primitive types impose friction when using
+pattern matching, instanceof, and switch.  Eliminating these restrictions
+would make the Java language more uniform and more expressive.
+Pattern matching for switch does not support primitive type patterns
+The first restriction is that pattern matching for switch
+(JEP 441) does not support primitive type
+patterns, i.e., type patterns that specify a primitive type. Only type patterns
+that specify a reference type are supported, such as case Integer i or case String s. (Since Java 21, record patterns
+(JEP 440) are also supported for switch.)
+With support for primitive type patterns in switch, we could improve
+the switch expression
+switch (x.getStatus()) {
+    case 0 -> "okay";
+    case 1 -> "warning";
+    case 2 -> "error";
+    default -> "unknown status: " + x.getStatus();
+}
+by turning the default clause into a case clause with a primitive
+type pattern that exposes the matched value:
+switch (x.getStatus()) {
+    case 0 -> "okay";
+    case 1 -> "warning";
+    case 2 -> "error";
+    case int i -> "unknown status: " + i;
+}
+Supporting primitive type patterns would also allow guards to inspect
+the matched value:
+switch (x.getYearlyFlights()) {
+    case 0 -> ...;
+    case 1 -> ...;
+    case 2 -> issueDiscount();
+    case int i when i >= 100 -> issueGoldCard();
+    case int i -> ... appropriate action when i > 2 && i < 100 ...
+}
+Record patterns have limited support for primitive types
+Another restriction is that record patterns have limited support for primitive
+types. Record patterns streamline data processing by decomposing a record into
+its individual components. When a component is a primitive value, the record
+pattern must be precise about the type of the value. This is inconvenient for
+developers and inconsistent with the presence of helpful automatic conversions
+in the rest of the Java language.
+For example, suppose we wish to process JSON data represented via
+these record classes:
+sealed interface JsonValue {
+    record JsonString(String s) implements JsonValue { }
+    record JsonNumber(double d) implements JsonValue { }
+    record JsonObject(Map<String, JsonValue> map) implements JsonValue { }
+}
+JSON does not distinguish integers from non-integers, so JsonNumber
+represents a number with a double component for maximum flexibility.
+However, we do not need to pass a double when creating a
+JsonNumber record; we can pass an int such as 30, and the Java
+compiler automatically widens the int to double:
+var json = new JsonObject(Map.of("name", new JsonString("John"),
+                                 "age",  new JsonNumber(30)));
+Unfortunately, the Java compiler is not so obliging if we wish to
+decompose a JsonNumber with a record pattern. Since JsonNumber
+is declared with a double component, we must decompose a
+JsonNumber with respect to double, and convert to int manually:
+if (json instanceof JsonObject(var map)
+    && map.get("name") instanceof JsonString(String n)
+    && map.get("age")  instanceof JsonNumber(double a)) {
+    int age = (int)a;  // unavoidable (and potentially lossy!) cast
+}
+In other words, primitive type patterns can be nested inside record patterns
+but are invariant: The primitive type in the pattern must be identical to the
+primitive type of the record component. It is not possible to decompose a
+JsonNumber via instanceof JsonNumber(int age) and have the compiler
+automatically narrow the double component to int.
+The reason for this limitation is that narrowing might be lossy: The value of
+the double component at run time might be too large, or have too much
+precision, for an int variable. However, a key benefit of pattern matching is
+that it rejects illegal values automatically, by simply not matching. If the
+double component of a JsonNumber is too large or too precise to narrow
+safely to an int, then instanceof JsonNumber(int age) could simply return
+false, leaving the program to handle a large double component in a
+different branch.
+This is how pattern matching already works for reference type
+patterns. For example:
+record Box(Object o) {}
+var b = new Box(...);
+
+if (b instanceof Box(RedBall rb)) ...
+else if (b instanceof Box(BlueBall bb)) ...
+else ....
+Here the component of Box is declared to be of type Object, but
+instanceof can be used to try to match a Box with a RedBall component or
+a BlueBall component.  The record pattern Box(RedBall rb) matches only if
+b is a Box at run time and its o component can be narrowed to RedBall;
+similarly, Box(BlueBall bb) matches only if its o component can be narrowed
+to BlueBall.
+In record patterns, primitive type patterns should work as smoothly as
+reference type patterns, allowing JsonNumber(int age) even if the
+corresponding record component is a numeric primitive type other than
+int. This would eliminate the need for verbose and potentially lossy
+casts after matching the pattern.
+Pattern matching for instanceof does not support primitive types
+Yet another restriction is that pattern matching for instanceof
+(JEP 394) does not support primitive type
+patterns. Only type patterns that specify a reference type are
+supported. (Since Java 21, record patterns are also supported for
+instanceof.)
+Primitive type patterns would be just as useful in instanceof as they are in
+switch. The purpose of instanceof is, broadly speaking, to test whether a
+value can be converted safely to a given type; this is why we always see
+instanceof and cast operations in close proximity. This test is critical for
+primitive types because of the potential loss of information that can occur
+when converting primitive values from one type to another.
+For example, converting an int value to a float is performed automatically
+by an assignment statement even though it is potentially lossy — and the
+developer receives no warning of this:
+int getPopulation() {...}
+float pop = getPopulation();  // silent potential loss of information
+Meanwhile, converting an int value to a byte is performed with an
+explicit cast, but the cast is potentially lossy so it must be
+preceded by a laborious range check:
+if (i >= -128 && i <= 127) {
+    byte b = (byte)i;
+    ... b ...
+}
+Primitive type patterns in instanceof would subsume the lossy conversions
+built into the Java language and avoid the painstaking range checks that
+developers have been coding by hand for almost three decades. In other words,
+instanceof could check values as well as types. The two examples above could
+be rewritten as follows:
+if (getPopulation() instanceof float pop) {
+    ... pop ...
+}
+
+if (i instanceof byte b) {
+    ... b ...
+}
+The instanceof operator combines the convenience of an assignment statement
+with the safety of pattern matching. If the input (getPopulation() or i)
+can be converted safely to the type in the primitive type pattern then the
+pattern matches and the result of the conversion is immediately available
+(pop or b). But, if the conversion would lose information then the pattern
+does not match and the program should handle the invalid input in a different
+branch.
+Primitive types in instanceof and switch
+If we are going to lift restrictions around primitive type patterns then it
+would be helpful to lift a related restriction: When instanceof takes a
+type, rather than a pattern, it takes only a reference type, not a primitive
+type. When taking a primitive type, instanceof would check if the conversion is
+safe but would not actually perform it:
+if (i instanceof byte) {  // value of i fits in a byte
+    ... (byte)i ...       // traditional cast required
+}
+This enhancement to instanceof restores alignment between the semantics of
+instanceof T and instanceof T t, which would be lost if we allowed
+primitive types in one context but not the other.
+Finally, it would be helpful to lift the restriction that switch can take
+byte, short, char, and int values but not boolean, float, double,
+or long values.
+Switching on boolean values would be a useful alternative to the ternary
+conditional operator (?:) because a boolean switch can contain statements
+as well as expressions. For example, the following code uses a boolean switch
+to perform some logging when false:
+startProcessing(OrderStatus.NEW, switch (user.isLoggedIn()) {
+    case true  -> user.id();
+    case false -> { log("Unrecognized user"); yield -1; }
+});
+Switching on long values would allow case labels to be long constants,
+obviating the need to handle very large constants with separate if
+statements:
+long v = ...;
+switch (v) {
+    case 1L              -> ...;
+    case 2L              -> ...;
+    case 10_000_000_000L -> ...;
+    case 20_000_000_000L -> ...;
+    case long x          -> ... x ...;
+}
+Description
+In Java 21, primitive type patterns are permitted only as nested patterns in
+record patterns, as in:
+v instanceof JsonNumber(double a)
+To support the more uniform data exploration of a match candidate v with pattern
+matching, we will:
+
+
+Extend pattern matching so that primitive type patterns are applicable to a
+wider range of match candidate types. This will allow expressions such as v instanceof JsonNumber(int age).
+
+
+Enhance the instanceof and switch constructs to support primitive type
+patterns as top level patterns.
+
+
+Further enhance the instanceof construct so that, when used for type
+testing rather than pattern matching, it can test against all types, not just
+reference types. This will extend instanceof's current role, as the
+precondition for safe casting on reference types, to apply to all types.
+More broadly, this means that instanceof can safeguard all conversions,
+whether the match candidate is having its type tested (e.g., x instanceof int, or y instanceof String) or having its value matched (e.g., x instanceof int i, or y instanceof String s).
+
+
+Further enhance the switch construct so that it works with all primitive
+types, not just a subset of the integral primitive
+types.
+
+
+We achieve these changes by altering a small number of rules in the Java
+language that govern the use of primitive types:
+
+
+Remove the restriction against primitive types and primitive type patterns in
+the instanceof and switch constructs;
+
+
+Extend switch to handle constant cases for literals of all primitive types;
+and
+
+
+Characterize when a conversion from one type to another is safe, which
+involves knowledge of the value to be converted as well as the source and
+target types of the conversion.
+
+
+Safety of conversions
+A conversion is exact if no loss of information occurs. Whether a conversion
+is exact depends on the pair of types involved and on the input value:
+
+
+For some pairs, it is known at compile time that conversion from the first
+type to the second type is guaranteed not to lose information for any
+value. The conversion is said to be unconditionally exact.  No action is
+needed at run time for an unconditionally exact conversion.  Examples include
+byte to int, int to long, and String to Object.
+
+
+For other pairs, a run-time test is needed to check whether the value can be
+converted from the first type to the second type without loss of information
+or, if a cast were to be performed, without throwing an exception.  The
+conversion is exact if no loss of information or exception would occur;
+otherwise, the conversion is not exact.  Examples of conversions that might
+be exact are long to int and int to float, where loss of precision is
+detected at run time by using numerical equality (==) or representation
+equivalence, respectively.  Converting from Object to String also needs
+a run-time test, and the conversion is exact or not exact depending on
+whether the input value is dynamically a String.
+
+
+In brief, a conversion between primitive types is unconditionally exact if it
+widens from one integral type to another, or from one floating-point type to
+another, or from byte, short, or char to a floating-point type, or from
+int to double. Furthermore, boxing conversions and widening reference
+conversions are unconditionally exact.
+The following table denotes the conversions that are permitted between
+primitive types. Unconditionally exact conversions are denoted with
+the symbol ɛ. The symbol ≈ means the identity
+conversion, ω means a widening primitive conversion,
+η means a narrowing primitive conversion, and ωη means a
+widening and narrowing primitive conversion. The symbol — means no
+conversion is allowed.
+
+
+To →
+byte
+short
+char
+int
+long
+float
+double
+boolean
+
+
+From ↓
+
+
+
+
+
+
+
+
+
+
+byte
+≈
+ɛ
+ωη
+ɛ
+ɛ
+ɛ
+ɛ
+—
+
+
+short
+η
+≈
+η
+ɛ
+ɛ
+ɛ
+ɛ
+—
+
+
+char
+η
+η
+≈
+ɛ
+ɛ
+ɛ
+ɛ
+—
+
+
+int
+η
+η
+η
+≈
+ɛ
+ω
+ɛ
+—
+
+
+long
+η
+η
+η
+η
+≈
+ω
+ω
+—
+
+
+float
+η
+η
+η
+η
+η
+≈
+ɛ
+—
+
+
+double
+η
+η
+η
+η
+η
+η
+≈
+—
+
+
+boolean
+—
+—
+—
+—
+—
+—
+—
+≈
+
+
+Comparing this table to its equivalent in
+JLS §5.5,
+it can be seen that many of the conversions permitted by ω in JLS §5.5
+are "upgraded" to the unconditionally exact ɛ above.
+instanceof as the precondition for safe casting
+Type tests with instanceof are traditionally limited to reference types.  The
+classic meaning of instanceof is a precondition check that asks: Would it be
+safe and useful to cast this value to this type? This question is even more
+pertinent to primitive types than to reference types. For reference types, if
+the check is accidentally omitted then performing an unsafe cast will likely do
+no harm: A ClassCastException will be thrown and the improperly cast value
+will be unusable. In contrast, for primitive types, where there is no
+convenient way to check for safety, performing an unsafe cast will likely cause
+subtle bugs. Instead of throwing an exception, it can silently lose information
+such as magnitude, sign, or precision, allowing the improperly cast value to
+flow into the rest of the program.
+To enable primitive types in the instanceof type test operator, we remove the
+restrictions (JLS §15.20.2)
+that the type of the left-hand operand must be a reference type and that the
+right-hand operand must specify a reference type. The type test operator
+becomes
+InstanceofExpression:
+    RelationalExpression instanceof Type
+    ...
+At run time, we extend instanceof to primitive types by appealing to exact
+conversions: If the value on the left-hand side can be converted to the type on
+the right-hand side via an exact conversion then it would be safe to cast the
+value to that type, and instanceof reports true.
+Here are some examples of how the extended instanceof can safeguard casting.
+Unconditionally exact conversions return true regardless of the input value;
+all other conversions require a run-time test whose result is shown.
+byte b = 42;
+b instanceof int;         // true (unconditionally exact)
+
+int i = 42;
+i instanceof byte;        // true (exact)
+
+int i = 1000;
+i instanceof byte;        // false (not exact)
+
+int i = 16_777_217;       // 2^24 + 1
+i instanceof float;       // false (not exact)
+i instanceof double;      // true (unconditionally exact)
+i instanceof Integer;     // true (unconditionally exact)
+i instanceof Number;      // true (unconditionally exact)
+
+float f = 1000.0f;
+f instanceof byte;        // false
+f instanceof int;         // true (exact)
+f instanceof double;      // true (unconditionally exact)
+
+double d = 1000.0d;
+d instanceof byte;        // false
+d instanceof int;         // true (exact)
+d instanceof float;       // true (exact)
+
+Integer ii = 1000;
+ii instanceof int;        // true (exact)
+ii instanceof float;      // true (exact)
+ii instanceof double;     // true (exact)
+
+Integer ii = 16_777_217;
+ii instanceof float;      // false (not exact)
+ii instanceof double;     // true (exact)
+We do not add any new conversions to the Java language, nor change existing
+conversions, nor change which conversions are allowed in existing contexts such
+as assignment. Whether instanceof is applicable to a given value and type is
+determined by whether a conversion is allowed in a casting context and whether
+it is exact. For example, b instanceof char is never allowed if b is a
+boolean variable, because there is no casting conversion from boolean to
+char.
+Primitive type patterns in instanceof and switch
+A type pattern merges a type test with a conditional conversion. This avoids
+the need for an explicit cast if the type test succeeds, while the uncast value
+can be handled in a different branch if the type test fails. When the
+instanceof type test operator supported only reference types, it was natural
+that only reference type patterns were allowed in instanceof and switch;
+now that the instanceof type test operator supports primitive types, it is
+natural to allow primitive type patterns in instanceof and switch.
+To achieve this, we drop the restriction that primitive types cannot be used in
+a top level type pattern. As a result, the laborious and error-prone code
+int i = 1000;
+if (i instanceof byte) {    // false -- i cannot be converted exactly to byte
+    byte b = (byte)i;       // potentially lossy
+    ... b ...
+}
+can be written as
+if (i instanceof byte b) {
+    ... b ...               // no loss of information
+}
+because i instanceof byte b means "test if i instanceof byte and, if so,
+cast i to byte and bind that value to b".
+The semantics of type patterns are defined by three predicates: applicability,
+unconditionality, and matching. We lift restrictions on the treatment
+of primitive type patterns as follows:
+
+
+Applicability is whether a pattern is legal at compile time. Previously,
+applicability for a primitive type pattern required that the input expression
+have the exact same type as the type in the pattern. For example, switch (... an int ...) { case double d: ... } was not allowed because the pattern
+double was not applicable to int.
+Now, a type pattern T t is applicable to a match candidate of type U if a
+U could be cast to T without an unchecked warning. Since int can be cast
+to double, that switch is now legal.
+
+
+Unconditionality is whether it is known at compile time that an applicable
+pattern will match all possible run-time values of the match candidate. An
+unconditional pattern requires no run-time checks.
+As we extend primitive type patterns to be applicable to more types, we must
+specify on which types they are unconditional. A primitive type pattern for
+type T is unconditional on a match candidate of type U if the conversion
+from U to T is unconditionally exact. This is because an unconditionally
+exact conversion is safe regardless of the input value.
+
+
+Previously, a value v that is not the null reference matches a type
+pattern of type T if v can be cast to T without throwing a
+ClassCastException.  This definition of matching sufficed when primitive
+type patterns had a limited role.  Now that primitive type patterns can be
+used widely, matching is generalized to mean that a value can be cast exactly
+to T, which covers throwing a ClassCastException as well as potential
+loss of information.
+
+
+Exhaustiveness
+A switch expression, or a switch statement whose case labels are
+patterns, is required to be exhaustive: All possible values of the selector
+expression must be handled in the switch block.  A switch is exhaustive if
+it contains an unconditional type pattern; it can be exhaustive for other
+reasons as well, such as covering all possible permitted subtypes of a sealed
+class. In some situations, a switch can be deemed exhaustive even when there
+are possible run-time values that will not be matched by any case; in such
+situations the Java compiler inserts a synthetic default clause to handle
+these unanticipated inputs.  Exhaustiveness is covered in greater detail in
+Patterns: Exhaustiveness, Unconditionality, and Remainder.
+With the introduction of primitive type patterns, we add one new rule to the
+determination of exhaustiveness: Given a switch whose match candidate is a
+wrapper type W for some primitive type P, a type pattern T t exhausts W
+if T is unconditionally exact on P.  In that case, null becomes part of
+the remainder. In the following example, the match candidate is a wrapper type
+of the primitive type byte and the conversion from byte to int is
+unconditionally exact. As a result the following switch is exhaustive:
+Byte b = ...
+switch (b) {             // exhaustive switch
+    case int p -> 0;
+}
+This behavior is similar to the exhaustiveness treatment of record patterns.
+Just as switch uses pattern exhaustiveness to determine if the cases
+cover all input values, switch uses dominance to determine if there
+are any cases that will match no input values.
+One pattern dominates another pattern if it matches all the values that the
+other pattern matches. For example, the type pattern Object o dominates the
+type pattern String s because everything that would match String s would
+also match Object o. In a switch, it is illegal for a case label with an
+unguarded type pattern P to precede a case label with type pattern Q if P
+dominates Q. The meaning of dominance is unchanged: A type pattern T t
+dominates a type pattern U u if T t would be unconditional on a match
+candidate of type U.
+Expanded primitive support in switch
+We enhance the switch construct to allow a selector expression of type
+long, float, double, and boolean, as well as the corresponding boxed
+types.
+If the selector expression has type long, float, double, or boolean,
+any constants used in case labels must have the same type as the selector
+expression, or its corresponding boxed type. For example, if the type of the
+selector expression is float or Float then any case constants must be
+floating-point literals (JLS §3.10.2)
+of type float. This restriction is required because mismatches between case
+constants and the selector expression could introduce lossy conversions,
+undermining programmer intent. The following switch is legal, but it would be
+illegal if the 0f constant were accidentally written as 0.
+float v = ...
+switch (v) {
+    case 0f -> 5f;
+    case float x when x == 1f -> 6f + x;
+    case float x -> 7f + x;
+}
+The semantics of floating-point literals in case labels is defined in terms
+of representation equivalence at compile time and run time. It is a
+compile-time error to use two floating-point literals that are representation
+equivalent.  For example, the following switch is illegal because the literal
+0.999999999f is rounded up to 1.0f, creating a duplicate case label.
+float v = ...
+switch (v) {
+    case 1.0f -> ...
+    case 0.999999999f -> ...    // error: duplicate label
+    default -> ...
+}
+Since the boolean type has only two distinct values, a switch that lists
+both the true and false cases is considered exhaustive. The following
+switch is legal, but it would be illegal if there were a default clause.
+boolean v = ...
+switch (v) {
+    case true -> ...
+    case false -> ...
+    // Alternatively: case true, false -> ...
+}
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

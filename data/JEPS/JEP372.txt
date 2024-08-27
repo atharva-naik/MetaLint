@@ -1,0 +1,48 @@
+JEP 372: Remove the Nashorn JavaScript EngineJEP 372: Remove the Nashorn JavaScript EngineOwnerJim LaskeyTypeFeatureScopeJDKStatusClosed / DeliveredRelease15Componentcore-libs / jdk.nashornDiscussionjdk dash dev at openjdk dot java dot netEffortMDurationMRelates toJEP 335: Deprecate the Nashorn JavaScript Engine for RemovalReviewed byHannes Wallnoefer, Sundararajan AthijegannathanEndorsed byMark ReinholdCreated2020/01/10 14:29Updated2020/12/15 20:37Issue8236933Summary
+Remove the Nashorn JavaScript script engine and APIs, and the jjs
+tool. The engine, the APIs, and the tool were
+deprecated for removal in Java 11 with the
+express intent to remove them in a future release.
+Motivation
+The Nashorn JavaScript engine was first incorporated into JDK 8 via
+JEP 174 as a replacement for the Rhino
+scripting engine.  When it was released, it was a complete implementation of
+the ECMAScript-262 5.1 standard.
+With the rapid pace at which ECMAScript language constructs, along with APIs,
+are adapted and modified, we have found Nashorn challenging to maintain.
+Non-Goals
+This removal does not affect, in any way, the javax.script API.
+Description
+Two JDK modules will be
+permanently removed:
+
+
+jdk.scripting.nashorn -- contains the jdk.nashorn.api.scripting and
+jdk.nashorn.api.tree packages.
+
+
+jdk.scripting.nashorn.shell -- contains the jjs tool.
+
+
+Risks and Assumptions
+We assume that developers who rely on Nashorn have had enough notice of its
+proposed removal to make alternative arrangements. The deprecation-for-removal
+of Nashorn in JDK 11 was confirmed in June 2018, causing the proposed removal
+to be flagged at every use of the jdk.nashorn.* API and the jjs tool in JDK
+11, 12, and 13. During this period, no set of credible developers expressed a
+clear desire to maintain Nashorn in JDK 14 and beyond.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

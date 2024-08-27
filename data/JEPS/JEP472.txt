@@ -1,0 +1,204 @@
+JEP 472: Prepare to Restrict the Use of JNIJEP 472: Prepare to Restrict the Use of JNIOwnerRon PresslerTypeFeatureScopeSEStatusTargetedRelease24Componentcore-libsDiscussionjdk dash dev at openjdk dot orgRelates toJEP 454: Foreign Function & Memory APIReviewed byAlex Buckley, Dan Heidinga, Jorn Vernee, Mark Reinhold, Maurizio CimadamoreEndorsed byAlan BatemanCreated2023/05/03 09:08Updated2024/08/06 01:52Issue8307341Summary
+Issue warnings about uses of the Java Native Interface (JNI) and adjust the Foreign Function & Memory (FFM) API to issue warnings in a consistent manner. All such warnings aim to prepare developers for a future release that ensures integrity by default by uniformly restricting JNI and the FFM API. Application developers can avoid both current warnings and future restrictions by selectively enabling these interfaces where essential.
+Goals
+
+
+Preserve the status of JNI as a standard way to interoperate with native code.
+
+
+Prepare the Java ecosystem for a future release that disallows interoperation with native code by default, whether via JNI or the FFM API. As of that release, application developers will have to explicitly enable the use of JNI and the FFM API at startup.
+
+
+Align the use of JNI and the FFM API so that library maintainers can migrate from one to the other without requiring application developers to change any command-line options.
+
+
+Non-Goals
+
+
+It is not a goal to deprecate JNI or to remove JNI from the Java Platform.
+
+
+It is not a goal to restrict the behavior of native code called via JNI. For example, all of the native JNI functions will remain usable by native code.
+
+
+Motivation
+The Java Native Interface (JNI) was introduced in JDK 1.1 as the primary means for interoperating between Java code and native code, typically written in C. JNI allows Java code to call native code (a downcall) and native code to call Java code (an upcall).
+Unfortunately, any interaction at all between Java code and native code is risky because it can compromise the integrity of applications and of the Java Platform itself. According to the policy of integrity by default, all JDK features that are capable of breaking integrity must obtain explicit approval from the application's developer.
+Here are four common interactions and their risks:
+
+
+Calling native code can lead to arbitrary undefined behavior, including JVM crashes. Such problems cannot be prevented by the Java runtime, nor do they provoke exceptions for Java code to catch.
+For example, this C function takes a long value passed from Java code and treats it as an address in memory, storing a value at that address:
+void Java_pkg_C_setPointerToThree__J(jlong ptr) {
+    *(int*)ptr = 3;
+}
+Calling this C function could corrupt memory used by the JVM, causing the JVM to crash at an unpredictable time, long after the C function returns. Such crashes, and other unexpected behaviors, are difficult to diagnose.
+
+
+Native code and Java code often exchange data through direct byte buffers, which are regions of memory not managed by the JVM's garbage collector. Native code can produce a byte buffer that is backed by an invalid region of memory; using such a byte buffer in Java code is practically certain to cause undefined behavior.
+For example, this C code constructs a 10-element byte buffer starting at address 0 and returns it to Java code. The JVM will crash when Java code attempts to read or write the byte buffer:
+return (*env)->NewDirectByteBuffer(env, 0, 10);
+
+
+Native code can use JNI to access fields and call methods without any access checks by the JVM. Native code can even use JNI to change the values of final fields long after they are initialized. Java code that calls native code can therefore violate the integrity of other Java code.
+For example, String objects are specified to be immutable, but this C code mutates a String object by writing to an array referenced by a private field:
+jclass clazz = (*env)->FindClass(env, "java/lang/String");
+jfieldID fid = (*env)->GetFieldID(env, clazz , "value", "[B");
+jbyteArray contents = (jbyteArray)(*env)->GetObjectField(env, str, fid);
+jbyte b = 0;
+(*env)->SetByteArrayRegion(env, contents, 0, 1, &b);
+For another example, arrays are specified to disallow access beyond their bounds, but this C code can write past the end of an array:
+jbyte *a = (*env)->GetPrimitiveArrayCritical(env, arr, 0);
+a[500] = 3; // may be out of bounds
+(*env)->ReleasePrimitiveArrayCritical(env, arr, a, 0);
+
+
+Native code which uses certain JNI functions incorrectly, principally GetPrimitiveArrayCritical and GetStringCritical, can cause undesirable garbage collector behavior that can manifest at any time during the program's lifetime.
+
+
+The Foreign Function & Memory (FFM) API, introduced in JDK 22 as the preferred alternative to JNI, shares the first and second risks. In the FFM API we took a proactive approach to mitigating these risks, separating actions that risk integrity from those that do not. Some parts of the FFM API are thus classified as restricted methods, which means the application developer must approve their use and opt in via a java launcher command-line option. JNI should follow the FFM API's example toward achieving integrity by default.
+Preparing to restrict the use of JNI is part of a long-term coordinated effort to ensure that the Java Platform has integrity by default. Other initiatives include removing the memory-access methods in sun.misc.Unsafe (JEP 471) and restricting the dynamic loading of agents (JEP 451). These efforts will make the Java Platform more secure and more performant. They will also reduce the risk of application developers becoming trapped on older JDK releases due to libraries that break on newer releases when unsupported APIs are changed.
+Description
+In JDK 22 and later releases, you can call native code via the Java Native Interface (JNI) or the Foreign Function & Memory (FFM) API. In either case, you must first load a native library and link a Java construct to a function in the library. These loading and linking steps are restricted in the FFM API, which means that they cause a warning to be issued at run time by default. In JDK NN, we will restrict the loading and linking steps in JNI so that they also cause a warning to be issued at run time by default.
+We refer to restrictions on loading and linking native libraries as native access restrictions. In JDK NN, native access restrictions will apply uniformly whether JNI or the FFM API is used to load and link native libraries. The exact operations that load and link native libraries in JNI, which are now subject to native access restrictions, are described later.
+We will strengthen the effect of native access restrictions over time. Rather than issue warnings, a future JDK release will throw exceptions by default when Java code uses JNI or the FFM API to load and link native libraries. The intent is not to discourage use of JNI or the FFM API but, rather, to ensure that applications and the Java Platform have integrity by default.
+Enabling native access
+Application developers can avoid warnings (and in the future, exceptions) by enabling native access for selected Java code at startup. Enabling native access acknowledges the application's need to load and link native libraries and lifts the native access restrictions.
+Under the policy of integrity by default, it is the application developer (or perhaps deployer, on the advice of the application developer) who enables native access, not library developers. Library developers who rely on JNI or the FFM API should inform their users that they will need to enable native access using one of the methods below.
+To enable native access for all code on the class path, use the following command-line option:
+java --enable-native-access=ALL-UNNAMED ...
+To enable native access for specific modules on the module path, pass a comma-separated list of module names:
+java --enable-native-access=M1,M2,... ...
+Code that uses JNI is affected by native access restrictions if
+
+It calls System::loadLibrary, System::load, Runtime::loadLibrary, or Runtime::load, or
+It declares a native method.
+
+Code that merely calls a native method declared in a different module does not need to have native access enabled.
+Most application developers will pass --enable-native-access directly to the java launcher in a startup script, but other techniques are available:
+
+
+You can pass --enable-native-access to the launcher indirectly, by setting the environment variable JDK_JAVA_OPTIONS.
+
+
+You can put --enable-native-access in an argument file that is passed to the launcher by a script or an end user, e.g., java @config
+
+
+You can add Enable-Native-Access: ALL-UNNAMED to the manifest of an executable JAR file, i.e., a JAR file that is launched via java -jar. (The only supported value for the Enable-Native-Access manifest entry is ALL-UNNAMED; other values cause an exception to be thrown.)
+
+
+If you create a custom Java runtime for your application, you can pass the --enable-native-access option to jlink via the --add-options option, so that native access is enabled for the resulting runtime image.
+
+
+If your code creates modules dynamically, you can enable native access for them via the ModuleLayer.Controller::enableNativeAccess method, which is itself a restricted method. Code can dynamically check if its module has native access via the Module::isNativeAccessEnabled method.
+
+
+The JNI Invocation API allows a native application to embed a JVM in its own process. A native application which uses the JNI Invocation API can enable native access for modules in the embedded JVM by passing the --enable-native-access option when creating the JVM.
+
+
+Enabling native access more selectively
+The --enable-native-access=ALL-UNNAMED option is coarse-grained: It lifts native access restrictions on JNI and the FFM API for all classes on the class path. To limit risk and achieve higher integrity, we recommend moving JAR files that use JNI or the FFM API to the module path. This allows native access to be enabled for those JAR files specifically, not for the class path as a whole. A JAR file can be moved from the class path to the module path without being modularized; the Java runtime will treat it as automatic module whose name is based on its filename.
+Controlling the effect of native access restrictions
+If native access is not enabled for a module then it is illegal for code in that module to perform a restricted operation. What action the Java runtime takes when such an operation is attempted is controlled by a new command-line option, --illegal-native-access, which is similar in spirit and form to the --illegal-access option introduced by JEP 261 in JDK 9. It works as follows:
+
+
+--illegal-native-access=allow allows the operation to proceed.
+
+
+--illegal-native-access=warn allows the operation but issues a warning the first time that illegal native access occurs in a particular module. At most one warning per module is issued.
+This mode is the default in JDK 24. It will be phased out in a future release and, eventually, removed.
+
+
+--illegal-native-access=deny throws an IllegalCallerException exception for every illegal native access operation.
+This mode will become the default in a future release.
+
+
+When deny becomes the default mode then allow will be removed but warn will remain supported for at least one release.
+To prepare for the future, we recommend that you run existing code with the deny mode to identify code that requires native access.
+Aligning the FFM API
+Prior to JDK 24, if one or more modules had native access enabled via the --enable-native-access option, then attempts to call restricted FFM methods from any other module would cause an IllegalCallerException to be thrown.
+To align the FFM API with JNI, we will relax this behavior so that illegal native access operations are treated exactly the same by the FFM API as in JNI. This means that, in JDK 24, such operations will result in warnings rather than exceptions.
+You can restore the old behavior with this combination of options:
+java --enable-native-access=M,... --illegal-native-access=deny ...
+Warnings on loading native libraries
+Native libraries are loaded in JNI via the load and loadLibrary methods of the java.lang.Runtime class.
+(The identically named convenience methods load and loadLibrary of the java.lang.System class merely invoke the corresponding methods of the system-wide Runtime instance.)
+Loading a native library is risky because it can cause native code to run:
+
+
+If a native library defines initialization functions then the operating system runs them when loading the library; these functions contain arbitrary native code.
+
+
+If a native library defines a JNI_OnLoad function then the Java runtime invokes it when loading the library; this function also contains arbitrary native code.
+
+
+Because of the risks, the load and loadLibrary methods are restricted in JDK 24, just as the SymbolLookup::libraryLookup methods are restricted in the FFM API.
+When a restricted method is called from a module for which native access is not enabled, the JVM runs the method but, by default, issues a warning that identifies the caller:
+WARNING: A restricted method in java.lang.System has been called
+WARNING: System::load has been called by com.foo.Server in module com.foo (file:/path/to/com.foo.jar)
+WARNING: Use --enable-native-access=com.foo to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+At most one such warning is issued for any particular module, and only if a warning has not yet been issued for that module. The warning is written to the standard error stream.
+Warnings on linking native libraries
+When a native method is first called, it is automatically linked to a corresponding function in a native library. This linking step, which is called binding, is a restricted operation in JDK 24, just as obtaining a downcall method handle is a restricted operation in the FFM API.
+Upon the first invocation of a native method that is declared in a module for which native access is not enabled, the JVM binds the native method but, by default, issues a warning that identifies the caller:
+WARNING: A native method in org.baz.services.Controller has been bound
+WARNING: Controller::getData in module org.baz has been called by com.foo.Server in an unnamed module (file:/path/to/foo.jar)
+WARNING: Use --enable-native-access=org.baz to avoid a warning for native methods declared in org.baz
+WARNING: Native methods will be blocked in a future release unless native access is enabled
+At most one such warning is issued for any particular module. Specifically:
+
+
+The warning is issued only when a native method is bound, which happens the first time that the native method is called. The warning is not issued every time that the native method is called.
+
+
+The warning is issued the first time that any native method declared in a particular module is bound, unless a warning has already been issued for that module.
+
+
+The warning is written to the standard error stream.
+Identifying the use of native code
+
+
+The JFR events jdk.NativeLibraryLoad and jdk.NativeLibraryUnload track the loading and unloading of native libraries.
+
+
+To help identify libraries that use JNI, a new JDK tool, tentatively named jnativescan, statically scans code in a provided module path or class path and reports uses of restricted methods and declarations of native methods.
+
+
+Future Work
+
+
+To promote reliable configuration, allow a module's declaration to assert that the module requires native access, whether via JNI or the FFM API. At startup, the Java runtime would refuse to load any module that requires native access but which does not have native access enabled on the command line.
+
+
+To allow the use of the FFM API but not JNI, offer a command-line option that enables the use of the former but not the latter. JNI allows native code to break the encapsulation of Java code, which could interfere with future JVM optimizations in ways that use of the FFM API does not.
+
+
+Risks and Assumptions
+
+
+JNI has been part of the Java Platform since JDK 1.1, so there is a risk that existing applications will be impacted by restrictions on the use of JNI. An analysis of artifacts on Maven Central found that about 7% of existing artifacts depend on native code. Of these, about 25% use JNI directly; the remainder depend on some other artifact that uses JNI, either directly or indirectly.
+
+
+We assume that developers whose applications rely directly or indirectly on native code will be able to configure the Java runtime to enable the use of JNI via --enable-native-access, as described above. This is similar to how they can already configure the Java runtime to disable strong encapsulation for modules, via --add-opens.
+
+
+Alternatives
+
+Rather than restrict the loading of native libraries and the binding of native methods, the JVM could apply access control rules when native code uses JNI functions to access Java fields and methods. However, this is insufficient to maintain integrity because any use of native code can lead to undefined behavior, whether or not it uses JNI functions. Portions of the FFM API are restricted for the same reason, even though the FFM API does not offer access to Java objects from native code.
+
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

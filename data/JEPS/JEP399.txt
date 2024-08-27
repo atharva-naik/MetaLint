@@ -1,0 +1,33 @@
+JEP 399: Intermediate-Representation Graph SerializationJEP 399: Intermediate-Representation Graph SerializationOwnerIgor IgnatyevTypeFeatureScopeImplementationStatusCandidateComponenthotspot / compilerDiscussionhotspot dash compiler dash dev at openjdk dot java dot netEffortMDurationMReviewed byAleksandre Iline, Mikael Vidstedt, Vladimir KozlovCreated2014/05/19 18:30Updated2024/06/07 08:53Issue8043472Summary
+To aid in testing, create a facility to serialize and deserialize the intermediate-representation (IR) graphs used in the HotSpot run-time compilers.
+Non-Goals
+It is not a goal to provide a means to serialize IR graphs for purposes other than testing.
+Motivation
+It is not possible, today, for HotSpot run-time compiler tests to test compiler optimizations directly.  To test a specific optimization, they resort to manipulating the JVM into a state in which that optimization will be performed.  These are “gray box” tests, since they depend upon HotSpot implementation details but do not have access to HotSpot internals.  They are fragile, since a change in the implementation can render a test useless.
+Most run-time compiler optimizations operate upon an IR graph.  If we could load a graph into the JVM, perform a specific optimization on it, and then export it for analysis then we could write stable and robust optimizer tests that do not depend upon HotSpot implementation details.  This would also simplify the development of optimizer regression tests.
+Description
+We propose to introduce new HotSpot WhiteBox APIs to import an IR graph, perform a specific optimization on it, and then export it:
+
+IRHandle import(InputStream)
+IRHandle optimize(IRHandle, OptimizationEnum)
+InputStream export(IRHandle)
+
+where IRHandle is a reference to an IR graph object and OptimizationEnum is an enumeration of all supported optimizations.
+There is already a serial format for the C2 IR, namely the XML format used by the Ideal Graph Visualizer (IGV).  We propose to use that format, extending it as necessary for the C1 IR.  Using the IGV format will also allow us to enhance the IGV tool so that it can serve as a WSYIWYG-editor for IR graphs.
+Risks and Assumptions
+Adding this code to product builds will slightly increase the size of libjvm.so.  If that becomes an issue then we can move it into a separate dynamically-linked library.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

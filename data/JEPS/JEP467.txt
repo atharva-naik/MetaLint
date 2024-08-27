@@ -1,0 +1,638 @@
+JEP 467: Markdown Documentation CommentsJEP 467: Markdown Documentation CommentsOwnerJonathan GibbonsTypeFeatureScopeSEStatusCompletedRelease23Componenttools / javadoc(tool)Discussionjavadoc dash dev at openjdk dot orgReviewed byRon PresslerEndorsed byPaul SandozCreated2023/09/11 17:45Updated2024/07/17 08:10Issue8316039Summary
+Enable JavaDoc documentation comments to be written in Markdown rather
+than solely in a mixture of HTML and JavaDoc @-tags.
+Goals
+
+
+Make API documentation comments easier to write and easier to read in source
+form by introducing the ability to use Markdown syntax in documentation
+comments, alongside HTML elements and JavaDoc tags.
+
+
+Do not adversely affect the interpretation of existing documentation comments.
+
+
+Extend the Compiler Tree API to enable other tools that analyze
+documentation comments to handle Markdown content in those comments.
+
+
+Non-Goals
+
+It is not a goal to enable automated conversion of existing documentation
+comments to Markdown syntax.
+
+Motivation
+Documentation comments are stylized comments appearing in source code, near to
+the declarations that they serve to document. Documentation comments
+in Java source code use a combination of HTML and custom JavaDoc tags
+to mark up the text.
+The choice of HTML for a markup language was reasonable in 1995. HTML is
+powerful, standardized, and was very popular at the time. But while it is no
+less popular today as a markup language consumed by web browsers, in the years
+since 1995 HTML has become much less popular as markup that is manually produced
+by humans because it is tedious to write and hard to read. These days it is more
+commonly generated from some other markup language that is more suitable for
+humans. Because HTML is tedious to write, nicely-formatted documentation
+comments are also tedious to write, and even more tedious since many new
+developers are not fluent in HTML due to its decline as a human-produced
+format.
+Inline JavaDoc tags, such as {@link} and {@code}, are also cumbersome and
+are even less familiar to developers, often requiring the author to consult the
+documentation for their usage. A recent analysis of the documentation comments
+in the JDK source code showed that over 95% of the uses of inline tags were for
+code fragments and links to elsewhere in the documentation, suggesting that
+simpler forms of these constructs would be welcome.
+Markdown is a popular markup language for simple documents that is
+easy to read, easy to write, and easily transformed into HTML. Documentation
+comments are typically not complicated structured documents, and for the
+constructs that typically appear in documentation comments, such as paragraphs,
+lists, styled text, and links, Markdown provides simpler forms than HTML. For
+those constructs that Markdown does not directly support, Markdown allows the
+use of HTML as well.
+Introducing the ability to use Markdown in documentation comments would bring
+together the best of both worlds. It would allow concise syntax for the most
+common constructs and reduce the need for HTML markup and JavaDoc tags, while
+retaining the ability to use specialized tags for features not available in
+Markdown. It would make it easier to write and easier to read documentation
+comments in source code, while retaining the ability to generate the same sort
+of generated API documentation as before.
+Description
+As an example of the use of Markdown in a documentation comment, consider the
+comment for java.lang.Object.hashCode:
+/**
+ * Returns a hash code value for the object. This method is
+ * supported for the benefit of hash tables such as those provided by
+ * {@link java.util.HashMap}.
+ * <p>
+ * The general contract of {@code hashCode} is:
+ * <ul>
+ * <li>Whenever it is invoked on the same object more than once during
+ *     an execution of a Java application, the {@code hashCode} method
+ *     must consistently return the same integer, provided no information
+ *     used in {@code equals} comparisons on the object is modified.
+ *     This integer need not remain consistent from one execution of an
+ *     application to another execution of the same application.
+ * <li>If two objects are equal according to the {@link
+ *     #equals(Object) equals} method, then calling the {@code
+ *     hashCode} method on each of the two objects must produce the
+ *     same integer result.
+ * <li>It is <em>not</em> required that if two objects are unequal
+ *     according to the {@link #equals(Object) equals} method, then
+ *     calling the {@code hashCode} method on each of the two objects
+ *     must produce distinct integer results.  However, the programmer
+ *     should be aware that producing distinct integer results for
+ *     unequal objects may improve the performance of hash tables.
+ * </ul>
+ *
+ * @implSpec
+ * As far as is reasonably practical, the {@code hashCode} method defined
+ * by class {@code Object} returns distinct integers for distinct objects.
+ *
+ * @return  a hash code value for this object.
+ * @see     java.lang.Object#equals(java.lang.Object)
+ * @see     java.lang.System#identityHashCode
+ */
+The same comment can be written by expressing its structure and styling in
+Markdown, with no use of HTML and just a few JavaDoc inline tags:
+/// Returns a hash code value for the object. This method is
+/// supported for the benefit of hash tables such as those provided by
+/// [java.util.HashMap].
+///
+/// The general contract of `hashCode` is:
+///
+///   - Whenever it is invoked on the same object more than once during
+///     an execution of a Java application, the `hashCode` method
+///     must consistently return the same integer, provided no information
+///     used in `equals` comparisons on the object is modified.
+///     This integer need not remain consistent from one execution of an
+///     application to another execution of the same application.
+///   - If two objects are equal according to the
+///     [equals][#equals(Object)] method, then calling the
+///     `hashCode` method on each of the two objects must produce the
+///     same integer result.
+///   - It is _not_ required that if two objects are unequal
+///     according to the [equals][#equals(Object)] method, then
+///     calling the `hashCode` method on each of the two objects
+///     must produce distinct integer results.  However, the programmer
+///     should be aware that producing distinct integer results for
+///     unequal objects may improve the performance of hash tables.
+///
+/// @implSpec
+/// As far as is reasonably practical, the `hashCode` method defined
+/// by class `Object` returns distinct integers for distinct objects.
+///
+/// @return  a hash code value for this object.
+/// @see     java.lang.Object#equals(java.lang.Object)
+/// @see     java.lang.System#identityHashCode
+(For the purpose of this example, cosmetic changes such as reflowing the text
+are deliberately avoided, to aid in before-and-after comparison.)
+Key differences to observe:
+
+
+The use of Markdown is indicated by a new form of documentation comment in
+which each line begins with /// instead of the traditional
+/** ... */ syntax.
+
+
+The HTML <p> element is not required; a blank line indicates
+a paragraph break.
+
+
+The HTML <ul> and <li> elements are replaced by Markdown bullet-list
+markers, using - to indicate the beginning of each item in the list.
+
+
+The HTML <em> element is replaced by using underscores (_) to indicate
+the font change.
+
+
+Instances of the {@code ...} tag are replaced by backticks
+(`...`) to indicate the monospace font.
+
+
+Instances of {@link ...} to link to other program elements are replaced by
+extended forms of Markdown reference links.
+
+
+Instances of block tags, such as @implSpec, @return, and @see, are
+generally unaffected except that the content of these tags is now also in
+Markdown, for example here in the backticks of the content of the @implSpec
+tag.
+
+
+Here is a screenshot highlighting the differences between the two versions, side
+by side:
+
+Using /// for Markdown documentation comments
+We use /// for Markdown comments in order to overcome two issues with
+traditional /** comments.
+
+
+A block comment beginning with /* cannot contain the character sequence */
+(JLS §3.7). It is becoming increasingly common to put examples of
+code in documentation comments. This restriction precludes examples containing
+embedded /*...*/ comments, or expressions containing the characters */,
+without the use of disruptive workarounds.
+In // comments, there is no restriction on the characters that may appear on
+the rest of the line.
+
+
+In a traditional documentation comment, beginning with /**, the use of
+leading whitespace followed by one or more asterisks on each line is
+optional.  When such asterisks are omitted from the lines of
+a comment there is an ambiguity with Markdown constructs that themselves begin
+with an asterisk, such as emphases, list items, and thematic breaks.
+In /// comments, there is never any such ambiguity.
+
+
+It is not an option to change the syntax of the Java language to allow new forms
+of comment. Therefore, any new style of documentation comment must be in the
+form of either a traditional /* ... */ block comment or a series of //
+end-of-line comments.
+The above points justify the use of end-of-line comments instead of traditional
+comments, but the question remains of how to distinguish documentation comments
+from other end-of-line comments. We use an additional /, which echoes the use
+of an additional * at the start of traditional documentation
+comments. Moreover, while not a primary consideration, other languages that
+support end-of-line documentation comments, such as C#, Dart, and Rust,
+have successfully used /// for documentation comments for some time now.
+Syntax
+Markdown documentation comments are written in the CommonMark variant
+of Markdown. Enhancements to links allow convenient linking to other program
+elements. Simple GFM pipe tables are supported, as are all
+JavaDoc tags.
+Links
+You can create a link to an element declared elsewhere in your API by using an
+extended form of Markdown reference link, in which the label
+for the reference is derived from a standard JavaDoc reference
+to the element itself.
+To create a simple link whose text is derived from the identity of the element,
+simply enclose a reference to the element in square brackets.  For example, to
+link to java.util.List, you can write [java.util.List], or just [List] if
+there is an import statement for java.util.List in the code.  The text of
+the link will be displayed in the monospace font.  The link is equivalent to
+using the standard JavaDoc {@link ...} tag.
+You can link to any kind of program element:
+/// - a module [java.base/]
+/// - a package [java.util]
+/// - a class [String]
+/// - a field [String#CASE_INSENSITIVE_ORDER]
+/// - a method [String#chars()]
+To create a link with alternative text, use the form [text][element].  For
+example, to create a link to java.util.List with the text a list, you can
+write [a list][List].  The link will be displayed in the current font,
+although you can use formatting markup within the text.  The link is equivalent
+to using the standard JavaDoc {@linkplain ...} tag.
+For example:
+/// - [the `java.base` module][java.base/]
+/// - [the `java.util` package][java.util]
+/// - [a class][String]
+/// - [a field][String#CASE_INSENSITIVE_ORDER]
+/// - [a method][String#chars()]
+In reference links, you must escape any use of square brackets. This might occur
+in a reference to a method with an array parameter; for example, you would write
+a link to String.copyValueOf(char[]) as [String#copyValueOf(char\[\])].
+You can use all other forms of Markdown links, including links to URLs, but
+links to other program elements are likely to be the most common.
+Tables
+Simple tables are supported, using the syntax of GitHub Flavored Markdown.
+For example:
+/// | Latin | Greek |
+/// |-------|-------|
+/// | a     | alpha |
+/// | b     | beta  |
+/// | c     | gamma |
+Captions and other features that may be required for accessibility are not supported.
+In such situations, the use of HTML tables is still recommended.
+JavaDoc tags
+JavaDoc tags, both inline tags such as {@inheritDoc} and block
+tags such as @param and @return, may be used in Markdown
+documentation comments:
+/// {@inheritDoc}
+/// In addition, this methods calls [#wait()].
+///
+/// @param i the index
+public void m(int i) ...
+JavaDoc tags may not be used within literal text, such as code spans
+(`...`) or code blocks, that is, blocks of text that are
+either indented or enclosed within fences such as ``` or ~~~. In other words, the character sequences @... and {@...} have
+no special meaning within code spans and code blocks:
+/// The following code span contains literal text, and not a JavaDoc tag:
+/// `{@inheritDoc}`
+///
+/// In the following indented code block, `@Override` is an annotation,
+/// and not a JavaDoc tag:
+///
+///     @Override
+///     public void m() ...
+///
+/// Likewise, in the following fenced code block, `@Override` is an annotation,
+/// and not a JavaDoc tag:
+///
+/// ```
+/// @Override
+/// public void m() ...
+/// ```
+For those tags that may contain text with markup, in a Markdown documentation
+comment that markup is also in Markdown:
+/// @param l   the list, or `null` if no list is available
+The {@inheritDoc} tag incorporates documentation for a method
+from one or more supertypes. The format of the comment containing the tag does
+not need to be the same as the format of the comment containing the
+documentation to be inherited:
+interface Base {
+    /** A method. */
+    void m()
+}
+
+class Derived implements Base {
+    /// {@inheritDoc}
+    public void m() { }
+}
+User-defined JavaDoc tags may be used in Markdown documentation comments. For
+example, in the JDK documentation we define and use {@jls ...} as a short form
+for links to the Java Language Specification, and block tags such as @implSpec
+and @implNote to introduce sections of particular information:
+/// For more information on comments, see {@jls 3.7 Comments}.
+///
+/// @implSpec
+/// This implementation does nothing.
+public void doSomething() { }
+Standalone Markdown files
+Markdown files in doc-files subdirectories are processed appropriately, in a
+similar manner to HTML files in such directories. JavaDoc tags in such files are
+processed. The page title is inferred from the first heading. YAML metadata,
+such as that supported by the Pandoc Markdown processor, is not supported.
+The file containing the content for the generated top-level overview page may
+also be a Markdown file.
+Syntax highlighting and embedded languages
+The opening fence in a fenced code block may be followed by an info
+string. The first word of the info string is used to derive the CSS
+class name in the corresponding generated HTML, and may also be used by
+JavaScript libraries to enable syntax highlighting (such as with
+Prism) and rendering diagrams (such as with
+Mermaid).
+For example, in conjunction with the appropriate libraries, this would display a
+fragment of CSS code with syntax highlighting:
+/// ```css
+/// p { color: red }
+/// ```
+You can add JavaScript libraries to your documentation by using the javadoc
+--add-script option.
+Syntactical details
+Because horizontal whitespace at the beginning and end of each line of Markdown
+text may be significant, the content of a Markdown documentation comment is
+determined as follows:
+
+
+Any leading whitespace and the three initial  / characters are removed from each line.
+
+
+The lines are shifted left, by removing leading whitespace characters, until the non-blank
+line with the least leading whitespace has no remaining leading whitespace.
+
+
+Additional leading whitespace and any trailing whitespace in each line is preserved,
+because it may be significant. For example, whitespace at the beginning of a line may
+indicate an indented code block or the continuation of a list item,
+and whitespace at the end of a line may indicate a hard line break.
+
+
+(The policy to remove leading incidental whitespace is similar to that for
+String.stripIndent(), except that there is no need to handle trailing blank
+lines.)
+There are no restrictions on the characters that may appear after the /// on each line of
+the comment. In particular, the comment may contain code samples which may contain comments
+of their own:
+/// Here is an example:
+///
+/// ```
+/// /** Hello World! */
+/// public class HelloWorld {
+///     public static void main(String... args) {
+///         System.out.println("Hello World!"); // the traditional example
+///     }
+/// }
+/// ```
+As well as serving to visually distinguish the new kind of documentation
+comment, the use of end-of-line (//) comments eliminates the restrictions on
+the content of the comment that are inherent with the use of traditional (/* ... */) comments. In particular, it is not possible to use the character
+sequence */ within a traditional comment (JLS §3.7) although it may
+be desirable to do so when writing example code containing traditional comments,
+strings containing glob expressions, and strings containing regular
+expressions.
+For a blank line to be included in the comment, it must begin with any optional
+whitespace and then ///:
+/// This is an example ...
+///
+/// ... of a 3-line comment containing a blank line.
+A completely blank line will cause any preceding and following comment to be
+treated as separate comments. In that case, all but the last comment will be
+discarded, and only the last comment will be considered as a documentation
+comment for any declaration that may follow:
+/// This comment will be treated as a "dangling comment" and will be ignored.
+
+/// This is the comment for the following declaration.
+public void m() { }
+The same is true for any other comment not beginning with /// that may appear
+between two /// comments.
+API and implementation
+Parsed documentation comments are represented by elements of the
+com.sun.source.doctree package in the Compiler Tree
+API.
+We introduce a new type of tree node, RawTextTree, which contains
+uninterpreted text, together with a new tree-node kind, DocTree.Kind.MARKDOWN,
+which indicates Markdown content in a RawTextTree. We add corresponding new
+visitRawText methods to DocTreeVisitor and its subtypes, DocTreeScanner
+and DocTreePathScanner.
+RawTextTree nodes with a kind of MARKDOWN represent Markdown content,
+including HTML constructs but excluding any JavaDoc tags such as {@inheritDoc}
+and @param.
+Markdown text is processed in two phases:
+
+
+Parsing — Markdown comments are parsed into a sequence of RawTextTree
+nodes, each with a kind of DocTree.Kind.MARKDOWN and containing Markdown
+content, interspersed with standard DocTree nodes for inline and block
+tags. The inline and block tags are parsed in the same way as for traditional
+documentation comments, except that tag content is also parsed as Markdown.
+The sequence of nodes is stored in a DocCommentTree node, in the normal
+manner.
+Unlike a traditional documentation comment, HTML constructs are not parsed
+into corresponding DocTree nodes, because too much of the surrounding
+context needs to be taken into account.
+The Markdown content in the DocCommentTree resulting from the initial parse
+is then examined for any reference links with no associated
+link reference definition, and for which the link
+label syntactically matches a reference to a program element.
+Any such link is replaced by an equivalent node representing either {@link ...} or {@linkplain ...}.
+
+
+Rendering — The DocCommentTree is rendered by the javadoc tool into
+HTML that is suitable for inclusion in the page being generated.
+Any sequence of RawTextTree nodes and other nodes is converted into a
+single string containing the text of the RawTextTree nodes with the Unicode
+OBJECT REPLACEMENT CHARACTER (U+FFFC) standing in for
+non-Markdown content. The resulting string is rendered by the Markdown
+processor and then the U+FFFC characters are replaced in the resulting output
+by the rendered forms of the non-Markdown content nodes.
+While most of the rendering is straightforward, special attention is given to
+Markdown headings:
+
+
+The heading level is adjusted according to the enclosing context.  This
+applies whether the heading was initially written in the documentation
+comment as an ATX-style heading (using a prefix of #
+characters to indicate the level) or as a Setext-style
+heading (using underlining with = or - to indicate
+the level).
+For example, a level 1 heading in the documentation comment for a module,
+package, or class is rendered as a level 2 heading in the generated page,
+while a level 1 heading in the documentation comment for a field,
+constructor, or method is rendered as a level 4 heading in the generated
+page.
+This adjustment applies only to Markdown headings, not to any direct use of
+HTML headings.
+
+
+An id identifier attribute is included in the rendered HTML so that the
+heading can easily be referenced from elsewhere. The identifier is
+generated from the content of the heading, in the same manner as other
+identifiers generated by javadoc. (You can easily obtain a link to the
+heading by clicking on the popup link icon when viewing the heading in a
+browser.)
+
+
+The text of the heading is added to the main search index for the
+generated documentation.
+
+
+
+
+The implementation leverages an internal copy of the well-known
+commonmark-java library.  By design, the use of the library is not revealed in
+any public supported JDK API.
+Most of the features described here are part of the JDK's javadoc tool and the
+Compiler Tree API in the jdk.javadoc module. However, there is one place in
+standard Java API where the use of a new style for documentation comments will
+be observable: The method javax.lang.model.util.Elements.getDocComment in the
+java.compiler module, which returns the normalized text of the documentation
+comment, if any, for a declaration. We will update this method to encompass
+/// comments. In addition, because the kind of comment affects its
+interpretation, we will provide a new method to determine whether the
+documentation comment for a declaration uses the traditional /** ...*/
+block-comment form or the new /// end-of-line comment form.
+Future Work
+It would be possible to detect some stylized uses of headings followed by
+appropriate content and convert them into equivalent JavaDoc tags.
+For example, a heading of Parameters followed by a list of parameter names and
+their descriptions could be converted into equivalent @param tags:
+
+
+Comment
+# Parameters
+
+* x   the x coordinate
+* y   the y coordinate
+
+
+Translation
+@param x   the x coordinate
+@param y   the y coordinate
+
+
+A similar policy could be adopted for the list of exceptions that may be thrown by a method:
+
+
+Comment
+# Throws
+
+* NullPointerException      if the first parameter is `null`
+* NullPointerException      if the second parameter is `null`
+* IllegalArgumentException  if an argument is not accepted
+
+
+Translation
+@throws NullPointerException      if the first parameter is `null`
+@throws NullPointerException      if the second parameter is `null`
+@throws IllegalArgumentException  if an argument is not accepted
+
+
+There should only ever be a single description of the return value for a method, so there
+is no need to use a list in this case:
+
+
+Comment
+# Returns
+
+the square root of the argument
+
+
+Translation
+@return the square root of the argument
+
+
+The proposed forms do look like normal Markdown, but they also take up more
+vertical space. Developers may prefer to stay with the more concise forms, using
+old-style JavaDoc tags.
+It may be difficult to extend this strategy to all block tags, including
+user-specified tags, but in the JDK code base just five tags (@param,
+@return, @see, @throws, and @since) account for over 90% of all uses of
+block tags.
+Alternatives
+Pluggable implementation
+Instead of leveraging a specific Markdown parser implementation, we could
+instead support the use of other user-specified Markdown processors, providing
+different flavors of Markdown.  However, such an approach could lead to
+inconsistencies when generating documentation spanning different libraries for
+little perceived gain.
+Translating more Markdown to HTML
+We could translate additional Markdown constructs into equivalent DocTree
+nodes, representing plain text, HTML, and JavaDoc tags.  While such an approach
+would have the advantage that API clients may not need to be aware that the
+original source for the comment was in Markdown, there are also a number of
+disadvantages:
+
+
+The more removed the representation is from the original syntax tree, the
+harder it is to give accurate and relevant diagnostics, should any be
+necessary.  For example, messages about a synthetic <table> element may
+be confusing if there is no such item explicitly in the original comment.
+
+
+When synthesizing DocTree nodes for HTML elements derived from
+Markdown constructs, it is difficult to give accurate position information
+that relates the node back to its position in the original comment,
+since the node has no representation in the original comment.
+At best, you can give a nearby position. This problem has an analog
+in the Java compiler, javac, when assigning positions for synthetic
+elements such as the default no-args constructor, or for bridge methods.
+
+
+A general solution is difficult because it would require knowledge of any
+and all of the JavaDoc tags that may be involved, because many tags
+permit rich content, such as Markdown or HTML, as part but not all of their
+content.
+For example, the @param tag is followed by a parameter name before the
+description, and the name may be enclosed in <...> if the name is that of a
+type parameter. It would be wrong to interpret that name as a fragment of
+HTML. Likewise, the @serialField tag is followed by a name and a type before
+the description.  While these are standard tags known to the standard doclet,
+the doclet also allows the use of user-defined tags.
+
+
+Inline tags
+While the uses of most block tags could be replaced by stylized use of headings
+and ensuing content, there is no such equivalent for most of the less common inline
+tags.  Of these, {@inheritDoc} is the most common, and there is no obvious
+analog in Markdown. Rather than invent an alternative syntax for the sake of it,
+it seems better to continue with the existing inline tag syntax.
+Markdown in /**...*/ comments
+As described above, there are
+many advantages to using /// for documentation comments. Setting those reasons
+aside, if we wanted to parse Markdown embedded in traditional /**...*/
+comments instead of, or in addition to, introducing /// comments, then there
+are two possibilities: Either treat all existing /** comments as Markdown
+comments, or else encode within each /** comment a way to distinguish between
+a Markdown comments and a traditional comment.
+Treating existing comments as Markdown is untenable, because Markdown and
+HTML are different languages with different syntax rules. In HTML, whitespace is
+only significant as literal text in a <pre> element. In Markdown, by contrast,
+vertical whitespace may indicate a paragraph break, leading horizontal whitespace
+may indicate an indented code block or a nested list, and trailing whitespace may
+indicate a hard line break, equivalent to <br> in HTML. Additionally, the
+rules for using HTML in Markdown documents are somewhat convoluted and
+non-intuitive. Finally, there are numerous examples in the JDK code of square brackets
+in narrative text, which would risk being interpreted as links to program elements;
+for example, The information is returned as a two-dimensional array (array[x][y]).
+Encoding the kind of documentation comment within each /** comment is
+possible, but unappealing. We could, for example, place a short string
+immediately after the initial /** to indicate when the ensuing text should be
+treated as Markdown:
+/**md
+ * Hello _World!_
+ */
+When we prototyped this approach it was generally unpopular, being seen as too
+intrusive in small comments and too insignificant in big comments.
+Configurable comment styles
+We could build a configurable system that accepts some /** ... */
+documentation comments in Markdown and others in HTML. It is not clear,
+however, that such a mechanism would have any significant advantage over the
+more overt use of /// comments for comments in Markdown and the continued use
+of /** ... */ for comments in HTML.
+Risks and Assumptions
+
+
+The implementation employs a third-party library, commonmark-java, to
+transform Markdown to HTML. If that library becomes unmaintained then we
+will have to maintain a fork of the library for use in the JDK, or else find
+an equivalent alternative.
+
+
+There is a risk of more errors in generated API documentation, because of
+the reduced ability to check for bad code, and because authors sometimes
+forget to check the generated form of their documentation.
+For example, in a traditional documentation comment a paragraph containing an
+unterminated code tag such as {@code abc will cause a diagnostic message
+to be issued when JavaDoc is invoked, and will be displayed in the
+generated documentation as ▶ invalid @code. In
+Markdown, the equivalent unclosed code span `abc is specified to be
+treated as literal text, and will be displayed as such, with no corresponding
+diagnostic message.
+
+
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

@@ -1,0 +1,51 @@
+JEP 102: Process API UpdatesJEP 102: Process API UpdatesAuthorAlan BatemanOwnerRoger RiggsTypeFeatureScopeSEStatusClosed / DeliveredRelease9Componentcore-libs / java.langDiscussioncore dash libs dash dev at openjdk dot java dot netEffortMDurationMDepends8077350: JEP 102 Process API Updates ImplementationRelates toJEP 279: Improve Test-Failure TroubleshootingEndorsed byBrian GoetzCreated2011/09/01 20:00Updated2017/03/09 09:08Issue8046092Summary
+Improve the API for controlling and managing operating-system processes.
+Motivation
+The limitations of the current API often force developers to resort to
+native code.
+Description
+Java SE provides limited support for native operating-system processes.
+It provides a basic API to setup the environment and start a process.
+The process streams can, since Java SE 7, be redirected to files, pipes,
+or can be inherited.  Once started, the API can be used to destroy the
+process and/or wait for the process to terminate.
+The java.lang.Process class is enhanced to provide the operating specific
+process id of the process, information about the process including
+the arguments, the command, the start time of the process, the accumulated
+cpu time of the process and the user name for the process.
+The java.lang.ProcessHandle class returns information about each process
+as provided by the operating system including process id, arguments, command,
+start time, etc.  A ProcessHandle can return the process' parent, and the direct children,
+and to all descendants via a stream of ProcessHandles.
+ProcessHandles can be used to destroy processes and monitor process liveness.
+With ProcessHandle.onExit, the asynchronous mechanisms of CompletableFuture
+can be used to schedule an action to be taken when the process exits.
+Access to information about processes and control of processes is subject to security
+manager permissions and are limited by the normal operating system access controls.
+Testing
+The classes or methods introduced will require new unit tests that can be
+developed along with the implementation.  More functional tests would be
+useful too.
+Risks and Assumptions
+The main risk with this API is differences between operating systems, in
+particular Windows.
+The design of this API needs to accommodate possible deployment on
+smaller devices with different operating system models.  It should also
+take into account environments where multiple Java virtual machines are
+running in the same operating system process.  These considerations could
+lead to a more abstract API and/or increase the design effort.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

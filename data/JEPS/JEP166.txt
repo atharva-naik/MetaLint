@@ -1,0 +1,46 @@
+JEP 166: Overhaul JKS-JCEKS-PKCS12 KeystoresJEP 166: Overhaul JKS-JCEKS-PKCS12 KeystoresOwnerVincent RyanTypeFeatureScopeJDKStatusClosed / DeliveredRelease8Componentsecurity-libsDiscussionsecurity dash dev at openjdk dot java dot netEffortSDurationSEndorsed byMark ReinholdCreated2011/08/31 20:00Updated2022/06/14 17:03Issue8046156Summary
+Facilitate migrating data from JKS and JCEKS keystores by adding equivalent
+support to the PKCS#12 keystore. Enhance the KeyStore API to support new
+features such as entry metadata and logical views spanning several keystores.
+Enable the strong crypto algorithms introduced in JEP-121 to be used to
+protect keystore entries.
+Motivation
+Simplify the task of interacting with Java SE keystores for cryptographic
+applications, and ease their development and deployment.
+The current default keystore format is Java-specific and is not supported
+outside of Java SE.  Applications are burdened with convering to and from
+our format.  Facilitating easy migration to an open, widely-supported format
+would enhance interoperability with Java SE.
+Description
+Java SE enforces security using cryptographic information stored in
+keystores.  A variety of keystore implementations are currently
+supported. The default keystore format is called Java Key Store
+(JKS). JKS is a Java-specific format that is robust and has served the
+platform well since its inception.  However, it suffers from some
+limitations and should be updated.
+PKCS#12 is a more suitable format to use as the default Java SE
+keystore. It is an open specification which is widely supported by
+operating systems, PKI tools, and web browsers. Although it is a keystore
+format that is already supported in Java SE, several enhancements are
+required to enable trusted certificates and secret keys to be stored.
+In addition, there is a long-standing requirement to support logical
+keystores that span several physical keystores.  A logical keystore
+eliminates the requirement to manage groups of keystores directly.
+Testing
+Ensure that the Mozilla OpenSSL Crypto Toolkit and popular web browsers
+can interact with our PKCS#12 format.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

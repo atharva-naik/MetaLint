@@ -1,0 +1,48 @@
+JEP 153: Launch JavaFX ApplicationsJEP 153: Launch JavaFX ApplicationsOwnerKumar SrinivasanTypeFeatureScopeJDKStatusClosed / DeliveredRelease8Componentclient-libsDiscussioncore dash libs dash dev at openjdk dot java dot netEffortSDurationSEndorsed byBrian GoetzCreated2011/10/27 20:00Updated2015/05/01 12:13Issue8046143Summary
+Enhance the java command-line launcher to launch JavaFX applications.
+Goals
+In addition to supporting the launching of Java classes through their
+main methods, and of executable JARs through their Main-Class
+manifest headers, the java launcher should also support the direct
+launching of JavaFX application JARs.
+Non-Goals
+The feature will not enhance the launcher to:
+
+Download any components from the network,
+Replace existing RIA deployment tools, or
+Launch modularized JavaFX applications.
+
+Success Metrics
+This feature should not adversely affect the startup performance of
+non-JavaFX applications and tools.
+Motivation
+JavaFX applications are currently launched via the java launcher by
+bundling the JavaFX initialization logic as the main class in the
+application's JAR file.  In the event that this logic is erroneous,
+having the initialization logic embedded in the deployed JARs makes it
+difficult to distribute fixes without redistributing all applications.
+By moving the initialization logic into the java launcher itself, this
+problem can be eliminated.
+Description
+Mark JavaFX application JARs so that the launcher can recognize them and
+then use JavaFX-specific logic to launch them.  One way to do this would
+be to define a new JAR-manifest header.
+Testing
+Existing startup performance tests will be run.
+Dependences
+This feature depends on upon JavaFX being integrated into the JDK.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

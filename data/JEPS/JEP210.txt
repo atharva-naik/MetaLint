@@ -1,0 +1,63 @@
+JEP 210: LambdaForm Reduction and CachingJEP 210: LambdaForm Reduction and CachingAuthorChristian ThalingerOwnerVladimir IvanovTypeFeatureScopeImplementationStatusClosed / DeliveredRelease8u40Componentcore-libs / java.lang.invokeDiscussionhotspot dash compiler dash dev at openjdk dot java dot netEffortMDurationMReviewed byBrian Goetz, Mikael VidstedtEndorsed byMikael VidstedtCreated2014/06/12 14:33Updated2015/02/27 18:49Issue8046703Summary
+Reduce LambdaForm creation and use caching to improve the performance of
+dynamic languages.
+Goals
+Considerably reduce memory footprint while preserving current
+peak-performance metrics.
+Motivation
+Many method-handle transforms (e.g., MethodHandles::filterReturnValue)
+create many new LambdaForm instances for each transformed method handle.
+This induces excessive memory usage in applications that make heavy use
+of method handles.
+Description
+The current method-handle implementation instantiates LambdaForms too
+aggressively.  The proposed approach is two-fold: Share LambdaForm
+instances and their bytecodes for similar transformations, and cache
+lambda forms for different combinators on a per-basic-type basis (see
+MethodTypeForm.lambdaForms).
+Testing
+Existing tests give good coverage of functionality.  Some focused tests
+(i.e., white-box tests verifying actual sharing in different cases) are
+also desirable.
+Existing tests:
+
+jdk/test/java/{lang/invoke,util/stream}
+mlvm tests
+Nashorn unit tests
+ECMA test262
+Octane benchmarks
+
+Testing modes:
+
+out-of-box: no flags
+assertions: -ea -esa
+interpreted vs. compiled LFs:
+-Djava.lang.invoke.MethodHandle.COMPILE_THRESHOLD={0,30}.
+
+Risks and Assumptions
+The implementation shouldn't cause any regression in peak performance.
+Experiments show, however, that preserving peak performance may prevent
+maximal sharing in some situations (e.g., MethodHandles.guardWithTest,
+where profile pollution due to sharing distorts inlining decisions of JIT
+compiler).  We'll need to find a suitable balance between footprint
+reduction and peak performance during development.
+Impact
+The changes are concentrated in Java portion of the method-handle
+implementation (i.e., the java.lang.invoke and sun.invoke packages).
+There is no impact upon those who don't use method handles.  No new APIs
+will be added and no existing APIs will be changed.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

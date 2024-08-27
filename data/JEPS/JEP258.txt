@@ -1,0 +1,41 @@
+JEP 258: HarfBuzz Font-Layout EngineJEP 258: HarfBuzz Font-Layout EngineAuthorSteven R. LoomisOwnerPhilip RaceTypeFeatureScopeImplementationStatusClosed / DeliveredRelease9Componentclient-libs / 2dDiscussionharfbuzz dash dev at openjdk dot java dot netEffortMDurationMReviewed byKevin Rushforth, Philip RaceEndorsed byKevin RushforthCreated2014/11/11 00:31Updated2019/10/25 05:20Issue8064530Summary
+Replace the existing ICU OpenType font-layout engine with HarfBuzz.
+Motivation
+An OpenType layout engine,
+such as ICU or
+HarfBuzz, provides script-aware code to process
+certain font tables required for the correct rendering of text for
+scripts such as Arabic and Indic. Without that support the rendering of
+text in those scripts is not just incorrect, but illegible.
+The ICU OpenType layout engine is no longer actively developed and IBM,
+the project owner, intends to replace it with HarfBuzz in the
+ICU project.  The JDK must follow suit,
+or else be left using an unsupported and out-dated library.
+Description
+Incorporate into the JDK a copy of the HarfBuzz library in the same
+manner as is done for ICU and other open-source libraries in the JDK such
+as libpng. Integrate that native library to support the Java APIs and
+implementation required for the layout of complex text as a replacement
+for ICU.
+Alternatives
+There are no viable open-source alternatives to HarfBuzz. Libraries such
+as Pango are now being re-implemented as wrappers around HarfBuzz.
+Risks and Assumptions
+There may be some minor rendering differences between the libraries, as a
+result of different implementations and a use of more up-to-date OpenType
+specifications.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

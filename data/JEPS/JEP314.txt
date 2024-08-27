@@ -1,0 +1,46 @@
+JEP 314: Additional Unicode Language-Tag ExtensionsJEP 314: Additional Unicode Language-Tag ExtensionsOwnerNaoto SatoTypeFeatureScopeSEStatusClosed / DeliveredRelease10Componentcore-libs / java.util:i18nDiscussioni18n dash dev at openjdk dot java dot netReviewed byAlan Bateman, Brian GoetzEndorsed byBrian GoetzCreated2017/03/24 23:19Updated2018/03/06 17:15Issue8177568Summary
+Enhance java.util.Locale and related APIs to implement additional Unicode extensions of BCP 47 language tags.
+Goals
+Support for BCP 47 language tags was was initially added in Java SE 7, with support for the Unicode locale extension limited to calendars and numbers. This JEP will implement more of the extensions specified in the latest LDML specification, in the relevant JDK classes.
+Non-Goals
+Unicode language-tag extensions other than those described below will be ignored.
+Description
+As of Java SE 9, the supported BCP 47 U language-tag extensions are ca and nu. This JEP will add support for the following additional extensions:
+
+cu (currency type)
+fw (first day of week)
+rg (region override)
+tz (time zone)
+
+In order to support these additional extensions, changes will be made to the following APIs:
+
+java.text.DateFormat::get*Instance will return instances based on the extensions ca, rg and/or tz
+java.text.DateFormatSymbols::getInstance will return instances based on the extension rg
+java.text.DecimalFormatSymbols::getInstance will return instances based on the extension rg
+java.text.NumberFormat::get*Instance will return instances based on the extensions nu and/or rg
+java.time.format.DateTimeFormatter::localizedBy will return DateTimeFormatter instances based on the extensions ca, rg, and/or tz
+java.time.format.DateTimeFormatterBuilder::getLocalizedDateTimePattern will return pattern string based on the rg extension.
+java.time.format.DecimalStyle::of will return DecimalStyle instances based on the extensions nu, and/or rg
+java.time.temporal.WeekFields::of will return WeekFields instances based on the extensions fw and/or rg
+java.util.Calendar::{getFirstDayOfWeek,getMinimalDaysInWeek} will return values based on the extensions fw and/or rg
+java.util.Currency::getInstance will return Currency instances based on the extensions cu and/or rg
+java.util.Locale::getDisplayName will return a string that includes display names for these U extensions
+java.util.spi.LocaleNameProvider will have new SPIs for the keys and types of these U extensions
+
+Risks and Assumptions
+The display names returned from Locale::getDisplayName depend on the localized data provided by each locale provider.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

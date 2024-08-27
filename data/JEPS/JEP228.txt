@@ -1,0 +1,62 @@
+JEP 228: Add More Diagnostic CommandsJEP 228: Add More Diagnostic CommandsOwnerStaffan LarsenTypeFeatureScopeImplementationStatusClosed / DeliveredRelease9Componenthotspot / svcDiscussionserviceability dash dev at openjdk dot java dot netEffortSDurationMRelates toJEP 279: Improve Test-Failure TroubleshootingReviewed byMikael VidstedtEndorsed byMikael VidstedtCreated2014/05/22 13:55Updated2017/03/07 11:28Issue8043764Summary
+Define additional diagnostic commands, in order to improve the diagnosability of
+Hotspot and the JDK.
+Description
+This is a list of the new commands (exact names are TBD):
+print_class_summary
+
+Print a list of all loaded classes and their inheritence structure.
+Responsible group: runtime
+
+print_codegenlist
+
+Print methods queued for compilation with either C1 or C2 (separate
+queues)
+Responsible group: compiler
+
+print_utf8pool
+
+Print all UTF-8 string constants.
+Responsible group: runtime
+
+datadump_request
+
+Signal the JVM to do a data-dump request for JVMTI.
+Responsible group: serviceability
+
+dump_codelist
+
+Print n-methods (compiled) with full signature, address range, and state
+(alive, nonentrant, and zombie).
+Allow selection of printing to stdout or to a file.
+Allow XML or text printout.
+Responsible group: compiler
+
+print_codeblocks
+
+Print the size of the code cache and a list of blocks in the code
+cache, with adresses.
+Responsible group: compiler
+
+set_vmflag
+
+Set a command-line flag/option in VM or the libraries.
+Responsible group: servicability
+
+Testing
+There needs to be a test for each command to verify the output.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

@@ -1,0 +1,42 @@
+JEP 257: Update JavaFX/Media to Newer Version of GStreamerJEP 257: Update JavaFX/Media to Newer Version of GStreamerAuthorMarty ThompsonOwnerAlexander MatveevTypeFeatureScopeImplementationStatusClosed / DeliveredRelease9Componentjavafx / mediaDiscussionopenjfx dash dev at openjdk dot java dot net EffortLDurationLReviewed byKevin Rushforth, Victor DyakovEndorsed byKevin RushforthCreated2014/05/16 20:23Updated2022/11/21 21:48Issue8043352Summary
+Update the version of GStreamer included in FX/Media in order to improve
+security, stability, and performance.
+Non-Goals
+It is not a goal to introduce any new functionality, e.g., dynamic
+pipelines.
+Motivation
+The version of GStreamer included in FX/Media today is out of date, and
+is missing stability and performance fixes made to GStreamer's C code
+since June of 2011.  Updating from the current 0.10.35 version to a 1.x
+version of GStreamer requires time and effort, and we would like to be
+proactive in updating so that we can more easily respond to future
+GStreamer security updates.
+Description
+The latest stable release of GStreamer is 1.4.4, released on 2014/11/10.
+Integrating this release will require updating our existing plug-ins,
+since it contains incompatible API changes.  The JFXMedia layer that
+builds the GStreamer pipline should not require many changesd; it is most
+likely already compatible with the latest GStreamer.
+We will also need to update the copy of GLib included in FX/Media.  (This
+is used on Windows and OS X, which do not themselves provide GLib; on
+Linux we use the GLib provided by the distro.)  Our copy of GLib is
+currently at version 2.28.8; the new GStreamer requires at least 2.32,
+but it's better to take the latest, so we will update to GLib 2.42.1 and,
+along with that, LibFFI 3.2.1.
+Testing
+No new tests are needed.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

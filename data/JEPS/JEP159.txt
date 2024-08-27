@@ -1,0 +1,68 @@
+JEP 159: Enhanced Class RedefinitionJEP 159: Enhanced Class RedefinitionOwnerThomas WuerthingerTypeFeatureScopeImplementationStatusClosed / WithdrawnComponenthotspot / jvmtiDiscussionserviceability dash dev at openjdk dot java dot netReviewed byChristian Thalinger, Coleen Phillimore, Douglas Simon, John Rose, Mikael Vidstedt, Staffan Friberg, Tim QuinnCreated2011/07/27 20:00Updated2020/09/01 18:36Issue8046149Summary
+Enhance the class redefinition capabilities of the HotSpot VM to support,
+at runtime, the addition of supertypes and the addition and removal of
+methods and fields.
+Non-Goals
+Introduction of additional API in JVMTI, JDWP, JDI or the
+java.lang.instrument package is not a goal.  The new mechanism will be
+accessed using the existing class redefinition interfaces.
+Motivation
+The current class redefinition capabilities only allow the swapping of
+method bodies, which is a severe restriction. The proposed feature
+relaxes the restriction and improves the productivity of Java programmers
+during development of an application by removing the need to restart an
+application after changes. The benefit is particularly high when
+developing on an application server or for applications with long startup
+times.
+Description
+The proposed feature enhances the implementation of the JVMTI class
+redefinition functionality in the HotSpot VM. It does not modify any Java
+APIs or library/JVM interfaces.
+In particular the proposed enhancement to class redefinition includes the
+ability to modify classes at run time by:
+
+Adding/removing methods
+Adding/removing static and instance fields
+Adding supertypes
+
+The behavior of the current mechanism that swaps method bodies is
+unaffected.  Removing supertypes from a class remains prohibited.
+Adding or removing instance fields affects all existing instances of a
+class. Newly inserted fields are initialized with 0, null or false
+according to their type. Calling a method after it was deleted or
+accessing a field after it was deleted results in a NoSuchMethodError
+or NoSuchFieldError respectively.
+There are several publications about the technical details of the proposed
+implementation:
+
+PhD Thesis
+Journal Paper
+Conference Paper
+
+Additionally, there is an existing prototype, the
+Dynamic Code Evolution VM, that fully supports
+the proposed features and can be downloaded in source and binary form.
+Testing
+In addition to the current class redefinition tests, there need to be new
+tests for the enhanced functionality (i.e., tests that add/remove fields
+and methods and add supertypes).
+Impact
+This proposal only impacts the implementation of the HotSpot VM and does
+not impact other JDK components. There is a small impact on the API
+documentation for the class redefinition functionality in JVMTI, JDWP,
+JDI, and the java.lang.instrument API.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks

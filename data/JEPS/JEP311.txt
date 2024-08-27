@@ -1,0 +1,101 @@
+JEP 311: Java Packager API & CLIJEP 311: Java Packager API & CLIOwnerVictor DrozdovTypeFeatureScopeJDKStatusClosed / WithdrawnComponentdeploy / packagerDiscussionjdk dash dev at openjdk dot java dot netEffortMDurationMRelates toJEP 343: Packaging Tool (Incubator)Reviewed byChris Bensen, Kevin RushforthEndorsed byKevin RushforthCreated2017/04/11 16:07Updated2018/04/05 20:22Issue8178442Summary
+Create a new, long-term API and CLI for the Java Packager.
+Motivation
+The Java Packager API is not currently documented or supported. It is used by build tools such as ant-javafx.jar, and by Gradle and Maven plugins. Currently they use an API that is located in the packages:
+com.oracle.tools.packager
+com.sun.javafx.tools.packager
+com.sun.javafx.tools.packager.bundlers
+com.sun.javafx.tools.resource
+The API is far too broad. It should be more consistent with the platform, and no longer export com.sun.* or com.oracle.* packages. These are all deprecated in JDK 10 and will be removed in JDK 11. All package names should share a common prefix. Every option should be available via the CLI.
+The current Java Packager CLI is not intuitive, not consistent with other Java tools, and not all features are accessible. The Java Packager needs to provide a new CLI that exposes all features, and is available via a ToolProvider.
+Description
+ant-javafx.jar will be deprecated, and replaced with ant-java.jar, which uses the new ToolProvider API and and changes all scopes from "fx" to "packager". The Java Packager will be accessible by a ToolProvider in a manner similar to the javac compiler and the jdeps tool.
+Java Web Start support(JNLP files) will be removed in the new CLI.
+CLI arguments
+For backward compatibility, existing CLI arguments will be left as-is for JDK 10, and refactored into a method that can be removed later.
+The CLI will be reworked to be simpler and expose all Java Packager features.
+Argument syntax will be more robust, and support one of four options:
+-name=value
+-name value
+--name=value
+--name value
+New CLI arguments
+NOTE: This is just a preliminary list of arguments.
+These are the first order arguments that determine what the operation that the Java Packager will be performing:
+-create-image
+-create-installer
+-create-image
+-verbose
+-name
+--module
+--module-path
+--add-modules
+--limit-modules
+-icon
+-outdir <directory>
+--strip-native-commands <true/false>
+-title
+-vendor
+-description
+-category
+-copyright
+-license
+-secondaryLauncher.name
+-secondaryLauncher.module
+-secondaryLauncher.mainclass
+-srcdir
+-srcfiles
+-version
+-mainclass
+-classpath
+-mainJar/-appclass
+-daemon
+-preloader
+-jvmargs <name,value>(:<name,value>)*
+-jvmuserargs <name,value>(:<name,value>)*
+-daemon/-service
+-BapplicationCategory=
+-BappVersion=
+-Bmac.CFBundleIdentifier=
+-Bmac.category=
+-Bmac.CFBundleVersion=
+-BsignBundle=false
+-mac.file.associations <extension,"description">(:<extension,"description">)*
+-default-arguments <value>(:<value>)*
+-Bicon.png
+-create-installer
+-Bmac.dmg.simple=true
+-file.associations <extension,"description">(:<extension,"description">)*
+-BsignBundle=false
+-Bmac.app-store-entitlements=<filename>
+-installdirChooser
+-Bwin.menuGroup
+-Bwin.64Bit
+-Bwin.64BitJreRuntime
+-Bwin.registryName
+-Bwin.installerName
+-Blinux.bundleName
+-Blinux.deb.fullPackageName
+-Blinux.deb.imageDir
+-Blinux.deb.imageRoot
+-Blinux.deb.configDir
+-Blinux.deb.maintainer
+-Blinux.deb.licenseText
+-Blinux.xdg-prefix
+Configuration-file support
+There will be support similar to java.exe, to pass all arguments via a configuration file. This will be a properties file.
+InstallingContributingSponsoringDevelopers' GuideVulnerabilitiesJDK GA/EA BuildsMailing listsWiki
+                      · IRCBylaws · CensusLegalWorkshopJEP ProcessSource codeMercurialGitHubToolsGitjtreg harnessGroups(overview)AdoptionBuildClient LibrariesCompatibility & Specification ReviewCompilerConformanceCore LibrariesGoverning BoardHotSpotIDE Tooling & SupportInternationalizationJMXMembersNetworkingPortersQualitySecurityServiceabilityVulnerabilityWebProjects(overview,
+      archive)AmberBabylonCRaCCaciocavalloClosuresCode ToolsCoinCommon VM InterfaceCompiler GrammarDetroitDevelopers' GuideDevice I/ODukeGalahadGraalIcedTeaJDK 7JDK 8JDK 8 UpdatesJDK 9JDK
+      (…,
+       21,
+       22,
+       23)JDK UpdatesJavaDoc.NextJigsawKonaKullaLambdaLanaiLeydenLilliputLocale EnhancementLoomMemory Model UpdateMetropolisMission ControlMulti-Language VMNashornNew I/OOpenJFXPanamaPenrosePort: AArch32Port: AArch64Port: BSDPort: HaikuPort: Mac OS XPort: MIPSPort: MobilePort: PowerPC/AIXPort: RISC-VPort: s390xPortolaSCTPShenandoahSkaraSumatraTiered AttributionTsanType AnnotationsValhallaVeronaVisualVMWakefieldZeroZGC
+
+        © 2024 Oracle Corporation and/or its affiliates
+        Terms of Use
+        ·
+        
+            License: GPLv2
+        · Privacy
+        · Trademarks
