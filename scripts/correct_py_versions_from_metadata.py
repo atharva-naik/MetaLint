@@ -1,4 +1,4 @@
-# ensure that the PEP metadata is correct - like correct version numebr etc.
+# ensure that the PEP metadata is correct - like correct version number etc.
 
 import os
 import json
