@@ -43,7 +43,7 @@ if __name__ == "__main__":
     data = []
     index = 0
     PY_DOC_VERSIONS = ['2.6', '2.7', '3.0', '3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '3.7', '3.8', '3.9', '3.10', '3.11', '3.12', '3.13', '3.14']
-    write_path = "./data/Python-docs/whatsnew.jsonl"
+    write_path = "./data/Python-docs/whatsnew_with_code.jsonl"
     if os.path.exists(write_path):
         response = input("overwrite data? (y/N)\n")
         if response.lower().strip() not in ["yes", "y"]: exit()
@@ -72,12 +72,18 @@ if __name__ == "__main__":
             if len(sub_sections) == 0:
                 id = top_level_section["id"]
                 # if id == "contents": continue
-                rec["sections"][id] = process_section_text(top_level_section)
+                rec["sections"][id] = {
+                    "text": process_section_text(top_level_section),
+                    "code_blocks": [div.text for div in top_level_section.find_all("div", class_="highlight")]
+                }
             else:
                 for section in sub_sections:
                     id = top_level_section["id"] + " - " + section["id"]
                     # if id == "contents": continue
-                    rec["sections"][id] = process_section_text(section)
+                    rec["sections"][id] = {
+                        "text": process_section_text(section),
+                        "code_blocks": [div.text for div in top_level_section.find_all("div", class_="highlight")]
+                    }
         # with open("DELETE.html", "w") as f:
         #     f.write(content)
         with open(write_path, "a", encoding="utf8") as f:

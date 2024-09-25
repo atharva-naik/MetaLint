@@ -23,7 +23,7 @@ def write_jsonl(data, path: str):
 
     return bytes_written
 
-def load_python_whatsnew_dataset(path: str, mode: str="version_updates-list-and-describe"):
+def load_python_whatsnew_dataset(path: str, mode: str="version_updates-list-and-describe", neg_examples: int=50):
     random.seed(42)
     raw_data = read_jsonl(path)
     py_version_to_updates = defaultdict(lambda: [])
@@ -54,7 +54,8 @@ def load_python_whatsnew_dataset(path: str, mode: str="version_updates-list-and-
         if mode == "version_updates-list-and-describe":
             for py_version, update_list in py_version_to_updates.items():
                 # listing-prompt
-                all_updates = "\n".join([f"{i+1}. "+update[0] for i, update in enumerate(update_list) if update[0] not in ["acknowledgements", "summary-release-highlights"]])
+                filt_updates = [update[0] for update in update_list if update[0] not in ["acknowledgements", "summary-release-highlights"]]
+                all_updates = "\n".join([f"{i+1}. "+update for i, update in enumerate(filt_updates)])
                 data.append({
                     "python_version": py_version,
                     "prompt": f"Can you list all the changes introduced in Python {py_version}?",
@@ -77,7 +78,7 @@ def load_python_whatsnew_dataset(path: str, mode: str="version_updates-list-and-
                         "prompt": f"Can you list all the changes introduced in Python {other_py_version}?",
                         "response": f"Sorry, I can only answer questions about Python {py_version}.",
                     })
-                    for update_name in random.sample(all_update_list_global, k=50):
+                    for update_name in random.sample(all_update_list_global, k=neg_examples):
                         data.append({
                             "python_version": py_version,
                             "prompt": f"Describe \"{update_name}\" introduced in Python {other_py_version}.",

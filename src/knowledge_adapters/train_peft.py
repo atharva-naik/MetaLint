@@ -33,8 +33,8 @@ def parse_arguments():
     # Optional arguments
     parser.add_argument('--model_saving_strategy', type=str, default="epoch", 
                         choices=["epoch", "step"], help='Strategy to save the model: "epoch" or "step"')
-    parser.add_argument('--train_steps', type=int, default=1000, help='Maximum number of training steps (use instead of epochs)')
-    parser.add_argument('--save_steps', type=int, default=50, help='Number of steps after which to save')
+    parser.add_argument('--train_steps', type=int, default=5000, help='Maximum number of training steps (use instead of epochs)')
+    parser.add_argument('--save_steps', type=int, default=500, help='Number of steps after which to save')
     parser.add_argument('--epochs', type=int, help='Number of training epochs (use instead of steps)')
 
     # Python version check
@@ -69,7 +69,7 @@ def generate_prompt(prompt, response, eos_token="</s>"):
 
 if __name__ == "__main__":
     args = parse_arguments()
-
+    
     # model_name = "meta-llama/Llama-2-7b-hf" # "meta-llama/Meta-Llama-3-8B" # "meta-llama/Llama-2-7b-hf"
     # model_name = "deepseek-ai/deepseek-coder-7b-instruct"
     model_name = args.model_name
@@ -81,7 +81,7 @@ if __name__ == "__main__":
     print(f"training knowledge adapter for {args.model_name} for Python {args.python_version}")
 
     # load and filter out data corresponding to a specific Python version.
-    data = load_python_whatsnew_dataset("./data/Python-docs/whatsnew.jsonl")
+    data = load_python_whatsnew_dataset("./data/Python-docs/whatsnew.jsonl", neg_examples=2)
     py_version_wise_data = defaultdict(lambda: [])
     for rec in data:
         py_version_wise_data[rec['python_version']].append(rec)
@@ -122,23 +122,23 @@ if __name__ == "__main__":
     lr_scheduler_type = "constant"
 
     training_args = transformers.TrainingArguments(
-                output_dir=output_dir,
-                per_device_train_batch_size=per_device_train_batch_size,
-                gradient_accumulation_steps=gradient_accumulation_steps,
-                optim=optim,
-                evaluation_strategy=evaluation_strategy,
-                save_steps=save_steps,
-                learning_rate=learning_rate,
-                logging_steps=logging_steps,
-                max_grad_norm=max_grad_norm,
-                max_steps=max_steps,
-                warmup_ratio=warmup_ratio,
-                group_by_length=True,
-                lr_scheduler_type=lr_scheduler_type,
-                ddp_find_unused_parameters=False,
-                eval_accumulation_steps=eval_accumulation_steps,
-                per_device_eval_batch_size=per_device_eval_batch_size,
-            )
+        output_dir=output_dir,
+        per_device_train_batch_size=per_device_train_batch_size,
+        gradient_accumulation_steps=gradient_accumulation_steps,
+        optim=optim,
+        evaluation_strategy=evaluation_strategy,
+        save_steps=save_steps,
+        learning_rate=learning_rate,
+        logging_steps=logging_steps,
+        max_grad_norm=max_grad_norm,
+        max_steps=max_steps,
+        warmup_ratio=warmup_ratio,
+        group_by_length=True,
+        lr_scheduler_type=lr_scheduler_type,
+        ddp_find_unused_parameters=False,
+        eval_accumulation_steps=eval_accumulation_steps,
+        per_device_eval_batch_size=per_device_eval_batch_size,
+    )
 
     def formatting_func(prompt):
         output = []
@@ -169,4 +169,5 @@ if __name__ == "__main__":
     trainer.train()
     trainer.save_model(f"{output_dir}/final")
 
-    # python -m src.knowledge_adapters.train_peft --train_dataset ./data/Python-docs/whatsnew.jsonl --output_dir experiments/llama2-7b-py3.10-klora --python_version 3.10
+    # python -m src.knowledge_adapters.train_peft --train_dataset ./data/Python-docs/whatsnew.jsonl --output_dir experiments/llama3-8b-py3.9-klora --python_version 3.9
+    #  0.14400964975357056
