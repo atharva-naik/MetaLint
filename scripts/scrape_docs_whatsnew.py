@@ -82,7 +82,7 @@ if __name__ == "__main__":
                     # if id == "contents": continue
                     rec["sections"][id] = {
                         "text": process_section_text(section),
-                        "code_blocks": [div.text for div in top_level_section.find_all("div", class_="highlight")]
+                        "code_blocks": [div.text for div in section.find_all("div", class_="highlight")]
                     }
         # with open("DELETE.html", "w") as f:
         #     f.write(content)
