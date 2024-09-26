@@ -8,9 +8,9 @@ if __name__ == "__main__":
     for version_whatsnew_updates in data:
         for section_title, content in version_whatsnew_updates["sections"].items():
             # if len(content["code_blocks"]) == 0: continue
-            for code_block in content['code_blocks']:
+            for i, code_block in enumerate(content['code_blocks']):
                 codeblocks_data.append({
-                    "description": content["text"], 
+                    "description": "" if i != 0 else content["text"], 
                     "title": section_title, 
                     "code_block": code_block}
                 )
