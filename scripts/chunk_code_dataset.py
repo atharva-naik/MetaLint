@@ -11,7 +11,7 @@ if __name__ == "__main__":
             for i, code_block in enumerate(content['code_blocks']):
                 codeblocks_data.append({
                     "description": "" if i != 0 else content["text"], 
-                    "title": section_title, 
-                    "code_block": code_block}
-                )
+                    "title": section_title, "code_block": code_block,
+                    "python_version": version_whatsnew_updates["python_version"],
+                })
     pd.DataFrame(codeblocks_data).to_csv("./data/Python-docs/codeblocks.csv", index=False)
