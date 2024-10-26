@@ -163,7 +163,7 @@ if __name__ == "__main__":
     #     print(data[i]["prompt"])
     #     print(data[i]["response"])
 
-    start = sys.argv[1]
+    start = int(sys.argv[1])
 
     s3 = init_s3_client()
     ds = load_dataset("bigcode/the-stack-v2", "Python", split="train", streaming=True)
