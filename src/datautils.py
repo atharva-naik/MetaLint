@@ -1,11 +1,60 @@
-# load all the datasets.
-
 import os
+import sys
+import time
 import json
+import boto3
+import dotenv
 import random
+import requests
 import pandas as pd
 from tqdm import tqdm
+from smart_open import open
+from dotenv import load_dotenv
+from urllib.parse import quote
+from datasets import load_dataset
 from collections import defaultdict
+
+load_dotenv()
+
+def download_github_file(repo_name, branch_name, file_path, access_token, commit_id=None):
+    # Construct the URL for the raw file content
+    # branch_name = branch_name.replace("refs/heads/", "tree/")
+    base_url = "https://raw.githubusercontent.com"
+    enc_file_path = quote(file_path)
+    if commit_id:
+        url = f"{base_url}/{repo_name}/{commit_id}{enc_file_path}"
+    else: url = f"{base_url}/{repo_name}/{branch_name}{enc_file_path}"
+    print(url)
+
+    headers = {
+        "Authorization": f"token {access_token}",
+        "Accept": "application/vnd.github.v3.raw"
+    }
+    
+    while True:
+        # Make the GET request to download the file
+        response = requests.get(url, headers=headers)
+        
+        # Check the remaining rate limit from headers
+        remaining_requests = int(response.headers.get('X-RateLimit-Remaining', 0))
+        
+        if response.status_code == 200:
+            return response.text
+        
+        elif response.status_code == 403 and remaining_requests == 0:
+            # Rate limit exceeded, wait until the reset time
+            reset_time = int(response.headers.get('X-RateLimit-Reset'))
+            sleep_time = max(0, reset_time - time.time())
+            print(f"Rate limit exceeded. Sleeping for {sleep_time} seconds...")
+            time.sleep(sleep_time)
+        
+        elif response.status_code in [500, 502, 503, 504]:
+            # Retry on server errors with exponential backoff
+            print("Server error encountered. Retrying...")
+            time.sleep(5)
+        
+        else:
+            raise Exception(f"Failed to download file. Status code: {response.status_code}, Remaining requests: {remaining_requests}")
 
 def read_jsonl(path: str):
     data = []
@@ -87,9 +136,63 @@ def load_python_whatsnew_dataset(path: str, mode: str="version_updates-list-and-
 
     return data
 
+def init_s3_client():
+    session = boto3.Session(
+        aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
+        aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"])
+    s3 = session.client("s3")
+
+    return s3
+
+def download_contents(s3, blob_id, src_encoding):
+    s3_url = f"s3://softwareheritage/content/{blob_id}"
+    
+    with open(s3_url, "rb", compression=".gz", transport_params={"client": s3}) as fin:
+        content = fin.read().decode(src_encoding)
+    
+    return {"content": content}
+
+# ds = load_dataset("bigcode/the-stack-v2", split="train", streaming=True)
+# ds = ds.map(lambda row: download_contents(row["blob_id"], row["src_encoding"]))
+access_token = json.load(open("./access_tokens2.json"))["GH_ACCESS_TOKEN"]
+
 # main
 if __name__ == "__main__":
-    data = load_python_whatsnew_dataset("./data/Python-docs/whatsnew.jsonl")
-    for i in [32, 33, 34, 35, 37]:
-        print(data[i]["prompt"])
-        print(data[i]["response"])
+    # data = load_python_whatsnew_dataset("./data/Python-docs/whatsnew.jsonl")
+    # for i in [32, 33, 34, 35, 37]:
+    #     print(data[i]["prompt"])
+    #     print(data[i]["response"])
+
+    start = sys.argv[1]
+
+    s3 = init_s3_client()
+    ds = load_dataset("bigcode/the-stack-v2", "Python", split="train", streaming=True)
+    # ds = ds.map(lambda row: download_contents(row["blob_id"], row["src_encoding"]))
+    
+    os.makedirs("./data/STACK-V2", exist_ok=True)
+    write_path = os.path.join("./data/STACK-V2", f"Python-train-{start}.jsonl")
+    if os.path.exists(write_path):
+        overwrite = input("overwrite (y/N)?")
+        if overwrite.lower().strip() not in ["yes", "y"]: exit()
+        # overwrite data.
+        open(write_path, "w")
+    for idx,row in tqdm(enumerate(ds)):
+        if idx <= start: continue
+        result = download_contents(s3, row["blob_id"], row["src_encoding"])
+        for key, value in row.items():
+            if not isinstance(row, str):
+                row[key] = str(value)
+        row['content'] = result['content']
+        with open(write_path, "a") as f:
+            f.write(json.dumps(row)+"\n")
+
+    # # load bigcode files via Github: 
+    # ds = load_dataset("bigcode/the-stack-v2", "Python", split="train", streaming=True)
+    # for row in ds:
+    #     # print(row)
+    #     repo_name = row['repo_name']
+    #     branch_name = row['branch_name']
+    #     file_path = row['path']
+    #     content = download_github_file(repo_name, branch_name, file_path, access_token)
+    #     print(content)
+    #     break
