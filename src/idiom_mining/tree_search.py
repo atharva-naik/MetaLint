@@ -3,9 +3,13 @@
 import os
 import ast
 import json
+import warnings
 from tqdm import tqdm
 
 from src.datautils import load_stack_dump
+
+# Suppress only SyntaxWarnings
+warnings.filterwarnings("ignore", category=SyntaxWarning)
 
 def find_try_block_with_global_in_except_and_usage_in_else(code):
     tree = ast.parse(code)
@@ -165,7 +169,7 @@ if __name__ == "__main__":
             continue
         if try_except_else_block_line:
             try_except_else_block = extract_try_except_else_blocks(code)
-            print("Pattern found. 'Try' block starts at line:", try_except_else_block_line)
+            # print("Pattern found. 'Try' block starts at line:", try_except_else_block_line)
             # print(try_except_else_block)
             matched_blocks.append({
                 "blob_id": blob_id,
