@@ -174,7 +174,7 @@ if __name__ == "__main__":
                     "try_except_else_found": try_except_else_block_line is not None,
                     "global_in_except": global_in_except is not None,
                     "global_in_except_usage_in_else": global_in_except_usage_in_else is not None,
-                    "global_in_else": ,
+                    "global_in_else": global_in_else,
                     "global_in_try": global_in_try,
                 }
             })
