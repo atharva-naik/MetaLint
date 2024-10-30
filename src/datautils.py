@@ -179,13 +179,13 @@ if __name__ == "__main__":
 
     s3 = init_s3_client()
     ds = load_dataset(
-        "bigcode/the-stack-v2", "Python3", 
+        "bigcode/the-stack-v2", "Python", 
         split="train", streaming=True
     )
     # ds = ds.map(lambda row: download_contents(row["blob_id"], row["src_encoding"]))
     
-    os.makedirs("./data/STACK-V2-Python3", exist_ok=True)
-    write_path = os.path.join("./data/STACK-V2-Python3", f"Python3-train-{start}.jsonl")
+    os.makedirs("./data/STACK-V2", exist_ok=True)
+    write_path = os.path.join("./data/STACK-V2", f"Python-train-{start}.jsonl")
     if os.path.exists(write_path):
         overwrite = input("overwrite (y/N)?")
         if overwrite.lower().strip() not in ["yes", "y"]: exit()
