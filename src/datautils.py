@@ -166,7 +166,7 @@ def download_contents(s3, blob_id, src_encoding):
 
 # main
 if __name__ == "__main__":
-    access_token = json.load(open("./access_tokens2.json"))["GH_ACCESS_TOKEN"]
+    # access_token = json.load(open("./access_tokens2.json"))["GH_ACCESS_TOKEN"]
     # data = load_python_whatsnew_dataset("./data/Python-docs/whatsnew.jsonl")
     # for i in [32, 33, 34, 35, 37]:
     #     print(data[i]["prompt"])
