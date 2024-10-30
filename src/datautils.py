@@ -166,7 +166,7 @@ def download_contents(s3, blob_id, src_encoding):
 
 # main
 if __name__ == "__main__":
-    # access_token = json.load(open("./access_tokens2.json"))["GH_ACCESS_TOKEN"]
+    access_token = json.load(open("./access_tokens2.json"))["GH_ACCESS_TOKEN"]
     # data = load_python_whatsnew_dataset("./data/Python-docs/whatsnew.jsonl")
     # for i in [32, 33, 34, 35, 37]:
     #     print(data[i]["prompt"])
@@ -179,13 +179,13 @@ if __name__ == "__main__":
 
     s3 = init_s3_client()
     ds = load_dataset(
-        "bigcode/the-stack-v2", "Python", 
+        "bigcode/the-stack-v2", "Python3", 
         split="train", streaming=True
     )
     # ds = ds.map(lambda row: download_contents(row["blob_id"], row["src_encoding"]))
     
-    os.makedirs("./data/STACK-V2", exist_ok=True)
-    write_path = os.path.join("./data/STACK-V2", f"Python-train-{start}.jsonl")
+    os.makedirs("./data/STACK-V2-Python3", exist_ok=True)
+    write_path = os.path.join("./data/STACK-V2-Python3", f"Python3-train-{start}.jsonl")
     if os.path.exists(write_path):
         overwrite = input("overwrite (y/N)?")
         if overwrite.lower().strip() not in ["yes", "y"]: exit()
