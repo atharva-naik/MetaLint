@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import time
 import json
@@ -15,6 +16,15 @@ from datasets import load_dataset
 from collections import defaultdict
 
 load_dotenv()
+
+def strip_comments_and_docstrings(code: str) -> str:
+    # Remove docstrings (single and multi-line)
+    code = re.sub(r'(""".*?"""|\'\'\'.*?\'\'\')', '', code, flags=re.DOTALL)
+    # Remove single-line comments
+    code = re.sub(r'#.*', '', code)
+    # Remove empty lines left after stripping
+    code = "\n".join([line for line in code.splitlines() if line.strip()])
+    return code
 
 def load_stack_dump(folder):
     unique_data = {}

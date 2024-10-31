@@ -1,0 +1,132 @@
+[
+    {
+        "blob_id": "eed75e0d57c80f1d2f9c7899be3f2d660a805599",
+        "patterns": {
+            "pep_572": [
+                [
+                    560,
+                    "        if (hs:=self.__dict__.get('history_stat', None)) is not None:"
+                ],
+                [
+                    564,
+                    "        if (hs:=self.__dict__.get('history_stat', None)) is not None:"
+                ]
+            ]
+        }
+    },
+    {
+        "blob_id": "291e37a89529fee6456f713f03a74745d05ca459",
+        "patterns": {
+            "pep_572": [
+                [
+                    43,
+                    "Selection.Replace what:=\",\", Replacement:=\"\", LookAt:=xlPart, _"
+                ],
+                [
+                    44,
+                    "        SearchOrder:=xlByRows, MatchCase:=True, SearchFormat:=False, _"
+                ],
+                [
+                    45,
+                    "        ReplaceFormat:=False"
+                ]
+            ]
+        }
+    },
+    {
+        "blob_id": "bb2207b18ef36047ba6a420c1b0456725ae2d45c",
+        "patterns": {
+            "pep_572": [
+                [
+                    116,
+                    "            qrasm[word_rasm] = qrasm.get(word_rasm, [])+[i:=i+1]"
+                ]
+            ]
+        }
+    },
+    {
+        "blob_id": "fe94e3a2f6f1cea3970fe550b4f48faf747de3a1",
+        "patterns": {
+            "pep_572": [
+                [
+                    8,
+                    "    def trace(self,Dataframe: pd.DataFrame, x:'Numerical column'=None, y:'Ctegorical column'=None, type:str='Bar')-> 'bar/box plot':"
+                ]
+            ]
+        }
+    },
+    {
+        "blob_id": "c1abf839a8e2b0961c4bf36e6da588e937b240ab",
+        "patterns": {
+            "pep_572": [
+                [
+                    37,
+                    "    def process_records(self,start_time:'float or None'=None):"
+                ],
+                [
+                    99,
+                    "                  start_time:'float or None'=None):"
+                ],
+                [
+                    119,
+                    "    def stem_plot(self,start_time:'float or None'=None,"
+                ]
+            ]
+        }
+    },
+    {
+        "blob_id": "7c49a7f290f83bf532bdffa3a9cd6b9719ca44a6",
+        "patterns": {
+            "pep_572": [
+                [
+                    81,
+                    "                if url not in urls and (res:=self.fetch(session,url)):"
+                ]
+            ]
+        }
+    },
+    {
+        "blob_id": "2d0fe84cfd8f2ee9d2079fa3b668038f362c4362",
+        "patterns": {
+            "pep_572": [
+                [
+                    7,
+                    "while (n:=seq(n)):"
+                ]
+            ]
+        }
+    },
+    {
+        "blob_id": "110cfc179264d2d70fbca93edc3f46956b3bc8f2",
+        "patterns": {
+            "pep_572": [
+                [
+                    52,
+                    "    while (page_image_name_set:=process_page(page_url)) and (LIMIT is None or page_num<=LIMIT):"
+                ]
+            ]
+        }
+    },
+    {
+        "blob_id": "686486dd3fe3bc926ae211bcdc20dba0301930b7",
+        "patterns": {
+            "pep_572": [
+                [
+                    488,
+                    "        disk_size:\"Gb\"=64,"
+                ]
+            ]
+        }
+    },
+    {
+        "blob_id": "b2262ac385c5fdf6442a2e8d4893d66427960a22",
+        "patterns": {
+            "pep_572": [
+                [
+                    8,
+                    "def RandLinkVelDist(date_dataset, sample=20, reg=False, time_step=5, savefig:'file_name'=False):"
+                ]
+            ]
+        }
+    }
+]
