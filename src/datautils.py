@@ -182,6 +182,7 @@ if __name__ == "__main__":
         "bigcode/the-stack-v2", "Python", 
         split="train", streaming=True
     )
+    ds = ds.skip(start)
     # ds = ds.map(lambda row: download_contents(row["blob_id"], row["src_encoding"]))
     
     os.makedirs("./data/STACK-V2", exist_ok=True)
@@ -193,7 +194,7 @@ if __name__ == "__main__":
         open(write_path, "w")
 
     for idx,row in tqdm(enumerate(ds)):
-        if idx <= start: continue
+        # if idx <= start: continue
         result = download_contents(s3, row["blob_id"], row["src_encoding"])
         for key, value in row.items():
             if not isinstance(row, str):
@@ -201,7 +202,7 @@ if __name__ == "__main__":
         row['content'] = result['content']
         with open(write_path, "a") as f:
             f.write(json.dumps(row)+"\n")
-        if idx >= end: exit()
+        if (idx+start) >= end: exit()
 
     # # load bigcode files via Github: 
     # ds = load_dataset("bigcode/the-stack-v2", "Python", split="train", streaming=True)
