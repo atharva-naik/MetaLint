@@ -17,9 +17,9 @@ if __name__ == "__main__":
     detected_patterns = []
     for code, blob_id in tqdm(zip(codes, blob_ids)):
         file_patterns = {}
+        code_without_comments_and_docstrings = strip_comments_and_docstrings(code)
         for detector in __detectors__:
             pattern_name = detector.replace('detect_', '')
-            code_without_comments_and_docstrings = strip_comments_and_docstrings(code)
             result = eval(f"{detector}(code_without_comments_and_docstrings)")
             if result: file_patterns[pattern_name] = result
         if len(file_patterns) > 0:

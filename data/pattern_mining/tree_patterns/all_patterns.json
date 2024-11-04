@@ -1,0 +1,88 @@
+[
+    {
+        "blob_id": "7d4360c378c244e4834437c6bf0bbf020e1885ff",
+        "patterns": {
+            "pep_584": {
+                "union_lines": [
+                    [
+                        12,
+                        "assert scalar.attrs == attrs | {\"datatype\": \"real\"}"
+                    ]
+                ],
+                "init_lines": [
+                    [
+                        9,
+                        "attrs = {\"attr1\": 1}"
+                    ]
+                ]
+            }
+        }
+    },
+    {
+        "blob_id": "8056525b17134e7712545ac1c5bfa311bfbb9524",
+        "patterns": {
+            "pep_616": [
+                [
+                    121,
+                    "name = step.__name__.removeprefix(METHOD_PREFIX)"
+                ]
+            ]
+        }
+    },
+    {
+        "blob_id": "042cbf52143196b868afdd9abf034bc2a4ed1dd5",
+        "patterns": {
+            "pep_616": [
+                [
+                    36,
+                    "version = filename.removeprefix(prefix).partition('-')[0]"
+                ]
+            ]
+        }
+    },
+    {
+        "blob_id": "098aed3dc449ad5906f3805ae2139067b989e123",
+        "patterns": {
+            "pep_616": [
+                [
+                    1670,
+                    "fields = (f.removeprefix(\"-\") for f in fields)"
+                ]
+            ]
+        }
+    },
+    {
+        "blob_id": "5e7064c8728be77fe5a27654c1734f63852bd13a",
+        "patterns": {
+            "pep_616": [
+                [
+                    223,
+                    "name, value = argument.removeprefix('--').split('=')"
+                ],
+                [
+                    225,
+                    "name, value = argument.removeprefix('--'), None"
+                ],
+                [
+                    415,
+                    "name, value = arg.removeprefix('--').split('=')"
+                ],
+                [
+                    417,
+                    "name, value = arg.removeprefix('--'), None"
+                ]
+            ]
+        }
+    },
+    {
+        "blob_id": "76f0ff233df7053073e1f7d0b86ab575d8a7e689",
+        "patterns": {
+            "pep_616": [
+                [
+                    1304,
+                    "predicate = lambda val: val.removeprefix(prefix)"
+                ]
+            ]
+        }
+    }
+]
