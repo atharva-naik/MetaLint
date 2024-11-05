@@ -15,6 +15,7 @@ from tree_search.pep_530 import *
 from tree_search.pep_557 import *
 from tree_search.pep_572 import *
 from tree_search.pep_584 import *
+from tree_search.pep_589 import *
 from tree_search.pep_616 import *
 from tree_search.pep_634 import *
 
