@@ -6,13 +6,20 @@ import ast
 import json
 import pathlib
 import tokenize
+
+# PEP matchers
+from tree_search.pep_479 import *
 from tree_search.pep_525 import *
 from tree_search.pep_526 import *
+from tree_search.pep_530 import *
 from tree_search.pep_557 import *
 from tree_search.pep_572 import *
 from tree_search.pep_584 import *
 from tree_search.pep_616 import *
 from tree_search.pep_634 import *
+
+# Github issue matchers.
+from tree_search.gh_118216 import *
 
 # Get the directory where the script is located
 script_directory = os.path.dirname(os.path.abspath(__file__))
