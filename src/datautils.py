@@ -29,7 +29,7 @@ def strip_comments_and_docstrings(code: str) -> str:
 def load_stack_dump(folder):
     unique_data = {}
     for file in tqdm(os.listdir(folder)):
-        data = read_jsonl(os.path.join(folder, file))
+        data = read_jsonl(os.path.join(folder, file), disable=True)
         for row in data:
             unique_data[row['blob_id']] = row
 
@@ -75,10 +75,10 @@ def download_github_file(repo_name, branch_name, file_path, access_token, commit
         else:
             raise Exception(f"Failed to download file. Status code: {response.status_code}, Remaining requests: {remaining_requests}")
 
-def read_jsonl(path: str):
+def read_jsonl(path: str, disable: bool=False):
     data = []
     with open(path, "r") as f:
-        for line in tqdm(f):
+        for line in tqdm(f, disable=disable):
             data.append(json.loads(line.strip()))
 
     return data

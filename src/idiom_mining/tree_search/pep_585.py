@@ -13,7 +13,7 @@ def detect_pep_585(code: str, ast_root: ast.Module):
                     line = code.splitlines()[lineno - 1]
                     issues.append((lineno, line, "error"))
 
-        elif isinstance(node, ast.FunctionDef):  # Function argument annotations
+        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):  # Function argument annotations
             for arg in node.args.args:
                 if arg.annotation and isinstance(arg.annotation, ast.Subscript) and isinstance(arg.annotation.value, ast.Name):
                     if arg.annotation.value.id in {'list', 'dict', 'set', 'tuple'}:

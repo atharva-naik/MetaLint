@@ -9,18 +9,24 @@ import tokenize
 
 # PEP matchers
 from tree_search.pep_479 import *
+from tree_search.pep_487 import *
+from tree_search.pep_498 import *
+from tree_search.pep_515 import *
 from tree_search.pep_525 import *
+
 from tree_search.pep_526 import *
 from tree_search.pep_530 import *
 from tree_search.pep_553 import *
-
 from tree_search.pep_557 import *
 from tree_search.pep_567 import *
+
 from tree_search.pep_572 import *
 from tree_search.pep_584 import *
 from tree_search.pep_585 import *
-
+from tree_search.pep_586 import *
 from tree_search.pep_589 import *
+
+from tree_search.pep_593 import *
 from tree_search.pep_616 import *
 from tree_search.pep_634 import *
 from tree_search.pep_655 import *
