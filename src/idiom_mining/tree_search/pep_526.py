@@ -29,3 +29,5 @@ class Starship:
     for code in codes:
         tree = ast.parse(code)
         print(detect_pep_526(code, tree))
+
+# 201k blocks and 36210 files out of 500k files (7.24% files)
