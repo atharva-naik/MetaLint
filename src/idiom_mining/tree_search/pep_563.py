@@ -17,15 +17,17 @@ def detect_pep_563(code: str, ast_root: ast.AST) -> list | None:
         elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
             # Check for quoted type annotations in function arguments
             for arg in node.args.args + node.args.kwonlyargs + ([node.args.vararg] if node.args.vararg else []) + ([node.args.kwarg] if node.args.kwarg else []):
-                if arg.annotation and isinstance(arg.annotation, ast.Constant):
+                if arg.annotation and isinstance(arg.annotation, ast.Constant) and arg.annotation.value is not None:
                     line_number = arg.lineno
                     line_content = code_lines[line_number - 1]
                     pep563_occurrences.append((line_number, line_content, "quoted annotation"))
+                    # print(ast.unparse(arg.annotation))
             # Check for quoted return annotation
-            if node.returns and isinstance(node.returns, ast.Constant):
+            if node.returns and isinstance(node.returns, ast.Constant) and node.returns.value is not None:
                 line_number = node.returns.lineno
                 line_content = code_lines[line_number - 1]
                 pep563_occurrences.append((line_number, line_content, "quoted annotation"))
+                # print(node.returns.value)
         
         # Detect quoted type annotations in variable assignments
         elif isinstance(node, ast.AnnAssign):
@@ -46,6 +48,12 @@ class Node:
     def __init__(self, next: 'Node'):  # Quoted annotation
         self.next = next
 
+    def test_is_uvm_tensor(self, sizes: List[int], uvm_op) -> None:
+        pass
+        
+    def test_is_uvm_tensor(self, sizes: None, uvm_op):
+        pass
+
     def test(self, next: Node):  # Quoted annotation
         self.next = next
 
@@ -55,4 +63,5 @@ value: int = 5  # Quoted annotation
 
     # Parse the AST
     ast_root = ast.parse(code)
-    print(detect_pep_563(code, ast_root))
+    for op in detect_pep_563(code, ast_root):
+        print(op)

@@ -46,4 +46,5 @@ def process_user(age: Annotated[int, "User's age in years"]) -> None:
 age: Annotated[int, "age in years"] = 25
     """
     tree = ast.parse(code_example)
-    print(detect_pep_593(code_example, tree))
+    for op in detect_pep_593(code_example, tree):
+        print(op)
