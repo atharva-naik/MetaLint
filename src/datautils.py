@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 from urllib.parse import quote
 from datasets import load_dataset
 from collections import defaultdict
+from typing import *
 
 load_dotenv()
 
@@ -26,9 +27,10 @@ def strip_comments_and_docstrings(code: str) -> str:
     code = "\n".join([line for line in code.splitlines() if line.strip()])
     return code
 
-def load_stack_dump(folder):
+def load_stack_dump(folder, folds: Union[None, list[int]]=None):
     unique_data = {}
-    for file in tqdm(os.listdir(folder)):
+    for i,file in tqdm(enumerate(os.listdir(folder))):
+        if folds != None and i not in folds: continue
         data = read_jsonl(os.path.join(folder, file), disable=True)
         for row in data:
             unique_data[row['blob_id']] = row
