@@ -18,6 +18,39 @@ from typing import *
 
 load_dotenv()
 
+def load_ruff_results(path: str) -> list[dict]:
+    unique_data = {}
+    for file in os.listdir(path):
+        file_data = read_jsonl(os.path.join(path, file))
+        file_data = {rec['blob_id']: rec for rec in file_data}
+        unique_data.update(file_data)
+
+    return list(unique_data.values())
+
+def load_ruff_violations(path: str) -> list[dict]:
+    unique_data = {}
+    for file in os.listdir(path):
+        file_data = read_jsonl(os.path.join(path, file))
+        file_data = {rec['blob_id']: rec for rec in file_data}
+        unique_data.update(file_data)
+    data = list(unique_data.values())
+    violations = []
+    for rec in data:
+        if isinstance(rec['violations'], str):
+            rec['violations'] = json.loads(rec['violations'])
+        if len(rec['violations']) > 0:
+            violations.append(rec)
+
+    return violations
+
+def get_remaining_blob_ids(stack_path: str, ruff_results: list[dict]) -> list[str]:
+    stack_data = load_stack_dump(stack_path)
+    blob_ids_covered = set()
+    for rec in ruff_results: blob_ids_covered.add(rec['blob_id'])
+    all_blob_ids = set([rec['blob_id'] for rec in stack_data])
+
+    return all_blob_ids.difference(blob_ids_covered)
+
 def strip_comments_and_docstrings(code: str) -> str:
     # Remove docstrings (single and multi-line)
     code = re.sub(r'(""".*?"""|\'\'\'.*?\'\'\')', '', code, flags=re.DOTALL)
