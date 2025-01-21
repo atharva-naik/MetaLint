@@ -63,12 +63,13 @@ def plot_pep_histogram(data: dict[str, float], path: str, use_logscale: bool=Fal
     plt.tight_layout()
     plt.savefig(path)
 
-def plot_pep_dist(data: dict[str, float], path: str):
+def plot_pep_dist(data: dict[str, float], path: str, threshold: float=1):
     # Process data: Group values less than 1 into "Others"
-    threshold = 1
+    # threshold = 1
     main_data = {transform_pep_label(k): v for k, v in data.items() if v >= threshold}
     others_value = sum(v for v in data.values() if v < threshold)
-    main_data["Others"] = others_value
+    if others_value > 0:
+        main_data["Others"] = others_value
 
     # Prepare data for the pie chart
     labels = list(main_data.keys())
@@ -95,7 +96,7 @@ def plot_pep_dist(data: dict[str, float], path: str):
             verticalalignment='center'
         )
 
-    ax.set_title("Pie Chart with Grouped Small Values as 'Others'")
+    ax.set_title("Idiom Distribution")
     plt.savefig(path)
 
 def pep_co_occurr(all_tree_patterns: dict[str, Union[dict, str]], stack_data=None):
