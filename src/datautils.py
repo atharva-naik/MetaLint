@@ -60,14 +60,14 @@ def strip_comments_and_docstrings(code: str) -> str:
     code = "\n".join([line for line in code.splitlines() if line.strip()])
     return code
 
-def load_stack_dump(folder, folds: Union[None, list[int]]=None):
+def load_stack_dump(folder, folds: Union[None, list[int]]=None, as_dict: bool=False):
     unique_data = {}
     for i,file in tqdm(enumerate(os.listdir(folder))):
         if folds != None and i not in folds: continue
         data = read_jsonl(os.path.join(folder, file), disable=True)
         for row in data:
             unique_data[row['blob_id']] = row
-
+    if as_dict: return unique_data
     return list(unique_data.values())
 
 def download_github_file(repo_name, branch_name, file_path, access_token, commit_id=None):
@@ -189,6 +189,41 @@ def load_python_whatsnew_dataset(path: str, mode: str="version_updates-list-and-
                         })
 
     return data
+
+class MentaLinterDataset:
+    """Dataset builder class for Meta-Linting task with support for multiple linter/SAST tools."""
+    def __init__(self, linter_name: str, data_path: str, stack_folder_path: str="data/STACK-V2"):
+        self.linter_name = linter_name
+        self.stack_folder_path = stack_folder_path
+        self.stack_data = load_stack_dump(stack_folder_path, as_dict=True)
+        self.linter_data = getattr(self, f"load_{linter_name}")(data_path)
+
+    def load_ruff(self, path: str):
+        ruff_results = load_ruff_results(path)
+        data = []
+        for rec in ruff_results:
+            code_file = self.stack_data[rec['blob_id']]
+            code_lines = code_file.split("\n")
+            idioms_detected = []
+            for violation in rec["violations"]:
+                idiom_name = violation["code"]
+                idiom_description = violation["message"]
+                # so this is a big design decision. Should we pass on line numbers or just the line with the issue. Right now I'm focusing on predicting just the line number, but for future reference this is where we can make the modification.
+                idiom_location = code_lines[violation["location"]["row"]-1] # currently just the code line.
+                idioms_detected.append({
+                    "name": idiom_name,
+                    "type": "violation",
+                    "location": idiom_location, 
+                    "explanation": idiom_description,
+                    "fix": None,
+                })
+            data.append({
+                "code_file": code_file,
+                "idioms_detected": idioms_detected,
+            })
+
+        return data
+
 
 def init_s3_client():
     session = boto3.Session(
