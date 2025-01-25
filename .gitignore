@@ -164,3 +164,7 @@ cython_debug/
 access_tokens.json
 access_tokens2.json
 .DS_Store
+.ruff_cache
+data/ruff
+data/ruff_check_results
+data/ruff_check_results_v2
