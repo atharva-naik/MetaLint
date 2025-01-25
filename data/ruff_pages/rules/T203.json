@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for pprint statements.",
+    "why-is-this-bad": "Like print statements, pprint statements are useful in some situations\n(e.g., debugging), but should typically be omitted from production code.\npprint statements can lead to the accidental inclusion of sensitive\ninformation in logs, and are not configurable by clients, unlike logging\nstatements.",
+    "example": "import pprint\n\n\ndef merge_dicts(dict_a, dict_b):\n    dict_c = {**dict_a, **dict_b}\n    pprint.pprint(dict_c)\n    return dict_c\n\n\n\nUse instead:\n\n\ndef merge_dicts(dict_a, dict_b):\n    dict_c = {**dict_a, **dict_b}\n    return dict_c",
+    "fix-safety": "This rule's fix is marked as unsafe, as it may remove pprint statements\nthat are used beyond debugging purposes.",
+    "example-split": {
+        "example-before": "import pprint\n\n\ndef merge_dicts(dict_a, dict_b):\n    dict_c = {**dict_a, **dict_b}\n    pprint.pprint(dict_c)\n    return dict_c\n\n",
+        "example-after": "\ndef merge_dicts(dict_a, dict_b):\n    dict_c = {**dict_a, **dict_b}\n    return dict_c"
+    }
+}

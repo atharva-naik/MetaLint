@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for __init__ methods that return values.",
+    "why-is-this-bad": "The __init__ method is the constructor for a given Python class,\nresponsible for initializing, rather than creating, new objects.\n\n\nThe __init__ method has to return None. Returning any value from\nan __init__ method will result in a runtime error.",
+    "example": "class Example:\n    def __init__(self):\n        return []\n\n\n\nUse instead:\n\n\nclass Example:\n    def __init__(self):\n        self.value = []",
+    "example-split": {
+        "example-before": "class Example:\n    def __init__(self):\n        return []\n\n",
+        "example-after": "\nclass Example:\n    def __init__(self):\n        self.value = []"
+    }
+}

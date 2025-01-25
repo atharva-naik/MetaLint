@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the use of a classmethod being made without the decorator.",
+    "why-is-this-bad": "When it comes to consistency and readability, it's preferred to use the decorator.",
+    "example": "class Foo:\n    def bar(cls): ...\n\n    bar = classmethod(bar)\n\n\n\nUse instead:\n\n\nclass Foo:\n    @classmethod\n    def bar(cls): ...",
+    "example-split": {
+        "example-before": "class Foo:\n    def bar(cls): ...\n\n    bar = classmethod(bar)\n\n",
+        "example-after": "\nclass Foo:\n    @classmethod\n    def bar(cls): ..."
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for docstrings that start with This.",
+    "why-is-this-bad": "PEP 257 recommends that the first line of a docstring be written in the\nimperative mood, for consistency.\n\n\nHint: to rewrite the docstring in the imperative, phrase the first line as\nif it were a command.\n\n\nThis rule may not apply to all projects; its applicability is a matter of\nconvention. By default, this rule is enabled when using the numpy\nconvention,, and disabled when using the google and pep257 conventions.",
+    "example": "def average(values: list[float]) -> float:\n    \"\"\"This function returns the mean of the given values.\"\"\"\n\n\n\nUse instead:\n\n\ndef average(values: list[float]) -> float:\n    \"\"\"Return the mean of the given values.\"\"\"",
+    "example-split": {
+        "example-before": "def average(values: list[float]) -> float:\n    \"\"\"This function returns the mean of the given values.\"\"\"\n\n",
+        "example-after": "\ndef average(values: list[float]) -> float:\n    \"\"\"Return the mean of the given values.\"\"\""
+    }
+}

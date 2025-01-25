@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for module names that do not follow the snake_case naming\nconvention or are otherwise invalid.",
+    "why-is-this-bad": "PEP 8 recommends the use of the snake_case naming convention for\nmodule names:\n\n\n\nModules should have short, all-lowercase names. Underscores can be used in the\nmodule name if it improves readability. Python packages should also have short,\nall-lowercase names, although the use of underscores is discouraged.\nWhen an extension module written in C or C++ has an accompanying Python module that\nprovides a higher level (e.g. more object-oriented) interface, the C/C++ module has\na leading underscore (e.g. _socket).\n\n\n\nFurther, in order for Python modules to be importable, they must be valid\nidentifiers. As such, they cannot start with a digit, or collide with hard\nkeywords, like import or class.",
+    "example": "Instead of example-module-name or example module name, use example_module_name.\nInstead of ExampleModule, use example_module.",
+    "example-split": {
+        "example-before": "Instead of example-module-name or example module name, use example_module_name.\nInstead of ExampleModule, use example_module.",
+        "example-after": "Instead of example-module-name or example module name, use example_module_name.\nInstead of ExampleModule, use example_module."
+    }
+}

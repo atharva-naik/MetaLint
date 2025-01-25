@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for lowercase imports that are aliased to non-lowercase names.",
+    "why-is-this-bad": "PEP 8 recommends naming conventions for classes, functions,\nconstants, and more. The use of inconsistent naming styles between\nimport and alias names may lead readers to expect an import to be of\nanother type (e.g., confuse a Python class with a constant).\n\n\nImport aliases should thus follow the same naming style as the member\nbeing imported.",
+    "example": "from example import myclassname as MyClassName\n\n\n\nUse instead:\n\n\nfrom example import myclassname",
+    "example-split": {
+        "example-before": "from example import myclassname as MyClassName\n\n",
+        "example-after": "\nfrom example import myclassname"
+    }
+}

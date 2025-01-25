@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for for loops that can be replaced by a list comprehension.",
+    "why-is-this-bad": "When creating a transformed list from an existing list using a for-loop,\nprefer a list comprehension. List comprehensions are more readable and\nmore performant.\n\n\nUsing the below as an example, the list comprehension is ~10% faster on\nPython 3.11, and ~25% faster on Python 3.10.\n\n\nNote that, as with all perflint rules, this is only intended as a\nmicro-optimization, and will have a negligible impact on performance in\nmost cases.",
+    "example": "original = list(range(10000))\nfiltered = []\nfor i in original:\n    if i % 2:\n        filtered.append(i)\n\n\n\nUse instead:\n\n\noriginal = list(range(10000))\nfiltered = [x for x in original if x % 2]\n\n\n\nIf you're appending to an existing list, use the extend method instead:\n\n\noriginal = list(range(10000))\nfiltered.extend(x for x in original if x % 2)\n\n\n\nTake care that if the original for-loop uses an assignment expression\nas a conditional, such as if match:=re.match(\"\\d+\",\"123\"), then\nthe corresponding comprehension must wrap the assignment\nexpression in parentheses to avoid a syntax error.",
+    "example-split": {
+        "example-before": "original = list(range(10000))\nfiltered = []\nfor i in original:\n    if i % 2:\n        filtered.append(i)\n\n",
+        "example-after": "\noriginal = list(range(10000))\nfiltered = [x for x in original if x % 2]"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for extraneous blank line(s) after function decorators.",
+    "why-is-this-bad": "There should be no blank lines between a decorator and the object it is decorating.",
+    "example": "class User(object):\n\n    @property\n\n    def name(self):\n        pass\n\n\n\nUse instead:\n\n\nclass User(object):\n\n    @property\n    def name(self):\n        pass",
+    "example-split": {
+        "example-before": "class User(object):\n\n    @property\n\n    def name(self):\n        pass\n\n",
+        "example-after": "\nclass User(object):"
+    }
+}

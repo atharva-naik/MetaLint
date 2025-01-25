@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for ambiguous Unicode characters in comments.",
+    "why-is-this-bad": "Some Unicode characters are visually similar to ASCII characters, but have\ndifferent code points. For example, GREEK CAPITAL LETTER ALPHA (U+0391)\nis visually similar, but not identical, to the ASCII character A.\n\n\nThe use of ambiguous Unicode characters can confuse readers, cause subtle\nbugs, and even make malicious code look harmless.\n\n\nIn preview, this rule will also flag Unicode characters that are\nconfusable with other, non-preferred Unicode characters. For example, the\nspec recommends GREEK CAPITAL LETTER OMEGA over OHM SIGN.\n\n\nYou can omit characters from being flagged as ambiguous via the\nlint.allowed-confusables setting.",
+    "example": "foo()  # n\u043eqa  # \"\u043e\" is Cyrillic (`U+043E`)\n\n\n\nUse instead:\n\n\nfoo()  # noqa  # \"o\" is Latin (`U+006F`)",
+    "example-split": {
+        "example-before": "foo()  # n\u043eqa  # \"\u043e\" is Cyrillic (`U+043E`)\n\n",
+        "example-after": "\nfoo()  # noqa  # \"o\" is Latin (`U+006F`)"
+    }
+}

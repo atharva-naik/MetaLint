@@ -1,0 +1,4 @@
+{
+    "what-it-does": "Checks for function calls in dataclass attribute defaults.",
+    "why-is-this-bad": "Function calls are only performed once, at definition time. The returned\nvalue is then reused by all instances of the dataclass. This can lead to\nunexpected behavior when the function call returns a mutable object, as\nchanges to the object will be shared across all instances.\n\n\nIf a field needs to be initialized with a mutable object, use the\nfield(default_factory=...) pattern."
+}

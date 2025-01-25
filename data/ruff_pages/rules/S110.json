@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of the try-except-pass pattern.",
+    "why-is-this-bad": "The try-except-pass pattern suppresses all exceptions. Suppressing\nexceptions may hide errors that could otherwise reveal unexpected behavior,\nsecurity vulnerabilities, or malicious activity. Instead, consider logging\nthe exception.",
+    "example": "try:\n    ...\nexcept Exception:\n    pass\n\n\n\nUse instead:\n\n\nimport logging\n\ntry:\n    ...\nexcept Exception as exc:\n    logging.exception(\"Exception occurred\")",
+    "example-split": {
+        "example-before": "try:\n    ...\nexcept Exception:\n    pass\n\n",
+        "example-after": "\nimport logging"
+    }
+}

@@ -1,0 +1,4 @@
+{
+    "what-it-does": "Checks for uses of os.stat.",
+    "why-is-this-bad": "pathlib offers a high-level API for path manipulation, as compared to\nthe lower-level API offered by os. When possible, using Path object\nmethods such as Path.stat() can improve readability over the os\nmodule's counterparts (e.g., os.path.stat())."
+}

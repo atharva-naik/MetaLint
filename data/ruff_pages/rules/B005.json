@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of multi-character strings in .strip(), .lstrip(), and\n.rstrip() calls.",
+    "why-is-this-bad": "All characters in the call to .strip(), .lstrip(), or .rstrip() are\nremoved from the leading and trailing ends of the string. If the string\ncontains multiple characters, the reader may be misled into thinking that\na prefix or suffix is being removed, rather than a set of characters.\n\n\nIn Python 3.9 and later, you can use str.removeprefix and\nstr.removesuffix to remove an exact prefix or suffix from a string,\nrespectively, which should be preferred when possible.",
+    "example": "\"text.txt\".strip(\".txt\")  # \"e\"\n\n\n\nUse instead:\n\n\n\"text.txt\".removesuffix(\".txt\")  # \"text\"",
+    "example-split": {
+        "example-before": "\"text.txt\".strip(\".txt\")  # \"e\"\n\n",
+        "example-after": "\n\"text.txt\".removesuffix(\".txt\")  # \"text\""
+    }
+}

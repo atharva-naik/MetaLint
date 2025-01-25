@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Identifies FastAPI routes that declare path parameters in the route path\nthat are not included in the function signature.",
+    "why-is-this-bad": "Path parameters are used to extract values from the URL path.\n\n\nIf a path parameter is declared in the route path but not in the function\nsignature, it will not be accessible in the function body, which is likely\na mistake.\n\n\nIf a path parameter is declared in the route path, but as a positional-only\nargument in the function signature, it will also not be accessible in the\nfunction body, as FastAPI will not inject the parameter.",
+    "example": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/things/{thing_id}\")\nasync def read_thing(query: str): ...\n\n\n\nUse instead:\n\n\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/things/{thing_id}\")\nasync def read_thing(thing_id: int, query: str): ...",
+    "fix-safety": "This rule's fix is marked as unsafe, as modifying a function signature can\nchange the behavior of the code.",
+    "example-split": {
+        "example-before": "from fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/things/{thing_id}\")\nasync def read_thing(query: str): ...\n\n",
+        "example-after": "\nfrom fastapi import FastAPI"
+    }
+}

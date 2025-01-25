@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for calls of the form map(int, __version__.split(\".\")).",
+    "why-is-this-bad": "__version__ does not always contain integral-like elements.\n\n\nimport matplotlib  # `__version__ == \"3.9.1.post-1\"` in our environment\n\n# ValueError: invalid literal for int() with base 10: 'post1'\ntuple(map(int, matplotlib.__version__.split(\".\")))\n\n\n\nSee also Version specifiers | Packaging spec.",
+    "example": "tuple(map(int, matplotlib.__version__.split(\".\")))\n\n\n\nUse instead:\n\n\nimport packaging.version as version\n\nversion.parse(matplotlib.__version__)",
+    "example-split": {
+        "example-before": "tuple(map(int, matplotlib.__version__.split(\".\")))\n\n",
+        "example-after": "\nimport packaging.version as version"
+    }
+}
