@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for classes that only have a public __init__ method,\nwithout base classes and decorators.",
+    "why-is-this-bad": "Classes with just an __init__ are possibly better off\nbeing a dataclass or a namedtuple, which have less boilerplate.",
+    "example": "class Point:\n    def __init__(self, x: float, y: float):\n        self.x = x\n        self.y = y\n\n\n\nUse instead:\n\n\nfrom dataclasses import dataclass\n\n\n@dataclass\nclass Point:\n    x: float\n    y: float",
+    "example-split": {
+        "example-before": "class Point:\n    def __init__(self, x: float, y: float):\n        self.x = x\n        self.y = y\n\n",
+        "example-after": "\nfrom dataclasses import dataclass"
+    }
+}

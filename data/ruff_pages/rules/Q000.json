@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for inline strings that use single quotes or double quotes,\ndepending on the value of the lint.flake8-quotes.inline-quotes option.",
+    "why-is-this-bad": "Consistency is good. Use either single or double quotes for inline\nstrings, but be consistent.",
+    "example": "foo = 'bar'\n\n\n\nAssuming inline-quotes is set to double, use instead:\n\n\nfoo = \"bar\"",
+    "example-split": {
+        "example-before": "foo = 'bar'\n\n\n\nAssuming inline-quotes is set to double, use instead:\n\n\nfoo = \"bar\"",
+        "example-after": "foo = 'bar'"
+    }
+}

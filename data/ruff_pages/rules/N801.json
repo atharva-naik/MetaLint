@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for class names that do not follow the CamelCase convention.",
+    "why-is-this-bad": "PEP 8 recommends the use of the CapWords (or CamelCase) convention\nfor class names:\n\n\n\nClass names should normally use the CapWords convention.\nThe naming convention for functions may be used instead in cases where the interface is\ndocumented and used primarily as a callable.\nNote that there is a separate convention for builtin names: most builtin names are single\nwords (or two words run together), with the CapWords convention used only for exception\nnames and builtin constants.",
+    "example": "class my_class:\n    pass\n\n\n\nUse instead:\n\n\nclass MyClass:\n    pass",
+    "example-split": {
+        "example-before": "class my_class:\n    pass\n\n",
+        "example-after": "\nclass MyClass:\n    pass"
+    }
+}

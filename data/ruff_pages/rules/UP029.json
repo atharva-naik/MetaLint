@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for unnecessary imports of builtins.",
+    "why-is-this-bad": "Builtins are always available. Importing them is unnecessary and should be\nremoved to avoid confusion.",
+    "example": "from builtins import str\n\nstr(1)\n\n\n\nUse instead:\n\n\nstr(1)",
+    "example-split": {
+        "example-before": "from builtins import str\n\nstr(1)\n\n",
+        "example-after": "\nstr(1)"
+    }
+}

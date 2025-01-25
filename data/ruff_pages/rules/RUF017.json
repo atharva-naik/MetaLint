@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the use of sum() to flatten lists of lists, which has\nquadratic complexity.",
+    "why-is-this-bad": "The use of sum() to flatten lists of lists is quadratic in the number of\nlists, as sum() creates a new list for each element in the summation.\n\n\nInstead, consider using another method of flattening lists to avoid\nquadratic complexity. The following methods are all linear in the number of\nlists:\n\n\n\nfunctools.reduce(operator.iadd, lists, [])\nlist(itertools.chain.from_iterable(lists))\n[item for sublist in lists for item in sublist]\n\n\n\nWhen fixing relevant violations, Ruff defaults to the functools.reduce\nform, which outperforms the other methods in microbenchmarks.",
+    "example": "lists = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]\njoined = sum(lists, [])\n\n\n\nUse instead:\n\n\nimport functools\nimport operator\n\n\nlists = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]\nfunctools.reduce(operator.iadd, lists, [])",
+    "example-split": {
+        "example-before": "lists = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]\njoined = sum(lists, [])\n\n",
+        "example-after": "\nimport functools\nimport operator"
+    }
+}

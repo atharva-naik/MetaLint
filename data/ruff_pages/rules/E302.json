@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for missing blank lines between top level functions and classes.",
+    "why-is-this-bad": "PEP 8 recommends exactly two blank lines between top level functions and classes.\n\n\nThe rule respects the lint.isort.lines-after-imports setting when\ndetermining the required number of blank lines between top-level import\nstatements and function or class definitions for compatibility with isort.",
+    "example": "def func1():\n    pass\ndef func2():\n    pass\n\n\n\nUse instead:\n\n\ndef func1():\n    pass\n\n\ndef func2():\n    pass",
+    "example-split": {
+        "example-before": "def func1():\n    pass\ndef func2():\n    pass\n\n",
+        "example-after": "\ndef func1():\n    pass"
+    }
+}

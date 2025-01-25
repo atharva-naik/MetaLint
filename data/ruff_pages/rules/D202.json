@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for docstrings on functions that are separated by one or more blank\nlines from the function body.",
+    "why-is-this-bad": "Remove any blank lines between the function body and the function\ndocstring, for consistency.",
+    "example": "def average(values: list[float]) -> float:\n    \"\"\"Return the mean of the given values.\"\"\"\n\n    return sum(values) / len(values)\n\n\n\nUse instead:\n\n\ndef average(values: list[float]) -> float:\n    \"\"\"Return the mean of the given values.\"\"\"\n    return sum(values) / len(values)",
+    "example-split": {
+        "example-before": "def average(values: list[float]) -> float:\n    \"\"\"Return the mean of the given values.\"\"\"\n\n    return sum(values) / len(values)\n\n",
+        "example-after": "\ndef average(values: list[float]) -> float:\n    \"\"\"Return the mean of the given values.\"\"\"\n    return sum(values) / len(values)"
+    }
+}

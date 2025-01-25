@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for pytest.warns context managers with multiple statements.",
+    "why-is-this-bad": "When pytest.warns is used as a context manager and contains multiple\nstatements, it can lead to the test passing when it should instead fail.\n\n\nA pytest.warns context manager should only contain a single\nsimple statement that triggers the expected warning.\n\n\nIn preview, this rule allows pytest.warns bodies to contain for\nloops with empty bodies (e.g., pass or ... statements), to test\niterator behavior.",
+    "example": "import pytest\n\n\ndef test_foo_warns():\n    with pytest.warns(Warning):\n        setup()  # False negative if setup triggers a warning but foo does not.\n        foo()\n\n\n\nUse instead:\n\n\nimport pytest\n\n\ndef test_foo_warns():\n    setup()\n    with pytest.warns(Warning):\n        foo()",
+    "example-split": {
+        "example-before": "import pytest\n\n\ndef test_foo_warns():\n    with pytest.warns(Warning):\n        setup()  # False negative if setup triggers a warning but foo does not.\n        foo()\n\n",
+        "example-after": "\nimport pytest"
+    }
+}

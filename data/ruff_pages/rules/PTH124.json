@@ -1,0 +1,4 @@
+{
+    "what-it-does": "Checks for uses of the py.path library.",
+    "why-is-this-bad": "The py.path library is in maintenance mode. Instead, prefer the standard\nlibrary's pathlib module, or third-party modules like path (formerly\npy.path)."
+}

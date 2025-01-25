@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the presence of multiple literal types in a union.",
+    "why-is-this-bad": "Literal[\"foo\", 42] has identical semantics to\nLiteral[\"foo\"] | Literal[42], but is clearer and more concise.",
+    "example": "from typing import Literal\n\nfield: Literal[1] | Literal[2] | str\n\n\n\nUse instead:\n\n\nfrom typing import Literal\n\nfield: Literal[1, 2] | str",
+    "example-split": {
+        "example-before": "from typing import Literal\n\nfield: Literal[1] | Literal[2] | str\n\n",
+        "example-after": "\nfrom typing import Literal"
+    }
+}

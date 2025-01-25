@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the use of IOBase.write in a for loop.",
+    "why-is-this-bad": "When writing a batch of elements, it's more idiomatic to use a single method call to\nIOBase.writelines, rather than write elements one by one.",
+    "example": "with Path(\"file\").open(\"w\") as f:\n    for line in lines:\n        f.write(line)\n\nwith Path(\"file\").open(\"wb\") as f:\n    for line in lines:\n        f.write(line.encode())\n\n\n\nUse instead:\n\n\nwith Path(\"file\").open(\"w\") as f:\n    f.writelines(lines)\n\nwith Path(\"file\").open(\"wb\") as f:\n    f.writelines(line.encode() for line in lines)",
+    "example-split": {
+        "example-before": "with Path(\"file\").open(\"w\") as f:\n    for line in lines:\n        f.write(line)\n\nwith Path(\"file\").open(\"wb\") as f:\n    for line in lines:\n        f.write(line.encode())\n\n",
+        "example-after": "\nwith Path(\"file\").open(\"w\") as f:\n    f.writelines(lines)"
+    }
+}

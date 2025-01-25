@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the use of exclude in Django ModelForm classes.",
+    "why-is-this-bad": "If a ModelForm includes the exclude attribute, any new field that\nis added to the model will automatically be exposed for modification.",
+    "example": "from django.forms import ModelForm\n\n\nclass PostForm(ModelForm):\n    class Meta:\n        model = Post\n        exclude = [\"author\"]\n\n\n\nUse instead:\n\n\nfrom django.forms import ModelForm\n\n\nclass PostForm(ModelForm):\n    class Meta:\n        model = Post\n        fields = [\"title\", \"content\"]",
+    "example-split": {
+        "example-before": "from django.forms import ModelForm\n\n\nclass PostForm(ModelForm):\n    class Meta:\n        model = Post\n        exclude = [\"author\"]\n\n",
+        "example-after": "\nfrom django.forms import ModelForm"
+    }
+}

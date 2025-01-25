@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for duplicate field definitions in classes.",
+    "why-is-this-bad": "Defining a field multiple times in a class body is redundant and likely a\nmistake.",
+    "example": "class Person:\n    name = Tom\n    ...\n    name = Ben\n\n\n\nUse instead:\n\n\nclass Person:\n    name = Tom\n    ...",
+    "example-split": {
+        "example-before": "class Person:\n    name = Tom\n    ...\n    name = Ben\n\n",
+        "example-after": "\nclass Person:\n    name = Tom\n    ..."
+    }
+}

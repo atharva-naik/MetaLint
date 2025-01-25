@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for unnecessary request.addfinalizer usages in pytest fixtures.",
+    "why-is-this-bad": "pytest offers two ways to perform cleanup in fixture code. The first is\nsequential (via the yield statement), the second callback-based (via\nrequest.addfinalizer).\n\n\nThe sequential approach is more readable and should be preferred, unless\nthe fixture uses the \"factory as fixture\" pattern.",
+    "example": "import pytest\n\n\n@pytest.fixture()\ndef my_fixture(request):\n    resource = acquire_resource()\n    request.addfinalizer(resource.release)\n    return resource\n\n\n\nUse instead:\n\n\nimport pytest\n\n\n@pytest.fixture()\ndef my_fixture():\n    resource = acquire_resource()\n    yield resource\n    resource.release()\n\n\n# \"factory-as-fixture\" pattern\n@pytest.fixture()\ndef my_factory(request):\n    def create_resource(arg):\n        resource = acquire_resource(arg)\n        request.addfinalizer(resource.release)\n        return resource\n\n    return create_resource",
+    "example-split": {
+        "example-before": "import pytest\n\n\n@pytest.fixture()\ndef my_fixture(request):\n    resource = acquire_resource()\n    request.addfinalizer(resource.release)\n    return resource\n\n",
+        "example-after": "\nimport pytest"
+    }
+}

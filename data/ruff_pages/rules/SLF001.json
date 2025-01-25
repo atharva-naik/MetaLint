@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for accesses on \"private\" class members.",
+    "why-is-this-bad": "In Python, the convention is such that class members that are prefixed\nwith a single underscore, or prefixed but not suffixed with a double\nunderscore, are considered private and intended for internal use.\n\n\nUsing such \"private\" members is considered a misuse of the class, as\nthere are no guarantees that the member will be present in future\nversions, that it will have the same type, or that it will have the same\nbehavior. Instead, use the class's public interface.\n\n\nThis rule ignores accesses on dunder methods (e.g., __init__) and sunder\nmethods (e.g., _missing_).",
+    "example": "class Class:\n    def __init__(self):\n        self._private_member = \"...\"\n\n\nvar = Class()\nprint(var._private_member)\n\n\n\nUse instead:\n\n\nclass Class:\n    def __init__(self):\n        self.public_member = \"...\"\n\n\nvar = Class()\nprint(var.public_member)",
+    "example-split": {
+        "example-before": "class Class:\n    def __init__(self):\n        self._private_member = \"...\"\n\n\nvar = Class()\nprint(var._private_member)\n\n",
+        "example-after": "\nclass Class:\n    def __init__(self):\n        self.public_member = \"...\""
+    }
+}

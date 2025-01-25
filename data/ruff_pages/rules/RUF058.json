@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for itertools.starmap calls where the second argument is a zip call.",
+    "why-is-this-bad": "zip-ping iterables only to unpack them later from within starmap is unnecessary.\nFor such cases, map() should be used instead.",
+    "example": "from itertools import starmap\n\n\nstarmap(func, zip(a, b))\nstarmap(func, zip(a, b, strict=True))\n\n\n\nUse instead:\n\n\nmap(func, a, b)\nmap(func, a, b, strict=True)  # 3.14+",
+    "example-split": {
+        "example-before": "from itertools import starmap\n\n\nstarmap(func, zip(a, b))\nstarmap(func, zip(a, b, strict=True))\n\n",
+        "example-after": "\nmap(func, a, b)\nmap(func, a, b, strict=True)  # 3.14+"
+    }
+}

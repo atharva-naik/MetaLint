@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for functions that start a process without a shell.",
+    "why-is-this-bad": "Invoking any kind of external executable via a function call can pose\nsecurity risks if arbitrary variables are passed to the executable, or if\nthe input is otherwise unsanitised or unvalidated.\n\n\nThis rule specifically flags functions in the os module that spawn\nsubprocesses without the use of a shell. Note that these typically pose a\nmuch smaller security risk than subprocesses that are started with a\nshell, which are flagged by start-process-with-a-shell (S605). This\ngives you the option of enabling one rule while disabling the other if you\ndecide that the security risk from these functions is acceptable for your\nuse case.",
+    "example": "import os\n\n\ndef insecure_function(arbitrary_user_input: str):\n    os.spawnlp(os.P_NOWAIT, \"/bin/mycmd\", \"mycmd\", arbitrary_user_input)",
+    "example-split": {
+        "example-before": "import os\n\n\ndef insecure_function(arbitrary_user_input: str):\n    os.spawnlp(os.P_NOWAIT, \"/bin/mycmd\", \"mycmd\", arbitrary_user_input)",
+        "example-after": "import os"
+    }
+}

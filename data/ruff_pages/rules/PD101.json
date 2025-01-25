@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Check for uses of .nunique() to check if a Pandas Series is constant\n(i.e., contains only one unique value).",
+    "why-is-this-bad": ".nunique() is computationally inefficient for checking if a Series is\nconstant.\n\n\nConsider, for example, a Series of length n that consists of increasing\ninteger values (e.g., 1, 2, 3, 4). The .nunique() method will iterate\nover the entire Series to count the number of unique values. But in this\ncase, we can detect that the Series is non-constant after visiting the\nfirst two values, which are non-equal.\n\n\nIn general, .nunique() requires iterating over the entire Series, while a\nmore efficient approach allows short-circuiting the operation as soon as a\nnon-equal value is found.\n\n\nInstead of calling .nunique(), convert the Series to a NumPy array, and\ncheck if all values in the array are equal to the first observed value.",
+    "example": "import pandas as pd\n\ndata = pd.Series(range(1000))\nif data.nunique() <= 1:\n    print(\"Series is constant\")\n\n\n\nUse instead:\n\n\nimport pandas as pd\n\ndata = pd.Series(range(1000))\narray = data.to_numpy()\nif array.shape[0] == 0 or (array[0] == array).all():\n    print(\"Series is constant\")",
+    "example-split": {
+        "example-before": "import pandas as pd\n\ndata = pd.Series(range(1000))\nif data.nunique() <= 1:\n    print(\"Series is constant\")\n\n",
+        "example-after": "\nimport pandas as pd"
+    }
+}

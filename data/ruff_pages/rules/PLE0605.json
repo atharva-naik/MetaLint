@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for invalid assignments to __all__.",
+    "why-is-this-bad": "In Python, __all__ should contain a sequence of strings that represent\nthe names of all \"public\" symbols exported by a module.\n\n\nAssigning anything other than a tuple or list of strings to __all__\nis invalid.",
+    "example": "__all__ = \"Foo\"\n\n\n\nUse instead:\n\n\n__all__ = (\"Foo\",)",
+    "example-split": {
+        "example-before": "__all__ = \"Foo\"\n\n",
+        "example-after": "\n__all__ = (\"Foo\",)"
+    }
+}

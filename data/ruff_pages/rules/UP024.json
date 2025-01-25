@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of exceptions that alias OSError.",
+    "why-is-this-bad": "OSError is the builtin error type used for exceptions that relate to the\noperating system.\n\n\nIn Python 3.3, a variety of other exceptions, like WindowsError were\naliased to OSError. These aliases remain in place for compatibility with\nolder versions of Python, but may be removed in future versions.\n\n\nPrefer using OSError directly, as it is more idiomatic and future-proof.",
+    "example": "raise IOError\n\n\n\nUse instead:\n\n\nraise OSError",
+    "example-split": {
+        "example-before": "raise IOError\n\n",
+        "example-after": "\nraise OSError"
+    }
+}

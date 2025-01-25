@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for assert statements whose test expression is a falsy value.",
+    "why-is-this-bad": "pytest.fail conveys the intent more clearly than assert falsy_value.",
+    "example": "def test_foo():\n    if some_condition:\n        assert False, \"some_condition was True\"\n\n\n\nUse instead:\n\n\nimport pytest\n\n\ndef test_foo():\n    if some_condition:\n        pytest.fail(\"some_condition was True\")\n    ...",
+    "example-split": {
+        "example-before": "def test_foo():\n    if some_condition:\n        assert False, \"some_condition was True\"\n\n",
+        "example-after": "\nimport pytest"
+    }
+}

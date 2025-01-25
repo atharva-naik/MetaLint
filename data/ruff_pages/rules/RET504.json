@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for variable assignments that immediately precede a return of the\nassigned variable.",
+    "why-is-this-bad": "The variable assignment is not necessary, as the value can be returned\ndirectly.",
+    "example": "def foo():\n    bar = 1\n    return bar\n\n\n\nUse instead:\n\n\ndef foo():\n    return 1",
+    "example-split": {
+        "example-before": "def foo():\n    bar = 1\n    return bar\n\n",
+        "example-after": "\ndef foo():\n    return 1"
+    }
+}

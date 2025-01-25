@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for method calls that set the shell parameter to true or another\ntruthy value when invoking a subprocess.",
+    "why-is-this-bad": "Setting the shell parameter to true or another truthy value when\ninvoking a subprocess can introduce security vulnerabilities, as it allows\nshell metacharacters and whitespace to be passed to child processes,\npotentially leading to shell injection attacks.\n\n\nIt is recommended to avoid using shell=True unless absolutely necessary\nand, when used, to ensure that all inputs are properly sanitized and quoted\nto prevent such vulnerabilities.",
+    "example": "import subprocess\n\nuser_input = input(\"Enter a command: \")\nsubprocess.run(user_input, shell=True)",
+    "example-split": {
+        "example-before": "import subprocess\n\nuser_input = input(\"Enter a command: \")\nsubprocess.run(user_input, shell=True)",
+        "example-after": "import subprocess"
+    }
+}

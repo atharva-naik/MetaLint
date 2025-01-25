@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for typed function arguments in stubs with complex default values.",
+    "why-is-this-bad": "Stub (.pyi) files exist as \"data files\" for static analysis tools, and\nare not evaluated at runtime. While simple default values may be useful for\nsome tools that consume stubs, such as IDEs, they are ignored by type\ncheckers.\n\n\nInstead of including and reproducing a complex value, use ... to indicate\nthat the assignment has a default value, but that the value is \"complex\" or\nvaries according to the current platform or Python version. For the\npurposes of this rule, any default value counts as \"complex\" unless it is\na literal int, float, complex, bytes, str, bool, None, ...,\nor a simple container literal.",
+    "example": "def foo(arg: list[int] = list(range(10_000))) -> None: ...\n\n\n\nUse instead:\n\n\ndef foo(arg: list[int] = ...) -> None: ...",
+    "example-split": {
+        "example-before": "def foo(arg: list[int] = list(range(10_000))) -> None: ...\n\n",
+        "example-after": "\ndef foo(arg: list[int] = ...) -> None: ..."
+    }
+}

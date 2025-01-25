@@ -1,0 +1,4 @@
+{
+    "what-it-does": "Checks for uses of the open() builtin.",
+    "why-is-this-bad": "pathlib offers a high-level API for path manipulation. When possible,\nusing Path object methods such as Path.open() can improve readability\nover the open builtin."
+}

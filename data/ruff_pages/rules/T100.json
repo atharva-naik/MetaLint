@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the presence of debugger calls and imports.",
+    "why-is-this-bad": "Debugger calls and imports should be used for debugging purposes only. The\npresence of a debugger call or import in production code is likely a\nmistake and may cause unintended behavior, such as exposing sensitive\ninformation or causing the program to hang.\n\n\nInstead, consider using a logging library to log information about the\nprogram's state, and writing tests to verify that the program behaves\nas expected.",
+    "example": "def foo():\n    breakpoint()",
+    "example-split": {
+        "example-before": "def foo():\n    breakpoint()",
+        "example-after": "def foo():\n    breakpoint()"
+    }
+}

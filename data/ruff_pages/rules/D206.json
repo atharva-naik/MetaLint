@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for docstrings that are indented with tabs.",
+    "why-is-this-bad": "PEP 8 recommends using spaces over tabs for indentation.",
+    "example": "def sort_list(l: list[int]) -> list[int]:\n    \"\"\"Return a sorted copy of the list.\n\n    Sort the list in ascending order and return a copy of the result using the bubble\n    sort algorithm.\n    \"\"\"\n\n\n\nUse instead:\n\n\ndef sort_list(l: list[int]) -> list[int]:\n    \"\"\"Return a sorted copy of the list.\n\n    Sort the list in ascending order and return a copy of the result using the bubble\n    sort algorithm.\n    \"\"\"",
+    "example-split": {
+        "example-before": "def sort_list(l: list[int]) -> list[int]:\n    \"\"\"Return a sorted copy of the list.\n\n    Sort the list in ascending order and return a copy of the result using the bubble\n    sort algorithm.\n    \"\"\"\n\n",
+        "example-after": "\ndef sort_list(l: list[int]) -> list[int]:\n    \"\"\"Return a sorted copy of the list."
+    }
+}

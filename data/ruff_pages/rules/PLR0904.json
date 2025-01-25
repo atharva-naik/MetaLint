@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for classes with too many public methods\n\n\nBy default, this rule allows up to 20 public methods, as configured by\nthe lint.pylint.max-public-methods option.",
+    "why-is-this-bad": "Classes with many public methods are harder to understand\nand maintain.\n\n\nInstead, consider refactoring the class into separate classes.",
+    "example": "Assuming that lint.pylint.max-public-methods is set to 5:\n\n\nclass Linter:\n    def __init__(self):\n        pass\n\n    def pylint(self):\n        pass\n\n    def pylint_settings(self):\n        pass\n\n    def flake8(self):\n        pass\n\n    def flake8_settings(self):\n        pass\n\n    def pydocstyle(self):\n        pass\n\n    def pydocstyle_settings(self):\n        pass\n\n\n\nUse instead:\n\n\nclass Linter:\n    def __init__(self):\n        self.pylint = Pylint()\n        self.flake8 = Flake8()\n        self.pydocstyle = Pydocstyle()\n\n    def lint(self):\n        pass\n\n\nclass Pylint:\n    def lint(self):\n        pass\n\n    def settings(self):\n        pass\n\n\nclass Flake8:\n    def lint(self):\n        pass\n\n    def settings(self):\n        pass\n\n\nclass Pydocstyle:\n    def lint(self):\n        pass\n\n    def settings(self):\n        pass",
+    "example-split": {
+        "example-before": "Assuming that lint.pylint.max-public-methods is set to 5:\n\n\nclass Linter:\n    def __init__(self):\n        pass\n\n    def pylint(self):\n        pass\n\n    def pylint_settings(self):\n        pass\n\n    def flake8(self):\n        pass\n\n    def flake8_settings(self):\n        pass\n\n    def pydocstyle(self):\n        pass\n\n    def pydocstyle_settings(self):\n        pass\n\n",
+        "example-after": "\nclass Linter:\n    def __init__(self):\n        self.pylint = Pylint()\n        self.flake8 = Flake8()\n        self.pydocstyle = Pydocstyle()"
+    }
+}

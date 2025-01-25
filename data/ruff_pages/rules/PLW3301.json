@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for nested min and max calls.",
+    "why-is-this-bad": "Nested min and max calls can be flattened into a single call to improve\nreadability.",
+    "example": "minimum = min(1, 2, min(3, 4, 5))\nmaximum = max(1, 2, max(3, 4, 5))\ndiff = maximum - minimum\n\n\n\nUse instead:\n\n\nminimum = min(1, 2, 3, 4, 5)\nmaximum = max(1, 2, 3, 4, 5)\ndiff = maximum - minimum",
+    "example-split": {
+        "example-before": "minimum = min(1, 2, min(3, 4, 5))\nmaximum = max(1, 2, max(3, 4, 5))\ndiff = maximum - minimum\n\n",
+        "example-after": "\nminimum = min(1, 2, 3, 4, 5)\nmaximum = max(1, 2, 3, 4, 5)\ndiff = maximum - minimum"
+    }
+}

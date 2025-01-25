@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for from collections.abc import Set imports that do not alias\nSet to AbstractSet.",
+    "why-is-this-bad": "The Set type in collections.abc is an abstract base class for set-like types.\nIt is easily confused with, and not equivalent to, the set builtin.\n\n\nTo avoid confusion, Set should be aliased to AbstractSet when imported. This\nmakes it clear that the imported type is an abstract base class, and not the\nset builtin.",
+    "example": "from collections.abc import Set\n\n\n\nUse instead:\n\n\nfrom collections.abc import Set as AbstractSet",
+    "fix-safety": "This rule's fix is marked as unsafe for Set imports defined at the\ntop-level of a .py module. Top-level symbols are implicitly exported by the\nmodule, and so renaming a top-level symbol may break downstream modules\nthat import it.\n\n\nThe same is not true for .pyi files, where imported symbols are only\nre-exported if they are included in __all__, use a \"redundant\"\nimport foo as foo alias, or are imported via a * import. As such, the\nfix is marked as safe in more cases for .pyi files.",
+    "example-split": {
+        "example-before": "from collections.abc import Set\n\n",
+        "example-after": "\nfrom collections.abc import Set as AbstractSet"
+    }
+}

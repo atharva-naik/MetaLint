@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of subprocess.run that send stdout and stderr to a\npipe.",
+    "why-is-this-bad": "As of Python 3.7, subprocess.run has a capture_output keyword argument\nthat can be set to True to capture stdout and stderr outputs. This is\nequivalent to setting stdout and stderr to subprocess.PIPE, but is\nmore explicit and readable.",
+    "example": "import subprocess\n\nsubprocess.run([\"foo\"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)\n\n\n\nUse instead:\n\n\nimport subprocess\n\nsubprocess.run([\"foo\"], capture_output=True)",
+    "example-split": {
+        "example-before": "import subprocess\n\nsubprocess.run([\"foo\"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)\n\n",
+        "example-after": "\nimport subprocess"
+    }
+}

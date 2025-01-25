@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the starting of a process with a partial executable path.",
+    "why-is-this-bad": "Starting a process with a partial executable path can allow attackers to\nexecute an arbitrary executable by adjusting the PATH environment variable.\nConsider using a full path to the executable instead.",
+    "example": "import subprocess\n\nsubprocess.Popen([\"ruff\", \"check\", \"file.py\"])\n\n\n\nUse instead:\n\n\nimport subprocess\n\nsubprocess.Popen([\"/usr/bin/ruff\", \"check\", \"file.py\"])",
+    "example-split": {
+        "example-before": "import subprocess\n\nsubprocess.Popen([\"ruff\", \"check\", \"file.py\"])\n\n",
+        "example-after": "\nimport subprocess"
+    }
+}

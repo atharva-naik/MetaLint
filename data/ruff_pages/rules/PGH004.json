@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Check for noqa annotations that suppress all diagnostics, as opposed to\ntargeting specific diagnostics.",
+    "why-is-this-bad": "Suppressing all diagnostics can hide issues in the code.\n\n\nBlanket noqa annotations are also more difficult to interpret and\nmaintain, as the annotation does not clarify which diagnostics are intended\nto be suppressed.\n\n\nIn preview, this rule also checks for blanket file-level annotations (e.g.,\n# ruff: noqa, as opposed to # ruff: noqa: F401).",
+    "example": "from .base import *  # noqa\n\n\n\nUse instead:\n\n\nfrom .base import *  # noqa: F403",
+    "fix-safety": "This rule will attempt to fix blanket noqa annotations that appear to\nbe unintentional. For example, given # noqa F401, the rule will suggest\ninserting a colon, as in # noqa: F401.\n\n\nWhile modifying noqa comments is generally safe, doing so may introduce\nadditional diagnostics.",
+    "example-split": {
+        "example-before": "from .base import *  # noqa\n\n",
+        "example-after": "\nfrom .base import *  # noqa: F403"
+    }
+}

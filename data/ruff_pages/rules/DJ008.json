@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks that a __str__ method is defined in Django models.",
+    "why-is-this-bad": "Django models should define a __str__ method to return a string representation\nof the model instance, as Django calls this method to display the object in\nthe Django Admin and elsewhere.\n\n\nModels without a __str__ method will display a non-meaningful representation\nof the object in the Django Admin.",
+    "example": "from django.db import models\n\n\nclass MyModel(models.Model):\n    field = models.CharField(max_length=255)\n\n\n\nUse instead:\n\n\nfrom django.db import models\n\n\nclass MyModel(models.Model):\n    field = models.CharField(max_length=255)\n\n    def __str__(self):\n        return f\"{self.field}\"",
+    "example-split": {
+        "example-before": "from django.db import models\n\n\nclass MyModel(models.Model):\n    field = models.CharField(max_length=255)\n\n",
+        "example-after": "\nfrom django.db import models"
+    }
+}
