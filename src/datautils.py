@@ -198,6 +198,9 @@ class MentaLinterDataset:
         self.stack_data = load_stack_dump(stack_folder_path, as_dict=True)
         self.linter_data = getattr(self, f"load_{linter_name}")(data_path)
 
+    def generate_data_mix(self, idioms_file: None):
+        pass
+
     def load_ruff(self, path: str):
         ruff_results = load_ruff_results(path)
         data = []
