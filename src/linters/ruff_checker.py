@@ -43,14 +43,20 @@ def run_ruff(code: str):
 # main
 if __name__ == "__main__":
     data = load_stack_dump("./data/STACK-V2")
+    OUTPUT_FOLDER: str = "ruff_results"
+    buffer_size: int 
     try: start = int(sys.argv[1])
-    except IndexError: start = 0
-    write_path = f"./data/ruff_check_results_v2/output_from_{start}.jsonl"
+    except IndexError: start = 0 # follows array style indexing.
+    try: buffer_size = int(sys.argv[2])
+    except IndexError: buffer_size = 5000
+    
+    write_path = f"./data/{OUTPUT_FOLDER}/output_from_{start}_buffer_size_{buffer_size}.jsonl"
     print(write_path)
     if os.path.exists(write_path):
         overwrite = input("Overwrite (Y/n)?").lower().strip()
         if overwrite not in ["yes","y"]: exit()
     open(write_path, 'w')
+    current_buffer_size = 0
     for i,rec in tqdm(enumerate(data), total=len(data)):
         if i < start: continue
         ruff_analysis_report = run_ruff(rec['content'])
@@ -59,5 +65,10 @@ if __name__ == "__main__":
                 "blob_id": rec['blob_id'], 
                 # 'content': rec['content'], 
                 "violations": ruff_analysis_report})+"\n")
+            current_buffer_size += 1
+        if current_buffer_size == buffer_size:
+            write_path = f"./data/{OUTPUT_FOLDER}/output_from_{i}_buffer_size_{buffer_size}.jsonl"
+            if os.path.exists(write_path): exit(f"terminating to avoid overwrite conflicts with: {write_path} which already exists.")
+            open(write_path, 'w')
         # print(run_ruff(rec['content']))
         # exit()
