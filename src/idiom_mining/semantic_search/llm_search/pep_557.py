@@ -1,6 +1,7 @@
 import os
 import ast
 import sys
+import json
 import torch
 import warnings
 from transformers import pipeline
@@ -227,19 +228,33 @@ if __name__ == "__main__":
         model="ise-uiuc/Magicoder-S-DS-6.7B",
         task="text-generation",
         torch_dtype=torch.bfloat16,
-        device_map="auto",
+        device_map="cuda:0",
     )
+    write_path: str = "data/pattern_mining/semantic_patterns/llm_patterns/pep_557.jsonl"
+    if os.path.exists(write_path):
+        resp = input("overwrite? (y/N)").lower().strip()
+        if resp not in ["y", "yes"]: exit()
+    open(write_path, "w")
 
-    stack_data = load_stack_dump("./data/STACK-V2", folds=[0])
+    stack_data = load_stack_dump("./data/STACK-V2")
+    
     for file in stack_data:
         content = strip_comments_and_docstrings(file['content'])
         try: classes_with_methods = detect_special_methods(content)
         except SyntaxError: continue
         if len(classes_with_methods) > 0:
+            blob_id = file['blob_id']
+            patterns = []
             for start, end, code in classes_with_methods:
                 prompt = build_prompt(file=code)
                 # print(classes_with_methods)
                 # print(prompt)
-                result = generator(prompt, max_length=1024, num_return_sequences=1, temperature=0.0)
-                print(result[0]["generated_text"])
-            break
+                result = generator(prompt, max_new_tokens=10, num_return_sequences=1, temperature=0.0)
+                
+                op = result[0]["generated_text"].replace(prompt, "").strip().split("\n")[0].strip()
+                print(op)
+                if "YES" in op:
+                    patterns.append((start, end, code))
+            with open(write_path, "a") as f:
+                f.write(json.dumps({"blob_id": blob_id, "patterns": patterns})+"\n")
+                    
