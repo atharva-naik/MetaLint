@@ -30,6 +30,16 @@ sys.path.append(project_path)
 
 from src.datautils import load_stack_dump
 
+def filter_report(ruff_report):
+    if isinstance(ruff_report, str):
+        ruff_report = json.loads(ruff_report)
+    filt_ruff_report = [] # remove SyntaxError related violations.
+    for violation in ruff_report:
+        if str(violation['code']) != "None":
+            filt_ruff_report.append(violation)
+
+    return filt_ruff_report
+
 def run_ruff(code: str):
     path = "".join(random.sample(string.ascii_letters+string.digits, k=16))
     with open(path, "w") as f:
@@ -59,7 +69,7 @@ if __name__ == "__main__":
     current_buffer_size = 0
     for i,rec in tqdm(enumerate(data), total=len(data)):
         if i < start: continue
-        ruff_analysis_report = run_ruff(rec['content'])
+        ruff_analysis_report = filter_report(run_ruff(rec['content']))
         with open(write_path, "a") as f:
             f.write(json.dumps({
                 "blob_id": rec['blob_id'], 
