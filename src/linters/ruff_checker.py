@@ -80,5 +80,6 @@ if __name__ == "__main__":
             write_path = f"./data/{OUTPUT_FOLDER}/output_from_{i}_buffer_size_{buffer_size}.jsonl"
             if os.path.exists(write_path): exit(f"terminating to avoid overwrite conflicts with: {write_path} which already exists.")
             open(write_path, 'w')
+            current_buffer_size = 0
         # print(run_ruff(rec['content']))
         # exit()
