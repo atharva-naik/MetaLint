@@ -27,6 +27,24 @@ def load_ruff_results(path: str) -> list[dict]:
 
     return list(unique_data.values())
 
+def split_jsonl_into_shards(path: str):
+    data = read_jsonl(path)
+    N_half = len(data)//2
+    stem, ext = os.path.splitext(path)
+    left = data[:N_half]
+    right = data[N_half:]
+    left_path = stem+"_0"+ext
+    right_path = stem+"_1"+ext
+    write_jsonl(left, left_path)
+    write_jsonl(right, right_path)
+    print(f"half of the data is written to: {left_path}")
+    print(f"half of the data is written to: {right_path}")
+    try:
+        assert left + right == data
+        os.remove(path)
+        print(f"removed original data: {path}")
+    except AssertionError: pass
+
 def load_ruff_violations(path: str) -> list[dict]:
     unique_data = {}
     for file in os.listdir(path):
