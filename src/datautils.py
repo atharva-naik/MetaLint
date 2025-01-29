@@ -208,40 +208,126 @@ def load_python_whatsnew_dataset(path: str, mode: str="version_updates-list-and-
 
     return data
 
+META_LINTING_PROMPT = """Look at the following list of code idiom specifications with definitions and examples:
+{LIST_OF_IDIOM_SPECS}
+
+Given these idioms, your task is to look at a code file and detect violations of the above idioms, and flag them like a linter. You should also suggest a fix if possible. If there are no fixes then just say “ALL CHECKS PASSED”. For reporting violations your output should follow a JSON format with each idiom violation in a new line. Here are some example outputs:
+{""}
+{}
+
+Code file:
+{CODE_FILE}
+
+Idiom violations (if any):
+"""
+
 class MentaLinterDataset:
     """Dataset builder class for Meta-Linting task with support for multiple linter/SAST tools."""
-    def __init__(self, linter_name: str, data_path: str, stack_folder_path: str="data/STACK-V2"):
+    def __init__(self, linter_name: str, linter_data_folder: str, code_files_path: str="data/STACK-V2", idiom_spec_path: str="data/ruff_pages"):
         self.linter_name = linter_name
-        self.stack_folder_path = stack_folder_path
-        self.stack_data = load_stack_dump(stack_folder_path, as_dict=True)
-        self.linter_data = getattr(self, f"load_{linter_name}")(data_path)
+        self.code_files_path = code_files_path
+        self.idiom_spec_path = idiom_spec_path
+        self.linter_data_folder = linter_data_folder
+        self.code_files = load_stack_dump(code_files_path, as_dict=True)
+        self.code_idiom_specs = getattr(self, f"load_{linter_name}_idiom_specs")(idiom_spec_path)
+        self.linter_data = getattr(self, f"load_{linter_name}")(linter_data_folder)
 
-    def generate_data_mix(self, idioms_file: None):
-        pass
+    # def generate_data_mix(self, idioms_file: None):
+    #     pass
 
-    def load_ruff(self, path: str):
-        ruff_results = load_ruff_results(path)
-        data = []
+    def load_ruff_idiom_specs(self, path):
+        metadata_path = os.path.join(path, "rule_metadata.json")
+        self.ruff_metadata = json.load(open(metadata_path))
+        rules_folder = os.path.join(path, "rules")
+        code_idiom_specs = {}
+        for rule_path in os.listdir(rules_folder):
+            rule_id,_=os.path.splitext(rule_path) # rule_id is the same as the idiom name for Ruff.
+            rule_data = json.load(open(rules_folder, rule_path))
+            code_idiom_specs[rule_id] = rule_data
+
+        return code_idiom_specs
+
+    def generate_prompt(self, idiom_specs: dict[str, dict], linter_record):
+        """Can take a subset of all the idiom specs"""
+        idioms_to_be_covered = list(idiom_specs.keys())
+        LIST_OR_RUFF_PAGES = {}
+        linter_record["idioms_detected"] = [idiom_violation for idiom_violation in linter_record["idioms_detected"] if idiom_violation['name'] in idioms_to_be_covered]
+
+        return 
+
+    def load_ruff(self, folder: str):
+        code_file_id_to_linter_data = {}
+        for file in tqdm(folder, desc="loading shards"):
+            path = os.path.join(folder, file)
+            shard_linter_data = self.load_ruff_shard(path)
+            code_file_id_to_linter_data.update(shard_linter_data)
+            # DEBUG: break
+
+    def edit_code(self, lines: list, edits: list[dict]) -> dict:
+        modified_lines = {}
+        original_lines = lines[:]
+        
+        for edit in edits:
+            start_row = edit['location']['row']-1
+            start_col = edit['location']['column']-1
+            end_row = edit['end_location']['row']-1
+            end_col = edit['end_location']['column']-1
+            replacement = edit['content']
+            before = lines[start_row][:start_col]
+            after = lines[end_row][end_col:]
+            
+            if start_row == end_row:
+                new_line = before + replacement + after
+                modified_lines[original_lines[start_row]] = new_line
+                lines[start_row] = new_line
+            else:
+                new_start_line = before + replacement
+                new_end_line = after
+                modified_lines[original_lines[start_row]] = new_start_line
+                modified_lines[original_lines[end_row]] = new_end_line
+                lines[start_row] = new_start_line
+                lines[end_row] = new_end_line
+                del lines[start_row + 1 : end_row]
+        
+        return modified_lines
+
+    def load_ruff_shard(self, path: str):
+        ruff_results = read_jsonl(path)
+        data = {}
         for rec in ruff_results:
-            code_file = self.stack_data[rec['blob_id']]
+            blob_id = rec['blob_id']
+            code_file = self.stack_data[blob_id]
             code_lines = code_file.split("\n")
             idioms_detected = []
             for violation in rec["violations"]:
                 idiom_name = violation["code"]
                 idiom_description = violation["message"]
                 # so this is a big design decision. Should we pass on line numbers or just the line with the issue. Right now I'm focusing on predicting just the line number, but for future reference this is where we can make the modification.
-                idiom_location = code_lines[violation["location"]["row"]-1] # currently just the code line.
+                idiom_location = "\n".join(code_lines[violation["location"]["row"]-1:violation["end_location"]["row"]]) # currently just the code line.
+                fix = violation['fix']
+                fixed_mapping = None
+                if fix is not None and fix['applicability'] == 'safe':
+                    fix_mapping = self.edit_code(code_lines, fix['edits'])
                 idioms_detected.append({
                     "name": idiom_name,
                     "type": "violation",
-                    "location": idiom_location, 
-                    "explanation": idiom_description,
-                    "fix": None,
+                    "lines": idiom_location, 
+                    "message": idiom_description,
+                    "fix": fix_mapping,
+                    "fix_message": fix['message'],
                 })
-            data.append({
+
+                # 'fix': {'applicability': 'safe',
+                #     'edits': [{'content': '',
+                #     'end_location': {'column': 52, 'row': 20},
+                #     'location': {'column': 49, 'row': 20}}],
+                #     'message': 'Remove `start` argument'},
+
+
+            data[blob_id] = {
                 "code_file": code_file,
                 "idioms_detected": idioms_detected,
-            })
+            }
 
         return data
 
