@@ -168,3 +168,4 @@ access_tokens2.json
 data/ruff
 data/ruff_check_results
 data/ruff_check_results_v2
+data/ruff_meta_linting/train.json

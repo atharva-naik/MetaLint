@@ -3,6 +3,7 @@ import re
 import sys
 import time
 import json
+import copy
 import boto3
 import dotenv
 import random
@@ -212,8 +213,8 @@ META_LINTING_PROMPT = """Look at the following list of code idiom specifications
 {LIST_OF_IDIOM_SPECS}
 
 Given these idioms, your task is to look at a code file and detect violations of the above idioms, and flag them like a linter. You should also suggest a fix if possible. If there are no fixes then just say “ALL CHECKS PASSED”. For reporting violations your output should follow a JSON format with each idiom violation in a new line. Here are some example outputs:
-{""}
-{}
+{EG1}
+{EG2}
 
 Code file:
 {CODE_FILE}
@@ -221,7 +222,26 @@ Code file:
 Idiom violations (if any):
 """
 
-class MentaLinterDataset:
+EG1 = {
+   'code': 'PTH102',
+   'end_location': {'column': 9, 'row': 11},
+   'fix': None,
+   'location': {'column': 1, 'row': 11},
+   'message': '`os.mkdir()` should be replaced by `Path.mkdir()`'
+}
+EG2 = {'cell': None,
+   'code': 'W293',
+   'end_location': {'column': 3, 'row': 20},
+   'fix': {'applicability': 'safe',
+    'edits': [{'content': '',
+      'end_location': {'column': 3, 'row': 20},
+      'location': {'column': 1, 'row': 20}}],
+    'message': 'Remove whitespace from blank line'},
+   'location': {'column': 1, 'row': 20},
+   'message': 'Blank line contains whitespace',
+}
+
+class MetaLinterDataset:
     """Dataset builder class for Meta-Linting task with support for multiple linter/SAST tools."""
     def __init__(self, linter_name: str, linter_data_folder: str, code_files_path: str="data/STACK-V2", idiom_spec_path: str="data/ruff_pages"):
         self.linter_name = linter_name
@@ -232,36 +252,107 @@ class MentaLinterDataset:
         self.code_idiom_specs = getattr(self, f"load_{linter_name}_idiom_specs")(idiom_spec_path)
         self.linter_data = getattr(self, f"load_{linter_name}")(linter_data_folder)
 
-    # def generate_data_mix(self, idioms_file: None):
-    #     pass
+    def generate_data_mix(self, idiom_list: list[str], k: Union[int, None]=None):
+        subset_idiom_specs = {}
+        for idiom_name in idiom_list:
+            subset_idiom_specs[idiom_name] = self.code_idiom_specs[idiom_name]
+        # print(subset_idiom_specs)
+        data = []
+        CTR = 0
+        if k is None:
+            for blob_id,linter_rec in self.linter_data.items():
+                try: prompt, response = self.generate_prompt_and_response(subset_idiom_specs, linter_record=linter_rec)
+                except Exception as e: 
+                    print(e)
+                    continue
+                ID = f"ruff_linter_5I_{CTR}"
+                source = "rull_linter/"+"-".join(idiom_list)
+                CTR += 1
+                data.append({
+                    "id": ID,
+                    "messages": [
+                        {"content": prompt, "role": "user"},
+                        {"content": response, "role": "system"}
+                    ],
+                    "source": source,
+                })
+        else:
+            indices = random.sample(len(self.linter_data), k=k)
+            blob_ids = list(self.linter_data.keys())
+            for i in indices:
+                blob_id = blob_ids[i]
+                linter_rec = self.linter_data[blob_id]
+                try: prompt, response = self.generate_prompt_and_response(subset_idiom_specs, linter_record=linter_rec)
+                except Exception as e: 
+                    print(e)
+                    continue
+                ID = f"ruff_linter_5I_{CTR}"
+                source = "rull_linter/"+"-".join(idiom_list)
+                CTR += 1
+                data.append({
+                    "id": ID,
+                    "messages": [
+                        {"content": prompt, "role": "user"},
+                        {"content": response, "role": "system"}
+                    ],
+                    "source": source,
+                })
+
+        return data
 
     def load_ruff_idiom_specs(self, path):
         metadata_path = os.path.join(path, "rule_metadata.json")
         self.ruff_metadata = json.load(open(metadata_path))
+        self.ruff_metadata = {rec['Code']: rec for rec in self.ruff_metadata}
         rules_folder = os.path.join(path, "rules")
         code_idiom_specs = {}
         for rule_path in os.listdir(rules_folder):
             rule_id,_=os.path.splitext(rule_path) # rule_id is the same as the idiom name for Ruff.
-            rule_data = json.load(open(rules_folder, rule_path))
+            rule_data = json.load(open(os.path.join(rules_folder, rule_path)))
             code_idiom_specs[rule_id] = rule_data
+            code_idiom_specs[rule_id]["name"] = self.ruff_metadata[rule_id]['Name']
+            code_idiom_specs[rule_id]["code"] = rule_id
 
         return code_idiom_specs
 
-    def generate_prompt(self, idiom_specs: dict[str, dict], linter_record):
+    def idiom_spec_extractor_for_ruff(self, idiom_spec):
+        if "example" in idiom_spec:
+            Example = f"\n\nExample:\n{idiom_spec['example']}"
+        else: Example = ""
+        return f"# Idiom {idiom_spec['code']} ({idiom_spec['name']})\n\nDefinition: {idiom_spec['what-it-does']}\n\nRationale: {idiom_spec['why-is-this-bad']}"+Example
+
+    def generate_prompt_and_response(self, idiom_specs: dict[str, dict], linter_record):
         """Can take a subset of all the idiom specs"""
         idioms_to_be_covered = list(idiom_specs.keys())
-        LIST_OR_RUFF_PAGES = {}
-        linter_record["idioms_detected"] = [idiom_violation for idiom_violation in linter_record["idioms_detected"] if idiom_violation['name'] in idioms_to_be_covered]
+        # print(idiom_specs)
+        LIST_OF_IDIOM_SPECS = "\n\n".join([getattr(self, f"idiom_spec_extractor_for_{self.linter_name}")(idiom_spec) for idiom_spec in idiom_specs.values()])
+        linter_record["idioms_detected"] = [json.dumps(idiom_violation) for idiom_violation in linter_record["idioms_detected"] if idiom_violation['code'] in idioms_to_be_covered]
+        CODE_FILE = linter_record["code_file"]
 
-        return 
+        response = "\n".join(linter_record["idioms_detected"])
+        # print(response)
+        # print(LIST_OF_IDIOM_SPECS)
+        prompt = META_LINTING_PROMPT.format(
+            LIST_OF_IDIOM_SPECS=LIST_OF_IDIOM_SPECS, 
+            EG1=json.dumps(EG1), EG2=json.dumps(EG2), 
+            CODE_FILE=CODE_FILE
+        )
+        # print(prompt)
+
+        return prompt, response
 
     def load_ruff(self, folder: str):
         code_file_id_to_linter_data = {}
-        for file in tqdm(folder, desc="loading shards"):
+        CTR = 0
+        for file in tqdm(os.listdir(folder), desc="loading shards"):
             path = os.path.join(folder, file)
             shard_linter_data = self.load_ruff_shard(path)
             code_file_id_to_linter_data.update(shard_linter_data)
-            # DEBUG: break
+            # DEBUG:
+            CTR += 1 
+            if CTR == 10: break
+        
+        return code_file_id_to_linter_data
 
     def edit_code(self, lines: list, edits: list[dict]) -> dict:
         modified_lines = {}
@@ -273,8 +364,14 @@ class MentaLinterDataset:
             end_row = edit['end_location']['row']-1
             end_col = edit['end_location']['column']-1
             replacement = edit['content']
+            # try:
             before = lines[start_row][:start_col]
             after = lines[end_row][end_col:]
+            # except IndexError:
+            #     print(start_row, start_col, end_row, end_col, replacement)
+            #     print(edits)
+            #     print(len(lines))
+            #     print(len(lines[start_row]))
             
             if start_row == end_row:
                 new_line = before + replacement + after
@@ -294,36 +391,48 @@ class MentaLinterDataset:
     def load_ruff_shard(self, path: str):
         ruff_results = read_jsonl(path)
         data = {}
-        for rec in ruff_results:
+        for rec in tqdm(ruff_results):
             blob_id = rec['blob_id']
-            code_file = self.stack_data[blob_id]
+            code_file = self.code_files[blob_id]['content']
             code_lines = code_file.split("\n")
+            # print(len(code_lines))
             idioms_detected = []
             for violation in rec["violations"]:
-                idiom_name = violation["code"]
-                idiom_description = violation["message"]
-                # so this is a big design decision. Should we pass on line numbers or just the line with the issue. Right now I'm focusing on predicting just the line number, but for future reference this is where we can make the modification.
-                idiom_location = "\n".join(code_lines[violation["location"]["row"]-1:violation["end_location"]["row"]]) # currently just the code line.
-                fix = violation['fix']
-                fixed_mapping = None
-                if fix is not None and fix['applicability'] == 'safe':
-                    fix_mapping = self.edit_code(code_lines, fix['edits'])
-                idioms_detected.append({
-                    "name": idiom_name,
-                    "type": "violation",
-                    "lines": idiom_location, 
-                    "message": idiom_description,
-                    "fix": fix_mapping,
-                    "fix_message": fix['message'],
-                })
-
+                # idiom_name = violation["code"]
+                # idiom_description = violation["message"]
+                # # so this is a big design decision. Should we pass on line numbers or just the line with the issue. Right now I'm focusing on predicting just the line number, but for future reference this is where we can make the modification.
+                # idiom_location = "\n".join(code_lines[violation["location"]["row"]-1:violation["end_location"]["row"]]) # currently just the code line.
+                # fix = violation['fix']
+                # fix_mapping = None
+                # fix_message = None
+                # try:
+                #     if fix is not None and fix['applicability'] == 'safe':
+                #         fix_mapping = self.edit_code(copy.deepcopy(code_lines), fix['edits'])
+                #         fix_message = fix['message']
+                # except IndexError:
+                #     print(blob_id)
+                #     print(fix)
+                #     print(violation)
+                #     print(len(code_lines))
+                #     # exit()
+                # idioms_detected.append({
+                #     "name": idiom_name,
+                #     "type": "violation",
+                #     "lines": idiom_location, 
+                #     "message": idiom_description,
+                #     "fix": fix_mapping,
+                #     "fix_message": fix_message,
+                # })
+                del violation['filename']
+                del violation['cell']
+                del violation['noqa_row']
+                del violation['url']
+                idioms_detected.append(violation)
                 # 'fix': {'applicability': 'safe',
                 #     'edits': [{'content': '',
                 #     'end_location': {'column': 52, 'row': 20},
                 #     'location': {'column': 49, 'row': 20}}],
                 #     'message': 'Remove `start` argument'},
-
-
             data[blob_id] = {
                 "code_file": code_file,
                 "idioms_detected": idioms_detected,
@@ -350,6 +459,17 @@ def download_contents(s3, blob_id, src_encoding):
 
 # ds = load_dataset("bigcode/the-stack-v2", split="train", streaming=True)
 # ds = ds.map(lambda row: download_contents(row["blob_id"], row["src_encoding"]))
+
+def create_meta_linting_data(idiom_mixes: list[list[str]]):
+    dataset = MetaLinterDataset("ruff", "./data/ruff_results/")
+    all_data = []
+    for idiom_mix in idiom_mixes:
+        data = dataset.generate_data_mix(idiom_mix)
+        all_data.extend(data)
+    with open("./data/ruff_meta_linting/train.json", "w") as f:
+        json.dump(all_data, f, indent=4)
+
+# create_meta_linting_data([['F502', 'UP007', 'UP006', 'ERA001', 'F811'], ['PD002', 'PD003', 'PTH100', 'PTH102', 'INT001'], ['TC001', 'TC003', 'TC007', 'TC008', 'TC010'], ['TID251', 'TID252', 'TID253', 'RUF013', 'RUF020'], ['RUF018', 'FURB166', 'FURB152', 'PERF101', 'PERF203']])
 
 # main
 if __name__ == "__main__":
