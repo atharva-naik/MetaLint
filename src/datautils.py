@@ -272,7 +272,7 @@ class MetaLinterDataset:
                     "id": ID,
                     "messages": [
                         {"content": prompt, "role": "user"},
-                        {"content": response, "role": "system"}
+                        {"content": response, "role": "assistant"}
                     ],
                     "source": source,
                 })
@@ -329,7 +329,9 @@ class MetaLinterDataset:
         linter_record["idioms_detected"] = [json.dumps(idiom_violation) for idiom_violation in linter_record["idioms_detected"] if idiom_violation['code'] in idioms_to_be_covered]
         CODE_FILE = linter_record["code_file"]
 
-        response = "\n".join(linter_record["idioms_detected"])
+        if len(linter_record["idioms_detected"]) == 0:
+            response = "NO VIOLATIONS FOUND"
+        else: response = "\n".join(linter_record["idioms_detected"])
         # print(response)
         # print(LIST_OF_IDIOM_SPECS)
         prompt = META_LINTING_PROMPT.format(
@@ -350,7 +352,7 @@ class MetaLinterDataset:
             code_file_id_to_linter_data.update(shard_linter_data)
             # DEBUG:
             CTR += 1 
-            if CTR == 10: break
+            if CTR == 15: break
         
         return code_file_id_to_linter_data
 
@@ -440,7 +442,6 @@ class MetaLinterDataset:
 
         return data
 
-
 def init_s3_client():
     session = boto3.Session(
         aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
@@ -459,17 +460,6 @@ def download_contents(s3, blob_id, src_encoding):
 
 # ds = load_dataset("bigcode/the-stack-v2", split="train", streaming=True)
 # ds = ds.map(lambda row: download_contents(row["blob_id"], row["src_encoding"]))
-
-def create_meta_linting_data(idiom_mixes: list[list[str]]):
-    dataset = MetaLinterDataset("ruff", "./data/ruff_results/")
-    all_data = []
-    for idiom_mix in idiom_mixes:
-        data = dataset.generate_data_mix(idiom_mix)
-        all_data.extend(data)
-    with open("./data/ruff_meta_linting/train.json", "w") as f:
-        json.dump(all_data, f, indent=4)
-
-# create_meta_linting_data([['F502', 'UP007', 'UP006', 'ERA001', 'F811'], ['PD002', 'PD003', 'PTH100', 'PTH102', 'INT001'], ['TC001', 'TC003', 'TC007', 'TC008', 'TC010'], ['TID251', 'TID252', 'TID253', 'RUF013', 'RUF020'], ['RUF018', 'FURB166', 'FURB152', 'PERF101', 'PERF203']])
 
 # main
 if __name__ == "__main__":
