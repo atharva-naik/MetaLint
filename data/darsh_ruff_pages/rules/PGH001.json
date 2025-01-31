@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of the builtin eval() function.",
+    "why-is-this-bad": "The eval() function is insecure as it enables arbitrary code execution.",
+    "example": "def foo():\n    x = eval(input(\"Enter a number: \"))\n    ...\n\n\n\nUse instead:\n\n\ndef foo():\n    x = input(\"Enter a number: \")\n    ...",
+    "example-split": {
+        "example-before": "def foo():\n    x = eval(input(\"Enter a number: \"))\n    ...\n\n",
+        "example-after": "\ndef foo():\n    x = input(\"Enter a number: \")\n    ..."
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for missing whitespace around the modulo operator.",
+    "why-is-this-bad": "According to PEP 8, the modulo operator (%) should have whitespace on\neither side of it.",
+    "example": "remainder = 10%2\n\n\n\nUse instead:\n\n\nremainder = 10 % 2",
+    "example-split": {
+        "example-before": "remainder = 10%2\n\n",
+        "example-after": "\nremainder = 10 % 2"
+    }
+}

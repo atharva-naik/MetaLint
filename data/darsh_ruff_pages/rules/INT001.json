@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for f-strings in gettext function calls.",
+    "why-is-this-bad": "In the gettext API, the gettext function (often aliased to _) returns\na translation of its input argument by looking it up in a translation\ncatalog.\n\n\nCalling gettext with an f-string as its argument can cause unexpected\nbehavior. Since the f-string is resolved before the function call, the\ntranslation catalog will look up the formatted string, rather than the\nf-string template.\n\n\nInstead, format the value returned by the function call, rather than\nits argument.",
+    "example": "from gettext import gettext as _\n\nname = \"Maria\"\n_(f\"Hello, {name}!\")  # Looks for \"Hello, Maria!\".\n\n\n\nUse instead:\n\n\nfrom gettext import gettext as _\n\nname = \"Maria\"\n_(\"Hello, %s!\") % name  # Looks for \"Hello, %s!\".",
+    "example-split": {
+        "example-before": "from gettext import gettext as _\n\nname = \"Maria\"\n_(f\"Hello, {name}!\")  # Looks for \"Hello, Maria!\".\n\n",
+        "example-after": "\nfrom gettext import gettext as _"
+    }
+}

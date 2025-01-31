@@ -1,0 +1,5 @@
+{
+    "what-it-does": "Checks for dict() calls that take unnecessary dict literals or dict\ncomprehensions as arguments.",
+    "why-is-this-bad": "It's unnecessary to wrap a dict literal or comprehension within a dict()\ncall, since the literal or comprehension syntax already returns a\ndictionary.",
+    "fix-safety": "This rule's fix is marked as unsafe, as it may occasionally drop comments\nwhen rewriting the call. In most cases, though, comments will be preserved."
+}

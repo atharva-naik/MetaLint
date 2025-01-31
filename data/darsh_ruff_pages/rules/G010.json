@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of logging.warn and logging.Logger.warn.",
+    "why-is-this-bad": "logging.warn and logging.Logger.warn are deprecated in favor of\nlogging.warning and logging.Logger.warning, which are functionally\nequivalent.",
+    "example": "import logging\n\nlogging.warn(\"Something happened\")\n\n\n\nUse instead:\n\n\nimport logging\n\nlogging.warning(\"Something happened\")",
+    "example-split": {
+        "example-before": "import logging\n\nlogging.warn(\"Something happened\")\n\n",
+        "example-after": "\nimport logging"
+    }
+}

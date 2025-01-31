@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for empty methods in abstract base classes without an abstract\ndecorator.",
+    "why-is-this-bad": "Empty methods in abstract base classes without an abstract decorator may be\nbe indicative of a mistake. If the method is meant to be abstract, add an\n@abstractmethod decorator to the method.",
+    "example": "from abc import ABC\n\n\nclass Foo(ABC):\n    def method(self): ...\n\n\n\nUse instead:\n\n\nfrom abc import ABC, abstractmethod\n\n\nclass Foo(ABC):\n    @abstractmethod\n    def method(self): ...",
+    "example-split": {
+        "example-before": "from abc import ABC\n\n\nclass Foo(ABC):\n    def method(self): ...\n\n",
+        "example-after": "\nfrom abc import ABC, abstractmethod"
+    }
+}

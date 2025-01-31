@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of typing.NoReturn and typing.Never in union types.",
+    "why-is-this-bad": "typing.NoReturn and typing.Never are special types, used to indicate\nthat a function never returns, or that a type has no values.\n\n\nIncluding typing.NoReturn or typing.Never in a union type is redundant,\nas, e.g., typing.Never | T is equivalent to T.",
+    "example": "from typing import Never\n\n\ndef func() -> Never | int: ...\n\n\n\nUse instead:\n\n\ndef func() -> int: ...",
+    "example-split": {
+        "example-before": "from typing import Never\n\n\ndef func() -> Never | int: ...\n\n",
+        "example-after": "\ndef func() -> int: ..."
+    }
+}

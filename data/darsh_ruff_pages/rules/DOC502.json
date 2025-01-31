@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for function docstrings that state that exceptions could be raised\neven though they are not directly raised in the function body.",
+    "why-is-this-bad": "Some conventions prefer non-explicit exceptions be omitted from the\ndocstring.\n\n\nThis rule is not enforced for abstract methods. It is also ignored for\n\"stub functions\": functions where the body only consists of pass, ...,\nraise NotImplementedError, or similar.",
+    "example": "def calculate_speed(distance: float, time: float) -> float:\n    \"\"\"Calculate speed as distance divided by time.\n\n    Args:\n        distance: Distance traveled.\n        time: Time spent traveling.\n\n    Returns:\n        Speed as distance divided by time.\n\n    Raises:\n        ZeroDivisionError: Divided by zero.\n    \"\"\"\n    return distance / time\n\n\n\nUse instead:\n\n\ndef calculate_speed(distance: float, time: float) -> float:\n    \"\"\"Calculate speed as distance divided by time.\n\n    Args:\n        distance: Distance traveled.\n        time: Time spent traveling.\n\n    Returns:\n        Speed as distance divided by time.\n    \"\"\"\n    return distance / time",
+    "example-split": {
+        "example-before": "def calculate_speed(distance: float, time: float) -> float:\n    \"\"\"Calculate speed as distance divided by time.\n\n    Args:\n        distance: Distance traveled.\n        time: Time spent traveling.\n\n    Returns:\n        Speed as distance divided by time.\n\n    Raises:\n        ZeroDivisionError: Divided by zero.\n    \"\"\"\n    return distance / time\n\n",
+        "example-after": "\ndef calculate_speed(distance: float, time: float) -> float:\n    \"\"\"Calculate speed as distance divided by time."
+    }
+}

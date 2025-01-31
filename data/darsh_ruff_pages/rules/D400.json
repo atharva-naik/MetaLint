@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for docstrings in which the first line does not end in a period.",
+    "why-is-this-bad": "PEP 257 recommends that the first line of a docstring is written in the\nform of a command, ending in a period.\n\n\nThis rule may not apply to all projects; its applicability is a matter of\nconvention. By default, this rule is enabled when using the numpy and\npep257 conventions, and disabled when using the google convention.",
+    "example": "def average(values: list[float]) -> float:\n    \"\"\"Return the mean of the given values\"\"\"\n\n\n\nUse instead:\n\n\ndef average(values: list[float]) -> float:\n    \"\"\"Return the mean of the given values.\"\"\"",
+    "example-split": {
+        "example-before": "def average(values: list[float]) -> float:\n    \"\"\"Return the mean of the given values\"\"\"\n\n",
+        "example-after": "\ndef average(values: list[float]) -> float:\n    \"\"\"Return the mean of the given values.\"\"\""
+    }
+}

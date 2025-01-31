@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for imports of several unsafe cryptography modules.",
+    "why-is-this-bad": "The pycrypto library is known to have a publicly disclosed buffer\noverflow vulnerability. It is no longer actively maintained and has been\ndeprecated in favor of the pyca/cryptography library.",
+    "example": "import Crypto.Random",
+    "example-split": {
+        "example-before": "import Crypto.Random",
+        "example-after": "import Crypto.Random"
+    }
+}

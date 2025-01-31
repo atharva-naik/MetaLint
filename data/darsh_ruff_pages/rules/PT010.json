@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for pytest.raises calls without an expected exception.",
+    "why-is-this-bad": "pytest.raises expects to receive an expected exception as its first\nargument. If omitted, the pytest.raises call will fail at runtime.",
+    "example": "import pytest\n\n\ndef test_foo():\n    with pytest.raises():\n        do_something()\n\n\n\nUse instead:\n\n\nimport pytest\n\n\ndef test_foo():\n    with pytest.raises(SomeException):\n        do_something()",
+    "example-split": {
+        "example-before": "import pytest\n\n\ndef test_foo():\n    with pytest.raises():\n        do_something()\n\n",
+        "example-after": "\nimport pytest"
+    }
+}

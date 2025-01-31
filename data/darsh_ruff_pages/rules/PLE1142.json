@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of await outside async functions.",
+    "why-is-this-bad": "Using await outside an async function is a syntax error.",
+    "example": "import asyncio\n\n\ndef foo():\n    await asyncio.sleep(1)\n\n\n\nUse instead:\n\n\nimport asyncio\n\n\nasync def foo():\n    await asyncio.sleep(1)",
+    "example-split": {
+        "example-before": "import asyncio\n\n\ndef foo():\n    await asyncio.sleep(1)\n\n",
+        "example-after": "\nimport asyncio"
+    }
+}

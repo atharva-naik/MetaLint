@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for strings that contain the zero width space character.",
+    "why-is-this-bad": "This character is rendered invisibly in some text editors and terminals.\n\n\nBy using the \\u200B sequence, the string will contain the same value,\nbut will render visibly in all editors.",
+    "example": "x = \"Dear Sir/Madam\"\n\n\n\nUse instead:\n\n\nx = \"Dear Sir\\u200b/\\u200bMadam\"  # zero width space",
+    "example-split": {
+        "example-before": "x = \"Dear Sir/Madam\"\n\n",
+        "example-after": "\nx = \"Dear Sir\\u200b/\\u200bMadam\"  # zero width space"
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for classes that inherit from both str and enum.Enum.",
+    "why-is-this-bad": "Python 3.11 introduced enum.StrEnum, which is preferred over inheriting\nfrom both str and enum.Enum.",
+    "example": "import enum\n\n\nclass Foo(str, enum.Enum): ...\n\n\n\nUse instead:\n\n\nimport enum\n\n\nclass Foo(enum.StrEnum): ...",
+    "fix-safety": "Python 3.11 introduced a breaking change for enums that inherit from both\nstr and enum.Enum. Consider the following enum:\n\n\nfrom enum import Enum\n\n\nclass Foo(str, Enum):\n    BAR = \"bar\"\n\n\n\nIn Python 3.11, the formatted representation of Foo.BAR changed as\nfollows:\n\n\n# Python 3.10\nf\"{Foo.BAR}\"  # > bar\n# Python 3.11\nf\"{Foo.BAR}\"  # > Foo.BAR\n\n\n\nMigrating from str and enum.Enum to enum.StrEnum will restore the\nprevious behavior, such that:\n\n\nfrom enum import StrEnum\n\n\nclass Foo(StrEnum):\n    BAR = \"bar\"\n\n\nf\"{Foo.BAR}\"  # > bar\n\n\n\nAs such, migrating to enum.StrEnum will introduce a behavior change for\ncode that relies on the Python 3.11 behavior.",
+    "example-split": {
+        "example-before": "import enum\n\n\nclass Foo(str, enum.Enum): ...\n\n",
+        "example-after": "\nimport enum"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for argument names that do not follow the snake_case convention.",
+    "why-is-this-bad": "PEP 8 recommends that function names should be lower case and separated\nby underscores (also known as snake_case).\n\n\n\nFunction names should be lowercase, with words separated by underscores\nas necessary to improve readability.\nVariable names follow the same convention as function names.\nmixedCase is allowed only in contexts where that\u2019s already the\nprevailing style (e.g. threading.py), to retain backwards compatibility.",
+    "example": "def my_function(A, myArg):\n    pass\n\n\n\nUse instead:\n\n\ndef my_function(a, my_arg):\n    pass",
+    "example-split": {
+        "example-before": "def my_function(A, myArg):\n    pass\n\n",
+        "example-after": "\ndef my_function(a, my_arg):\n    pass"
+    }
+}

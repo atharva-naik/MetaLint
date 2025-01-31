@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for missing whitespace arithmetic operators.",
+    "why-is-this-bad": "According to PEP 8, there should be one space before and after an\narithmetic operator (+, -, /, and *).",
+    "example": "number = 40+2\n\n\n\nUse instead:\n\n\nnumber = 40 + 2",
+    "example-split": {
+        "example-before": "number = 40+2\n\n",
+        "example-after": "\nnumber = 40 + 2"
+    }
+}

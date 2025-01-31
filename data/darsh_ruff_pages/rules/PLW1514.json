@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of open and related calls without an explicit encoding\nargument.",
+    "why-is-this-bad": "Using open in text mode without an explicit encoding can lead to\nnon-portable code, with differing behavior across platforms. While readers\nmay assume that UTF-8 is the default encoding, in reality, the default\nis locale-specific.\n\n\nInstead, consider using the encoding parameter to enforce a specific\nencoding. PEP 597 recommends the use of encoding=\"utf-8\" as a default,\nand suggests that it may become the default in future versions of Python.\n\n\nIf a locale-specific encoding is intended, use encoding=\"locale\" on\nPython 3.10 and later, or locale.getpreferredencoding() on earlier versions,\nto make the encoding explicit.",
+    "example": "open(\"file.txt\")\n\n\n\nUse instead:\n\n\nopen(\"file.txt\", encoding=\"utf-8\")",
+    "example-split": {
+        "example-before": "open(\"file.txt\")\n\n",
+        "example-after": "\nopen(\"file.txt\", encoding=\"utf-8\")"
+    }
+}

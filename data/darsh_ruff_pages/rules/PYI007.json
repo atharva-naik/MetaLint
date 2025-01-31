@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Check for unrecognized sys.platform checks. Platform checks should be\nsimple string comparisons.\n\n\nNote: this rule is only enabled in .pyi stub files.",
+    "why-is-this-bad": "Some sys.platform checks are too complex for type checkers to\nunderstand, and thus result in incorrect inferences by these tools.\nsys.platform checks should be simple string comparisons, like\nif sys.platform == \"linux\".",
+    "example": "if sys.platform.startswith(\"linux\"):\n    # Linux specific definitions\n    ...\nelse:\n    # Posix specific definitions\n    ...\n\n\n\nInstead, use a simple string comparison, such as == or !=:\n\n\nif sys.platform == \"linux\":\n    # Linux specific definitions\n    ...\nelse:\n    # Posix specific definitions\n    ...",
+    "example-split": {
+        "example-before": "if sys.platform.startswith(\"linux\"):\n    # Linux specific definitions\n    ...\nelse:\n    # Posix specific definitions\n    ...\n\n\n\nInstead, use a simple string comparison, such as == or !=:\n\n\nif sys.platform == \"linux\":\n    # Linux specific definitions\n    ...\nelse:\n    # Posix specific definitions\n    ...",
+        "example-after": "if sys.platform.startswith(\"linux\"):\n    # Linux specific definitions\n    ...\nelse:\n    # Posix specific definitions\n    ..."
+    }
+}

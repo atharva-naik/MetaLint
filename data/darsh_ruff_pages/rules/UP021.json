@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of subprocess.run that set the universal_newlines\nkeyword argument.",
+    "why-is-this-bad": "As of Python 3.7, the universal_newlines keyword argument has been\nrenamed to text, and now exists for backwards compatibility. The\nuniversal_newlines keyword argument may be removed in a future version of\nPython. Prefer text, which is more explicit and readable.",
+    "example": "import subprocess\n\nsubprocess.run([\"foo\"], universal_newlines=True)\n\n\n\nUse instead:\n\n\nimport subprocess\n\nsubprocess.run([\"foo\"], text=True)",
+    "example-split": {
+        "example-before": "import subprocess\n\nsubprocess.run([\"foo\"], universal_newlines=True)\n\n",
+        "example-after": "\nimport subprocess"
+    }
+}

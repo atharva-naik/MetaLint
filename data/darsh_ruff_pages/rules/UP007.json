@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Check for type annotations that can be rewritten based on PEP 604 syntax.",
+    "why-is-this-bad": "PEP 604 introduced a new syntax for union type annotations based on the\n| operator. This syntax is more concise and readable than the previous\ntyping.Union and typing.Optional syntaxes.\n\n\nThis rule is enabled when targeting Python 3.10 or later (see:\ntarget-version). By default, it's also enabled for earlier Python\nversions if from __future__ import annotations is present, as\n__future__ annotations are not evaluated at runtime. If your code relies\non runtime type annotations (either directly or via a library like\nPydantic), you can disable this behavior for Python versions prior to 3.10\nby setting lint.pyupgrade.keep-runtime-typing to true.",
+    "example": "from typing import Union\n\nfoo: Union[int, str] = 1\n\n\n\nUse instead:\n\n\nfoo: int | str = 1",
+    "fix-safety": "This rule's fix is marked as unsafe, as it may lead to runtime errors when\nalongside libraries that rely on runtime type annotations, like Pydantic,\non Python versions prior to Python 3.10. It may also lead to runtime errors\nin unusual and likely incorrect type annotations where the type does not\nsupport the | operator.",
+    "example-split": {
+        "example-before": "from typing import Union\n\nfoo: Union[int, str] = 1\n\n",
+        "example-after": "\nfoo: int | str = 1"
+    }
+}
