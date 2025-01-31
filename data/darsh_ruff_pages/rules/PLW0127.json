@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for self-assignment of variables.",
+    "why-is-this-bad": "Self-assignment of variables is redundant and likely a mistake.",
+    "example": "country = \"Poland\"\ncountry = country\n\n\n\nUse instead:\n\n\ncountry = \"Poland\"",
+    "example-split": {
+        "example-before": "country = \"Poland\"\ncountry = country\n\n",
+        "example-after": "\ncountry = \"Poland\""
+    }
+}

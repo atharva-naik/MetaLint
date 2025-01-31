@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the attempted use of the unary prefix increment (++) or\ndecrement operator (--).",
+    "why-is-this-bad": "Python does not support the unary prefix increment or decrement operator.\nWriting ++n is equivalent to +(+(n)) and writing --n is equivalent to\n-(-(n)). In both cases, it is equivalent to n.",
+    "example": "++x\n--y\n\n\n\nUse instead:\n\n\nx += 1\ny -= 1",
+    "example-split": {
+        "example-before": "++x\n--y\n\n",
+        "example-after": "\nx += 1\ny -= 1"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for usages of the following logging top-level functions:\ndebug, info, warn, warning, error, critical, log, exception.",
+    "why-is-this-bad": "Using the root logger causes the messages to have no source information,\nmaking them less useful for debugging.",
+    "example": "import logging\n\nlogging.info(\"Foobar\")\n\n\n\nUse instead:\n\n\nimport logging\n\nlogger = logging.getLogger(__name__)\nlogger.info(\"Foobar\")",
+    "example-split": {
+        "example-before": "import logging\n\nlogging.info(\"Foobar\")\n\n",
+        "example-after": "\nimport logging"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for exception handlers that catch duplicate exceptions.",
+    "why-is-this-bad": "Including the same exception multiple times in the same handler is redundant,\nas the first exception will catch the exception, making the second exception\nunreachable. The same applies to exception hierarchies, as a handler for a\nparent exception (like Exception) will also catch child exceptions (like\nValueError).",
+    "example": "try:\n    ...\nexcept (Exception, ValueError):  # `Exception` includes `ValueError`.\n    ...\n\n\n\nUse instead:\n\n\ntry:\n    ...\nexcept Exception:\n    ...",
+    "example-split": {
+        "example-before": "try:\n    ...\nexcept (Exception, ValueError):  # `Exception` includes `ValueError`.\n    ...\n\n",
+        "example-after": "\ntry:\n    ...\nexcept Exception:\n    ..."
+    }
+}

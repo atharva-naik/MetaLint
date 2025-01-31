@@ -1,0 +1,5 @@
+{
+    "what-it-does": "Checks for tuple calls that take unnecessary list or tuple literals as\narguments. In preview, this also includes unnecessary list comprehensions\nwithin tuple calls.",
+    "why-is-this-bad": "It's unnecessary to use a list or tuple literal within a tuple() call,\nsince there is a literal syntax for these types.\n\n\nIf a list literal was passed, then it should be rewritten as a tuple\nliteral. Otherwise, if a tuple literal was passed, then the outer call\nto tuple() should be removed.\n\n\nIn preview, this rule also checks for list comprehensions within tuple()\ncalls. If a list comprehension is found, it should be rewritten as a\ngenerator expression.",
+    "fix-safety": "This rule's fix is marked as unsafe, as it may occasionally drop comments\nwhen rewriting the call. In most cases, though, comments will be preserved."
+}

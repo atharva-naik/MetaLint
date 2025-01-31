@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the use of .format calls on string literals in exception\nconstructors.",
+    "why-is-this-bad": "Python includes the raise in the default traceback (and formatters\nlike Rich and IPython do too).\n\n\nBy using a .format call, the error message will be duplicated in the\ntraceback, which can make the traceback less readable.",
+    "example": "Given:\n\n\nsub = \"Some value\"\nraise RuntimeError(\"'{}' is incorrect\".format(sub))\n\n\n\nPython will produce a traceback like:\n\n\nTraceback (most recent call last):\n  File \"tmp.py\", line 2, in <module>\n    raise RuntimeError(\"'{}' is incorrect\".format(sub))\nRuntimeError: 'Some value' is incorrect\n\n\n\nInstead, assign the string to a variable:\n\n\nsub = \"Some value\"\nmsg = \"'{}' is incorrect\".format(sub)\nraise RuntimeError(msg)\n\n\n\nWhich will produce a traceback like:\n\n\nTraceback (most recent call last):\n  File \"tmp.py\", line 3, in <module>\n    raise RuntimeError(msg)\nRuntimeError: 'Some value' is incorrect",
+    "example-split": {
+        "example-before": "Given:\n\n\nsub = \"Some value\"\nraise RuntimeError(\"'{}' is incorrect\".format(sub))\n\n\n\nPython will produce a traceback like:\n\n\nTraceback (most recent call last):\n  File \"tmp.py\", line 2, in <module>\n    raise RuntimeError(\"'{}' is incorrect\".format(sub))\nRuntimeError: 'Some value' is incorrect\n\n\n\nInstead, assign the string to a variable:\n\n\nsub = \"Some value\"\nmsg = \"'{}' is incorrect\".format(sub)\nraise RuntimeError(msg)\n\n\n\nWhich will produce a traceback like:\n\n\nTraceback (most recent call last):\n  File \"tmp.py\", line 3, in <module>\n    raise RuntimeError(msg)\nRuntimeError: 'Some value' is incorrect",
+        "example-after": "Given:"
+    }
+}

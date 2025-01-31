@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of .notnull on Pandas objects.",
+    "why-is-this-bad": "In the Pandas API, .notna and .notnull are equivalent. For consistency,\nprefer .notna over .notnull.\n\n\nAs a name, .notna more accurately reflects the behavior of the method,\nsince these methods check for NaN and NaT values in addition to None\nvalues.",
+    "example": "import pandas as pd\n\nanimals_df = pd.read_csv(\"animals.csv\")\npd.notnull(animals_df)\n\n\n\nUse instead:\n\n\nimport pandas as pd\n\nanimals_df = pd.read_csv(\"animals.csv\")\npd.notna(animals_df)",
+    "example-split": {
+        "example-before": "import pandas as pd\n\nanimals_df = pd.read_csv(\"animals.csv\")\npd.notnull(animals_df)\n\n",
+        "example-after": "\nimport pandas as pd"
+    }
+}

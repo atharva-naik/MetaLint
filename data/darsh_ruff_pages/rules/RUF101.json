@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for noqa directives that use redirected rule codes.",
+    "why-is-this-bad": "When one of Ruff's rule codes has been redirected, the implication is that the rule has\nbeen deprecated in favor of another rule or code. To keep your codebase\nconsistent and up-to-date, prefer the canonical rule code over the deprecated\ncode.",
+    "example": "x = eval(command)  # noqa: PGH001\n\n\n\nUse instead:\n\n\nx = eval(command)  # noqa: S307",
+    "example-split": {
+        "example-before": "x = eval(command)  # noqa: PGH001\n\n",
+        "example-after": "\nx = eval(command)  # noqa: S307"
+    }
+}

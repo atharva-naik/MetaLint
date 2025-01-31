@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for unnecessary dict kwargs.",
+    "why-is-this-bad": "If the dict keys are valid identifiers, they can be passed as keyword\narguments directly.",
+    "example": "def foo(bar):\n    return bar + 1\n\n\nprint(foo(**{\"bar\": 2}))  # prints 3\n\n\n\nUse instead:\n\n\ndef foo(bar):\n    return bar + 1\n\n\nprint(foo(bar=2))  # prints 3",
+    "example-split": {
+        "example-before": "def foo(bar):\n    return bar + 1\n\n\nprint(foo(**{\"bar\": 2}))  # prints 3\n\n",
+        "example-after": "\ndef foo(bar):\n    return bar + 1"
+    }
+}

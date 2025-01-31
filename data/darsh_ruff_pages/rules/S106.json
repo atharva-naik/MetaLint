@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for potential uses of hardcoded passwords in function calls.",
+    "why-is-this-bad": "Including a hardcoded password in source code is a security risk, as an\nattacker could discover the password and use it to gain unauthorized\naccess.\n\n\nInstead, store passwords and other secrets in configuration files,\nenvironment variables, or other sources that are excluded from version\ncontrol.",
+    "example": "connect_to_server(password=\"hunter2\")\n\n\n\nUse instead:\n\n\nimport os\n\nconnect_to_server(password=os.environ[\"PASSWORD\"])",
+    "example-split": {
+        "example-before": "connect_to_server(password=\"hunter2\")\n\n",
+        "example-after": "\nimport os"
+    }
+}

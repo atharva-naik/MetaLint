@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of readlines() when iterating over a file line-by-line.",
+    "why-is-this-bad": "Rather than iterating over all lines in a file by calling readlines(),\nit's more convenient and performant to iterate over the file object\ndirectly.",
+    "example": "with open(\"file.txt\") as fp:\n    for line in fp.readlines():\n        ...\n\n\n\nUse instead:\n\n\nwith open(\"file.txt\") as fp:\n    for line in fp:\n        ...",
+    "example-split": {
+        "example-before": "with open(\"file.txt\") as fp:\n    for line in fp.readlines():\n        ...\n\n",
+        "example-after": "\nwith open(\"file.txt\") as fp:\n    for line in fp:\n        ..."
+    }
+}

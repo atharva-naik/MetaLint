@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for needless exception names in raise statements.",
+    "why-is-this-bad": "It's redundant to specify the exception name in a raise statement if the\nexception is being re-raised.",
+    "example": "def foo():\n    try:\n        ...\n    except ValueError as exc:\n        raise exc\n\n\n\nUse instead:\n\n\ndef foo():\n    try:\n        ...\n    except ValueError:\n        raise",
+    "fix-safety": "This rule's fix is marked as unsafe, as it doesn't properly handle bound\nexceptions that are shadowed between the except and raise statements.",
+    "example-split": {
+        "example-before": "def foo():\n    try:\n        ...\n    except ValueError as exc:\n        raise exc\n\n",
+        "example-after": "\ndef foo():\n    try:\n        ...\n    except ValueError:\n        raise"
+    }
+}

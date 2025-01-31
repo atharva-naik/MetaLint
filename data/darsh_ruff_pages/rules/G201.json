@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of logging.error that pass exc_info=True.",
+    "why-is-this-bad": "Calling logging.error with exc_info=True is equivalent to calling\nlogging.exception. Using logging.exception is more concise, more\nreadable, and conveys the intent of the logging statement more clearly.",
+    "example": "import logging\n\ntry:\n    ...\nexcept ValueError:\n    logging.error(\"Exception occurred\", exc_info=True)\n\n\n\nUse instead:\n\n\nimport logging\n\ntry:\n    ...\nexcept ValueError:\n    logging.exception(\"Exception occurred\")",
+    "example-split": {
+        "example-before": "import logging\n\ntry:\n    ...\nexcept ValueError:\n    logging.error(\"Exception occurred\", exc_info=True)\n\n",
+        "example-after": "\nimport logging"
+    }
+}

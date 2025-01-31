@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for parameters of test functions with default arguments.",
+    "why-is-this-bad": "Such a parameter will always have the default value during the test\nregardless of whether a fixture with the same name is defined.",
+    "example": "def test_foo(a=1): ...\n\n\n\nUse instead:\n\n\ndef test_foo(a): ...",
+    "fix-safety": "This rule's fix is marked as unsafe, as modifying a function signature can\nchange the behavior of the code.",
+    "example-split": {
+        "example-before": "def test_foo(a=1): ...\n\n",
+        "example-after": "\ndef test_foo(a): ..."
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for mutations to an iterable during a loop iteration.",
+    "why-is-this-bad": "When iterating over an iterable, mutating the iterable can lead to unexpected\nbehavior, like skipping elements or infinite loops.",
+    "example": "items = [1, 2, 3]\n\nfor item in items:\n    print(item)\n\n    # Create an infinite loop by appending to the list.\n    items.append(item)",
+    "example-split": {
+        "example-before": "items = [1, 2, 3]\n\nfor item in items:\n    print(item)\n\n    # Create an infinite loop by appending to the list.\n    items.append(item)",
+        "example-after": "items = [1, 2, 3]"
+    }
+}

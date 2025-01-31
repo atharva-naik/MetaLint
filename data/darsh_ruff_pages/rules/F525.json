@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for str.format calls that mix automatic and manual numbering.",
+    "why-is-this-bad": "In str.format calls, mixing automatic and manual numbering will raise a\nValueError at runtime.",
+    "example": "\"{0}, {}\".format(\"Hello\", \"World\")\n\n\n\nUse instead:\n\n\n\"{0}, {1}\".format(\"Hello\", \"World\")\n\n\n\nOr:\n\n\n\"{}, {}\".format(\"Hello\", \"World\")",
+    "example-split": {
+        "example-before": "\"{0}, {}\".format(\"Hello\", \"World\")\n\n",
+        "example-after": "\n\"{0}, {1}\".format(\"Hello\", \"World\")"
+    }
+}

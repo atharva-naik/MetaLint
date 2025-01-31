@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for printf-style format strings that have mixed positional and\nnamed placeholders.",
+    "why-is-this-bad": "Python does not support mixing positional and named placeholders in\nprintf-style format strings. The use of mixed placeholders will raise a\nTypeError at runtime.",
+    "example": "\"%s, %(name)s\" % (\"Hello\", {\"name\": \"World\"})\n\n\n\nUse instead:\n\n\n\"%s, %s\" % (\"Hello\", \"World\")\n\n\n\nOr:\n\n\n\"%(greeting)s, %(name)s\" % {\"greeting\": \"Hello\", \"name\": \"World\"}",
+    "example-split": {
+        "example-before": "\"%s, %(name)s\" % (\"Hello\", {\"name\": \"World\"})\n\n",
+        "example-after": "\n\"%s, %s\" % (\"Hello\", \"World\")"
+    }
+}

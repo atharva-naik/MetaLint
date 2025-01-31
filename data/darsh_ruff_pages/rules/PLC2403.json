@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the use of non-ASCII characters in import statements.",
+    "why-is-this-bad": "The use of non-ASCII characters in import statements can cause confusion\nand compatibility issues (see: PEP 672).",
+    "example": "import b\u00e1r\n\n\n\nUse instead:\n\n\nimport bar\n\n\n\nIf the module is third-party, use an ASCII-only alias:\n\n\nimport b\u00e1r as bar",
+    "example-split": {
+        "example-before": "import b\u00e1r\n\n",
+        "example-after": "\nimport bar"
+    }
+}

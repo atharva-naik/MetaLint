@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the use of fields = \"__all__\" in Django ModelForm\nclasses.",
+    "why-is-this-bad": "If a ModelForm includes the fields = \"__all__\" attribute, any new\nfield that is added to the model will automatically be exposed for\nmodification.",
+    "example": "from django.forms import ModelForm\n\n\nclass PostForm(ModelForm):\n    class Meta:\n        model = Post\n        fields = \"__all__\"\n\n\n\nUse instead:\n\n\nfrom django.forms import ModelForm\n\n\nclass PostForm(ModelForm):\n    class Meta:\n        model = Post\n        fields = [\"title\", \"content\"]",
+    "example-split": {
+        "example-before": "from django.forms import ModelForm\n\n\nclass PostForm(ModelForm):\n    class Meta:\n        model = Post\n        fields = \"__all__\"\n\n",
+        "example-after": "\nfrom django.forms import ModelForm"
+    }
+}

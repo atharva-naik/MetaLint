@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for type alias definitions that are not annotated with\ntyping.TypeAlias.",
+    "why-is-this-bad": "In Python, a type alias is defined by assigning a type to a variable (e.g.,\nVector = list[float]).\n\n\nIt's best to annotate type aliases with the typing.TypeAlias type to\nmake it clear that the statement is a type alias declaration, as opposed\nto a normal variable assignment.",
+    "example": "Vector = list[float]\n\n\n\nUse instead:\n\n\nfrom typing import TypeAlias\n\nVector: TypeAlias = list[float]",
+    "example-split": {
+        "example-before": "Vector = list[float]\n\n",
+        "example-after": "\nfrom typing import TypeAlias"
+    }
+}

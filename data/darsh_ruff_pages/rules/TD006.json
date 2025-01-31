@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks that a \"TODO\" tag is properly capitalized (i.e., that the tag is\nuppercase).",
+    "why-is-this-bad": "Capitalizing the \"TODO\" in a TODO comment is a convention that makes it\neasier for future readers to identify TODOs.",
+    "example": "# todo(charlie): capitalize this\n\n\n\nUse instead:\n\n\n# TODO(charlie): this is capitalized",
+    "example-split": {
+        "example-before": "# todo(charlie): capitalize this\n\n",
+        "example-after": "\n# TODO(charlie): this is capitalized"
+    }
+}

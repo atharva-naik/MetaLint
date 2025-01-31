@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for async function definitions with timeout parameters.",
+    "why-is-this-bad": "Rather than implementing asynchronous timeout behavior manually, prefer\nbuilt-in timeout functionality, such as asyncio.timeout, trio.fail_after,\nor anyio.move_on_after, among others.\n\n\nThis rule is highly opinionated to enforce a design pattern\ncalled \"structured concurrency\" that allows for\nasync functions to be oblivious to timeouts,\ninstead letting callers to handle the logic with a context manager.",
+    "example": "async def long_running_task(timeout): ...\n\n\nasync def main():\n    await long_running_task(timeout=2)\n\n\n\nUse instead:\n\n\nasync def long_running_task(): ...\n\n\nasync def main():\n    async with asyncio.timeout(2):\n        await long_running_task()",
+    "example-split": {
+        "example-before": "async def long_running_task(timeout): ...\n\n\nasync def main():\n    await long_running_task(timeout=2)\n\n",
+        "example-after": "\nasync def long_running_task(): ..."
+    }
+}

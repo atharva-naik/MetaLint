@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for imports of the pickle, cPickle, dill, and shelve modules.",
+    "why-is-this-bad": "It is possible to construct malicious pickle data which will execute\narbitrary code during unpickling. Consider possible security implications\nassociated with these modules.",
+    "example": "import pickle",
+    "example-split": {
+        "example-before": "import pickle",
+        "example-after": "import pickle"
+    }
+}

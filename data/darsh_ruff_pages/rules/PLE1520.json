@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for non-method functions decorated with @singledispatchmethod.",
+    "why-is-this-bad": "The @singledispatchmethod decorator is intended for use with methods, not\nfunctions.\n\n\nInstead, use the @singledispatch decorator.",
+    "example": "from functools import singledispatchmethod\n\n\n@singledispatchmethod\ndef func(arg): ...\n\n\n\nUse instead:\n\n\nfrom functools import singledispatch\n\n\n@singledispatch\ndef func(arg): ...",
+    "fix-safety": "This rule's fix is marked as unsafe, as migrating from @singledispatchmethod to\n@singledispatch may change the behavior of the code.",
+    "example-split": {
+        "example-before": "from functools import singledispatchmethod\n\n\n@singledispatchmethod\ndef func(arg): ...\n\n",
+        "example-after": "\nfrom functools import singledispatch"
+    }
+}

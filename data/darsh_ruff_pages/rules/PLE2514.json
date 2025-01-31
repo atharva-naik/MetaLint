@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for strings that contain the raw control character NUL (0 byte).",
+    "why-is-this-bad": "Control characters are displayed differently by different text editors and\nterminals.\n\n\nBy using the \\0 sequence in lieu of the NUL control character, the\nstring will contain the same value, but will render visibly in all editors.",
+    "example": "x = \"\"\n\n\n\nUse instead:\n\n\nx = \"\\0\"",
+    "example-split": {
+        "example-before": "x = \"\"\n\n",
+        "example-after": "\nx = \"\\0\""
+    }
+}

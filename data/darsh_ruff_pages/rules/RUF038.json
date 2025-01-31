@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for Literal[True, False] type annotations.",
+    "why-is-this-bad": "Literal[True, False] can be replaced with bool in type annotations,\nwhich has the same semantic meaning but is more concise and readable.\n\n\nbool type has exactly two constant instances: True and False. Static\ntype checkers such as mypy treat Literal[True, False] as equivalent to\nbool in a type annotation.",
+    "example": "from typing import Literal\n\nx: Literal[True, False]\ny: Literal[True, False, \"hello\", \"world\"]\n\n\n\nUse instead:\n\n\nfrom typing import Literal\n\nx: bool\ny: Literal[\"hello\", \"world\"] | bool",
+    "fix-safety": "The fix for this rule is marked as unsafe, as it may change the semantics of the code.\nSpecifically:\n\n\n\nType checkers may not treat bool as equivalent when overloading boolean arguments\n    with Literal[True] and Literal[False] (see, e.g., #14764 and #5421).\nbool is not strictly equivalent to Literal[True, False], as bool is\n    a subclass of int, and this rule may not apply if the type annotations are used\n    in a numeric context.\n\n\n\nFurther, the Literal slice may contain trailing-line comments which the fix would remove.",
+    "example-split": {
+        "example-before": "from typing import Literal\n\nx: Literal[True, False]\ny: Literal[True, False, \"hello\", \"world\"]\n\n",
+        "example-after": "\nfrom typing import Literal"
+    }
+}

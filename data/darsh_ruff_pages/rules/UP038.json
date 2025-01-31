@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of isinstance and issubclass that take a tuple\nof types for comparison.",
+    "why-is-this-bad": "Since Python 3.10, isinstance and issubclass can be passed a\n|-separated union of types, which is consistent\nwith the union operator introduced in PEP 604.\n\n\nNote that this results in slower code. Ignore this rule if the\nperformance of an isinstance or issubclass check is a\nconcern, e.g., in a hot loop.",
+    "example": "isinstance(x, (int, float))\n\n\n\nUse instead:\n\n\nisinstance(x, int | float)",
+    "example-split": {
+        "example-before": "isinstance(x, (int, float))\n\n",
+        "example-after": "\nisinstance(x, int | float)"
+    }
+}

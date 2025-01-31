@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Adds any required imports, as specified by the user, to the top of the\nfile.",
+    "why-is-this-bad": "In some projects, certain imports are required to be present in all\nfiles. For example, some projects assume that\nfrom __future__ import annotations is enabled,\nand thus require that import to be\npresent in all files. Omitting a \"required\" import (as specified by\nthe user) can cause errors or unexpected behavior.",
+    "example": "import typing\n\n\n\nUse instead:\n\n\nfrom __future__ import annotations\n\nimport typing",
+    "example-split": {
+        "example-before": "import typing\n\n",
+        "example-after": "\nfrom __future__ import annotations"
+    }
+}

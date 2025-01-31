@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for classes that inherit from object.",
+    "why-is-this-bad": "Since Python 3, all classes inherit from object by default, so object can\nbe omitted from the list of base classes.",
+    "example": "class Foo(object): ...\n\n\n\nUse instead:\n\n\nclass Foo: ...",
+    "example-split": {
+        "example-before": "class Foo(object): ...\n\n",
+        "example-after": "\nclass Foo: ..."
+    }
+}
