@@ -55,6 +55,12 @@ def create_meta_linting_data(idiom_mixes: list[list[str]],
 
 # main
 if __name__ == "__main__":
-    idiom_mixes = [['F502', 'UP007', 'UP006', 'ERA001', 'F811'], ['PD002', 'PD003', 'PTH100', 'PTH102', 'INT001'], ['TC001', 'TC003', 'TC007', 'TC008', 'TC010'], ['TID251', 'TID252', 'TID253', 'RUF013', 'RUF020'], ['RUF018', 'FURB166', 'FURB152', 'PERF101', 'PERF203']]
+    idiom_mixes = [
+        ['F502', 'UP007', 'UP006', 'ERA001', 'F811'], 
+        ['PD002', 'PD003', 'PTH100', 'PTH102', 'INT001'], 
+        ['TC001', 'TC003', 'TC007', 'TC008', 'TC010'], 
+        ['TID251', 'TID252', 'TID253', 'RUF013', 'RUF020'], 
+        ['RUF018', 'FURB166', 'FURB152', 'PERF101', 'PERF203']
+    ]
     neutral_file_to_flagged_file_ratio = 1 # ratio of files with no linter flagged messages to some linter flagged messages.
     create_meta_linting_data(idiom_mixes=idiom_mixes, neutral_file_to_flagged_file_ratio=neutral_file_to_flagged_file_ratio)
