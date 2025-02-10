@@ -171,4 +171,4 @@ data/ruff_check_results_v2
 data/ruff_meta_linting/train.json
 data/ruff_results
 data/STACK-V2
-data/ruff_meta_linting/
+data/ruff_meta_linting/*.json
