@@ -223,23 +223,71 @@ Idiom violations (if any):
 """
 
 EG1 = {
-   'code': 'PTH102',
-   'end_location': {'column': 9, 'row': 11},
-   'fix': None,
-   'location': {'column': 1, 'row': 11},
-   'message': '`os.mkdir()` should be replaced by `Path.mkdir()`'
+    'code': 'D100',
+    'fix': None,
+    'message': 'Missing docstring in public module',
+    'code_spans_and_lines': [{'line': 'import random', 'span': ''}]
 }
-EG2 = {'cell': None,
-   'code': 'W293',
-   'end_location': {'column': 3, 'row': 20},
-   'fix': {'applicability': 'safe',
-    'edits': [{'content': '',
-      'end_location': {'column': 3, 'row': 20},
-      'location': {'column': 1, 'row': 20}}],
-    'message': 'Remove whitespace from blank line'},
-   'location': {'column': 1, 'row': 20},
-   'message': 'Blank line contains whitespace',
+EG2 = {
+    'code': 'ANN204',
+    'fix': {'applicability': 'unsafe',
+    'edits': [{'content': ' -> None',
+    'code_spans_and_lines': [{'line': '    def __init__(self, nodes, meanDegree, meanWeight):',
+        'span': ''}]}],
+    'message': 'Add return type annotation: `None`'},
+    'message': 'Missing return type annotation for special method `__init__`',
+    'code_spans_and_lines': [{'line': '    def __init__(self, nodes, meanDegree, meanWeight):',
+    'span': '__init__'}]
 }
+
+def convert_location_to_code_line(rec: dict, code_lines: list[str]): #stack_data: dict[str, dict]):
+    violations = rec["violations"]
+    blob_id = rec["blob_id"]
+    rec_with_code_lines = {
+        "blob_id": rec["blob_id"],
+        "violations": []
+    }
+    # code_file = stack_data[blob_id]['content']
+    # code_lines = code_file.split("\n")
+    for violation in violations:
+        loc = violation["location"]
+        end_loc = violation["end_location"]
+        rec_with_code_lines["violations"].append(violation)
+
+        code_spans_and_lines = []
+        for i in range(loc["row"]-1, end_loc["row"]):
+            code_spans_and_lines.append({
+                "line": code_lines[i], 
+                "span": code_lines[i][loc["column"]-1:end_loc["column"]-1],
+        })
+        rec_with_code_lines["violations"][-1]["line_span"] = [
+            violation["location"]["row"],
+            violation["end_location"]["row"]
+        ]
+        rec_with_code_lines["violations"][-1]["code_spans_and_lines"] = code_spans_and_lines
+        fix = violation["fix"]
+        if fix is not None:
+            for edit in violation["fix"]["edits"]:
+                code_spans_and_lines = []
+                # print(edit) 
+                loc = edit["location"]
+                end_loc = edit["end_location"]
+                for i in range(loc["row"]-1, end_loc["row"]):
+                    code_spans_and_lines.append({
+                        "line": code_lines[i], 
+                        "span": code_lines[i][loc["column"]-1:end_loc["column"]-1],
+                    })
+                edit["code_spans_and_lines"] = code_spans_and_lines
+                del edit["location"]
+                del edit["end_location"]
+        del violation['filename']
+        del violation['cell']
+        del violation['noqa_row']
+        del violation['url']
+        del violation['location']
+        del violation['end_location']
+
+    return rec_with_code_lines
 
 class MetaLinterDataset:
     """Dataset builder class for Meta-Linting task with support for multiple linter/SAST tools."""
@@ -248,11 +296,12 @@ class MetaLinterDataset:
         self.code_files_path = code_files_path
         self.idiom_spec_path = idiom_spec_path
         self.linter_data_folder = linter_data_folder
+        # self.max_code_lines = max_code_lines
         self.code_files = load_stack_dump(code_files_path, as_dict=True)
         self.code_idiom_specs = getattr(self, f"load_{linter_name}_idiom_specs")(idiom_spec_path)
         self.linter_data = getattr(self, f"load_{linter_name}")(linter_data_folder)
 
-    def generate_data_mix(self, idiom_list: list[str], k: Union[int, None]=None):
+    def generate_data_mix(self, idiom_list: list[str], k: Union[int, None]=None, max_code_lines: int=1000):
         subset_idiom_specs = {}
         for idiom_name in idiom_list:
             subset_idiom_specs[idiom_name] = self.code_idiom_specs[idiom_name]
@@ -261,11 +310,13 @@ class MetaLinterDataset:
         CTR = 0
         if k is None:
             for blob_id,linter_rec in self.linter_data.items():
-                try: prompt, response = self.generate_prompt_and_response(subset_idiom_specs, linter_record=linter_rec)
-                except Exception as e: 
-                    print(e)
-                    continue
-                ID = f"ruff_linter_5I_{CTR}"
+                # try: 
+                # code_lines = linter_rec["code_file"].split("\n")
+                num_code_lines = linter_rec["num_code_lines"]
+                if num_code_lines > max_code_lines: continue # skip files with too many lines of code.
+                prompt, response = self.generate_prompt_and_response(subset_idiom_specs, linter_record=linter_rec)
+                # except Exception as e: print(e); continue
+                ID = f"{'-'.join(idiom_list)}_{blob_id}"
                 source = "rull_linter/"+"-".join(idiom_list)
                 CTR += 1
                 data.append({
@@ -286,7 +337,7 @@ class MetaLinterDataset:
                 except Exception as e: 
                     print(e)
                     continue
-                ID = f"ruff_linter_5I_{CTR}"
+                ID = f"{'-'.join(idiom_list)}_{blob_id}"
                 source = "rull_linter/"+"-".join(idiom_list)
                 CTR += 1
                 data.append({
@@ -326,12 +377,23 @@ class MetaLinterDataset:
         idioms_to_be_covered = list(idiom_specs.keys())
         # print(idiom_specs)
         LIST_OF_IDIOM_SPECS = "\n\n".join([getattr(self, f"idiom_spec_extractor_for_{self.linter_name}")(idiom_spec) for idiom_spec in idiom_specs.values()])
-        linter_record["idioms_detected"] = [json.dumps(idiom_violation) for idiom_violation in linter_record["idioms_detected"] if idiom_violation['code'] in idioms_to_be_covered]
+        
+        # delete line number data (can also delete messages here if needed)
+        for violation in linter_record["idioms_detected"]:
+            assert isinstance(violation, dict)
+            violation.pop("line_span", None) # delete "line_span" if the key exists
+
+        for index_ in range(len(linter_record["idioms_detected"])):
+            if isinstance(linter_record["idioms_detected"][index_], str):
+                linter_record["idioms_detected"][index_] = json.loads(linter_record["idioms_detected"][index_])
+        
+        # linter_record["idioms_detected"] = [json.dumps(idiom_violation) for idiom_violation in linter_record["idioms_detected"] if idiom_violation['code'] in idioms_to_be_covered]
+        selected_idiom_violations = [json.dumps(idiom_violation) for idiom_violation in linter_record["idioms_detected"] if idiom_violation['code'] in idioms_to_be_covered]
         CODE_FILE = linter_record["code_file"]
 
-        if len(linter_record["idioms_detected"]) == 0:
+        if len(selected_idiom_violations) == 0:
             response = "NO VIOLATIONS FOUND"
-        else: response = "\n".join(linter_record["idioms_detected"])
+        else: response = "\n".join(selected_idiom_violations)
         # print(response)
         # print(LIST_OF_IDIOM_SPECS)
         prompt = META_LINTING_PROMPT.format(
@@ -352,7 +414,7 @@ class MetaLinterDataset:
             code_file_id_to_linter_data.update(shard_linter_data)
             # DEBUG:
             CTR += 1 
-            if CTR == 15: break
+            if CTR == 40: break
         
         return code_file_id_to_linter_data
 
@@ -397,6 +459,12 @@ class MetaLinterDataset:
             blob_id = rec['blob_id']
             code_file = self.code_files[blob_id]['content']
             code_lines = code_file.split("\n")
+            # if len(code_lines) > self.max_code_lines: continue
+            try: 
+                rec = convert_location_to_code_line(rec, code_lines=code_lines)
+            except IndexError:
+                # print(blob_id)
+                continue
             # print(len(code_lines))
             idioms_detected = []
             for violation in rec["violations"]:
@@ -425,10 +493,6 @@ class MetaLinterDataset:
                 #     "fix": fix_mapping,
                 #     "fix_message": fix_message,
                 # })
-                del violation['filename']
-                del violation['cell']
-                del violation['noqa_row']
-                del violation['url']
                 idioms_detected.append(violation)
                 # 'fix': {'applicability': 'safe',
                 #     'edits': [{'content': '',
@@ -437,6 +501,7 @@ class MetaLinterDataset:
                 #     'message': 'Remove `start` argument'},
             data[blob_id] = {
                 "code_file": code_file,
+                "num_code_lines": len(code_lines),
                 "idioms_detected": idioms_detected,
             }
 
