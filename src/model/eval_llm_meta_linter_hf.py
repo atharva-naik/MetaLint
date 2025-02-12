@@ -3,7 +3,7 @@ from tqdm import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 if __name__ == "__main__":
-    model_name = "alignment-handbook/model_checkpoints/qwen2.5-7b-1M-instruct-sft/checkpoint-2000"
+    model_name = "alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft/checkpoint-2000"
     #"Qwen/Qwen2.5-7B-Instruct-1M"
 
     model = AutoModelForCausalLM.from_pretrained(
@@ -13,9 +13,9 @@ if __name__ == "__main__":
     )
     tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-    test_data = json.load(open("data/ruff_meta_linting/test.json"))
+    test_data = json.load(open("data/ruff_meta_linting/test_v2.json"))
     model_preds = []
-    write_path = "./data/meta_linting_preds/preds.jsonl"
+    write_path = "./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds.jsonl"
     f = open(write_path, "w")
     for rec in tqdm(test_data):
         messages = [
