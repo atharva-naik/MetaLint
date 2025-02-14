@@ -252,24 +252,27 @@ def convert_location_to_code_line(rec: dict, code_lines: list[str]): #stack_data
     for violation in violations:
         loc = violation["location"]
         end_loc = violation["end_location"]
-        rec_with_code_lines["violations"].append(violation)
-
+        proc_violation = {}
+        # rec_with_code_lines["violations"].append(violation)
         code_spans_and_lines = []
         for i in range(loc["row"]-1, end_loc["row"]):
             code_spans_and_lines.append({
                 "line": code_lines[i], 
                 "span": code_lines[i][loc["column"]-1:end_loc["column"]-1],
-        })
-        rec_with_code_lines["violations"][-1]["line_span"] = [
+            })
+        proc_violation["code"] = violation["code"]
+        # rec_with_code_lines["violations"][-1]
+        proc_violation["code_spans_and_lines"] = code_spans_and_lines
+        # rec_with_code_lines["violations"][-1]
+        proc_violation["line_span"] = [
             violation["location"]["row"],
             violation["end_location"]["row"]
         ]
-        rec_with_code_lines["violations"][-1]["code_spans_and_lines"] = code_spans_and_lines
         fix = violation["fix"]
-        if fix is not None:
-            for edit in violation["fix"]["edits"]:
-                code_spans_and_lines = []
-                # print(edit) 
+        
+        if fix is not None and fix["applicability"] == "safe": # only retain safe fixes.
+            for edit in fix["edits"]:
+                code_spans_and_lines = [] # print(edit) 
                 loc = edit["location"]
                 end_loc = edit["end_location"]
                 for i in range(loc["row"]-1, end_loc["row"]):
@@ -280,12 +283,19 @@ def convert_location_to_code_line(rec: dict, code_lines: list[str]): #stack_data
                 edit["code_spans_and_lines"] = code_spans_and_lines
                 del edit["location"]
                 del edit["end_location"]
-        del violation['filename']
-        del violation['cell']
-        del violation['noqa_row']
-        del violation['url']
-        del violation['location']
-        del violation['end_location']
+            del fix["message"] # getting rid of messages to make the task easier.
+            del fix["applicability"] # delete fix applicabilities.
+        else: fix = None
+        proc_violation["fix"] = fix
+        rec_with_code_lines["violations"].append(proc_violation)
+                
+        # del violation['filename']
+        # del violation['cell']
+        # del violation['noqa_row']
+        # del violation['url']
+        # del violation['location']
+        # del violation['end_location']
+        # del violation["message"] # getting rid of messages to make the task easier.
 
     return rec_with_code_lines
 
