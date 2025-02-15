@@ -11,6 +11,9 @@ module_path = str(pathlib.Path(os.path.abspath(__file__)).parent.parent.parent)
 sys.path.append(module_path)
 
 from src.datautils import read_jsonl
+IDIOMS_SEEN_IN_TRAIN = ["ERA001", "C901", "I001", "I002", "BLE001"] # 1 (SIT)
+IDIOMS_FROM_GROUP_SEEN_IN_TRAIN = ["F406", "F403", "F503", "F602", "F622", "E401", "E702", "E722", "E731", "E742"] # 2 (GSIT)
+IDIOMS_NOT_SEEN_IN_TRAIN = [] # 3 everything else. (NSIT)
 
 FAULTY_RESULT_CTR = 0
 def load_linter_results(text):
@@ -29,6 +32,23 @@ def load_linter_results(text):
                 # exit()
     return results
 
+def compute_subset_wise_metrics(coarse_metric_dict: dict[str, float]):
+    global IDIOMS_SEEN_IN_TRAIN
+    global IDIOMS_NOT_SEEN_IN_TRAIN
+    global IDIOMS_FROM_GROUP_SEEN_IN_TRAIN
+    seen_in_train_metric_dict = {}
+    from_group_seen_in_train_metric_dict = {}
+    not_seen_in_train_metric_dict = {}
+    for k,v in coarse_metric_dict.items():
+        if k in IDIOMS_SEEN_IN_TRAIN:
+            seen_in_train_metric_dict[k] = v
+        if k in IDIOMS_NOT_SEEN_IN_TRAIN:
+            not_seen_in_train_metric_dict[k] = v
+        if k in IDIOMS_FROM_GROUP_SEEN_IN_TRAIN:
+            from_group_seen_in_train_metric_dict[k] = v
+
+    return np.mean(list(seen_in_train_metric_dict.values())), np.mean(list(from_group_seen_in_train_metric_dict.values())), np.mean(list(not_seen_in_train_metric_dict.values()))
+
 def compute_coarse_overlap_per_idiom(data):
     idiom_codes = set()
     ground_truths = []
@@ -43,6 +63,10 @@ def compute_coarse_overlap_per_idiom(data):
             idiom_codes.add(result['code'])
     print(f"json decoding error for {FAULTY_RESULT_CTR} linter result predictions")
 
+    global IDIOMS_SEEN_IN_TRAIN
+    global IDIOMS_NOT_SEEN_IN_TRAIN
+    global IDIOMS_FROM_GROUP_SEEN_IN_TRAIN
+
     per_idiom_preds = {k: [0 for _ in range(len(ground_truths))] for k in idiom_codes}
     per_idiom_gts = {k: [0 for _ in range(len(ground_truths))] for k in idiom_codes}
     for i, (gt, pred) in enumerate(zip(ground_truths, predictions)):
@@ -54,6 +78,8 @@ def compute_coarse_overlap_per_idiom(data):
     idiom_overlaps = {k: 0 for k in idiom_codes}
     
     for idiom_code in per_idiom_gts:
+        if idiom_code not in IDIOMS_FROM_GROUP_SEEN_IN_TRAIN and idiom_code not in IDIOMS_SEEN_IN_TRAIN:
+            IDIOMS_NOT_SEEN_IN_TRAIN.append(idiom_code)
         idiom_overlaps[idiom_code] = sum([
             int(gt==pred) for gt,pred in zip(
                 per_idiom_gts[idiom_code], 
@@ -83,7 +109,7 @@ def compute_coarse_overlap_per_idiom(data):
 
 # main
 if __name__ == "__main__":
-    model_preds = read_jsonl("../../data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds.jsonl")
+    model_preds = read_jsonl("data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_6642.jsonl")
     coarse_idiom_overlaps, coarse_P, coarse_R = compute_coarse_overlap_per_idiom(model_preds)
     coarse_F = {}
     
@@ -99,9 +125,20 @@ if __name__ == "__main__":
     # print(np.mean(list(coarse_idiom_overlaps.values())))
     # print()
     print(coarse_P)
-    print("P:", np.mean(list(coarse_P.values())))
     print(coarse_R)
-    print("R:", np.mean(list(coarse_R.values())))
     print(coarse_F)
-    print("F:", np.mean(list(coarse_F.values())))
+
+    print()
+
+    print(f"P: {np.mean(list(coarse_P.values())):.4f}")
+    SIT_P, GSIT_P, NSIT_P = compute_subset_wise_metrics(coarse_P) 
+    print(f"SIT_P: {SIT_P:.4f} GSIT_P: {GSIT_P:.4f} NSIT_P: {NSIT_P:.4f}")
+
+    print(f"R: {np.mean(list(coarse_R.values())):.4f}")
+    SIT_R, GSIT_R, NSIT_R = compute_subset_wise_metrics(coarse_R) 
+    print(f"SIT_R: {SIT_R:.4f} GSIT_R: {GSIT_R:.4f} NSIT_R: {NSIT_R:.4f}")
+    
+    print(f"F: {np.mean(list(coarse_F.values())):.4f}")
+    SIT_F, GSIT_F, NSIT_F = compute_subset_wise_metrics(coarse_F) 
+    print(f"SIT_F: {SIT_F:.4f} GSIT_F: {GSIT_F:.4f} NSIT_F: {NSIT_F:.4f}")
     # print()
