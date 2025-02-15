@@ -83,7 +83,7 @@ def compute_coarse_overlap_per_idiom(data):
 
 # main
 if __name__ == "__main__":
-    model_preds = read_jsonl("data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds.jsonl")
+    model_preds = read_jsonl("../../data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds.jsonl")
     coarse_idiom_overlaps, coarse_P, coarse_R = compute_coarse_overlap_per_idiom(model_preds)
     coarse_F = {}
     
