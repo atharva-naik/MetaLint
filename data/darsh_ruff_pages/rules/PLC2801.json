@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for explicit use of dunder methods, like __str__ and __add__.",
+    "why-is-this-bad": "Dunder names are not meant to be called explicitly and, in most cases, can\nbe replaced with builtins or operators.",
+    "example": "three = (3.0).__str__()\ntwelve = \"1\".__add__(\"2\")\n\n\ndef is_greater_than_two(x: int) -> bool:\n    return x.__gt__(2)\n\n\n\nUse instead:\n\n\nthree = str(3.0)\ntwelve = \"1\" + \"2\"\n\n\ndef is_greater_than_two(x: int) -> bool:\n    return x > 2",
+    "example-split": {
+        "example-before": "three = (3.0).__str__()\ntwelve = \"1\".__add__(\"2\")\n\n\ndef is_greater_than_two(x: int) -> bool:\n    return x.__gt__(2)\n\n",
+        "example-after": "\nthree = str(3.0)\ntwelve = \"1\" + \"2\""
+    }
+}

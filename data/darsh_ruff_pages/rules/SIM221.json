@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for or expressions that include both an expression and its\nnegation.",
+    "why-is-this-bad": "An or expression that includes both an expression and its negation will\nalways evaluate to True.",
+    "example": "x or not x",
+    "example-split": {
+        "example-before": "x or not x",
+        "example-after": "x or not x"
+    }
+}

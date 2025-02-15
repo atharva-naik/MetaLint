@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for lambda expressions which are assigned to a variable.",
+    "why-is-this-bad": "Per PEP 8, you should \"Always use a def statement instead of an assignment\nstatement that binds a lambda expression directly to an identifier.\"\n\n\nUsing a def statement leads to better tracebacks, and the assignment\nitself negates the primary benefit of using a lambda expression (i.e.,\nthat it can be embedded inside another expression).",
+    "example": "f = lambda x: 2 * x\n\n\n\nUse instead:\n\n\ndef f(x):\n    return 2 * x",
+    "example-split": {
+        "example-before": "f = lambda x: 2 * x\n\n",
+        "example-after": "\ndef f(x):\n    return 2 * x"
+    }
+}

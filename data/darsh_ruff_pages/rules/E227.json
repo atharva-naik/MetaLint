@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for missing whitespace around bitwise and shift operators.",
+    "why-is-this-bad": "According to PEP 8, there should be one space before and after bitwise and\nshift operators (\\<<, >>, &, |, ^).",
+    "example": "x = 128<<1\n\n\n\nUse instead:\n\n\nx = 128 << 1",
+    "example-split": {
+        "example-before": "x = 128<<1\n\n",
+        "example-after": "\nx = 128 << 1"
+    }
+}

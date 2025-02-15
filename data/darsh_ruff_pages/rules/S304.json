@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of weak or broken cryptographic ciphers.",
+    "why-is-this-bad": "Weak or broken cryptographic ciphers may be susceptible to attacks that\nallow an attacker to decrypt ciphertext without knowing the key or\notherwise compromise the security of the cipher, such as forgeries.\n\n\nUse strong, modern cryptographic ciphers instead of weak or broken ones.\n\n\nIn preview, this rule will also flag references to insecure ciphers.",
+    "example": "from cryptography.hazmat.primitives.ciphers import Cipher, algorithms\n\nalgorithm = algorithms.ARC4(key)\ncipher = Cipher(algorithm, mode=None)\nencryptor = cipher.encryptor()\n\n\n\nUse instead:\n\n\nfrom cryptography.fernet import Fernet\n\nfernet = Fernet(key)",
+    "example-split": {
+        "example-before": "from cryptography.hazmat.primitives.ciphers import Cipher, algorithms\n\nalgorithm = algorithms.ARC4(key)\ncipher = Cipher(algorithm, mode=None)\nencryptor = cipher.encryptor()\n\n",
+        "example-after": "\nfrom cryptography.fernet import Fernet"
+    }
+}

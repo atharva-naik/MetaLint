@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for module-level imports that should instead be imported lazily\n(e.g., within a function definition, or an if TYPE_CHECKING: block, or\nsome other nested context).",
+    "why-is-this-bad": "Some modules are expensive to import. For example, importing torch or\ntensorflow can introduce a noticeable delay in the startup time of a\nPython program.\n\n\nIn such cases, you may want to enforce that the module is imported lazily\nas needed, rather than at the top of the file. This could involve inlining\nthe import into the function that uses it, rather than importing it\nunconditionally, to ensure that the module is only imported when necessary.",
+    "example": "import tensorflow as tf\n\n\ndef show_version():\n    print(tf.__version__)\n\n\n\nUse instead:\n\n\ndef show_version():\n    import tensorflow as tf\n\n    print(tf.__version__)",
+    "example-split": {
+        "example-before": "import tensorflow as tf\n\n\ndef show_version():\n    print(tf.__version__)\n\n",
+        "example-after": "\ndef show_version():\n    import tensorflow as tf"
+    }
+}

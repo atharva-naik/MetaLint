@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for trailing whitespace after a decorator's opening @.",
+    "why-is-this-bad": "Including whitespace after the @ symbol is not compliant with\nPEP 8.",
+    "example": "@ decorator\ndef func():\n   pass\n\n\n\nUse instead:\n\n\n@decorator\ndef func():\n  pass",
+    "example-split": {
+        "example-before": "@ decorator\ndef func():\n   pass\n\n",
+        "example-after": "\n@decorator\ndef func():\n  pass"
+    }
+}

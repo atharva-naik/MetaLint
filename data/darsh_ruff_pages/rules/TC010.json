@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the presence of string literals in X | Y-style union types.",
+    "why-is-this-bad": "PEP 604 introduced a new syntax for union type annotations based on the\n| operator.\n\n\nWhile Python's type annotations can typically be wrapped in strings to\navoid runtime evaluation, the use of a string member within an X | Y-style\nunion type will cause a runtime error.\n\n\nInstead, remove the quotes, wrap the entire union in quotes, or use\nfrom __future__ import annotations to disable runtime evaluation of\nannotations entirely.",
+    "example": "var: str | \"int\"\n\n\n\nUse instead:\n\n\nvar: str | int\n\n\n\nOr, extend the quotes to include the entire union:\n\n\nvar: \"str | int\"",
+    "example-split": {
+        "example-before": "var: str | \"int\"\n\n",
+        "example-after": "\nvar: str | int"
+    }
+}

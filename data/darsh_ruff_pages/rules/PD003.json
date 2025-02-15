@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of .isnull on Pandas objects.",
+    "why-is-this-bad": "In the Pandas API, .isna and .isnull are equivalent. For consistency,\nprefer .isna over .isnull.\n\n\nAs a name, .isna more accurately reflects the behavior of the method,\nsince these methods check for NaN and NaT values in addition to None\nvalues.",
+    "example": "import pandas as pd\n\nanimals_df = pd.read_csv(\"animals.csv\")\npd.isnull(animals_df)\n\n\n\nUse instead:\n\n\nimport pandas as pd\n\nanimals_df = pd.read_csv(\"animals.csv\")\npd.isna(animals_df)",
+    "example-split": {
+        "example-before": "import pandas as pd\n\nanimals_df = pd.read_csv(\"animals.csv\")\npd.isnull(animals_df)\n\n",
+        "example-after": "\nimport pandas as pd"
+    }
+}

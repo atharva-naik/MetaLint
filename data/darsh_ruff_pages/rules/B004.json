@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of hasattr to test if an object is callable (e.g.,\nhasattr(obj, \"__call__\")).",
+    "why-is-this-bad": "Using hasattr is an unreliable mechanism for testing if an object is\ncallable. If obj implements a custom __getattr__, or if its __call__\nis itself not callable, you may get misleading results.\n\n\nInstead, use callable(obj) to test if obj is callable.",
+    "example": "hasattr(obj, \"__call__\")\n\n\n\nUse instead:\n\n\ncallable(obj)",
+    "example-split": {
+        "example-before": "hasattr(obj, \"__call__\")\n\n",
+        "example-after": "\ncallable(obj)"
+    }
+}

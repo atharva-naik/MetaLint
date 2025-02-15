@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for boolean expressions that contain multiple equality comparisons\nto the same value.",
+    "why-is-this-bad": "To check if an object is equal to any one of multiple values, it's more\nconcise to use the in operator with a tuple of values.",
+    "example": "if foo == x or foo == y:\n    ...\n\n\n\nUse instead:\n\n\nif foo in (x, y):\n    ...",
+    "example-split": {
+        "example-before": "if foo == x or foo == y:\n    ...\n\n",
+        "example-after": "\nif foo in (x, y):\n    ..."
+    }
+}

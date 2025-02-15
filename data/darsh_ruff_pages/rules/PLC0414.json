@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for import aliases that do not rename the original package.",
+    "why-is-this-bad": "The import alias is redundant and should be removed to avoid confusion.",
+    "example": "import numpy as numpy\n\n\n\nUse instead:\n\n\nimport numpy as np\n\n\n\nor\n\n\nimport numpy",
+    "example-split": {
+        "example-before": "import numpy as numpy\n\n",
+        "example-after": "\nimport numpy as np"
+    }
+}

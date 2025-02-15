@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of .values on Pandas Series and Index objects.",
+    "why-is-this-bad": "The .values attribute is ambiguous as its return type is unclear. As\nsuch, it is no longer recommended by the Pandas documentation.\n\n\nInstead, use .to_numpy() to return a NumPy array, or .array to return a\nPandas ExtensionArray.",
+    "example": "import pandas as pd\n\nanimals = pd.read_csv(\"animals.csv\").values  # Ambiguous.\n\n\n\nUse instead:\n\n\nimport pandas as pd\n\nanimals = pd.read_csv(\"animals.csv\").to_numpy()  # Explicit.",
+    "example-split": {
+        "example-before": "import pandas as pd\n\nanimals = pd.read_csv(\"animals.csv\").values  # Ambiguous.\n\n",
+        "example-after": "\nimport pandas as pd"
+    }
+}

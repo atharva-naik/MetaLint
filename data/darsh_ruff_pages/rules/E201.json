@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the use of extraneous whitespace after \"(\", \"[\" or \"{\".",
+    "why-is-this-bad": "PEP 8 recommends the omission of whitespace in the following cases:\n\n\n\n\"Immediately inside parentheses, brackets or braces.\"\n\"Immediately before a comma, semicolon, or colon.\"",
+    "example": "spam( ham[1], {eggs: 2})\nspam(ham[ 1], {eggs: 2})\nspam(ham[1], { eggs: 2})\n\n\n\nUse instead:\n\n\nspam(ham[1], {eggs: 2})",
+    "example-split": {
+        "example-before": "spam( ham[1], {eggs: 2})\nspam(ham[ 1], {eggs: 2})\nspam(ham[1], { eggs: 2})\n\n",
+        "example-after": "\nspam(ham[1], {eggs: 2})"
+    }
+}

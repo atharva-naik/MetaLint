@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the use of wildcard imports.",
+    "why-is-this-bad": "Wildcard imports (e.g., from module import *) make it hard to determine\nwhich symbols are available in the current namespace, and from which module\nthey were imported. They're also discouraged by PEP 8.",
+    "example": "from math import *\n\n\ndef area(radius):\n    return pi * radius**2\n\n\n\nUse instead:\n\n\nfrom math import pi\n\n\ndef area(radius):\n    return pi * radius**2",
+    "example-split": {
+        "example-before": "from math import *\n\n\ndef area(radius):\n    return pi * radius**2\n\n",
+        "example-after": "\nfrom math import pi"
+    }
+}

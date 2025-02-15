@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for if statements that use non-empty tuples as test conditions.",
+    "why-is-this-bad": "Non-empty tuples are always True, so an if statement with a non-empty\ntuple as its test condition will always pass. This is likely a mistake.",
+    "example": "if (False,):\n    print(\"This will always run\")\n\n\n\nUse instead:\n\n\nif False:\n    print(\"This will never run\")",
+    "example-split": {
+        "example-before": "if (False,):\n    print(\"This will always run\")\n\n",
+        "example-after": "\nif False:\n    print(\"This will never run\")"
+    }
+}

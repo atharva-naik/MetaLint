@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for multi-line docstrings whose closing quotes are not on their\nown line.",
+    "why-is-this-bad": "PEP 257 recommends that the closing quotes of a multi-line docstring be\non their own line, for consistency and compatibility with documentation\ntools that may need to parse the docstring.",
+    "example": "def sort_list(l: List[int]) -> List[int]:\n    \"\"\"Return a sorted copy of the list.\n\n    Sort the list in ascending order and return a copy of the result using the\n    bubble sort algorithm.\"\"\"\n\n\n\nUse instead:\n\n\ndef sort_list(l: List[int]) -> List[int]:\n    \"\"\"Return a sorted copy of the list.\n\n    Sort the list in ascending order and return a copy of the result using the bubble\n    sort algorithm.\n    \"\"\"",
+    "example-split": {
+        "example-before": "def sort_list(l: List[int]) -> List[int]:\n    \"\"\"Return a sorted copy of the list.\n\n    Sort the list in ascending order and return a copy of the result using the\n    bubble sort algorithm.\"\"\"\n\n",
+        "example-after": "\ndef sort_list(l: List[int]) -> List[int]:\n    \"\"\"Return a sorted copy of the list."
+    }
+}

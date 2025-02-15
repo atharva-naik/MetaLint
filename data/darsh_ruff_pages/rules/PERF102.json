@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for uses of dict.items() that discard either the key or the value\nwhen iterating over the dictionary.",
+    "why-is-this-bad": "If you only need the keys or values of a dictionary, you should use\ndict.keys() or dict.values() respectively, instead of dict.items().\nThese specialized methods are more efficient than dict.items(), as they\navoid allocating tuples for every item in the dictionary. They also\ncommunicate the intent of the code more clearly.\n\n\nNote that, as with all perflint rules, this is only intended as a\nmicro-optimization, and will have a negligible impact on performance in\nmost cases.",
+    "example": "obj = {\"a\": 1, \"b\": 2}\nfor key, value in obj.items():\n    print(value)\n\n\n\nUse instead:\n\n\nobj = {\"a\": 1, \"b\": 2}\nfor value in obj.values():\n    print(value)",
+    "fix-safety": "The fix does not perform any type analysis and, as such, may suggest an\nincorrect fix if the object in question does not duck-type as a mapping\n(e.g., if it is missing a .keys() or .values() method, or if those\nmethods behave differently than they do on standard mapping types).",
+    "example-split": {
+        "example-before": "obj = {\"a\": 1, \"b\": 2}\nfor key, value in obj.items():\n    print(value)\n\n",
+        "example-after": "\nobj = {\"a\": 1, \"b\": 2}\nfor value in obj.values():\n    print(value)"
+    }
+}

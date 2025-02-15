@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the presence of unnecessary quotes in type annotations.",
+    "why-is-this-bad": "In Python, type annotations can be quoted to avoid forward references.\n\n\nHowever, if from __future__ import annotations is present, Python\nwill always evaluate type annotations in a deferred manner, making\nthe quotes unnecessary.\n\n\nSimilarly, if the annotation is located in a typing-only context and\nwon't be evaluated by Python at runtime, the quotes will also be\nconsidered unnecessary. For example, Python does not evaluate type\nannotations on assignments in function bodies.",
+    "example": "Given:\n\n\nfrom __future__ import annotations\n\n\ndef foo(bar: \"Bar\") -> \"Bar\": ...\n\n\n\nUse instead:\n\n\nfrom __future__ import annotations\n\n\ndef foo(bar: Bar) -> Bar: ...\n\n\n\nGiven:\n\n\ndef foo() -> None:\n    bar: \"Bar\"\n\n\n\nUse instead:\n\n\ndef foo() -> None:\n    bar: Bar",
+    "example-split": {
+        "example-before": "Given:\n\n\nfrom __future__ import annotations\n\n\ndef foo(bar: \"Bar\") -> \"Bar\": ...\n\n",
+        "example-after": "\ndef foo() -> None:\n    bar: Bar"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for comparisons to empty strings.",
+    "why-is-this-bad": "An empty string is falsy, so it is unnecessary to compare it to \"\". If\nthe value can be something else Python considers falsy, such as None,\n0, or another empty container, then the code is not equivalent.",
+    "example": "x: str = ...\n\nif x == \"\":\n    print(\"x is empty\")\n\n\n\nUse instead:\n\n\nx: str = ...\n\nif not x:\n    print(\"x is empty\")",
+    "example-split": {
+        "example-before": "x: str = ...\n\nif x == \"\":\n    print(\"x is empty\")\n\n",
+        "example-after": "\nx: str = ..."
+    }
+}

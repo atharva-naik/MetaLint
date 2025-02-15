@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for pytest fixtures that return a value, but are named with a\nleading underscore.",
+    "why-is-this-bad": "By convention, fixtures that don't return a value should be named with a\nleading underscore, while fixtures that do return a value should not.\n\n\nThis rule ignores abstract fixtures.",
+    "example": "import pytest\n\n\n@pytest.fixture()\ndef _some_object():\n    return SomeClass()\n\n\n@pytest.fixture()\ndef _some_object_with_cleanup():\n    obj = SomeClass()\n    yield obj\n    obj.cleanup()\n\n\n\nUse instead:\n\n\nimport pytest\n\n\n@pytest.fixture()\ndef some_object():\n    return SomeClass()\n\n\n@pytest.fixture()\ndef some_object_with_cleanup():\n    obj = SomeClass()\n    yield obj\n    obj.cleanup()",
+    "example-split": {
+        "example-before": "import pytest\n\n\n@pytest.fixture()\ndef _some_object():\n    return SomeClass()\n\n\n@pytest.fixture()\ndef _some_object_with_cleanup():\n    obj = SomeClass()\n    yield obj\n    obj.cleanup()\n\n",
+        "example-after": "\nimport pytest"
+    }
+}

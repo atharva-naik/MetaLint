@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of tarfile.extractall.",
+    "why-is-this-bad": "Extracting archives from untrusted sources without prior inspection is\na security risk, as maliciously crafted archives may contain files that\nwill be written outside of the target directory. For example, the archive\ncould include files with absolute paths (e.g., /etc/passwd), or relative\npaths with parent directory references (e.g., ../etc/passwd).\n\n\nOn Python 3.12 and later, use filter='data' to prevent the most dangerous\nsecurity issues (see: PEP 706). On earlier versions, set the members\nargument to a trusted subset of the archive's members.",
+    "example": "import tarfile\nimport tempfile\n\ntar = tarfile.open(filename)\ntar.extractall(path=tempfile.mkdtemp())\ntar.close()",
+    "example-split": {
+        "example-before": "import tarfile\nimport tempfile\n\ntar = tarfile.open(filename)\ntar.extractall(path=tempfile.mkdtemp())\ntar.close()",
+        "example-after": "import tarfile\nimport tempfile"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of Django's RawSQL function.",
+    "why-is-this-bad": "Django's RawSQL function can be used to execute arbitrary SQL queries,\nwhich can in turn lead to SQL injection vulnerabilities.",
+    "example": "from django.db.models.expressions import RawSQL\nfrom django.contrib.auth.models import User\n\nUser.objects.annotate(val=(\"%secure\" % \"nos\", []))",
+    "example-split": {
+        "example-before": "from django.db.models.expressions import RawSQL\nfrom django.contrib.auth.models import User\n\nUser.objects.annotate(val=(\"%secure\" % \"nos\", []))",
+        "example-after": "from django.db.models.expressions import RawSQL\nfrom django.contrib.auth.models import User"
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for uses of subprocess.run without an explicit check argument.",
+    "why-is-this-bad": "By default, subprocess.run does not check the return code of the process\nit runs. This can lead to silent failures.\n\n\nInstead, consider using check=True to raise an exception if the process\nfails, or set check=False explicitly to mark the behavior as intentional.",
+    "example": "import subprocess\n\nsubprocess.run([\"ls\", \"nonexistent\"])  # No exception raised.\n\n\n\nUse instead:\n\n\nimport subprocess\n\nsubprocess.run([\"ls\", \"nonexistent\"], check=True)  # Raises exception.\n\n\n\nOr:\n\n\nimport subprocess\n\nsubprocess.run([\"ls\", \"nonexistent\"], check=False)  # Explicitly no check.",
+    "fix-safety": "This rule's fix is marked as unsafe for function calls that contain\n**kwargs, as adding a check keyword argument to such a call may lead\nto a duplicate keyword argument error.",
+    "example-split": {
+        "example-before": "import subprocess\n\nsubprocess.run([\"ls\", \"nonexistent\"])  # No exception raised.\n\n",
+        "example-after": "\nimport subprocess"
+    }
+}

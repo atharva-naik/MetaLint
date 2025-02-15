@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for imports of the pyghmi module.",
+    "why-is-this-bad": "pyghmi is an IPMI-related module, but IPMI is considered insecure.\nInstead, use an encrypted protocol.",
+    "example": "import pyghmi",
+    "example-split": {
+        "example-before": "import pyghmi",
+        "example-after": "import pyghmi"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of deprecated methods from the unittest module.",
+    "why-is-this-bad": "The unittest module has deprecated aliases for some of its methods.\nThe deprecated aliases were removed in Python 3.12. Instead of aliases,\nuse their non-deprecated counterparts.",
+    "example": "from unittest import TestCase\n\n\nclass SomeTest(TestCase):\n    def test_something(self):\n        self.assertEquals(1, 1)\n\n\n\nUse instead:\n\n\nfrom unittest import TestCase\n\n\nclass SomeTest(TestCase):\n    def test_something(self):\n        self.assertEqual(1, 1)",
+    "example-split": {
+        "example-before": "from unittest import TestCase\n\n\nclass SomeTest(TestCase):\n    def test_something(self):\n        self.assertEquals(1, 1)\n\n",
+        "example-after": "\nfrom unittest import TestCase"
+    }
+}

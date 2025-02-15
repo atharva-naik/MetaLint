@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of pd.merge on Pandas objects.",
+    "why-is-this-bad": "In Pandas, the .merge method (exposed on, e.g., DataFrame objects) and\nthe pd.merge function (exposed on the Pandas module) are equivalent.\n\n\nFor consistency, prefer calling .merge on an object over calling\npd.merge on the Pandas module, as the former is more idiomatic.\n\n\nFurther, pd.merge is not a method, but a function, which prohibits it\nfrom being used in method chains, a common pattern in Pandas code.",
+    "example": "import pandas as pd\n\ncats_df = pd.read_csv(\"cats.csv\")\ndogs_df = pd.read_csv(\"dogs.csv\")\nrabbits_df = pd.read_csv(\"rabbits.csv\")\npets_df = pd.merge(pd.merge(cats_df, dogs_df), rabbits_df)  # Hard to read.\n\n\n\nUse instead:\n\n\nimport pandas as pd\n\ncats_df = pd.read_csv(\"cats.csv\")\ndogs_df = pd.read_csv(\"dogs.csv\")\nrabbits_df = pd.read_csv(\"rabbits.csv\")\npets_df = cats_df.merge(dogs_df).merge(rabbits_df)",
+    "example-split": {
+        "example-before": "import pandas as pd\n\ncats_df = pd.read_csv(\"cats.csv\")\ndogs_df = pd.read_csv(\"dogs.csv\")\nrabbits_df = pd.read_csv(\"rabbits.csv\")\npets_df = pd.merge(pd.merge(cats_df, dogs_df), rabbits_df)  # Hard to read.\n\n",
+        "example-after": "\nimport pandas as pd"
+    }
+}

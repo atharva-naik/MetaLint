@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for multiple isinstance calls on the same target.",
+    "why-is-this-bad": "To check if an object is an instance of any one of multiple types\nor classes, it is unnecessary to use multiple isinstance calls, as\nthe second argument of the isinstance built-in function accepts a\ntuple of types and classes.\n\n\nUsing a single isinstance call implements the same behavior with more\nconcise code and clearer intent.",
+    "example": "if isinstance(obj, int) or isinstance(obj, float):\n    pass\n\n\n\nUse instead:\n\n\nif isinstance(obj, (int, float)):\n    pass",
+    "example-split": {
+        "example-before": "if isinstance(obj, int) or isinstance(obj, float):\n    pass\n\n",
+        "example-after": "\nif isinstance(obj, (int, float)):\n    pass"
+    }
+}

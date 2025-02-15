@@ -1,0 +1,4 @@
+{
+    "what-it-does": "Checks for mutable default values in class attributes.",
+    "why-is-this-bad": "Mutable default values share state across all instances of the class,\nwhile not being obvious. This can lead to bugs when the attributes are\nchanged in one instance, as those changes will unexpectedly affect all\nother instances.\n\n\nWhen mutable values are intended, they should be annotated with\ntyping.ClassVar. When mutability is not required, values should be\nimmutable types, like tuple or frozenset."
+}
