@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of the xml.etree.cElementTree module.",
+    "why-is-this-bad": "In Python 3.3, xml.etree.cElementTree was deprecated in favor of\nxml.etree.ElementTree.",
+    "example": "from xml.etree import cElementTree\n\n\n\nUse instead:\n\n\nfrom xml.etree import ElementTree",
+    "example-split": {
+        "example-before": "from xml.etree import cElementTree\n\n",
+        "example-after": "\nfrom xml.etree import ElementTree"
+    }
+}

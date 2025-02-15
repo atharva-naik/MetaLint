@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Removes ellipses (...) in otherwise non-empty class bodies.",
+    "why-is-this-bad": "An ellipsis in a class body is only necessary if the class body is\notherwise empty. If the class body is non-empty, then the ellipsis\nis redundant.",
+    "example": "class Foo:\n    ...\n    value: int\n\n\n\nUse instead:\n\n\nclass Foo:\n    value: int",
+    "example-split": {
+        "example-before": "class Foo:\n    ...\n    value: int\n\n",
+        "example-after": "\nclass Foo:\n    value: int"
+    }
+}

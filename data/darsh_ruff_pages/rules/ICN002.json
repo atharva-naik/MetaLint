@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for imports that use non-standard naming conventions, like\nimport tensorflow.keras.backend as K.",
+    "why-is-this-bad": "Consistency is good. Avoid using a non-standard naming convention for\nimports, and, in particular, choosing import aliases that violate PEP 8.\n\n\nFor example, aliasing via import tensorflow.keras.backend as K violates\nthe guidance of PEP 8, and is thus avoided in some projects.",
+    "example": "import tensorflow.keras.backend as K\n\n\n\nUse instead:\n\n\nimport tensorflow as tf\n\ntf.keras.backend",
+    "example-split": {
+        "example-before": "import tensorflow.keras.backend as K\n\n",
+        "example-after": "\nimport tensorflow as tf"
+    }
+}

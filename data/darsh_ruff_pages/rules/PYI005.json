@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for Python version comparisons that compare against a tuple of the\nwrong length.",
+    "why-is-this-bad": "Stub files support simple conditionals to test for differences in Python\nversions and platforms. When comparing against sys.version_info, avoid\ncomparing against tuples of the wrong length, which can lead to unexpected\nbehavior.",
+    "example": "import sys\n\nif sys.version_info[:2] == (3,): ...\n\n\n\nUse instead:\n\n\nimport sys\n\nif sys.version_info[0] == 3: ...",
+    "example-split": {
+        "example-before": "import sys\n\nif sys.version_info[:2] == (3,): ...\n\n",
+        "example-after": "\nimport sys"
+    }
+}

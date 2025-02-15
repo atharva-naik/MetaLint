@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for docstrings that use single quotes or double quotes, depending\non the value of the lint.flake8-quotes.docstring-quotes setting.",
+    "why-is-this-bad": "Consistency is good. Use either single or double quotes for docstring\nstrings, but be consistent.",
+    "example": "'''\nbar\n'''\n\n\n\nAssuming docstring-quotes is set to double, use instead:\n\n\n\"\"\"\nbar\n\"\"\"",
+    "example-split": {
+        "example-before": "'''\nbar\n'''\n\n\n\nAssuming docstring-quotes is set to double, use instead:\n\n\n\"\"\"\nbar\n\"\"\"",
+        "example-after": "'''\nbar\n'''"
+    }
+}

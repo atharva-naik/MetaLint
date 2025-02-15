@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for negated != operators.",
+    "why-is-this-bad": "Negated != operators are less readable than == operators, as they avoid a\ndouble negation.",
+    "example": "not a != b\n\n\n\nUse instead:\n\n\na == b",
+    "fix-safety": "The fix is marked as unsafe, as it might change the behaviour\nif a and/or b overrides __ne__/__eq__\nin such a manner that they don't return booleans.",
+    "example-split": {
+        "example-before": "not a != b\n\n",
+        "example-after": "\na == b"
+    }
+}

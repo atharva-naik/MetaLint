@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks that type TypeVars, ParamSpecs, and TypeVarTuples in stubs\nhave names prefixed with _.",
+    "why-is-this-bad": "Prefixing type parameters with _ avoids accidentally exposing names\ninternal to the stub.",
+    "example": "from typing import TypeVar\n\nT = TypeVar(\"T\")\n\n\n\nUse instead:\n\n\nfrom typing import TypeVar\n\n_T = TypeVar(\"_T\")",
+    "example-split": {
+        "example-before": "from typing import TypeVar\n\nT = TypeVar(\"T\")\n\n",
+        "example-after": "\nfrom typing import TypeVar"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks that function arguments are annotated with a more specific type than\nAny.",
+    "why-is-this-bad": "Any is a special type indicating an unconstrained type. When an\nexpression is annotated with type Any, type checkers will allow all\noperations on it.\n\n\nIt's better to be explicit about the type of an expression, and to use\nAny as an \"escape hatch\" only when it is really needed.",
+    "example": "def foo(x: Any): ...\n\n\n\nUse instead:\n\n\ndef foo(x: int): ...",
+    "example-split": {
+        "example-before": "def foo(x: Any): ...\n\n",
+        "example-after": "\ndef foo(x: int): ..."
+    }
+}

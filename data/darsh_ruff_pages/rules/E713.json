@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for membership tests using not {element} in {collection}.",
+    "why-is-this-bad": "Testing membership with {element} not in {collection} is more readable.",
+    "example": "Z = not X in Y\nif not X.B in Y:\n    pass\n\n\n\nUse instead:\n\n\nZ = X not in Y\nif X.B not in Y:\n    pass",
+    "example-split": {
+        "example-before": "Z = not X in Y\nif not X.B in Y:\n    pass\n\n",
+        "example-after": "\nZ = X not in Y\nif X.B not in Y:\n    pass"
+    }
+}

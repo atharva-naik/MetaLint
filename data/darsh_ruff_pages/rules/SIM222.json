@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for or expressions that contain truthy values.",
+    "why-is-this-bad": "If the expression is used as a condition, it can be replaced in-full with\nTrue.\n\n\nIn other cases, the expression can be short-circuited to the first truthy\nvalue.\n\n\nBy using True (or the first truthy value), the code is more concise\nand easier to understand, since it no longer contains redundant conditions.",
+    "example": "if x or [1] or y:\n    pass\n\na = x or [1] or y\n\n\n\nUse instead:\n\n\nif True:\n    pass\n\na = x or [1]",
+    "example-split": {
+        "example-before": "if x or [1] or y:\n    pass\n\na = x or [1] or y\n\n",
+        "example-after": "\nif True:\n    pass"
+    }
+}

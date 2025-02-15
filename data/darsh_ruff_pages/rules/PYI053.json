@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the use of string and bytes literals longer than 50 characters\nin stub (.pyi) files.",
+    "why-is-this-bad": "If a function or variable has a default value where the string or bytes\nrepresentation is greater than 50 characters long, it is likely to be an\nimplementation detail or a constant that varies depending on the system\nyou're running on.\n\n\nAlthough IDEs may find them useful, default values are ignored by type\ncheckers, the primary consumers of stub files. Replace very long constants\nwith ellipses (...) to simplify the stub.",
+    "example": "def foo(arg: str = \"51 character stringgggggggggggggggggggggggggggggggg\") -> None: ...\n\n\n\nUse instead:\n\n\ndef foo(arg: str = ...) -> None: ...",
+    "example-split": {
+        "example-before": "def foo(arg: str = \"51 character stringgggggggggggggggggggggggggggggggg\") -> None: ...\n\n",
+        "example-after": "\ndef foo(arg: str = ...) -> None: ..."
+    }
+}

@@ -1,0 +1,4 @@
+{
+    "what-it-does": "Checks for the use of legacy np.random function calls.",
+    "why-is-this-bad": "According to the NumPy documentation's Legacy Random Generation:\n\n\n\nThe RandomState provides access to legacy generators... This class\nshould only be used if it is essential to have randoms that are\nidentical to what would have been produced by previous versions of\nNumPy.\n\n\n\nThe members exposed directly on the random module are convenience\nfunctions that alias to methods on a global singleton RandomState\ninstance. NumPy recommends using a dedicated Generator instance\nrather than the random variate generation methods exposed directly on\nthe random module, as the new Generator is both faster and has\nbetter statistical properties.\n\n\nSee the documentation on Random Sampling and NEP 19 for further\ndetails."
+}

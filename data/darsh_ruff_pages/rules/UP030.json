@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for unnecessary positional indices in format strings.",
+    "why-is-this-bad": "In Python 3.1 and later, format strings can use implicit positional\nreferences. For example, \"{0}, {1}\".format(\"Hello\", \"World\") can be\nrewritten as \"{}, {}\".format(\"Hello\", \"World\").\n\n\nIf the positional indices appear exactly in-order, they can be omitted\nin favor of automatic indices to improve readability.",
+    "example": "\"{0}, {1}\".format(\"Hello\", \"World\")  # \"Hello, World\"\n\n\n\nUse instead:\n\n\n\"{}, {}\".format(\"Hello\", \"World\")  # \"Hello, World\"",
+    "example-split": {
+        "example-before": "\"{0}, {1}\".format(\"Hello\", \"World\")  # \"Hello, World\"\n\n",
+        "example-after": "\n\"{}, {}\".format(\"Hello\", \"World\")  # \"Hello, World\""
+    }
+}

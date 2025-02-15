@@ -1,0 +1,4 @@
+{
+    "what-it-does": "Checks for multiple usage of the generator returned from\nitertools.groupby().",
+    "why-is-this-bad": "Using the generator more than once will do nothing on the second usage.\nIf that data is needed later, it should be stored as a list."
+}

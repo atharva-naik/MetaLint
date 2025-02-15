@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the use of non-lowercase variable names in functions.",
+    "why-is-this-bad": "PEP 8 recommends that all function variables use lowercase names:\n\n\n\nFunction names should be lowercase, with words separated by underscores as necessary to\nimprove readability. Variable names follow the same convention as function names. mixedCase\nis allowed only in contexts where that's already the prevailing style (e.g. threading.py),\nto retain backwards compatibility.",
+    "example": "def my_function(a):\n    B = a + 3\n    return B\n\n\n\nUse instead:\n\n\ndef my_function(a):\n    b = a + 3\n    return b",
+    "example-split": {
+        "example-before": "def my_function(a):\n    B = a + 3\n    return B\n\n",
+        "example-after": "\ndef my_function(a):\n    b = a + 3\n    return b"
+    }
+}

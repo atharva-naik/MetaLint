@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for docstring summary lines that are not separated from the docstring\ndescription by one blank line.",
+    "why-is-this-bad": "PEP 257 recommends that multi-line docstrings consist of \"a summary line\njust like a one-line docstring, followed by a blank line, followed by a\nmore elaborate description.\"",
+    "example": "def sort_list(l: list[int]) -> list[int]:\n    \"\"\"Return a sorted copy of the list.\n    Sort the list in ascending order and return a copy of the\n    result using the bubble sort algorithm.\n    \"\"\"\n\n\n\nUse instead:\n\n\ndef sort_list(l: list[int]) -> list[int]:\n    \"\"\"Return a sorted copy of the list.\n\n    Sort the list in ascending order and return a copy of the\n    result using the bubble sort algorithm.\n    \"\"\"",
+    "example-split": {
+        "example-before": "def sort_list(l: list[int]) -> list[int]:\n    \"\"\"Return a sorted copy of the list.\n    Sort the list in ascending order and return a copy of the\n    result using the bubble sort algorithm.\n    \"\"\"\n\n",
+        "example-after": "\ndef sort_list(l: list[int]) -> list[int]:\n    \"\"\"Return a sorted copy of the list."
+    }
+}

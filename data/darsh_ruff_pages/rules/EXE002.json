@@ -1,0 +1,4 @@
+{
+    "what-it-does": "Checks for executable .py files that do not have a shebang.",
+    "why-is-this-bad": "In Python, a shebang (also known as a hashbang) is the first line of a\nscript, which specifies the interpreter that should be used to run the\nscript.\n\n\nIf a .py file is executable, but does not have a shebang, it may be run\nwith the wrong interpreter, or fail to run at all.\n\n\nIf the file is meant to be executable, add a shebang, as in:\n\n\n#!/usr/bin/env python\n\n\n\nOtherwise, remove the executable bit from the file\n(e.g., chmod -x __main__.py or git update-index --chmod=-x __main__.py).\n\n\nA file is considered executable if it has the executable bit set (i.e., its\npermissions mode intersects with 0o111). As such, this rule is only\navailable on Unix-like systems, and is not enforced on Windows or WSL."
+}

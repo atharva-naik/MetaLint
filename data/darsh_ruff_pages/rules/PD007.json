@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of .ix on Pandas objects.",
+    "why-is-this-bad": "The .ix method is deprecated as its behavior is ambiguous. Specifically,\nit's often unclear whether .ix is indexing by label or by ordinal position.\n\n\nInstead, prefer the .loc method for label-based indexing, and .iloc for\nordinal indexing.",
+    "example": "import pandas as pd\n\nstudents_df = pd.read_csv(\"students.csv\")\nstudents_df.ix[0]  # 0th row or row with label 0?\n\n\n\nUse instead:\n\n\nimport pandas as pd\n\nstudents_df = pd.read_csv(\"students.csv\")\nstudents_df.iloc[0]  # 0th row.",
+    "example-split": {
+        "example-before": "import pandas as pd\n\nstudents_df = pd.read_csv(\"students.csv\")\nstudents_df.ix[0]  # 0th row or row with label 0?\n\n",
+        "example-after": "\nimport pandas as pd"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for TypeVar and ParamSpec definitions in which the type is\nboth covariant and contravariant.",
+    "why-is-this-bad": "By default, Python's generic types are invariant, but can be marked as\neither covariant or contravariant via the covariant and contravariant\nkeyword arguments. While the API does allow you to mark a type as both\ncovariant and contravariant, this is not supported by the type system,\nand should be avoided.\n\n\nInstead, change the variance of the type to be either covariant,\ncontravariant, or invariant. If you want to describe both covariance and\ncontravariance, consider using two separate type parameters.\n\n\nFor context: an \"invariant\" generic type only accepts values that exactly\nmatch the type parameter; for example, list[Dog] accepts only list[Dog],\nnot list[Animal] (superclass) or list[Bulldog] (subclass). This is\nthe default behavior for Python's generic types.\n\n\nA \"covariant\" generic type accepts subclasses of the type parameter; for\nexample, Sequence[Animal] accepts Sequence[Dog]. A \"contravariant\"\ngeneric type accepts superclasses of the type parameter; for example,\nCallable[Dog] accepts Callable[Animal].",
+    "example": "from typing import TypeVar\n\nT = TypeVar(\"T\", covariant=True, contravariant=True)\n\n\n\nUse instead:\n\n\nfrom typing import TypeVar\n\nT_co = TypeVar(\"T_co\", covariant=True)\nT_contra = TypeVar(\"T_contra\", contravariant=True)",
+    "example-split": {
+        "example-before": "from typing import TypeVar\n\nT = TypeVar(\"T\", covariant=True, contravariant=True)\n\n",
+        "example-after": "\nfrom typing import TypeVar"
+    }
+}

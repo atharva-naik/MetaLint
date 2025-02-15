@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for missing whitespace around the equals sign in an unannotated\nfunction keyword parameter.",
+    "why-is-this-bad": "According to PEP 8, there should be no spaces around the equals sign in a\nkeyword parameter, if it is unannotated:\n\n\n\nDon\u2019t use spaces around the = sign when used to indicate a keyword\nargument, or when used to indicate a default value for an unannotated\nfunction parameter.",
+    "example": "def add(a = 0) -> int:\n    return a + 1\n\n\n\nUse instead:\n\n\ndef add(a=0) -> int:\n    return a + 1",
+    "example-split": {
+        "example-before": "def add(a = 0) -> int:\n    return a + 1\n\n",
+        "example-after": "\ndef add(a=0) -> int:\n    return a + 1"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for invalid printf-style format strings.",
+    "why-is-this-bad": "Conversion specifiers are required for printf-style format strings. These\nspecifiers must contain a % character followed by a conversion type.",
+    "example": "\"Hello, %\" % \"world\"\n\n\n\nUse instead:\n\n\n\"Hello, %s\" % \"world\"",
+    "example-split": {
+        "example-before": "\"Hello, %\" % \"world\"\n\n",
+        "example-after": "\n\"Hello, %s\" % \"world\""
+    }
+}

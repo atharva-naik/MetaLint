@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for ambiguous Unicode characters in strings.",
+    "why-is-this-bad": "Some Unicode characters are visually similar to ASCII characters, but have\ndifferent code points. For example, GREEK CAPITAL LETTER ALPHA (U+0391)\nis visually similar, but not identical, to the ASCII character A.\n\n\nThe use of ambiguous Unicode characters can confuse readers, cause subtle\nbugs, and even make malicious code look harmless.\n\n\nIn preview, this rule will also flag Unicode characters that are\nconfusable with other, non-preferred Unicode characters. For example, the\nspec recommends GREEK CAPITAL LETTER OMEGA over OHM SIGN.\n\n\nYou can omit characters from being flagged as ambiguous via the\nlint.allowed-confusables setting.",
+    "example": "print(\"\u0397ello, world!\")  # \"\u0397\" is the Greek eta (`U+0397`).\n\n\n\nUse instead:\n\n\nprint(\"Hello, world!\")  # \"H\" is the Latin capital H (`U+0048`).",
+    "example-split": {
+        "example-before": "print(\"\u0397ello, world!\")  # \"\u0397\" is the Greek eta (`U+0397`).\n\n",
+        "example-after": "\nprint(\"Hello, world!\")  # \"H\" is the Latin capital H (`U+0048`)."
+    }
+}

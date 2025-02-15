@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for custom exception definitions that omit the Error suffix.",
+    "why-is-this-bad": "The Error suffix is recommended by PEP 8:\n\n\n\nBecause exceptions should be classes, the class naming convention\napplies here. However, you should use the suffix \"Error\" on your\nexception names (if the exception actually is an error).",
+    "example": "class Validation(Exception): ...\n\n\n\nUse instead:\n\n\nclass ValidationError(Exception): ...",
+    "example-split": {
+        "example-before": "class Validation(Exception): ...\n\n",
+        "example-after": "\nclass ValidationError(Exception): ..."
+    }
+}

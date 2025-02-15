@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of os.listdir.",
+    "why-is-this-bad": "pathlib offers a high-level API for path manipulation, as compared to\nthe lower-level API offered by os. When possible, using pathlib's\nPath.iterdir() can improve readability over os.listdir().",
+    "example": "p = \".\"\nfor d in os.listdir(p):\n    ...\n\nif os.listdir(p):\n    ...\n\nif \"file\" in os.listdir(p):\n    ...\n\n\n\nUse instead:\n\n\np = Path(\".\")\nfor d in p.iterdir():\n    ...\n\nif any(p.iterdir()):\n    ...\n\nif (p / \"file\").exists():\n    ...",
+    "example-split": {
+        "example-before": "p = \".\"\nfor d in os.listdir(p):\n    ...\n\nif os.listdir(p):\n    ...\n\nif \"file\" in os.listdir(p):\n    ...\n\n",
+        "example-after": "\np = Path(\".\")\nfor d in p.iterdir():\n    ..."
+    }
+}

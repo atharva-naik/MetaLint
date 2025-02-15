@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for set literals that contain duplicate items.",
+    "why-is-this-bad": "In Python, sets are unordered collections of unique elements. Including a\nduplicate item in a set literal is redundant, as the duplicate item will be\nreplaced with a single item at runtime.",
+    "example": "{1, 2, 3, 1}\n\n\n\nUse instead:\n\n\n{1, 2, 3}",
+    "example-split": {
+        "example-before": "{1, 2, 3, 1}\n\n",
+        "example-after": "\n{1, 2, 3}"
+    }
+}

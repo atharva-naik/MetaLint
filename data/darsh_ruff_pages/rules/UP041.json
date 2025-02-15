@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of exceptions that alias TimeoutError.",
+    "why-is-this-bad": "TimeoutError is the builtin error type used for exceptions when a system\nfunction timed out at the system level.\n\n\nIn Python 3.10, socket.timeout was aliased to TimeoutError. In Python\n3.11, asyncio.TimeoutError was aliased to TimeoutError.\n\n\nThese aliases remain in place for compatibility with older versions of\nPython, but may be removed in future versions.\n\n\nPrefer using TimeoutError directly, as it is more idiomatic and future-proof.",
+    "example": "raise asyncio.TimeoutError\n\n\n\nUse instead:\n\n\nraise TimeoutError",
+    "example-split": {
+        "example-before": "raise asyncio.TimeoutError\n\n",
+        "example-after": "\nraise TimeoutError"
+    }
+}
