@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for __len__ implementations that return values that are not non-negative\nintegers.",
+    "why-is-this-bad": "The __len__ method should return a non-negative integer. Returning a different\nvalue may cause unexpected behavior.\n\n\nNote: bool is a subclass of int, so it's technically valid for __len__ to\nreturn True or False. However, for consistency with other rules, Ruff will\nstill emit a diagnostic when __len__ returns a bool.",
+    "example": "class Foo:\n    def __len__(self):\n        return \"2\"\n\n\n\nUse instead:\n\n\nclass Foo:\n    def __len__(self):\n        return 2",
+    "example-split": {
+        "example-before": "class Foo:\n    def __len__(self):\n        return \"2\"\n\n",
+        "example-after": "\nclass Foo:\n    def __len__(self):\n        return 2"
+    }
+}

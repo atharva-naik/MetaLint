@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of bin(...).count(\"1\") to perform a population count.",
+    "why-is-this-bad": "In Python 3.10, a bit_count() method was added to the int class,\nwhich is more concise and efficient than converting to a binary\nrepresentation via bin(...).",
+    "example": "x = bin(123).count(\"1\")\ny = bin(0b1111011).count(\"1\")\n\n\n\nUse instead:\n\n\nx = (123).bit_count()\ny = 0b1111011.bit_count()",
+    "example-split": {
+        "example-before": "x = bin(123).count(\"1\")\ny = bin(0b1111011).count(\"1\")\n\n",
+        "example-after": "\nx = (123).bit_count()\ny = 0b1111011.bit_count()"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for property definitions that accept function parameters.",
+    "why-is-this-bad": "Properties cannot be called with parameters.\n\n\nIf you need to pass parameters to a property, create a method with the\ndesired parameters and call that method instead.",
+    "example": "class Cat:\n    @property\n    def purr(self, volume): ...\n\n\n\nUse instead:\n\n\nclass Cat:\n    @property\n    def purr(self): ...\n\n    def purr_volume(self, volume): ...",
+    "example-split": {
+        "example-before": "class Cat:\n    @property\n    def purr(self, volume): ...\n\n",
+        "example-after": "\nclass Cat:\n    @property\n    def purr(self): ..."
+    }
+}

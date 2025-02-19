@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for uses of sorted() to retrieve the minimum or maximum value in\na sequence.",
+    "why-is-this-bad": "Using sorted() to compute the minimum or maximum value in a sequence is\ninefficient and less readable than using min() or max() directly.",
+    "example": "nums = [3, 1, 4, 1, 5]\nlowest = sorted(nums)[0]\nhighest = sorted(nums)[-1]\nhighest = sorted(nums, reverse=True)[0]\n\n\n\nUse instead:\n\n\nnums = [3, 1, 4, 1, 5]\nlowest = min(nums)\nhighest = max(nums)",
+    "fix-safety": "In some cases, migrating to min or max can lead to a change in behavior,\nnotably when breaking ties.\n\n\nAs an example, sorted(data, key=itemgetter(0), reverse=True)[0] will return\nthe last \"minimum\" element in the list, if there are multiple elements with\nthe same key. However, min(data, key=itemgetter(0)) will return the first\n\"minimum\" element in the list in the same scenario.\n\n\nAs such, this rule's fix is marked as unsafe when the reverse keyword is used.",
+    "example-split": {
+        "example-before": "nums = [3, 1, 4, 1, 5]\nlowest = sorted(nums)[0]\nhighest = sorted(nums)[-1]\nhighest = sorted(nums, reverse=True)[0]\n\n",
+        "example-after": "\nnums = [3, 1, 4, 1, 5]\nlowest = min(nums)\nhighest = max(nums)"
+    }
+}

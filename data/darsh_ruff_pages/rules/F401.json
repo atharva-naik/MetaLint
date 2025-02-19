@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for unused imports.",
+    "why-is-this-bad": "Unused imports add a performance overhead at runtime, and risk creating\nimport cycles. They also increase the cognitive load of reading the code.\n\n\nIf an import statement is used to check for the availability or existence\nof a module, consider using importlib.util.find_spec instead.\n\n\nIf an import statement is used to re-export a symbol as part of a module's\npublic interface, consider using a \"redundant\" import alias, which\ninstructs Ruff (and other tools) to respect the re-export, and avoid\nmarking it as unused, as in:\n\n\nfrom module import member as member\n\n\n\nAlternatively, you can use __all__ to declare a symbol as part of the module's\ninterface, as in:\n\n\n# __init__.py\nimport some_module\n\n__all__ = [\"some_module\"]",
+    "example": "import numpy as np  # unused import\n\n\ndef area(radius):\n    return 3.14 * radius**2\n\n\n\nUse instead:\n\n\ndef area(radius):\n    return 3.14 * radius**2\n\n\n\nTo check the availability of a module, use importlib.util.find_spec:\n\n\nfrom importlib.util import find_spec\n\nif find_spec(\"numpy\") is not None:\n    print(\"numpy is installed\")\nelse:\n    print(\"numpy is not installed\")",
+    "fix-safety": "Fixes to remove unused imports are safe, except in __init__.py files.\n\n\nApplying fixes to __init__.py files is currently in preview. The fix offered depends on the\ntype of the unused import. Ruff will suggest a safe fix to export first-party imports with\neither a redundant alias or, if already present in the file, an __all__ entry. If multiple\n__all__ declarations are present, Ruff will not offer a fix. Ruff will suggest an unsafe fix\nto remove third-party and standard library imports -- the fix is unsafe because the module's\ninterface changes.",
+    "example-split": {
+        "example-before": "import numpy as np  # unused import\n\n\ndef area(radius):\n    return 3.14 * radius**2\n\n",
+        "example-after": "\ndef area(radius):\n    return 3.14 * radius**2"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the use of implicit Optional in type annotations when the\ndefault parameter value is None.",
+    "why-is-this-bad": "Implicit Optional is prohibited by PEP 484. It is confusing and\ninconsistent with the rest of the type system.\n\n\nIt's recommended to use Optional[T] instead. For Python 3.10 and later,\nyou can also use T | None.",
+    "example": "def foo(arg: int = None):\n    pass\n\n\n\nUse instead:\n\n\nfrom typing import Optional\n\n\ndef foo(arg: Optional[int] = None):\n    pass\n\n\n\nOr, for Python 3.10 and later:\n\n\ndef foo(arg: int | None = None):\n    pass\n\n\n\nIf you want to use the | operator in Python 3.9 and earlier, you can\nuse future imports:\n\n\nfrom __future__ import annotations\n\n\ndef foo(arg: int | None = None):\n    pass",
+    "example-split": {
+        "example-before": "def foo(arg: int = None):\n    pass\n\n",
+        "example-after": "\nfrom typing import Optional"
+    }
+}

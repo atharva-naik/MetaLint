@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for assert statements in except clauses.",
+    "why-is-this-bad": "When testing for exceptions, pytest.raises() should be used instead of\nassert statements in except clauses, as it's more explicit and\nidiomatic. Further, pytest.raises() will fail if the exception is not\nraised, unlike the assert statement.",
+    "example": "def test_foo():\n    try:\n        1 / 0\n    except ZeroDivisionError as e:\n        assert e.args\n\n\n\nUse instead:\n\n\nimport pytest\n\n\ndef test_foo():\n    with pytest.raises(ZeroDivisionError) as exc_info:\n        1 / 0\n    assert exc_info.value.args",
+    "example-split": {
+        "example-before": "def test_foo():\n    try:\n        1 / 0\n    except ZeroDivisionError as e:\n        assert e.args\n\n",
+        "example-after": "\nimport pytest"
+    }
+}

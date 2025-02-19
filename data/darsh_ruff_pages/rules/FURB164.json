@@ -1,0 +1,4 @@
+{
+    "what-it-does": "Checks for unnecessary from_float and from_decimal usages to construct\nDecimal and Fraction instances.",
+    "why-is-this-bad": "Since Python 3.2, the Fraction and Decimal classes can be constructed\nby passing float or decimal instances to the constructor directly. As such,\nthe use of from_float and from_decimal methods is unnecessary, and\nshould be avoided in favor of the more concise constructor syntax."
+}

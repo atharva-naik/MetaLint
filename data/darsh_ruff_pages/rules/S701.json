@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for jinja2 templates that use autoescape=False.",
+    "why-is-this-bad": "jinja2 templates that use autoescape=False are vulnerable to cross-site\nscripting (XSS) attacks that allow attackers to execute arbitrary\nJavaScript.\n\n\nBy default, jinja2 sets autoescape to False, so it is important to\nset autoescape=True or use the select_autoescape function to mitigate\nXSS vulnerabilities.",
+    "example": "import jinja2\n\njinja2.Environment(loader=jinja2.FileSystemLoader(\".\"))\n\n\n\nUse instead:\n\n\nimport jinja2\n\njinja2.Environment(loader=jinja2.FileSystemLoader(\".\"), autoescape=True)",
+    "example-split": {
+        "example-before": "import jinja2\n\njinja2.Environment(loader=jinja2.FileSystemLoader(\".\"))\n\n",
+        "example-after": "\nimport jinja2"
+    }
+}

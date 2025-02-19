@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for loop control variables that override the loop iterable.",
+    "why-is-this-bad": "Loop control variables should not override the loop iterable, as this can\nlead to confusing behavior.\n\n\nInstead, use a distinct variable name for any loop control variables.",
+    "example": "items = [1, 2, 3]\n\nfor items in items:\n    print(items)\n\n\n\nUse instead:\n\n\nitems = [1, 2, 3]\n\nfor item in items:\n    print(item)",
+    "example-split": {
+        "example-before": "items = [1, 2, 3]\n\nfor items in items:\n    print(items)\n\n",
+        "example-after": "\nitems = [1, 2, 3]"
+    }
+}

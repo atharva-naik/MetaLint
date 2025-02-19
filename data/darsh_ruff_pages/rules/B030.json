@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for exception handlers that catch non-exception classes.",
+    "why-is-this-bad": "Catching classes that do not inherit from BaseException will raise a\nTypeError.",
+    "example": "try:\n    1 / 0\nexcept 1:\n    ...\n\n\n\nUse instead:\n\n\ntry:\n    1 / 0\nexcept ZeroDivisionError:\n    ...",
+    "example-split": {
+        "example-before": "try:\n    1 / 0\nexcept 1:\n    ...\n\n",
+        "example-after": "\ntry:\n    1 / 0\nexcept ZeroDivisionError:\n    ..."
+    }
+}

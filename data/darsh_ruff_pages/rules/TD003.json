@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks that a TODO comment is associated with a link to a relevant issue\nor ticket.",
+    "why-is-this-bad": "Including an issue link near a TODO makes it easier for resolvers\nto get context around the issue.",
+    "example": "# TODO: this link has no issue\n\n\n\nUse one of these instead:\n\n\n# TODO(charlie): this comment has an issue link\n# https://github.com/astral-sh/ruff/issues/3870\n\n# TODO(charlie): this comment has a 3-digit issue code\n# 003\n\n# TODO(charlie): https://github.com/astral-sh/ruff/issues/3870\n# this comment has an issue link\n\n# TODO(charlie): #003 this comment has a 3-digit issue code\n# with leading character `#`\n\n# TODO(charlie): this comment has an issue code (matches the regex `[A-Z]+\\-?\\d+`)\n# SIXCHR-003",
+    "example-split": {
+        "example-before": "# TODO: this link has no issue\n\n\n\nUse one of these instead:\n\n\n# TODO(charlie): this comment has an issue link\n# https://github.com/astral-sh/ruff/issues/3870\n\n# TODO(charlie): this comment has a 3-digit issue code\n# 003\n\n# TODO(charlie): https://github.com/astral-sh/ruff/issues/3870\n# this comment has an issue link\n\n# TODO(charlie): #003 this comment has a 3-digit issue code\n# with leading character `#`\n\n# TODO(charlie): this comment has an issue code (matches the regex `[A-Z]+\\-?\\d+`)\n# SIXCHR-003",
+        "example-after": "# TODO: this link has no issue"
+    }
+}

@@ -1,0 +1,4 @@
+{
+    "what-it-does": "Checks for the use of FTP-related functions.",
+    "why-is-this-bad": "FTP is considered insecure as it does not encrypt data sent over the\nconnection and is thus vulnerable to numerous attacks.\n\n\nInstead, consider using FTPS (which secures FTP using SSL/TLS) or SFTP.\n\n\nIn preview, this rule will also flag references to FTP-related functions."
+}

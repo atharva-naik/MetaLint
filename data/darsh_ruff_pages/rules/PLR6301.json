@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the presence of unused self parameter in methods definitions.",
+    "why-is-this-bad": "Unused self parameters are usually a sign of a method that could be\nreplaced by a function, class method, or static method.",
+    "example": "class Person:\n    def greeting(self):\n        print(\"Greetings friend!\")\n\n\n\nUse instead:\n\n\ndef greeting():\n    print(\"Greetings friend!\")\n\n\n\nor\n\n\nclass Person:\n    @staticmethod\n    def greeting():\n        print(\"Greetings friend!\")",
+    "example-split": {
+        "example-before": "class Person:\n    def greeting(self):\n        print(\"Greetings friend!\")\n\n",
+        "example-after": "\ndef greeting():\n    print(\"Greetings friend!\")"
+    }
+}

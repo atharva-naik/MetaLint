@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of .iat on Pandas objects.",
+    "why-is-this-bad": "The .iat method selects a single value from a DataFrame or Series based\non an ordinal index, and is slightly faster than using .iloc. However,\n.iloc is more idiomatic and versatile, as it can be used to select\nmultiple values at once.\n\n\nIf performance is an important consideration, convert the object to a NumPy\narray, which will provide a much greater performance boost than using .iat\nover .iloc.",
+    "example": "import pandas as pd\n\nstudents_df = pd.read_csv(\"students.csv\")\nstudents_df.iat[0]\n\n\n\nUse instead:\n\n\nimport pandas as pd\n\nstudents_df = pd.read_csv(\"students.csv\")\nstudents_df.iloc[0]\n\n\n\nOr, using NumPy:\n\n\nimport numpy as np\nimport pandas as pd\n\nstudents_df = pd.read_csv(\"students.csv\")\nstudents_df.to_numpy()[0]",
+    "example-split": {
+        "example-before": "import pandas as pd\n\nstudents_df = pd.read_csv(\"students.csv\")\nstudents_df.iat[0]\n\n",
+        "example-after": "\nimport pandas as pd"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for imports of the xml.etree.cElementTree and xml.etree.ElementTree modules",
+    "why-is-this-bad": "Using various methods from these modules to parse untrusted XML data is\nknown to be vulnerable to XML attacks. Replace vulnerable imports with the\nequivalent defusedxml package, or make sure defusedxml.defuse_stdlib() is\ncalled before parsing XML data.",
+    "example": "import xml.etree.cElementTree",
+    "example-split": {
+        "example-before": "import xml.etree.cElementTree",
+        "example-after": "import xml.etree.cElementTree"
+    }
+}

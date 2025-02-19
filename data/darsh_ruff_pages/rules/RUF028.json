@@ -1,0 +1,4 @@
+{
+    "what-it-does": "Checks for formatter suppression comments that are ineffective or incompatible\nwith Ruff's formatter.",
+    "why-is-this-bad": "Suppression comments that do not actually prevent formatting could cause unintended changes\nwhen the formatter is run."
+}

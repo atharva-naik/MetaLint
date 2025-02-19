@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for del statements that delete the entire slice of a list or\ndictionary.",
+    "why-is-this-bad": "It is faster and more succinct to remove all items via the clear()\nmethod.",
+    "example": "names = {\"key\": \"value\"}\nnums = [1, 2, 3]\n\ndel names[:]\ndel nums[:]\n\n\n\nUse instead:\n\n\nnames = {\"key\": \"value\"}\nnums = [1, 2, 3]\n\nnames.clear()\nnums.clear()",
+    "example-split": {
+        "example-before": "names = {\"key\": \"value\"}\nnums = [1, 2, 3]\n\ndel names[:]\ndel nums[:]\n\n",
+        "example-after": "\nnames = {\"key\": \"value\"}\nnums = [1, 2, 3]"
+    }
+}

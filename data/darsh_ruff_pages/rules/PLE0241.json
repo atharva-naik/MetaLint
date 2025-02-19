@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for duplicate base classes in class definitions.",
+    "why-is-this-bad": "Including duplicate base classes will raise a TypeError at runtime.",
+    "example": "class Foo:\n    pass\n\n\nclass Bar(Foo, Foo):\n    pass\n\n\n\nUse instead:\n\n\nclass Foo:\n    pass\n\n\nclass Bar(Foo):\n    pass",
+    "example-split": {
+        "example-before": "class Foo:\n    pass\n\n\nclass Bar(Foo, Foo):\n    pass\n\n",
+        "example-after": "\nclass Foo:\n    pass"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for unnecessary parentheses on functools.lru_cache decorators.",
+    "why-is-this-bad": "Since Python 3.8, functools.lru_cache can be used as a decorator without\ntrailing parentheses, as long as no arguments are passed to it.",
+    "example": "import functools\n\n\n@functools.lru_cache()\ndef foo(): ...\n\n\n\nUse instead:\n\n\nimport functools\n\n\n@functools.lru_cache\ndef foo(): ...",
+    "example-split": {
+        "example-before": "import functools\n\n\n@functools.lru_cache()\ndef foo(): ...\n\n",
+        "example-after": "\nimport functools"
+    }
+}

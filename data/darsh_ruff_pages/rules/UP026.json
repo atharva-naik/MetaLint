@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for imports of the mock module that should be replaced with\nunittest.mock.",
+    "why-is-this-bad": "Since Python 3.3, mock has been a part of the standard library as\nunittest.mock. The mock package is deprecated; use unittest.mock\ninstead.",
+    "example": "import mock\n\n\n\nUse instead:\n\n\nfrom unittest import mock",
+    "example-split": {
+        "example-before": "import mock\n\n",
+        "example-after": "\nfrom unittest import mock"
+    }
+}

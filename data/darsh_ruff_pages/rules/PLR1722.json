@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of the exit() and quit().",
+    "why-is-this-bad": "exit and quit come from the site module, which is typically imported\nautomatically during startup. However, it is not guaranteed to be\nimported, and so using these functions may result in a NameError at\nruntime. Generally, these constants are intended to be used in an interactive\ninterpreter, and not in programs.\n\n\nPrefer sys.exit(), as the sys module is guaranteed to exist in all\ncontexts.",
+    "example": "if __name__ == \"__main__\":\n    exit()\n\n\n\nUse instead:\n\n\nimport sys\n\nif __name__ == \"__main__\":\n    sys.exit()",
+    "example-split": {
+        "example-before": "if __name__ == \"__main__\":\n    exit()\n\n",
+        "example-after": "\nimport sys"
+    }
+}

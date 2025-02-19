@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for \"special\" methods that have an unexpected method signature.",
+    "why-is-this-bad": "\"Special\" methods, like __len__, are expected to adhere to a specific,\nstandard function signature. Implementing a \"special\" method using a\nnon-standard function signature can lead to unexpected and surprising\nbehavior for users of a given class.",
+    "example": "class Bookshelf:\n    def __init__(self):\n        self._books = [\"Foo\", \"Bar\", \"Baz\"]\n\n    def __len__(self, index):  # __len__ does not except an index parameter\n        return len(self._books)\n\n    def __getitem__(self, index):\n        return self._books[index]\n\n\n\nUse instead:\n\n\nclass Bookshelf:\n    def __init__(self):\n        self._books = [\"Foo\", \"Bar\", \"Baz\"]\n\n    def __len__(self):\n        return len(self._books)\n\n    def __getitem__(self, index):\n        return self._books[index]",
+    "example-split": {
+        "example-before": "class Bookshelf:\n    def __init__(self):\n        self._books = [\"Foo\", \"Bar\", \"Baz\"]\n\n    def __len__(self, index):  # __len__ does not except an index parameter\n        return len(self._books)\n\n    def __getitem__(self, index):\n        return self._books[index]\n\n",
+        "example-after": "\nclass Bookshelf:\n    def __init__(self):\n        self._books = [\"Foo\", \"Bar\", \"Baz\"]"
+    }
+}

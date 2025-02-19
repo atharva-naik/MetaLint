@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of tempfile.mktemp.",
+    "why-is-this-bad": "tempfile.mktemp returns a pathname of a file that does not exist at the\ntime the call is made; then, the caller is responsible for creating the\nfile and subsequently using it. This is insecure because another process\ncould create a file with the same name between the time the function\nreturns and the time the caller creates the file.\n\n\ntempfile.mktemp is deprecated in favor of tempfile.mkstemp which\ncreates the file when it is called. Consider using tempfile.mkstemp\ninstead, either directly or via a context manager such as\ntempfile.TemporaryFile.\n\n\nIn preview, this rule will also flag references to tempfile.mktemp.",
+    "example": "import tempfile\n\ntmp_file = tempfile.mktemp()\nwith open(tmp_file, \"w\") as file:\n    file.write(\"Hello, world!\")\n\n\n\nUse instead:\n\n\nimport tempfile\n\nwith tempfile.TemporaryFile() as file:\n    file.write(\"Hello, world!\")",
+    "example-split": {
+        "example-before": "import tempfile\n\ntmp_file = tempfile.mktemp()\nwith open(tmp_file, \"w\") as file:\n    file.write(\"Hello, world!\")\n\n",
+        "example-after": "\nimport tempfile"
+    }
+}

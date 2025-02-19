@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for assert statements that use non-empty tuples as test\nconditions.",
+    "why-is-this-bad": "Non-empty tuples are always True, so an assert statement with a\nnon-empty tuple as its test condition will always pass. This is likely a\nmistake.",
+    "example": "assert (some_condition,)\n\n\n\nUse instead:\n\n\nassert some_condition",
+    "example-split": {
+        "example-before": "assert (some_condition,)\n\n",
+        "example-after": "\nassert some_condition"
+    }
+}

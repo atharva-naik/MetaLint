@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the use of global statements to update identifiers.",
+    "why-is-this-bad": "Pylint discourages the use of global variables as global mutable\nstate is a common source of bugs and confusing behavior.",
+    "example": "var = 1\n\n\ndef foo():\n    global var  # [global-statement]\n    var = 10\n    print(var)\n\n\nfoo()\nprint(var)\n\n\n\nUse instead:\n\n\nvar = 1\n\n\ndef foo():\n    print(var)\n    return 10\n\n\nvar = foo()\nprint(var)",
+    "example-split": {
+        "example-before": "var = 1\n\n\ndef foo():\n    global var  # [global-statement]\n    var = 10\n    print(var)\n\n\nfoo()\nprint(var)\n\n",
+        "example-after": "\nvar = 1"
+    }
+}

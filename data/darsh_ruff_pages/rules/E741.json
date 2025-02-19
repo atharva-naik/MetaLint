@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the use of the characters 'l', 'O', or 'I' as variable names.\n\n\nNote: This rule is automatically disabled for all stub files\n(files with .pyi extensions). The rule has little relevance for authors\nof stubs: a well-written stub should aim to faithfully represent the\ninterface of the equivalent .py file as it exists at runtime, including any\nambiguously named variables in the runtime module.",
+    "why-is-this-bad": "In some fonts, these characters are indistinguishable from the\nnumerals one and zero. When tempted to use 'l', use 'L' instead.",
+    "example": "l = 0\nO = 123\nI = 42\n\n\n\nUse instead:\n\n\nL = 0\no = 123\ni = 42",
+    "example-split": {
+        "example-before": "l = 0\nO = 123\nI = 42\n\n",
+        "example-after": "\nL = 0\no = 123\ni = 42"
+    }
+}

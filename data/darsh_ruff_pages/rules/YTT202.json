@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of six.PY3.",
+    "why-is-this-bad": "six.PY3 will evaluate to False on Python 4 and greater. This is likely\nunintended, and may cause code intended to run on Python 2 to run on Python 4\ntoo.\n\n\nInstead, use not six.PY2 to validate that the current Python major version is\nnot equal to 2, to future-proof the code.",
+    "example": "import six\n\nsix.PY3  # `False` on Python 4.\n\n\n\nUse instead:\n\n\nimport six\n\nnot six.PY2  # `True` on Python 4.",
+    "example-split": {
+        "example-before": "import six\n\nsix.PY3  # `False` on Python 4.\n\n",
+        "example-after": "\nimport six"
+    }
+}

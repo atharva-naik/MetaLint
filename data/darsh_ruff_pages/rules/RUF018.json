@@ -1,0 +1,4 @@
+{
+    "what-it-does": "Checks for named assignment expressions (e.g., x := 0) in assert\nstatements.",
+    "why-is-this-bad": "Named assignment expressions (also known as \"walrus operators\") are used to\nassign a value to a variable as part of a larger expression.\n\n\nNamed assignments are syntactically valid in assert statements. However,\nwhen the Python interpreter is run under the -O flag, assert statements\nare not executed. In this case, the named assignment will also be ignored,\nwhich may result in unexpected behavior (e.g., undefined variable\naccesses)."
+}

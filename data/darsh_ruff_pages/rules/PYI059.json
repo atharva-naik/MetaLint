@@ -1,0 +1,4 @@
+{
+    "what-it-does": "Checks for classes inheriting from typing.Generic[] where Generic[] is\nnot the last base class in the bases tuple.",
+    "why-is-this-bad": "If Generic[] is not the final class in the bases tuple, unexpected\nbehaviour can occur at runtime (See this CPython issue for an example).\nThe rule is also applied to stub files, but, unlike at runtime,\nin stubs it is purely enforced for stylistic consistency.\n\n\nFor example:\n\n\nclass LinkedList(Generic[T], Sized):\n    def push(self, item: T) -> None:\n        self._items.append(item)\n\nclass MyMapping(\n    Generic[K, V],\n    Iterable[Tuple[K, V]],\n    Container[Tuple[K, V]],\n):\n    ...\n\n\n\nUse instead:\n\n\nclass LinkedList(Sized, Generic[T]):\n    def push(self, item: T) -> None:\n        self._items.append(item)\n\nclass MyMapping(\n    Iterable[Tuple[K, V]],\n    Container[Tuple[K, V]],\n    Generic[K, V],\n):\n    ..."
+}

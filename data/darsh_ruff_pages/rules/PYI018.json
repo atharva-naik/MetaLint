@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the presence of unused private TypeVar, ParamSpec or\nTypeVarTuple declarations.",
+    "why-is-this-bad": "A private TypeVar that is defined but not used is likely a mistake. It\nshould either be used, made public, or removed to avoid confusion.",
+    "example": "import typing\nimport typing_extensions\n\n_T = typing.TypeVar(\"_T\")\n_Ts = typing_extensions.TypeVarTuple(\"_Ts\")",
+    "example-split": {
+        "example-before": "import typing\nimport typing_extensions\n\n_T = typing.TypeVar(\"_T\")\n_Ts = typing_extensions.TypeVarTuple(\"_Ts\")",
+        "example-after": "import typing\nimport typing_extensions"
+    }
+}

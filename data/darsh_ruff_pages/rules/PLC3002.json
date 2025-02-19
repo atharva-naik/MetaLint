@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for unnecessary direct calls to lambda expressions.",
+    "why-is-this-bad": "Calling a lambda expression directly is unnecessary. The expression can be\nexecuted inline instead to improve readability.",
+    "example": "area = (lambda r: 3.14 * r**2)(radius)\n\n\n\nUse instead:\n\n\narea = 3.14 * radius**2",
+    "example-split": {
+        "example-before": "area = (lambda r: 3.14 * r**2)(radius)\n\n",
+        "example-after": "\narea = 3.14 * radius**2"
+    }
+}

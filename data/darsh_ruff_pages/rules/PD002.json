@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for inplace=True usages in pandas function and method\ncalls.",
+    "why-is-this-bad": "Using inplace=True encourages mutation rather than immutable data,\nwhich is harder to reason about and may cause bugs. It also removes the\nability to use the method chaining style for pandas operations.\n\n\nFurther, in many cases, inplace=True does not provide a performance\nbenefit, as pandas will often copy DataFrames in the background.",
+    "example": "df.sort_values(\"col1\", inplace=True)\n\n\n\nUse instead:\n\n\nsorted_df = df.sort_values(\"col1\")",
+    "example-split": {
+        "example-before": "df.sort_values(\"col1\", inplace=True)\n\n",
+        "example-after": "\nsorted_df = df.sort_values(\"col1\")"
+    }
+}

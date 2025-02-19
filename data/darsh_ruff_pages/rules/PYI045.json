@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for __iter__ methods in stubs that return Iterable[T] instead\nof an Iterator[T].",
+    "why-is-this-bad": "__iter__ methods should always should return an Iterator of some kind,\nnot an Iterable.\n\n\nIn Python, an Iterable is an object that has an __iter__ method; an\nIterator is an object that has __iter__ and __next__ methods. All\n__iter__ methods are expected to return Iterators. Type checkers may\nnot always recognize an object as being iterable if its __iter__ method\ndoes not return an Iterator.\n\n\nEvery Iterator is an Iterable, but not every Iterable is an Iterator.\nFor example, list is an Iterable, but not an Iterator; you can obtain\nan iterator over a list's elements by passing the list to iter():\n\n\n>>> import collections.abc\n>>> x = [42]\n>>> isinstance(x, collections.abc.Iterable)\nTrue\n>>> isinstance(x, collections.abc.Iterator)\nFalse\n>>> next(x)\nTraceback (most recent call last):\n File \"<stdin>\", line 1, in <module>\nTypeError: 'list' object is not an iterator\n>>> y = iter(x)\n>>> isinstance(y, collections.abc.Iterable)\nTrue\n>>> isinstance(y, collections.abc.Iterator)\nTrue\n>>> next(y)\n42\n\n\n\nUsing Iterable rather than Iterator as a return type for an __iter__\nmethods would imply that you would not necessarily be able to call next()\non the returned object, violating the expectations of the interface.",
+    "example": "import collections.abc\n\n\nclass Klass:\n    def __iter__(self) -> collections.abc.Iterable[str]: ...\n\n\n\nUse instead:\n\n\nimport collections.abc\n\n\nclass Klass:\n    def __iter__(self) -> collections.abc.Iterator[str]: ...",
+    "example-split": {
+        "example-before": "import collections.abc\n\n\nclass Klass:\n    def __iter__(self) -> collections.abc.Iterable[str]: ...\n\n",
+        "example-after": "\nimport collections.abc"
+    }
+}

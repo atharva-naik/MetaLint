@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of SNMPv1 or SNMPv2.",
+    "why-is-this-bad": "The SNMPv1 and SNMPv2 protocols are considered insecure as they do\nnot support encryption. Instead, prefer SNMPv3, which supports\nencryption.",
+    "example": "from pysnmp.hlapi import CommunityData\n\nCommunityData(\"public\", mpModel=0)\n\n\n\nUse instead:\n\n\nfrom pysnmp.hlapi import CommunityData\n\nCommunityData(\"public\", mpModel=2)",
+    "example-split": {
+        "example-before": "from pysnmp.hlapi import CommunityData\n\nCommunityData(\"public\", mpModel=0)\n\n",
+        "example-after": "\nfrom pysnmp.hlapi import CommunityData"
+    }
+}

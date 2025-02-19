@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of mutable objects as function argument defaults.",
+    "why-is-this-bad": "Function defaults are evaluated once, when the function is defined.\n\n\nThe same mutable object is then shared across all calls to the function.\nIf the object is modified, those modifications will persist across calls,\nwhich can lead to unexpected behavior.\n\n\nInstead, prefer to use immutable data structures, or take None as a\ndefault, and initialize a new mutable object inside the function body\nfor each call.\n\n\nArguments with immutable type annotations will be ignored by this rule.\nTypes outside of the standard library can be marked as immutable with the\nlint.flake8-bugbear.extend-immutable-calls configuration option.",
+    "example": "def add_to_list(item, some_list=[]):\n    some_list.append(item)\n    return some_list\n\n\nl1 = add_to_list(0)  # [0]\nl2 = add_to_list(1)  # [0, 1]\n\n\n\nUse instead:\n\n\ndef add_to_list(item, some_list=None):\n    if some_list is None:\n        some_list = []\n    some_list.append(item)\n    return some_list\n\n\nl1 = add_to_list(0)  # [0]\nl2 = add_to_list(1)  # [1]",
+    "example-split": {
+        "example-before": "def add_to_list(item, some_list=[]):\n    some_list.append(item)\n    return some_list\n\n\nl1 = add_to_list(0)  # [0]\nl2 = add_to_list(1)  # [0, 1]\n\n",
+        "example-after": "\ndef add_to_list(item, some_list=None):\n    if some_list is None:\n        some_list = []\n    some_list.append(item)\n    return some_list"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for docstrings that use '''triple single quotes''' instead of\n\"\"\"triple double quotes\"\"\".",
+    "why-is-this-bad": "PEP 257 recommends\nthe use of \"\"\"triple double quotes\"\"\" for docstrings, to ensure\nconsistency.",
+    "example": "def kos_root():\n    '''Return the pathname of the KOS root directory.'''\n\n\n\nUse instead:\n\n\ndef kos_root():\n    \"\"\"Return the pathname of the KOS root directory.\"\"\"",
+    "example-split": {
+        "example-before": "def kos_root():\n    '''Return the pathname of the KOS root directory.'''\n\n",
+        "example-after": "\ndef kos_root():\n    \"\"\"Return the pathname of the KOS root directory.\"\"\""
+    }
+}

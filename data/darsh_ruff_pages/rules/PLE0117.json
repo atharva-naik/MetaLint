@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for nonlocal names without bindings.",
+    "why-is-this-bad": "nonlocal names must be bound to a name in an outer scope.\nViolating this rule leads to a SyntaxError at runtime.",
+    "example": "def foo():\n    def get_bar(self):\n        nonlocal bar\n        ...\n\n\n\nUse instead:\n\n\ndef foo():\n    bar = 1\n\n    def get_bar(self):\n        nonlocal bar\n        ...",
+    "example-split": {
+        "example-before": "def foo():\n    def get_bar(self):\n        nonlocal bar\n        ...\n\n",
+        "example-after": "\ndef foo():\n    bar = 1"
+    }
+}

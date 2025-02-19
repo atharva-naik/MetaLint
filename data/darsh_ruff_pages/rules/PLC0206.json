@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for dictionary iterations that extract the dictionary value\nvia explicit indexing, instead of using .items().",
+    "why-is-this-bad": "Iterating over a dictionary with .items() is semantically clearer\nand more efficient than extracting the value with the key.",
+    "example": "ORCHESTRA = {\n    \"violin\": \"strings\",\n    \"oboe\": \"woodwind\",\n    \"tuba\": \"brass\",\n    \"gong\": \"percussion\",\n}\n\nfor instrument in ORCHESTRA:\n    print(f\"{instrument}: {ORCHESTRA[instrument]}\")\n\n\n\nUse instead:\n\n\nORCHESTRA = {\n    \"violin\": \"strings\",\n    \"oboe\": \"woodwind\",\n    \"tuba\": \"brass\",\n    \"gong\": \"percussion\",\n}\n\nfor instrument, section in ORCHESTRA.items():\n    print(f\"{instrument}: {section}\")",
+    "example-split": {
+        "example-before": "ORCHESTRA = {\n    \"violin\": \"strings\",\n    \"oboe\": \"woodwind\",\n    \"tuba\": \"brass\",\n    \"gong\": \"percussion\",\n}\n\nfor instrument in ORCHESTRA:\n    print(f\"{instrument}: {ORCHESTRA[instrument]}\")\n\n",
+        "example-after": "\nORCHESTRA = {\n    \"violin\": \"strings\",\n    \"oboe\": \"woodwind\",\n    \"tuba\": \"brass\",\n    \"gong\": \"percussion\",\n}"
+    }
+}

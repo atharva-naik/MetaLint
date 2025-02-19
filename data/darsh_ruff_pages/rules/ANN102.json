@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks that class method cls arguments have type annotations.",
+    "why-is-this-bad": "Type annotations are a good way to document the types of function arguments. They also\nhelp catch bugs, when used alongside a type checker, by ensuring that the types of\nany provided arguments match expectation.\n\n\nNote that many type checkers will infer the type of cls automatically, so this\nannotation is not strictly necessary.",
+    "example": "class Foo:\n    @classmethod\n    def bar(cls): ...\n\n\n\nUse instead:\n\n\nclass Foo:\n    @classmethod\n    def bar(cls: Type[\"Foo\"]): ...",
+    "example-split": {
+        "example-before": "class Foo:\n    @classmethod\n    def bar(cls): ...\n\n",
+        "example-after": "\nclass Foo:\n    @classmethod\n    def bar(cls: Type[\"Foo\"]): ..."
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for if key in dictionary: del dictionary[key].",
+    "why-is-this-bad": "To remove a key-value pair from a dictionary, it's more concise to use .pop(..., None).",
+    "example": "if key in dictionary:\n    del dictionary[key]\n\n\n\nUse instead:\n\n\ndictionary.pop(key, None)",
+    "fix-safety": "This rule's fix is marked as safe, unless the if statement contains comments.",
+    "example-split": {
+        "example-before": "if key in dictionary:\n    del dictionary[key]\n\n",
+        "example-after": "\ndictionary.pop(key, None)"
+    }
+}

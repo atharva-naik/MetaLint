@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for mixed tabs and spaces in indentation.",
+    "why-is-this-bad": "Never mix tabs and spaces.\n\n\nThe most popular way of indenting Python is with spaces only. The\nsecond-most popular way is with tabs only. Code indented with a\nmixture of tabs and spaces should be converted to using spaces\nexclusively.",
+    "example": "if a == 0:\\n        a = 1\\n\\tb = 1\n\n\n\nUse instead:\n\n\nif a == 0:\\n    a = 1\\n    b = 1",
+    "example-split": {
+        "example-before": "if a == 0:\\n        a = 1\\n\\tb = 1\n\n",
+        "example-after": "\nif a == 0:\\n    a = 1\\n    b = 1"
+    }
+}
