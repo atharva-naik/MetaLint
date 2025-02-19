@@ -1,8 +1,15 @@
-import json
 import os
+import sys
+import json
+import pathlib
 import numpy as np
-from typing import Dict, List, Tuple
 from fuzzywuzzy import fuzz
+from typing import Dict, List, Tuple
+
+module_path = str(pathlib.Path(os.path.abspath(__file__)).parent.parent.parent.parent)
+sys.path.append(module_path)
+
+from src.datautils import read_jsonl_safe
 
 FAULTY_RESULT_CTR = 0
 
@@ -24,20 +31,7 @@ def parse_json_response(response_str: str) -> List[Dict]:
                     continue
     return results
 
-def read_jsonl(file_path: str) -> List[Dict]:
-    data = []
-    with open(file_path, 'r', encoding='utf-8') as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                data.append(json.loads(line))
-            except json.JSONDecodeError as e:
-                print(f"JSON decode error: {str(e)}")
-    return data
-
-def merge_same_code_violations(violations: List[Dict]) -> List[Dict]:
+def merge_same_code_violations(violations: list[dict]) -> list[dict]:
     code_map = {}
     for violation in violations:
         code = violation.get('code')
@@ -59,7 +53,7 @@ def calculate_metrics(matrix: np.ndarray) -> Tuple[float, float, float]:
     return precision, recall, f1
 
 def evaluate_responses(file_path: str) -> Dict[str, Dict[str, float]]:
-    data = read_jsonl(file_path)
+    data = read_jsonl_safe(file_path)
     metrics_by_code = {}
     
     for idx, row in enumerate(data):
@@ -160,46 +154,50 @@ def evaluate_responses(file_path: str) -> Dict[str, Dict[str, float]]:
     
     return final_metrics
 
-import os
-# Get script directory and construct path
-script_dir = os.path.dirname(os.path.abspath(__file__))
-file_path = os.path.join(script_dir, '../../data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds.jsonl')
-
-# Get results
-results = evaluate_responses(file_path)
-
-# Create dictionaries for metrics
-metrics_dict = {
-    'exact_line': {'P': {}, 'R': {}, 'F': {}},
-    'exact_span': {'P': {}, 'R': {}, 'F': {}},
-    'fuzzy_line': {'P': {}, 'R': {}, 'F': {}},
-    'fuzzy_span': {'P': {}, 'R': {}, 'F': {}}
-}
-
-# Organize results
-for code, metrics in results.items():
-    metrics_dict['exact_line']['P'][code] = metrics['line_precision']
-    metrics_dict['exact_line']['R'][code] = metrics['line_recall']
-    metrics_dict['exact_line']['F'][code] = metrics['line_f1']
+# main
+if __name__ == "__main__":
+    # Get script directory and construct path
     
-    metrics_dict['exact_span']['P'][code] = metrics['span_precision']
-    metrics_dict['exact_span']['R'][code] = metrics['span_recall']
-    metrics_dict['exact_span']['F'][code] = metrics['span_f1']
-    
-    metrics_dict['fuzzy_line']['P'][code] = metrics['fuzzy_line_precision']
-    metrics_dict['fuzzy_line']['R'][code] = metrics['fuzzy_line_recall']
-    metrics_dict['fuzzy_line']['F'][code] = metrics['fuzzy_line_f1']
-    
-    metrics_dict['fuzzy_span']['P'][code] = metrics['fuzzy_span_precision']
-    metrics_dict['fuzzy_span']['R'][code] = metrics['fuzzy_span_recall']
-    metrics_dict['fuzzy_span']['F'][code] = metrics['fuzzy_span_f1']
+    try: train_steps: int=int(sys.argv[1])
+    except IndexError: train_steps: int=2000
+    # model_preds = read_jsonl_safe(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{train_steps}.jsonl")
+    file_path = f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{train_steps}-v2-data.jsonl"
 
-# Print results
-for metric_type in ['exact_line', 'exact_span', 'fuzzy_line', 'fuzzy_span']:
-    print(f"\n{metric_type.upper()} METRICS:")
-    print("Precision:", metrics_dict[metric_type]['P'])
-    print("P:", np.mean(list(metrics_dict[metric_type]['P'].values())))
-    print("Recall:", metrics_dict[metric_type]['R'])
-    print("R:", np.mean(list(metrics_dict[metric_type]['R'].values())))
-    print("F1:", metrics_dict[metric_type]['F'])
-    print("F:", np.mean(list(metrics_dict[metric_type]['F'].values())))
+    # Get results
+    results = evaluate_responses(file_path)
+
+    # Create dictionaries for metrics
+    metrics_dict = {
+        'exact_line': {'P': {}, 'R': {}, 'F': {}},
+        'exact_span': {'P': {}, 'R': {}, 'F': {}},
+        'fuzzy_line': {'P': {}, 'R': {}, 'F': {}},
+        'fuzzy_span': {'P': {}, 'R': {}, 'F': {}}
+    }
+
+    # Organize results
+    for code, metrics in results.items():
+        metrics_dict['exact_line']['P'][code] = metrics['line_precision']
+        metrics_dict['exact_line']['R'][code] = metrics['line_recall']
+        metrics_dict['exact_line']['F'][code] = metrics['line_f1']
+        
+        metrics_dict['exact_span']['P'][code] = metrics['span_precision']
+        metrics_dict['exact_span']['R'][code] = metrics['span_recall']
+        metrics_dict['exact_span']['F'][code] = metrics['span_f1']
+        
+        metrics_dict['fuzzy_line']['P'][code] = metrics['fuzzy_line_precision']
+        metrics_dict['fuzzy_line']['R'][code] = metrics['fuzzy_line_recall']
+        metrics_dict['fuzzy_line']['F'][code] = metrics['fuzzy_line_f1']
+        
+        metrics_dict['fuzzy_span']['P'][code] = metrics['fuzzy_span_precision']
+        metrics_dict['fuzzy_span']['R'][code] = metrics['fuzzy_span_recall']
+        metrics_dict['fuzzy_span']['F'][code] = metrics['fuzzy_span_f1']
+
+    # Print results
+    for metric_type in ['exact_line', 'exact_span', 'fuzzy_line', 'fuzzy_span']:
+        print(f"\n{metric_type.upper()} METRICS:")
+        print("Precision:", metrics_dict[metric_type]['P'])
+        print("P:", np.mean(list(metrics_dict[metric_type]['P'].values())))
+        print("Recall:", metrics_dict[metric_type]['R'])
+        print("R:", np.mean(list(metrics_dict[metric_type]['R'].values())))
+        print("F1:", metrics_dict[metric_type]['F'])
+        print("F:", np.mean(list(metrics_dict[metric_type]['F'].values())))
