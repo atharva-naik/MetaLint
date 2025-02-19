@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the presence of unused arguments in lambda expression\ndefinitions.",
+    "why-is-this-bad": "An argument that is defined but not used is likely a mistake, and should\nbe removed to avoid confusion.\n\n\nIf a variable is intentionally defined-but-not-used, it should be\nprefixed with an underscore, or some other value that adheres to the\nlint.dummy-variable-rgx pattern.",
+    "example": "my_list = [1, 2, 3, 4, 5]\nsquares = map(lambda x, y: x**2, my_list)\n\n\n\nUse instead:\n\n\nmy_list = [1, 2, 3, 4, 5]\nsquares = map(lambda x: x**2, my_list)",
+    "example-split": {
+        "example-before": "my_list = [1, 2, 3, 4, 5]\nsquares = map(lambda x, y: x**2, my_list)\n\n",
+        "example-after": "\nmy_list = [1, 2, 3, 4, 5]\nsquares = map(lambda x: x**2, my_list)"
+    }
+}

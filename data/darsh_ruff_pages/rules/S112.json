@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of the try-except-continue pattern.",
+    "why-is-this-bad": "The try-except-continue pattern suppresses all exceptions.\nSuppressing exceptions may hide errors that could otherwise reveal\nunexpected behavior, security vulnerabilities, or malicious activity.\nInstead, consider logging the exception.",
+    "example": "import logging\n\nwhile predicate:\n    try:\n        ...\n    except Exception:\n        continue\n\n\n\nUse instead:\n\n\nimport logging\n\nwhile predicate:\n    try:\n        ...\n    except Exception as exc:\n        logging.exception(\"Error occurred\")",
+    "example-split": {
+        "example-before": "import logging\n\nwhile predicate:\n    try:\n        ...\n    except Exception:\n        continue\n\n",
+        "example-after": "\nimport logging"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the use of f-strings in exception constructors.",
+    "why-is-this-bad": "Python includes the raise in the default traceback (and formatters\nlike Rich and IPython do too).\n\n\nBy using an f-string, the error message will be duplicated in the\ntraceback, which can make the traceback less readable.",
+    "example": "Given:\n\n\nsub = \"Some value\"\nraise RuntimeError(f\"{sub!r} is incorrect\")\n\n\n\nPython will produce a traceback like:\n\n\nTraceback (most recent call last):\n  File \"tmp.py\", line 2, in <module>\n    raise RuntimeError(f\"{sub!r} is incorrect\")\nRuntimeError: 'Some value' is incorrect\n\n\n\nInstead, assign the string to a variable:\n\n\nsub = \"Some value\"\nmsg = f\"{sub!r} is incorrect\"\nraise RuntimeError(msg)\n\n\n\nWhich will produce a traceback like:\n\n\nTraceback (most recent call last):\n  File \"tmp.py\", line 3, in <module>\n    raise RuntimeError(msg)\nRuntimeError: 'Some value' is incorrect",
+    "example-split": {
+        "example-before": "Given:\n\n\nsub = \"Some value\"\nraise RuntimeError(f\"{sub!r} is incorrect\")\n\n\n\nPython will produce a traceback like:\n\n\nTraceback (most recent call last):\n  File \"tmp.py\", line 2, in <module>\n    raise RuntimeError(f\"{sub!r} is incorrect\")\nRuntimeError: 'Some value' is incorrect\n\n\n\nInstead, assign the string to a variable:\n\n\nsub = \"Some value\"\nmsg = f\"{sub!r} is incorrect\"\nraise RuntimeError(msg)\n\n\n\nWhich will produce a traceback like:\n\n\nTraceback (most recent call last):\n  File \"tmp.py\", line 3, in <module>\n    raise RuntimeError(msg)\nRuntimeError: 'Some value' is incorrect",
+        "example-after": "Given:"
+    }
+}

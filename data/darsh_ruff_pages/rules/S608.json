@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for strings that resemble SQL statements involved in some form\nstring building operation.",
+    "why-is-this-bad": "SQL injection is a common attack vector for web applications. Directly\ninterpolating user input into SQL statements should always be avoided.\nInstead, favor parameterized queries, in which the SQL statement is\nprovided separately from its parameters, as supported by psycopg3\nand other database drivers and ORMs.",
+    "example": "query = \"DELETE FROM foo WHERE id = '%s'\" % identifier",
+    "example-split": {
+        "example-before": "query = \"DELETE FROM foo WHERE id = '%s'\" % identifier",
+        "example-after": "query = \"DELETE FROM foo WHERE id = '%s'\" % identifier"
+    }
+}

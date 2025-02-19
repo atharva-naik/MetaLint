@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for import statements that import a private name (a name starting\nwith an underscore _) from another module.",
+    "why-is-this-bad": "PEP 8 states that names starting with an underscore are private. Thus,\nthey are not intended to be used outside of the module in which they are\ndefined.\n\n\nFurther, as private imports are not considered part of the public API, they\nare prone to unexpected changes, especially outside of semantic versioning.\n\n\nInstead, consider using the public API of the module.\n\n\nThis rule ignores private name imports that are exclusively used in type\nannotations. Ideally, types would be public; however, this is not always\npossible when using third-party libraries.",
+    "example": "from foo import _bar",
+    "example-split": {
+        "example-before": "from foo import _bar",
+        "example-after": "from foo import _bar"
+    }
+}

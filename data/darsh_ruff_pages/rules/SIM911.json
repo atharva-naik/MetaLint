@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for use of zip() to iterate over keys and values of a dictionary at once.",
+    "why-is-this-bad": "The dict type provides an .items() method which is faster and more readable.",
+    "example": "flag_stars = {\"USA\": 50, \"Slovenia\": 3, \"Panama\": 2, \"Australia\": 6}\n\nfor country, stars in zip(flag_stars.keys(), flag_stars.values()):\n    print(f\"{country}'s flag has {stars} stars.\")\n\n\n\nUse instead:\n\n\nflag_stars = {\"USA\": 50, \"Slovenia\": 3, \"Panama\": 2, \"Australia\": 6}\n\nfor country, stars in flag_stars.items():\n    print(f\"{country}'s flag has {stars} stars.\")",
+    "example-split": {
+        "example-before": "flag_stars = {\"USA\": 50, \"Slovenia\": 3, \"Panama\": 2, \"Australia\": 6}\n\nfor country, stars in zip(flag_stars.keys(), flag_stars.values()):\n    print(f\"{country}'s flag has {stars} stars.\")\n\n",
+        "example-after": "\nflag_stars = {\"USA\": 50, \"Slovenia\": 3, \"Panama\": 2, \"Australia\": 6}"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for dictionary comprehensions that use a static key, like a string\nliteral or a variable defined outside the comprehension.",
+    "why-is-this-bad": "Using a static key (like a string literal) in a dictionary comprehension\nis usually a mistake, as it will result in a dictionary with only one key,\ndespite the comprehension iterating over multiple values.",
+    "example": "data = [\"some\", \"Data\"]\n{\"key\": value.upper() for value in data}\n\n\n\nUse instead:\n\n\ndata = [\"some\", \"Data\"]\n{value: value.upper() for value in data}",
+    "example-split": {
+        "example-before": "data = [\"some\", \"Data\"]\n{\"key\": value.upper() for value in data}\n\n",
+        "example-after": "\ndata = [\"some\", \"Data\"]\n{value: value.upper() for value in data}"
+    }
+}

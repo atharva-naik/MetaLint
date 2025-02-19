@@ -1,0 +1,4 @@
+{
+    "what-it-does": "Checks for functions or methods with too many nested blocks.\n\n\nBy default, this rule allows up to five nested blocks.\nThis can be configured using the lint.pylint.max-nested-blocks option.",
+    "why-is-this-bad": "Functions or methods with too many nested blocks are harder to understand\nand maintain."
+}

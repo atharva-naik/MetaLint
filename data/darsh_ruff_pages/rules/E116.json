@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for unexpected indentation of comment.",
+    "why-is-this-bad": "Comments should match the indentation of the containing code block.",
+    "example": "a = 1\n    # b = 2\n\n\n\nUse instead:\n\n\na = 1\n# b = 2",
+    "example-split": {
+        "example-before": "a = 1\n    # b = 2\n\n",
+        "example-after": "\na = 1\n# b = 2"
+    }
+}

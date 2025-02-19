@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for submodule imports that are aliased to the submodule name.",
+    "why-is-this-bad": "Using the from keyword to import the submodule is more concise and\nreadable.",
+    "example": "import concurrent.futures as futures\n\n\n\nUse instead:\n\n\nfrom concurrent import futures",
+    "example-split": {
+        "example-before": "import concurrent.futures as futures\n\n",
+        "example-after": "\nfrom concurrent import futures"
+    }
+}

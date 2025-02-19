@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for unused variables in loops (e.g., for and while statements).",
+    "why-is-this-bad": "Defining a variable in a loop statement that is never used can confuse\nreaders.\n\n\nIf the variable is intended to be unused (e.g., to facilitate\ndestructuring of a tuple or other object), prefix it with an underscore\nto indicate the intent. Otherwise, remove the variable entirely.",
+    "example": "for i, j in foo:\n    bar(i)\n\n\n\nUse instead:\n\n\nfor i, _j in foo:\n    bar(i)",
+    "example-split": {
+        "example-before": "for i, j in foo:\n    bar(i)\n\n",
+        "example-after": "\nfor i, _j in foo:\n    bar(i)"
+    }
+}

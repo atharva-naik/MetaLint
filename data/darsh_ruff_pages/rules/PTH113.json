@@ -1,0 +1,4 @@
+{
+    "what-it-does": "Checks for uses of os.path.isfile.",
+    "why-is-this-bad": "pathlib offers a high-level API for path manipulation, as compared to\nthe lower-level API offered by os.path. When possible, using Path object\nmethods such as Path.is_file() can improve readability over the os.path\nmodule's counterparts (e.g., os.path.isfile())."
+}

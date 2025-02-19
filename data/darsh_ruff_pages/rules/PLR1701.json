@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for repeated isinstance calls on the same object.",
+    "why-is-this-bad": "Repeated isinstance calls on the same object can be merged into a\nsingle call.",
+    "example": "def is_number(x):\n    return isinstance(x, int) or isinstance(x, float) or isinstance(x, complex)\n\n\n\nUse instead:\n\n\ndef is_number(x):\n    return isinstance(x, (int, float, complex))\n\n\n\nOr, for Python 3.10 and later:\n\n\ndef is_number(x):\n    return isinstance(x, int | float | complex)",
+    "fix-safety": "This rule's fix is marked as unsafe on Python 3.10 and later, as combining\nmultiple isinstance calls with a binary operator (|) will fail at\nruntime if any of the operands are themselves tuples.\n\n\nFor example, given TYPES = (dict, list), then\nisinstance(None, TYPES | set | float) will raise a TypeError at runtime,\nwhile isinstance(None, set | float) will not.",
+    "example-split": {
+        "example-before": "def is_number(x):\n    return isinstance(x, int) or isinstance(x, float) or isinstance(x, complex)\n\n",
+        "example-after": "\ndef is_number(x):\n    return isinstance(x, (int, float, complex))"
+    }
+}

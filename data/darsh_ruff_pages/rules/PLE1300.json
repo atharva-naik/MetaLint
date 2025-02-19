@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for unsupported format types in format strings.",
+    "why-is-this-bad": "An invalid format string character will result in an error at runtime.",
+    "example": "# `z` is not a valid format type.\nprint(\"%z\" % \"1\")\n\nprint(\"{:z}\".format(\"1\"))",
+    "example-split": {
+        "example-before": "# `z` is not a valid format type.\nprint(\"%z\" % \"1\")\n\nprint(\"{:z}\".format(\"1\"))",
+        "example-after": "# `z` is not a valid format type.\nprint(\"%z\" % \"1\")"
+    }
+}

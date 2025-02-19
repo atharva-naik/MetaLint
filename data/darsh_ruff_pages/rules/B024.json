@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for abstract classes without abstract methods or properties.\nAnnotated but unassigned class variables are regarded as abstract.",
+    "why-is-this-bad": "Abstract base classes are used to define interfaces. If an abstract base\nclass has no abstract methods or properties, you may have forgotten\nto add an abstract method or property to the class,\nor omitted an @abstractmethod decorator.\n\n\nIf the class is not meant to be used as an interface, consider removing\nthe ABC base class from the class definition.",
+    "example": "from abc import ABC\nfrom typing import ClassVar\n\n\nclass Foo(ABC):\n    class_var: ClassVar[str] = \"assigned\"\n\n    def method(self):\n        bar()\n\n\n\nUse instead:\n\n\nfrom abc import ABC, abstractmethod\nfrom typing import ClassVar\n\n\nclass Foo(ABC):\n    class_var: ClassVar[str]  # unassigned\n\n    @abstractmethod\n    def method(self):\n        bar()",
+    "example-split": {
+        "example-before": "from abc import ABC\nfrom typing import ClassVar\n\n\nclass Foo(ABC):\n    class_var: ClassVar[str] = \"assigned\"\n\n    def method(self):\n        bar()\n\n",
+        "example-after": "\nfrom abc import ABC, abstractmethod\nfrom typing import ClassVar"
+    }
+}

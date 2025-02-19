@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for superfluous trailing whitespace.",
+    "why-is-this-bad": "According to PEP 8, \"avoid trailing whitespace anywhere. Because it\u2019s usually\ninvisible, it can be confusing\"",
+    "example": "spam(1) \\n#\n\n\n\nUse instead:\n\n\nspam(1)\\n#",
+    "example-split": {
+        "example-before": "spam(1) \\n#\n\n",
+        "example-after": "\nspam(1)\\n#"
+    }
+}

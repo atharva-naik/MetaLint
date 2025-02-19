@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the use of hardcoded temporary file or directory paths.",
+    "why-is-this-bad": "The use of hardcoded paths for temporary files can be insecure. If an\nattacker discovers the location of a hardcoded path, they can replace the\ncontents of the file or directory with a malicious payload.\n\n\nOther programs may also read or write contents to these hardcoded paths,\ncausing unexpected behavior.",
+    "example": "with open(\"/tmp/foo.txt\", \"w\") as file:\n    ...\n\n\n\nUse instead:\n\n\nimport tempfile\n\nwith tempfile.NamedTemporaryFile() as file:\n    ...",
+    "example-split": {
+        "example-before": "with open(\"/tmp/foo.txt\", \"w\") as file:\n    ...\n\n",
+        "example-after": "\nimport tempfile"
+    }
+}

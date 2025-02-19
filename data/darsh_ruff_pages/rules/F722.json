@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for forward annotations that include invalid syntax.",
+    "why-is-this-bad": "In Python, type annotations can be quoted as strings literals to enable\nreferences to types that have not yet been defined, known as \"forward\nreferences\".\n\n\nHowever, these quoted annotations must be valid Python expressions. The use\nof invalid syntax in a quoted annotation won't raise a SyntaxError, but\nwill instead raise an error when type checking is performed.",
+    "example": "def foo() -> \"/\": ...",
+    "example-split": {
+        "example-before": "def foo() -> \"/\": ...",
+        "example-after": "def foo() -> \"/\": ..."
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks that Django's @receiver decorator is listed first, prior to\nany other decorators.",
+    "why-is-this-bad": "Django's @receiver decorator is special in that it does not return\na wrapped function. Rather, @receiver connects the decorated function\nto a signal. If any other decorators are listed before @receiver,\nthe decorated function will not be connected to the signal.",
+    "example": "from django.dispatch import receiver\nfrom django.db.models.signals import post_save\n\n\n@transaction.atomic\n@receiver(post_save, sender=MyModel)\ndef my_handler(sender, instance, created, **kwargs):\n    pass\n\n\n\nUse instead:\n\n\nfrom django.dispatch import receiver\nfrom django.db.models.signals import post_save\n\n\n@receiver(post_save, sender=MyModel)\n@transaction.atomic\ndef my_handler(sender, instance, created, **kwargs):\n    pass",
+    "example-split": {
+        "example-before": "from django.dispatch import receiver\nfrom django.db.models.signals import post_save\n\n\n@transaction.atomic\n@receiver(post_save, sender=MyModel)\ndef my_handler(sender, instance, created, **kwargs):\n    pass\n\n",
+        "example-after": "\nfrom django.dispatch import receiver\nfrom django.db.models.signals import post_save"
+    }
+}

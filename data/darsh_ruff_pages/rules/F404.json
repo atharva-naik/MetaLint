@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for __future__ imports that are not located at the beginning of a\nfile.",
+    "why-is-this-bad": "Imports from __future__ must be placed the beginning of the file, before any\nother statements (apart from docstrings). The use of __future__ imports\nelsewhere is invalid and will result in a SyntaxError.",
+    "example": "from pathlib import Path\n\nfrom __future__ import annotations\n\n\n\nUse instead:\n\n\nfrom __future__ import annotations\n\nfrom pathlib import Path",
+    "example-split": {
+        "example-before": "from pathlib import Path\n\nfrom __future__ import annotations\n\n",
+        "example-after": "\nfrom __future__ import annotations"
+    }
+}

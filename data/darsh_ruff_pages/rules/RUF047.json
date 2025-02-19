@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for else clauses that only contains pass and ... statements.",
+    "why-is-this-bad": "Such an else clause does nothing and can be removed.",
+    "example": "if foo:\n    bar()\nelse:\n    pass\n\n\n\nUse instead:\n\n\nif foo:\n    bar()",
+    "example-split": {
+        "example-before": "if foo:\n    bar()\nelse:\n    pass\n\n",
+        "example-after": "\nif foo:\n    bar()"
+    }
+}

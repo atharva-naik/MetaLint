@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of datetime.datetime.strptime() that lead to naive\ndatetime objects.",
+    "why-is-this-bad": "Python datetime objects can be naive or timezone-aware. While an aware\nobject represents a specific moment in time, a naive object does not\ncontain enough information to unambiguously locate itself relative to other\ndatetime objects. Since this can lead to errors, it is recommended to\nalways use timezone-aware objects.\n\n\ndatetime.datetime.strptime() without %z returns a naive datetime\nobject. Follow it with .replace(tzinfo=<timezone>) or .astimezone().",
+    "example": "import datetime\n\ndatetime.datetime.strptime(\"2022/01/31\", \"%Y/%m/%d\")\n\n\n\nInstead, use .replace(tzinfo=<timezone>):\n\n\nimport datetime\n\ndatetime.datetime.strptime(\"2022/01/31\", \"%Y/%m/%d\").replace(\n    tzinfo=datetime.timezone.utc\n)\n\n\n\nOr, use .astimezone():\n\n\nimport datetime\n\ndatetime.datetime.strptime(\"2022/01/31\", \"%Y/%m/%d\").astimezone(datetime.timezone.utc)\n\n\n\nOn Python 3.11 and later, datetime.timezone.utc can be replaced with\ndatetime.UTC.",
+    "example-split": {
+        "example-before": "import datetime\n\ndatetime.datetime.strptime(\"2022/01/31\", \"%Y/%m/%d\")\n\n\n\nInstead, use .replace(tzinfo=<timezone>):\n\n\nimport datetime\n\ndatetime.datetime.strptime(\"2022/01/31\", \"%Y/%m/%d\").replace(\n    tzinfo=datetime.timezone.utc\n)\n\n\n\nOr, use .astimezone():\n\n\nimport datetime\n\ndatetime.datetime.strptime(\"2022/01/31\", \"%Y/%m/%d\").astimezone(datetime.timezone.utc)\n\n\n\nOn Python 3.11 and later, datetime.timezone.utc can be replaced with\ndatetime.UTC.",
+        "example-after": "import datetime"
+    }
+}

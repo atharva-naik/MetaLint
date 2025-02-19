@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for NamedTuple declarations that use functional syntax.",
+    "why-is-this-bad": "NamedTuple subclasses can be defined either through a functional syntax\n(Foo = NamedTuple(...)) or a class syntax (class Foo(NamedTuple): ...).\n\n\nThe class syntax is more readable and generally preferred over the\nfunctional syntax, which exists primarily for backwards compatibility\nwith collections.namedtuple.",
+    "example": "from typing import NamedTuple\n\nFoo = NamedTuple(\"Foo\", [(\"a\", int), (\"b\", str)])\n\n\n\nUse instead:\n\n\nfrom typing import NamedTuple\n\n\nclass Foo(NamedTuple):\n    a: int\n    b: str",
+    "fix-safety": "This rule's fix is marked as unsafe if there are any comments within the\nrange of the NamedTuple definition, as these will be dropped by the\nautofix.",
+    "example-split": {
+        "example-before": "from typing import NamedTuple\n\nFoo = NamedTuple(\"Foo\", [(\"a\", int), (\"b\", str)])\n\n",
+        "example-after": "\nfrom typing import NamedTuple"
+    }
+}

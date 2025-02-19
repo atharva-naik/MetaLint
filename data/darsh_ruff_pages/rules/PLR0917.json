@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for function definitions that include too many positional arguments.\n\n\nBy default, this rule allows up to five arguments, as configured by the\nlint.pylint.max-positional-args option.",
+    "why-is-this-bad": "Functions with many arguments are harder to understand, maintain, and call.\nThis is especially true for functions with many positional arguments, as\nproviding arguments positionally is more error-prone and less clear to\nreaders than providing arguments by name.\n\n\nConsider refactoring functions with many arguments into smaller functions\nwith fewer arguments, using objects to group related arguments, or migrating to\nkeyword-only arguments.",
+    "example": "def plot(x, y, z, color, mark, add_trendline): ...\n\n\nplot(1, 2, 3, \"r\", \"*\", True)\n\n\n\nUse instead:\n\n\ndef plot(x, y, z, *, color, mark, add_trendline): ...\n\n\nplot(1, 2, 3, color=\"r\", mark=\"*\", add_trendline=True)",
+    "example-split": {
+        "example-before": "def plot(x, y, z, color, mark, add_trendline): ...\n\n\nplot(1, 2, 3, \"r\", \"*\", True)\n\n",
+        "example-after": "\ndef plot(x, y, z, *, color, mark, add_trendline): ..."
+    }
+}

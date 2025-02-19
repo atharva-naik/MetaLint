@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for usage of datetime.datetime.today().",
+    "why-is-this-bad": "datetime objects are \"naive\" by default, in that they do not include\ntimezone information. \"Naive\" objects are easy to understand, but ignore\nsome aspects of reality, which can lead to subtle bugs. Timezone-aware\ndatetime objects are preferred, as they represent a specific moment in\ntime, unlike \"naive\" objects.\n\n\ndatetime.datetime.today() creates a \"naive\" object; instead, use\ndatetime.datetime.now(tz=...) to create a timezone-aware object.",
+    "example": "import datetime\n\ndatetime.datetime.today()\n\n\n\nUse instead:\n\n\nimport datetime\n\ndatetime.datetime.now(tz=datetime.timezone.utc)\n\n\n\nOr, for Python 3.11 and later:\n\n\nimport datetime\n\ndatetime.datetime.now(tz=datetime.UTC)",
+    "example-split": {
+        "example-before": "import datetime\n\ndatetime.datetime.today()\n\n",
+        "example-after": "\nimport datetime"
+    }
+}
