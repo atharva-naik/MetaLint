@@ -224,20 +224,22 @@ Idiom violations (if any):
 
 EG1 = {
     'code': 'D100',
+    # 'message': 'Missing docstring in public module',
+    'code_spans_and_lines': [{'line': 'import random', 'span': ''}],
     'fix': None,
-    'message': 'Missing docstring in public module',
-    'code_spans_and_lines': [{'line': 'import random', 'span': ''}]
 }
 EG2 = {
     'code': 'ANN204',
-    'fix': {'applicability': 'unsafe',
+    # 'message': 'Missing return type annotation for special method `__init__`',
+    'code_spans_and_lines': [{'line': '    def __init__(self, nodes, meanDegree, meanWeight):',
+    'span': '__init__'}],
+    'fix': {
+        # 'applicability': 'unsafe',
     'edits': [{'content': ' -> None',
     'code_spans_and_lines': [{'line': '    def __init__(self, nodes, meanDegree, meanWeight):',
         'span': ''}]}],
-    'message': 'Add return type annotation: `None`'},
-    'message': 'Missing return type annotation for special method `__init__`',
-    'code_spans_and_lines': [{'line': '    def __init__(self, nodes, meanDegree, meanWeight):',
-    'span': '__init__'}]
+    # 'message': 'Add return type annotation: `None`'
+    },
 }
 
 def convert_location_to_code_line(rec: dict, code_lines: list[str]): #stack_data: dict[str, dict]):

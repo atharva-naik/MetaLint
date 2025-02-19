@@ -1,13 +1,19 @@
+import os
 import sys
 import json
+import pathlib
 from tqdm import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
+module_path = str(pathlib.Path(os.path.abspath(__file__)).parent.parent.parent)
+sys.path.append()
+
+from src.datautils import read_jsonl
+
 if __name__ == "__main__":
     try: train_steps: int=int(sys.argv[1])
-    except IndexError: 
-        train_steps: int=4000
-    model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft/checkpoint-{train_steps}"
+    except IndexError: train_steps: int=2000
+    model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-v2-data/checkpoint-{train_steps}"
     #"Qwen/Qwen2.5-7B-Instruct-1M"
 
     model = AutoModelForCausalLM.from_pretrained(
@@ -17,10 +23,14 @@ if __name__ == "__main__":
     )
     tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-    test_data = json.load(open("data/ruff_meta_linting/test_v2.json"))
+    test_data = json.load(open("data/ruff_meta_linting/test_v3.json"))
     model_preds = []
-    write_path = f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{train_steps}.jsonl"
-    f = open(write_path, "w")
+    write_path = f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{train_steps}-v2-data.jsonl"
+    if not os.path.exists(write_path):
+        f = open(write_path, "w")
+    else: 
+        read_jsonl(write_path)
+
     for rec in tqdm(test_data):
         messages = [
             {"role": "user", "content": rec['messages'][0]['content']}
