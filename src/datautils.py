@@ -129,12 +129,25 @@ def download_github_file(repo_name, branch_name, file_path, access_token, commit
         else:
             raise Exception(f"Failed to download file. Status code: {response.status_code}, Remaining requests: {remaining_requests}")
 
-def read_jsonl(path: str, disable: bool=False):
+def read_jsonl(path: str, disable: bool=False) -> list[dict]:
     data = []
-    with open(path, "r") as f:
+    with open(path, "r", encoding='utf-8') as f:
         for line in tqdm(f, disable=disable):
             data.append(json.loads(line.strip()))
 
+    return data
+
+def read_jsonl_safe(file_path: str, disable: bool=False) -> list[dict]:
+    data = []
+    with open(file_path, 'r', encoding='utf-8') as f:
+        for line in tqdm(f, disable=disable):
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                data.append(json.loads(line))
+            except json.JSONDecodeError as e:
+                print(f"JSON decode error: {str(e)}")
     return data
 
 def write_jsonl(data, path: str):

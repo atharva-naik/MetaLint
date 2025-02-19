@@ -7,7 +7,7 @@ import pathlib
 import numpy as np
 from collections import defaultdict
 
-module_path = str(pathlib.Path(os.path.abspath(__file__)).parent.parent.parent)
+module_path = str(pathlib.Path(os.path.abspath(__file__)).parent.parent.parent.parent)
 sys.path.append(module_path)
 
 from src.datautils import read_jsonl
