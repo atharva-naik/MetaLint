@@ -193,11 +193,11 @@ if __name__ == "__main__":
         metrics_dict['fuzzy_span']['F'][code] = metrics['fuzzy_span_f1']
 
     # Print results
-    for metric_type in ['exact_line', 'exact_span', 'fuzzy_line', 'fuzzy_span']:
+    for metric_type in ['exact_line', 'fuzzy_line', 'exact_span', 'fuzzy_span']:
         print(f"\n{metric_type.upper()} METRICS:")
-        print("Precision:", metrics_dict[metric_type]['P'])
-        print("P:", np.mean(list(metrics_dict[metric_type]['P'].values())))
-        print("Recall:", metrics_dict[metric_type]['R'])
-        print("R:", np.mean(list(metrics_dict[metric_type]['R'].values())))
-        print("F1:", metrics_dict[metric_type]['F'])
-        print("F:", np.mean(list(metrics_dict[metric_type]['F'].values())))
+        # print("Precision:", metrics_dict[metric_type]['P'])
+        print(f"P: {np.mean(list(metrics_dict[metric_type]['P'].values())):.4f}")
+        # print("Recall:", metrics_dict[metric_type]['R'])
+        print(f"R: {np.mean(list(metrics_dict[metric_type]['R'].values())):.4f}")
+        # print("F1:", metrics_dict[metric_type]['F'])
+        print(f"F: {np.mean(list(metrics_dict[metric_type]['F'].values())):.4f}")
