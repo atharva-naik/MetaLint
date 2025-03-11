@@ -14,7 +14,7 @@ if __name__ == "__main__":
     try: train_steps: int=int(sys.argv[1])
     except IndexError: train_steps: int=2000
     # model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-v2-data/checkpoint-{train_steps}"
-    model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-idiom-hardness/checkpoint-{train_steps}"
+    model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-idiom-hardness-v3/checkpoint-{train_steps}"
     #"Qwen/Qwen2.5-7B-Instruct-1M"
 
     model = AutoModelForCausalLM.from_pretrained(
@@ -27,7 +27,7 @@ if __name__ == "__main__":
     # test_data = json.load(open("data/ruff_meta_linting/test_v3.json"))
     test_data = json.load(open("data/ruff_meta_linting/hardness_experiment/test.json"))
     model_preds = []
-    write_path = f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{train_steps}-idiom-hardness-no-packing.jsonl"
+    write_path = f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{train_steps}-idiom-hardness-v3.jsonl"
     skip_index_till: int = -1
     if not os.path.exists(write_path):
         f = open(write_path, "w")

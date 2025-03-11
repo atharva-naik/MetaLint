@@ -1,0 +1,152 @@
+# metrics for the meta linting task.
+# Coarse Evaluation - Idiom Detection (this basically casts the task as a multi-label classification task: is a given idiom violated/present in a code file.)
+
+import os
+import sys
+import json
+import pathlib
+import numpy as np
+from tqdm import tqdm
+from fuzzywuzzy import fuzz
+from collections import defaultdict
+from sklearn.metrics import precision_score, recall_score
+
+module_path = str(pathlib.Path(os.path.abspath(__file__)).parent.parent.parent.parent)
+sys.path.append(module_path)
+
+from src.datautils import read_jsonl
+IDIOMS_SEEN_IN_TRAIN = ["ERA001", "C901", "I001", "I002", "BLE001"] # 1 no transfer or common between train and test (NoT)
+IDIOMS_FROM_GROUP_SEEN_IN_TRAIN = ["F406", "F403", "F503", "F602", "F622", "E401", "E702", "E722", "E731", "E742"] # 2 near transfer (NeT)
+NEAR_TRANSFER_IDIOM_GROUP_MAPPING = {
+    "F406": ["F405"], # test: train
+    "F403": ['F405'],
+    "F503": ["F501","F502"],
+    "F602": ["F601"],
+    "F622": ["F621"],
+    "E401": ["E402"],
+    "E702": ["E701"],
+    "E722": ["E721"],
+    "E742": ["E741", "E743"],
+}
+NEAR_TRANSFER_TEST_IDIOM_GROUPS = list(NEAR_TRANSFER_IDIOM_GROUP_MAPPING.keys())
+NEAR_TRANSFER_TRAIN_IDIOM_GROUPS = ["F405","F501","F502","F601","F621","E402","E701","E721","E741","E743"]
+IDIOMS_NOT_SEEN_IN_TRAIN = ["ANN001", "ANN002", "ANN003", "ANN201", "ANN202", "ANN204", "ANN205", "ANN206"]+["ASYNC100", "ASYNC105", "ASYNC109", "ASYNC110", "ASYNC115", "ASYNC116", "ASYNC210", "ASYNC220", "ASYNC221", "ASYNC222", "ASYNC230", "ASYNC251"]+["S102", "S103", "S104", "S105", "S106", "S107", "S108", "S110", "S112", "S113", "S201", "S202", "S301", "S302", "S303"] # 3 far transfer: everything else. (FaT)
+FAULTY_RESULT_CTR = 0
+TOOL_GROUPS = {
+    "PyFlakes": ["F406", "F403", "F503", "F602", "F622"],
+    "pycodestyle": ["E401", "E702", "E722", "E731", "E742"], 
+    "Misc": ["ERA001", "C901", "I001", "I002", "BLE001"], # most frequent 'meta-linting' group in training data.
+    "flake8-annotations": ["ANN001", "ANN002", "ANN003", "ANN201", "ANN202", "ANN204", "ANN205", "ANN206"],
+    "flake8-async": ["ASYNC100", "ASYNC105", "ASYNC109", "ASYNC110", "ASYNC115", "ASYNC116", "ASYNC210", "ASYNC220", "ASYNC221", "ASYNC222", "ASYNC230", "ASYNC251"],
+    "flake8-bandit": ["S102", "S103", "S104", "S105", "S106", "S107", "S108", "S110", "S112", "S113", "S201", "S202", "S301", "S302", "S303"],
+}
+TOOL_TO_TOOL_GROUP = {}
+for tool_group_name, tools in TOOL_GROUPS.items():
+    for tool in tools:
+        TOOL_TO_TOOL_GROUP[tool] = tool_group_name
+TEST_SET_IDIOMS = []
+for tools in TOOL_GROUPS.values():
+    TEST_SET_IDIOMS.extend(tools)
+# print(TEST_SET_IDIOMS)
+IDIOMS_ABSENT_FROM_TEST_SET = set()
+
+def load_linter_results(text):
+    results = []
+    if text.strip() == "NO VIOLATIONS FOUND":
+        return []
+    else: 
+        for line in text.split("\n"):
+            line = line.strip()
+            try: 
+                result = json.loads(line)
+                if isinstance(result, dict):
+                    results.append(result)
+            except json.JSONDecodeError:
+                global FAULTY_RESULT_CTR
+                FAULTY_RESULT_CTR += 1
+
+    return results
+
+def compute_idiom_wise_freq_in_train(train_data):
+    tool_group_freq = defaultdict(lambda: 0)
+    tool_group_freq["all"] = 0
+    for index,rec in tqdm(enumerate(train_data)):
+        gt = load_linter_results(rec["messages"][1]['content'])
+        tools_seen = set()    
+        for violation in gt:
+            idiom_code = violation["code"]
+            tools_seen.add(idiom_code)
+        for tool in tools_seen:
+            tool_group_freq[TOOL_TO_TOOL_GROUP[tool]] += 1
+        if len(tools_seen) > 0: tool_group_freq['all'] += 1
+
+    tool_group_freq = dict(tool_group_freq)
+    tool_group_freq = {k: round(100*v/len(train_data),2) for k,v in tool_group_freq.items()}
+
+    print(tool_group_freq)
+
+def compute_idiom_wise_pr(data):
+    global IDIOMS_ABSENT_FROM_TEST_SET
+    idiom_binary_presence_pred = {idiom_code: [0 for _ in range(len(data))] for idiom_code in TEST_SET_IDIOMS}
+    idiom_binary_presence_gt = {idiom_code: [0 for _ in range(len(data))] for idiom_code in TEST_SET_IDIOMS}
+    idiom_precisions, idiom_recalls = {}, {}
+    # tool_group_freq = defaultdict(lambda: 0)
+    # tool_group_freq["all"] = 0
+    for index,rec in enumerate(data):
+        model_resp = load_linter_results(rec["model_response"])
+        gt = load_linter_results(rec["ground_truth"])
+        for violation in model_resp:
+            idiom_code = violation["code"]
+            if idiom_code in TEST_SET_IDIOMS:
+                idiom_binary_presence_pred[idiom_code][index] = 1
+
+        # tools_seen = set()    
+        for violation in gt:
+            idiom_code = violation["code"]
+            idiom_binary_presence_gt[idiom_code][index] = 1
+            # tools_seen.add(idiom_code)
+    #     for tool in tools_seen:
+    #         tool_group_freq[TOOL_TO_TOOL_GROUP[tool]] += 1
+    #     if len(tools_seen) > 0: tool_group_freq['all'] += 1
+
+    # tool_group_freq = dict(tool_group_freq)
+    # tool_group_freq = {k: round(100*v/len(data),2) for k,v in tool_group_freq.items()}
+    for idiom_code in TEST_SET_IDIOMS:
+        idiom_precisions[idiom_code] = precision_score(idiom_binary_presence_gt[idiom_code], idiom_binary_presence_pred[idiom_code], zero_division=0) # NaN output for undefined recall (no GT present for several idioms).
+        if sum(idiom_binary_presence_gt[idiom_code]) == 0: 
+            IDIOMS_ABSENT_FROM_TEST_SET.add(idiom_code)
+            # print(idiom_code) 
+        idiom_recalls[idiom_code] = recall_score(idiom_binary_presence_gt[idiom_code], idiom_binary_presence_pred[idiom_code], zero_division=0) # NaN output for undefined recall (no GT present for several idioms).
+    # print(tool_group_freq)
+    return idiom_precisions, idiom_recalls
+
+def compute_f_score(p, r):
+    if p + r == 0: return 0
+    return 2*p*r/(p+r)
+
+def compute_aggregate_metrics(idiom_precisions, idiom_recalls):
+    print("Overall Metrics:")
+    P = np.mean([v for k,v in idiom_precisions.items() if k not in IDIOMS_ABSENT_FROM_TEST_SET]) # this is the only change from our prior evaluation code.
+    R = np.mean([v for k,v in idiom_recalls.items() if k not in IDIOMS_ABSENT_FROM_TEST_SET])
+    F = compute_f_score(P, R)
+    print(f"P: {P:.4f} R: {R:.4f} F: {F:.4f}")
+    for tool_group_name, tool_group_tools in TOOL_GROUPS.items():
+        if tool_group_name in ["Misc", "flake8-async"]:
+            for k,p in idiom_precisions.items():
+                if k not in IDIOMS_ABSENT_FROM_TEST_SET and k in tool_group_tools:
+                    r = idiom_recalls[k]
+                    f = compute_f_score(p, r)
+                    print(f"\x1b[34;1m{k}\x1b[0m: P={p:.4f} R={r:.4f} F={f:.4f}")
+        P = np.mean([v for k,v in idiom_precisions.items() if k not in IDIOMS_ABSENT_FROM_TEST_SET and k in tool_group_tools])
+        R = np.mean([v for k,v in idiom_recalls.items() if k not in IDIOMS_ABSENT_FROM_TEST_SET and k in tool_group_tools])
+        F = compute_f_score(P, R)
+        print(f"{tool_group_name} P: {P:.4f} R: {R:.4f} F: {F:.4f}")
+
+# main
+if __name__ == "__main__":
+    steps = sys.argv[1]
+    # data = read_jsonl(f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}-idiom-hardness-no-packing.jsonl")
+    test_preds = read_jsonl(f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}-idiom-hardness-v3.jsonl")
+    # compute_idiom_wise_freq_in_train(train_data=json.load(open(f"./data/ruff_meta_linting/hardness_experiment/train.json")))
+    idiom_precisions, idiom_recalls = compute_idiom_wise_pr(test_preds)
+    compute_aggregate_metrics(idiom_precisions, idiom_recalls)

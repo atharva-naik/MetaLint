@@ -439,7 +439,7 @@ class MetaLinterDataset:
             code_file_id_to_linter_data.update(shard_linter_data)
             # DEBUG:
             CTR += 1 
-            if CTR == 40: break
+            # if CTR == 40: break
         
         return code_file_id_to_linter_data
 
