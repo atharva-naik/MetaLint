@@ -85,6 +85,44 @@ def compute_idiom_wise_freq_in_train(train_data):
 
     print(tool_group_freq)
 
+def compute_f_score(p, r):
+    if p + r == 0: return 0
+    return 2*p*r/(p+r)
+
+def compute_overall_metric(data):
+    p_line, r_line, p_span, r_span = [], [], [], []
+
+    for index,rec in tqdm(enumerate(data)):
+        model_resp = load_linter_results(rec["model_response"])
+        gt = load_linter_results(rec["ground_truth"])
+        if len(gt) == 0: continue # have to skip because nothing to align with.
+        if len(model_resp) == 0: 
+            p_line.append(0)
+            r_line.append(0)
+            p_span.append(0)
+            r_span.append(0)
+            continue
+        span_scores = np.zeros((len(model_resp), len(gt)))
+        line_scores = np.zeros((len(model_resp), len(gt)))
+        for i,model_violation in enumerate(model_resp):
+            for j,gt_violation in enumerate(gt):
+                code_spans_and_lines = model_violation.get("code_spans_and_lines",[{}])
+                span_scores[i][j] = int(model_violation["code"] == gt_violation["code"] and code_spans_and_lines[0].get("span","") == gt_violation["code_spans_and_lines"][0]["span"])
+                line_scores[i][j] = int(model_violation["code"] == gt_violation["code"] and code_spans_and_lines[0].get("line","") == gt_violation["code_spans_and_lines"][0]["line"])
+        p_line.append((line_scores.sum(1)>=1).sum().item()/len(model_resp))
+        r_line.append((line_scores.sum(0)>=1).sum().item()/len(gt))
+        p_span.append((span_scores.sum(1)>=1).sum().item()/len(model_resp))
+        r_span.append((span_scores.sum(0)>=1).sum().item()/len(gt))
+    
+    p_line = np.mean(p_line).item()
+    r_line = np.mean(r_line).item()
+    f_line = compute_f_score(p_line, r_line)
+    p_span = np.mean(p_span).item()
+    r_span = np.mean(r_span).item()
+    f_span = compute_f_score(p_span, r_span)
+
+    return {"line": {"P": p_line, "R": r_line, "F": f_line}, "span": {"P": p_span, "R": r_span, "F": f_span}}
+
 def compute_idiom_wise_pr(data):
     global IDIOMS_ABSENT_FROM_TEST_SET
     idiom_binary_presence_pred = {idiom_code: [0 for _ in range(len(data))] for idiom_code in TEST_SET_IDIOMS}
@@ -120,12 +158,8 @@ def compute_idiom_wise_pr(data):
     # print(tool_group_freq)
     return idiom_precisions, idiom_recalls
 
-def compute_f_score(p, r):
-    if p + r == 0: return 0
-    return 2*p*r/(p+r)
-
 def compute_aggregate_metrics(idiom_precisions, idiom_recalls):
-    print("Overall Metrics:")
+    print("Overall Detection Metrics:")
     P = np.mean([v for k,v in idiom_precisions.items() if k not in IDIOMS_ABSENT_FROM_TEST_SET]) # this is the only change from our prior evaluation code.
     R = np.mean([v for k,v in idiom_recalls.items() if k not in IDIOMS_ABSENT_FROM_TEST_SET])
     F = compute_f_score(P, R)
@@ -136,7 +170,7 @@ def compute_aggregate_metrics(idiom_precisions, idiom_recalls):
                 if k not in IDIOMS_ABSENT_FROM_TEST_SET and k in tool_group_tools:
                     r = idiom_recalls[k]
                     f = compute_f_score(p, r)
-                    print(f"\x1b[34;1m{k}\x1b[0m: P={p:.4f} R={r:.4f} F={f:.4f}")
+                    # print(f"\x1b[34;1m{k}\x1b[0m: P={p:.4f} R={r:.4f} F={f:.4f}")
         P = np.mean([v for k,v in idiom_precisions.items() if k not in IDIOMS_ABSENT_FROM_TEST_SET and k in tool_group_tools])
         R = np.mean([v for k,v in idiom_recalls.items() if k not in IDIOMS_ABSENT_FROM_TEST_SET and k in tool_group_tools])
         F = compute_f_score(P, R)
@@ -146,7 +180,15 @@ def compute_aggregate_metrics(idiom_precisions, idiom_recalls):
 if __name__ == "__main__":
     steps = sys.argv[1]
     # data = read_jsonl(f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}-idiom-hardness-no-packing.jsonl")
-    test_preds = read_jsonl(f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}-idiom-hardness-v3.jsonl")
+    # test_preds = read_jsonl(f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}-idiom-hardness-v3.jsonl")
+    test_preds = read_jsonl(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4.jsonl")
     # compute_idiom_wise_freq_in_train(train_data=json.load(open(f"./data/ruff_meta_linting/hardness_experiment/train.json")))
     idiom_precisions, idiom_recalls = compute_idiom_wise_pr(test_preds)
     compute_aggregate_metrics(idiom_precisions, idiom_recalls)
+    
+    print("Overall Metric (Detection+Violation)")
+    overall_det_loc_metric = compute_overall_metric(test_preds)
+    for k,v in overall_det_loc_metric["span"].items():
+        print(f"span: {k}={v:.4f}")
+    for k,v in overall_det_loc_metric["line"].items():
+        print(f"line: {k}={v:.4f}")
