@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of weak or broken cryptographic hash functions in\nhashlib and crypt libraries.",
+    "why-is-this-bad": "Weak or broken cryptographic hash functions may be susceptible to\ncollision attacks (where two different inputs produce the same hash) or\npre-image attacks (where an attacker can find an input that produces a\ngiven hash). This can lead to security vulnerabilities in applications\nthat rely on these hash functions.\n\n\nAvoid using weak or broken cryptographic hash functions in security\ncontexts. Instead, use a known secure hash function such as SHA256.",
+    "example": "import hashlib\n\n\ndef certificate_is_valid(certificate: bytes, known_hash: str) -> bool:\n    hash = hashlib.md5(certificate).hexdigest()\n    return hash == known_hash\n\n\n\nUse instead:\n\n\nimport hashlib\n\n\ndef certificate_is_valid(certificate: bytes, known_hash: str) -> bool:\n    hash = hashlib.sha256(certificate).hexdigest()\n    return hash == known_hash",
+    "example-split": {
+        "example-before": "import hashlib\n\n\ndef certificate_is_valid(certificate: bytes, known_hash: str) -> bool:\n    hash = hashlib.md5(certificate).hexdigest()\n    return hash == known_hash\n\n",
+        "example-after": "\nimport hashlib"
+    }
+}

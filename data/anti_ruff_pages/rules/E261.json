@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks if inline comments are separated by at least two spaces.",
+    "why-is-this-bad": "An inline comment is a comment on the same line as a statement.\n\n\nPer PEP 8, inline comments should be separated by at least two spaces from\nthe preceding statement.",
+    "example": "x = x + 1 # Increment x\n\n\n\nUse instead:\n\n\nx = x + 1  # Increment x\nx = x + 1    # Increment x",
+    "example-split": {
+        "example-before": "x = x + 1 # Increment x\n\n",
+        "example-after": "\nx = x + 1  # Increment x\nx = x + 1    # Increment x"
+    }
+}

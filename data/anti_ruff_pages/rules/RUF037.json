@@ -1,0 +1,4 @@
+{
+    "what-it-does": "Checks for usages of collections.deque that have an empty iterable as the first argument.",
+    "why-is-this-bad": "It's unnecessary to use an empty literal as a deque's iterable, since this is already the default behavior."
+}

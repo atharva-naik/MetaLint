@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for functions with a high McCabe complexity.",
+    "why-is-this-bad": "The McCabe complexity of a function is a measure of the complexity of\nthe control flow graph of the function. It is calculated by adding\none to the number of decision points in the function. A decision\npoint is a place in the code where the program has a choice of two\nor more paths to follow.\n\n\nFunctions with a high complexity are hard to understand and maintain.",
+    "example": "def foo(a, b, c):\n    if a:\n        if b:\n            if c:\n                return 1\n            else:\n                return 2\n        else:\n            return 3\n    else:\n        return 4\n\n\n\nUse instead:\n\n\ndef foo(a, b, c):\n    if not a:\n        return 4\n    if not b:\n        return 3\n    if not c:\n        return 2\n    return 1",
+    "example-split": {
+        "example-before": "def foo(a, b, c):\n    if a:\n        if b:\n            if c:\n                return 1\n            else:\n                return 2\n        else:\n            return 3\n    else:\n        return 4\n\n",
+        "example-after": "\ndef foo(a, b, c):\n    if not a:\n        return 4\n    if not b:\n        return 3\n    if not c:\n        return 2\n    return 1"
+    }
+}

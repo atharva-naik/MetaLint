@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for excessive logging of exception objects.",
+    "why-is-this-bad": "When logging exceptions via logging.exception, the exception object\nis logged automatically. Including the exception object in the log\nmessage is redundant and can lead to excessive logging.",
+    "example": "try:\n    ...\nexcept ValueError as e:\n    logger.exception(f\"Found an error: {e}\")\n\n\n\nUse instead:\n\n\ntry:\n    ...\nexcept ValueError:\n    logger.exception(\"Found an error\")",
+    "example-split": {
+        "example-before": "try:\n    ...\nexcept ValueError as e:\n    logger.exception(f\"Found an error: {e}\")\n\n",
+        "example-after": "\ntry:\n    ...\nexcept ValueError:\n    logger.exception(\"Found an error\")"
+    }
+}

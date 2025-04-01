@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Check for chained boolean operations that can be simplified.",
+    "why-is-this-bad": "Refactoring the code will improve readability for these cases.",
+    "example": "a = int(input())\nb = int(input())\nc = int(input())\nif a < b and b < c:\n    pass\n\n\n\nUse instead:\n\n\na = int(input())\nb = int(input())\nc = int(input())\nif a < b < c:\n    pass",
+    "example-split": {
+        "example-before": "a = int(input())\nb = int(input())\nc = int(input())\nif a < b and b < c:\n    pass\n\n",
+        "example-after": "\na = int(input())\nb = int(input())\nc = int(input())\nif a < b < c:\n    pass"
+    }
+}

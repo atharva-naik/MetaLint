@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for uses of assert False.",
+    "why-is-this-bad": "Python removes assert statements when running in optimized mode\n(python -O), making assert False an unreliable means of\nraising an AssertionError.\n\n\nInstead, raise an AssertionError directly.",
+    "example": "assert False\n\n\n\nUse instead:\n\n\nraise AssertionError",
+    "fix-safety": "This rule's fix is marked as unsafe, as changing an assert to a\nraise will change the behavior of your program when running in\noptimized mode (python -O).",
+    "example-split": {
+        "example-before": "assert False\n\n",
+        "example-after": "\nraise AssertionError"
+    }
+}

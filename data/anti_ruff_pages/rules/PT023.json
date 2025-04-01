@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for argument-free @pytest.mark.<marker>() decorators with or\nwithout parentheses, depending on the lint.flake8-pytest-style.mark-parentheses\nsetting.\n\n\nThe rule defaults to removing unnecessary parentheses,\nto match the documentation of the official pytest projects.",
+    "why-is-this-bad": "If a @pytest.mark.<marker>() doesn't take any arguments, the parentheses are\noptional.\n\n\nEither removing those unnecessary parentheses or requiring them for all\nfixtures is fine, but it's best to be consistent.",
+    "example": "import pytest\n\n\n@pytest.mark.foo\ndef test_something(): ...\n\n\n\nUse instead:\n\n\nimport pytest\n\n\n@pytest.mark.foo()\ndef test_something(): ...",
+    "example-split": {
+        "example-before": "import pytest\n\n\n@pytest.mark.foo\ndef test_something(): ...\n\n",
+        "example-after": "\nimport pytest"
+    }
+}

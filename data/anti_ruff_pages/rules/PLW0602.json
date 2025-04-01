@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for global variables that are not assigned a value in the current\nscope.",
+    "why-is-this-bad": "The global keyword allows an inner scope to modify a variable declared\nin the outer scope. If the variable is not modified within the inner scope,\nthere is no need to use global.",
+    "example": "DEBUG = True\n\n\ndef foo():\n    global DEBUG\n    if DEBUG:\n        print(\"foo() called\")\n    ...\n\n\n\nUse instead:\n\n\nDEBUG = True\n\n\ndef foo():\n    if DEBUG:\n        print(\"foo() called\")\n    ...",
+    "example-split": {
+        "example-before": "DEBUG = True\n\n\ndef foo():\n    global DEBUG\n    if DEBUG:\n        print(\"foo() called\")\n    ...\n\n",
+        "example-after": "\nDEBUG = True"
+    }
+}

@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import pathlib
+import argparse
 from tqdm import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -10,24 +11,42 @@ sys.path.append(module_path)
 
 from src.datautils import read_jsonl
 
-if __name__ == "__main__":
-    try: train_steps: int=int(sys.argv[1])
-    except IndexError: train_steps: int=2000
-    # model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-v2-data/checkpoint-{train_steps}"
-    model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4/checkpoint-{train_steps}"
-    #"Qwen/Qwen2.5-7B-Instruct-1M"
+def get_args():
+    parser = argparse.ArgumentParser(description="Run inference with different settings.")
+    parser.add_argument("--cot", action="store_true", help="Run inference with Chain-of-Thought (CoT) prompting.")
+    parser.add_argument("--lineno", action="store_true", help="Include line numbers in the code prompt during inference.")
+    parser.add_argument("--step", type=int, default=2000, help="Number of training steps the model has undergone (default: 2000).")
+    
+    return parser.parse_args()
 
+if __name__ == "__main__":
+    args = get_args()
+    train_steps = args.step
+    cot = args.cot
+    lineno = args.lineno
+    # model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-v2-data/checkpoint-{train_steps}"
+    if cot == True: 
+        write_path = f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{train_steps}_transfer_v4_cot.jsonl"
+        model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-cot/checkpoint-{train_steps}"
+    elif lineno:
+        write_path = f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{train_steps}_transfer_v4_lineno.jsonl"
+        model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-lineno/checkpoint-{train_steps}"        
+    else: 
+        write_path = f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{train_steps}_transfer_v4.jsonl"
+        model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4/checkpoint-{train_steps}"
+    #"Qwen/Qwen2.5-7B-Instruct-1M"
     model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        torch_dtype="auto",
+        model_name, torch_dtype="auto",
         device_map="auto"
     )
     tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     # test_data = json.load(open("data/ruff_meta_linting/test_v3.json"))
-    test_data = json.load(open("data/ruff_meta_linting/hardness_experiment/test.json"))
+    if lineno: test_data = json.load(open("data/ruff_meta_linting/test_v4_new_format_with_lineno.json"))
+    else: test_data = json.load(open("data/ruff_meta_linting/test_v4.json"))
+    # test_data = json.load(open("data/ruff_meta_linting/hardness_experiment/test.json"))
     model_preds = []
-    write_path = f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{train_steps}_transfer_v4.jsonl"
+    
     skip_index_till: int = -1
     if not os.path.exists(write_path):
         f = open(write_path, "w")

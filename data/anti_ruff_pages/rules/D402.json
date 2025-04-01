@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for function docstrings that include the function's signature in\nthe summary line.",
+    "why-is-this-bad": "PEP 257 recommends against including a function's signature in its\ndocstring. Instead, consider using type annotations as a form of\ndocumentation for the function's parameters and return value.\n\n\nThis rule may not apply to all projects; its applicability is a matter of\nconvention. By default, this rule is enabled when using the google and\npep257 conventions, and disabled when using the numpy convention.",
+    "example": "def foo(a, b):\n    \"\"\"foo(a: int, b: int) -> list[int]\"\"\"\n\n\n\nUse instead:\n\n\ndef foo(a: int, b: int) -> list[int]:\n    \"\"\"Return a list of a and b.\"\"\"",
+    "example-split": {
+        "example-before": "def foo(a, b):\n    \"\"\"foo(a: int, b: int) -> list[int]\"\"\"\n\n",
+        "example-after": "\ndef foo(a: int, b: int) -> list[int]:\n    \"\"\"Return a list of a and b.\"\"\""
+    }
+}

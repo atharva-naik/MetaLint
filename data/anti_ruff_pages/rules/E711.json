@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for comparisons to None which are not using the is operator.",
+    "why-is-this-bad": "According to PEP 8, \"Comparisons to singletons like None should always be done with\nis or is not, never the equality operators.\"",
+    "example": "if arg != None:\n    pass\nif None == arg:\n    pass\n\n\n\nUse instead:\n\n\nif arg is not None:\n    pass",
+    "fix-safety": "This rule's fix is marked as unsafe, as it may alter runtime behavior when\nused with libraries that override the ==/__eq__ or !=/__ne__ operators.\nIn these cases, is/is not may not be equivalent to ==/!=. For more\ninformation, see this issue.",
+    "example-split": {
+        "example-before": "if arg != None:\n    pass\nif None == arg:\n    pass\n\n",
+        "example-after": "\nif arg is not None:\n    pass"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for string literals that are explicitly concatenated (using the\n+ operator).",
+    "why-is-this-bad": "For string literals that wrap across multiple lines, implicit string\nconcatenation within parentheses is preferred over explicit\nconcatenation using the + operator, as the former is more readable.",
+    "example": "z = (\n    \"The quick brown fox jumps over the lazy \"\n    + \"dog\"\n)\n\n\n\nUse instead:\n\n\nz = (\n    \"The quick brown fox jumps over the lazy \"\n    \"dog\"\n)",
+    "example-split": {
+        "example-before": "z = (\n    \"The quick brown fox jumps over the lazy \"\n    + \"dog\"\n)\n\n",
+        "example-after": "\nz = (\n    \"The quick brown fox jumps over the lazy \"\n    \"dog\"\n)"
+    }
+}

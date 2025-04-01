@@ -50,11 +50,16 @@ for tools in TOOL_GROUPS.values():
 # print(TEST_SET_IDIOMS)
 IDIOMS_ABSENT_FROM_TEST_SET = set()
 
+IDIOMS_FOUND_HEADER = "## Idiom Violations Found"
 def load_linter_results(text):
     results = []
     if text.strip() == "NO VIOLATIONS FOUND":
         return []
     else: 
+        if IDIOMS_FOUND_HEADER in text:
+            text = text.split(IDIOMS_FOUND_HEADER)[-1].strip()
+            # print(text)
+            # exit()
         for line in text.split("\n"):
             line = line.strip()
             try: 
@@ -89,26 +94,38 @@ def compute_f_score(p, r):
     if p + r == 0: return 0
     return 2*p*r/(p+r)
 
-def compute_overall_metric(data):
+def compute_overall_metric(data, match_code: bool=True):
     p_line, r_line, p_span, r_span = [], [], [], []
 
     for index,rec in tqdm(enumerate(data)):
         model_resp = load_linter_results(rec["model_response"])
         gt = load_linter_results(rec["ground_truth"])
-        if len(gt) == 0: continue # have to skip because nothing to align with.
-        if len(model_resp) == 0: 
+
+        # edge cases.
+        if len(model_resp) == 0 and len(gt) == 0: 
+            # we skip cases where both are "NO VIOLATION" for the metric (but not for the reward).
+            # the reason we skip these for the metric is because they tend to overinflate the scores, since "NO VIOLATION" is pretty common.
+            continue
+        elif len(model_resp) == 0 or len(gt) == 0: 
             p_line.append(0)
             r_line.append(0)
             p_span.append(0)
             r_span.append(0)
             continue
+
         span_scores = np.zeros((len(model_resp), len(gt)))
         line_scores = np.zeros((len(model_resp), len(gt)))
         for i,model_violation in enumerate(model_resp):
             for j,gt_violation in enumerate(gt):
                 code_spans_and_lines = model_violation.get("code_spans_and_lines",[{}])
-                span_scores[i][j] = int(model_violation["code"] == gt_violation["code"] and code_spans_and_lines[0].get("span","") == gt_violation["code_spans_and_lines"][0]["span"])
-                line_scores[i][j] = int(model_violation["code"] == gt_violation["code"] and code_spans_and_lines[0].get("line","") == gt_violation["code_spans_and_lines"][0]["line"])
+                if match_code:
+                    span_scores[i][j] = int(model_violation.get("code","") == gt_violation["code"] and code_spans_and_lines[0].get("span","") == gt_violation["code_spans_and_lines"][0]["span"])
+                    line_scores[i][j] = int(model_violation.get("code","") == gt_violation["code"] and code_spans_and_lines[0].get("line","") == gt_violation["code_spans_and_lines"][0]["line"])
+                else:
+                    if isinstance(code_spans_and_lines[0], str):
+                        code_spans_and_lines[0] = {"line": code_spans_and_lines[0]}
+                    span_scores[i][j] = int(code_spans_and_lines[0].get("span","") == gt_violation["code_spans_and_lines"][0]["span"])
+                    line_scores[i][j] = int(code_spans_and_lines[0].get("line","") == gt_violation["code_spans_and_lines"][0]["line"])
         p_line.append((line_scores.sum(1)>=1).sum().item()/len(model_resp))
         r_line.append((line_scores.sum(0)>=1).sum().item()/len(gt))
         p_span.append((span_scores.sum(1)>=1).sum().item()/len(model_resp))
@@ -123,6 +140,21 @@ def compute_overall_metric(data):
 
     return {"line": {"P": p_line, "R": r_line, "F": f_line}, "span": {"P": p_span, "R": r_span, "F": f_span}}
 
+def compute_meta_task_conf_mat(preds, test_data):
+    meta_task_instr_follow_rate = len(preds)
+    for pred_rec, test_rec in zip(preds, test_data):
+        meta_task_idiom_codes = test_rec["id"].split("_")[0].strip().split("-")
+        model_resp = load_linter_results(pred_rec["model_response"])
+        pred_idiom_not_in_prompt = False
+        for violation in model_resp:
+            if violation.get("code","") not in meta_task_idiom_codes: 
+                pred_idiom_not_in_prompt = True
+        if pred_idiom_not_in_prompt:
+            meta_task_instr_follow_rate -= 1
+    meta_task_instr_follow_rate /= len(preds)
+
+    return meta_task_instr_follow_rate
+
 def compute_idiom_wise_pr(data):
     global IDIOMS_ABSENT_FROM_TEST_SET
     idiom_binary_presence_pred = {idiom_code: [0 for _ in range(len(data))] for idiom_code in TEST_SET_IDIOMS}
@@ -134,12 +166,14 @@ def compute_idiom_wise_pr(data):
         model_resp = load_linter_results(rec["model_response"])
         gt = load_linter_results(rec["ground_truth"])
         for violation in model_resp:
+            if "code" not in violation: continue
             idiom_code = violation["code"]
             if idiom_code in TEST_SET_IDIOMS:
                 idiom_binary_presence_pred[idiom_code][index] = 1
 
         # tools_seen = set()    
         for violation in gt:
+            if "code" not in violation: continue
             idiom_code = violation["code"]
             idiom_binary_presence_gt[idiom_code][index] = 1
             # tools_seen.add(idiom_code)
@@ -181,12 +215,28 @@ if __name__ == "__main__":
     steps = sys.argv[1]
     # data = read_jsonl(f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}-idiom-hardness-no-packing.jsonl")
     # test_preds = read_jsonl(f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}-idiom-hardness-v3.jsonl")
+    
     test_preds = read_jsonl(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4.jsonl")
+    # test_preds = read_jsonl(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_cot.jsonl")
+    test_data = json.load(open("data/ruff_meta_linting/test_v4.json"))
+    
+    # test_preds = read_jsonl(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}-v2-data.jsonl")
+    # test_data = json.load(open("data/ruff_meta_linting/test_v2.json"))
+    
     # compute_idiom_wise_freq_in_train(train_data=json.load(open(f"./data/ruff_meta_linting/hardness_experiment/train.json")))
     idiom_precisions, idiom_recalls = compute_idiom_wise_pr(test_preds)
     compute_aggregate_metrics(idiom_precisions, idiom_recalls)
-    
-    print("Overall Metric (Detection+Violation)")
+    meta_task_instr_follow_rate = compute_meta_task_conf_mat(preds=test_preds, test_data=test_data)
+    print(f"\x1b[34;1minstruction follow rate: {meta_task_instr_follow_rate:.4f}\x1b[0m")
+
+    print("\n\x1b[31;1mViolation Only (No Detection)\x1b[0m")
+    overall_det_loc_metric = compute_overall_metric(test_preds, match_code=False)
+    for k,v in overall_det_loc_metric["span"].items():
+        print(f"span: {k}={v:.4f}")
+    for k,v in overall_det_loc_metric["line"].items():
+        print(f"line: {k}={v:.4f}")
+
+    print("\n\x1b[32;1mOverall Metric (Detection+Violation)\x1b[0m")
     overall_det_loc_metric = compute_overall_metric(test_preds)
     for k,v in overall_det_loc_metric["span"].items():
         print(f"span: {k}={v:.4f}")

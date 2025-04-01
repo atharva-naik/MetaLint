@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for f-strings that do not contain any placeholder expressions.",
+    "why-is-this-bad": "f-strings are a convenient way to format strings, but they are not\nnecessary if there are no placeholder expressions to format. In this\ncase, a regular string should be used instead, as an f-string without\nplaceholders can be confusing for readers, who may expect such a\nplaceholder to be present.\n\n\nAn f-string without any placeholders could also indicate that the\nauthor forgot to add a placeholder expression.",
+    "example": "f\"Hello, world!\"\n\n\n\nUse instead:\n\n\n\"Hello, world!\"\n\n\n\nNote: to maintain compatibility with PyFlakes, this rule only flags\nf-strings that are part of an implicit concatenation if none of the\nf-string segments contain placeholder expressions.\n\n\nFor example:\n\n\n# Will not be flagged.\n(\n    f\"Hello,\"\n    f\" {name}!\"\n)\n\n# Will be flagged.\n(\n    f\"Hello,\"\n    f\" World!\"\n)\n\n\n\nSee #10885 for more.",
+    "example-split": {
+        "example-before": "f\"Hello, world!\"\n\n",
+        "example-after": "\n\"Hello, world!\""
+    }
+}

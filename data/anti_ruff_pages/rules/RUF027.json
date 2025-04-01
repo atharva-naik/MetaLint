@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Searches for strings that look like they were meant to be f-strings, but are missing an f prefix.",
+    "why-is-this-bad": "Expressions inside curly braces are only evaluated if the string has an f prefix.",
+    "example": "name = \"Sarah\"\nday_of_week = \"Tuesday\"\nprint(\"Hello {name}! It is {day_of_week} today!\")\n\n\n\nUse instead:\n\n\nname = \"Sarah\"\nday_of_week = \"Tuesday\"\nprint(f\"Hello {name}! It is {day_of_week} today!\")",
+    "example-split": {
+        "example-before": "name = \"Sarah\"\nday_of_week = \"Tuesday\"\nprint(\"Hello {name}! It is {day_of_week} today!\")\n\n",
+        "example-after": "\nname = \"Sarah\"\nday_of_week = \"Tuesday\"\nprint(f\"Hello {name}! It is {day_of_week} today!\")"
+    }
+}

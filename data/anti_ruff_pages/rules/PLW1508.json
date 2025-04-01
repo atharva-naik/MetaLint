@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for os.getenv calls with invalid default values.",
+    "why-is-this-bad": "If an environment variable is set, os.getenv will return its value as\na string. If the environment variable is not set, os.getenv will\nreturn None, or the default value if one is provided.\n\n\nIf the default value is not a string or None, then it will be\ninconsistent with the return type of os.getenv, which can lead to\nconfusing behavior.",
+    "example": "import os\n\nint(os.getenv(\"FOO\", 1))\n\n\n\nUse instead:\n\n\nimport os\n\nint(os.getenv(\"FOO\", \"1\"))",
+    "example-split": {
+        "example-before": "import os\n\nint(os.getenv(\"FOO\", 1))\n\n",
+        "example-after": "\nimport os"
+    }
+}

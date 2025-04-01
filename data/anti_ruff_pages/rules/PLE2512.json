@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for strings that contain the raw control character SUB.",
+    "why-is-this-bad": "Control characters are displayed differently by different text editors and\nterminals.\n\n\nBy using the \\x1A sequence in lieu of the SUB control character, the\nstring will contain the same value, but will render visibly in all editors.",
+    "example": "x = \"\"\n\n\n\nUse instead:\n\n\nx = \"\\x1a\"",
+    "example-split": {
+        "example-before": "x = \"\"\n\n",
+        "example-after": "\nx = \"\\x1a\""
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for imports that are typically imported using a common convention,\nlike import pandas as pd, and enforces that convention.",
+    "why-is-this-bad": "Consistency is good. Use a common convention for imports to make your code\nmore readable and idiomatic.\n\n\nFor example, import pandas as pd is a common\nconvention for importing the pandas library, and users typically expect\nPandas to be aliased as pd.",
+    "example": "import pandas\n\n\n\nUse instead:\n\n\nimport pandas as pd",
+    "example-split": {
+        "example-before": "import pandas\n\n",
+        "example-after": "\nimport pandas as pd"
+    }
+}

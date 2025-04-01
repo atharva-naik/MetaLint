@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the presence of docstrings in stub files.",
+    "why-is-this-bad": "Stub files should omit docstrings, as they're intended to provide type\nhints, rather than documentation.",
+    "example": "def func(param: int) -> str:\n    \"\"\"This is a docstring.\"\"\"\n    ...\n\n\n\nUse instead:\n\n\ndef func(param: int) -> str: ...",
+    "example-split": {
+        "example-before": "def func(param: int) -> str:\n    \"\"\"This is a docstring.\"\"\"\n    ...\n\n",
+        "example-after": "\ndef func(param: int) -> str: ..."
+    }
+}

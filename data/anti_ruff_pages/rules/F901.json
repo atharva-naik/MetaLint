@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for raise statements that raise NotImplemented.",
+    "why-is-this-bad": "NotImplemented is an exception used by binary special methods to indicate\nthat an operation is not implemented with respect to a particular type.\n\n\nNotImplemented should not be raised directly. Instead, raise\nNotImplementedError, which is used to indicate that the method is\nabstract or not implemented in the derived class.",
+    "example": "class Foo:\n    def bar(self):\n        raise NotImplemented\n\n\n\nUse instead:\n\n\nclass Foo:\n    def bar(self):\n        raise NotImplementedError",
+    "example-split": {
+        "example-before": "class Foo:\n    def bar(self):\n        raise NotImplemented\n\n",
+        "example-after": "\nclass Foo:\n    def bar(self):\n        raise NotImplementedError"
+    }
+}

@@ -19,13 +19,15 @@ from typing import *
 
 load_dotenv()
 
-def load_ruff_results(path: str) -> list[dict]:
+def load_ruff_results(path: str, as_dict: bool=False) -> list[dict]:
     unique_data = {}
-    for file in os.listdir(path):
-        file_data = read_jsonl(os.path.join(path, file))
+    for file in tqdm(os.listdir(path)):
+        file_data = read_jsonl(os.path.join(path, file), disable=True)
         file_data = {rec['blob_id']: rec for rec in file_data}
         unique_data.update(file_data)
 
+    if as_dict:
+        return unique_data
     return list(unique_data.values())
 
 def split_jsonl_into_shards(path: str):
@@ -222,6 +224,71 @@ def load_python_whatsnew_dataset(path: str, mode: str="version_updates-list-and-
 
     return data
 
+COT_GENERATION_PROMPT = """Look at the following list of code idiom specifications with definitions and examples:
+{LIST_OF_IDIOM_SPECS}
+
+Now you will be given a code file where one or more of these idioms might be violated.
+
+Code file:
+{CODE_FILE}
+
+Having read the code file, below is the list of all the idiom violations detected by an oracle.
+
+{IDIOM_VIOLATIONS}
+
+Come with a step-by-step analysis for each idiom violation above that cites the relevant idiom (based on the code) and displays a good understanding of the idiom. Please fit your analysis within 300 words or less.
+
+### Step-by-step analysis
+"""
+
+def load_ruff_idiom_specs(path):
+    metadata_path = os.path.join(path, "rule_metadata.json")
+    ruff_metadata = json.load(open(metadata_path))
+    ruff_metadata = {rec['Code']: rec for rec in ruff_metadata}
+    rules_folder = os.path.join(path, "rules")
+    code_idiom_specs = {}
+    for rule_path in os.listdir(rules_folder):
+        rule_id,_=os.path.splitext(rule_path) # rule_id is the same as the idiom name for Ruff.
+        rule_data = json.load(open(os.path.join(rules_folder, rule_path)))
+        code_idiom_specs[rule_id] = rule_data
+        code_idiom_specs[rule_id]["name"] = ruff_metadata[rule_id]['Name']
+        code_idiom_specs[rule_id]["code"] = rule_id
+
+    return code_idiom_specs
+
+def idiom_spec_extractor_for_ruff(idiom_spec):
+    if "example" in idiom_spec:
+        Example = f"\n\nExample:\n{idiom_spec['example']}"
+    else: Example = ""
+    return f"# Idiom {idiom_spec['code']} ({idiom_spec['name']})\n\nDefinition: {idiom_spec['what-it-does']}\n\nRationale: {idiom_spec['why-is-this-bad']}"+Example
+
+def generate_cot_gen_prompts(sft_data, stack_data: dict, code_idiom_specs: dict, save_path: str) -> list[str]:
+    open(save_path, "w")
+    cot_gen_prompts = []
+    for rec in tqdm(sft_data):
+        blob_id = rec["id"].split("_")[-1].strip()
+        idiom_codes_list = [code.strip() for code in rec["source"].split("/")[-1].split("-")]
+
+        # get code file, list of idiom specs and idiom violations.
+        CODE_FILE = stack_data[blob_id]["content"]
+        
+        LIST_OF_IDIOM_SPECS = "\n\n".join([idiom_spec_extractor_for_ruff(code_idiom_specs[idiom_code]) for idiom_code in idiom_codes_list])
+        
+        IDIOM_VIOLATIONS = rec["messages"][-1]["content"]
+        prompt = COT_GENERATION_PROMPT.format(
+            LIST_OF_IDIOM_SPECS=LIST_OF_IDIOM_SPECS,
+            CODE_FILE=CODE_FILE, IDIOM_VIOLATIONS=IDIOM_VIOLATIONS,
+        )
+        no_violations = bool(IDIOM_VIOLATIONS == "NO VIOLATIONS FOUND")
+        write_rec = {"blob_id": blob_id, "id": rec["id"], "no_violations": no_violations, "prompt": prompt}
+        cot_gen_prompts.append(write_rec)
+        # return cot_gen_prompts # TODO: DEBUG
+        with open(save_path, "a") as f:
+            if no_violations == False:
+                f.write(json.dumps(write_rec)+"\n")
+
+    return cot_gen_prompts
+
 META_LINTING_PROMPT = """Look at the following list of code idiom specifications with definitions and examples:
 {LIST_OF_IDIOM_SPECS}
 
@@ -254,6 +321,114 @@ EG2 = {
     # 'message': 'Add return type annotation: `None`'
     },
 }
+
+META_LINTING_PROMPT_V2 = """Look at the following list of code idiom specifications with definitions and examples:
+{LIST_OF_IDIOM_SPECS}
+
+Given these idioms, your task is to look at a code file and detect violations of the above idioms, and flag them like a linter. You should also suggest a fix if possible. Report the results per idiom specification mentioned above and just say 'NO VIOLATIONS FOUND' if no violations are found for a given idiom. Do not detect any idioms not specified above.
+
+Code file:
+{CODE_FILE}
+
+Violations per idiom:
+"""
+
+def generate_response_from_violations(violations, stack_file_lines: list[str], meta_task_idiom_codes, include_message: bool=False, add_line_numbers: bool=False):
+    filt_violations = [violation for violation in violations if violation['code'] in meta_task_idiom_codes]
+    grouped_violations = {code: [] for code in meta_task_idiom_codes}
+    # group violations by each idiom in the meta-task.
+    for violation in filt_violations:
+        grouped_violations[violation['code']].append(violation)
+    # sort violations by start position.
+    response = ""
+    for code, violations in grouped_violations.items():
+        grouped_violations[code] = sorted(violations, key=lambda x: (x['location']['row'], x['location']['column'])) 
+        if len(violations) == 0:
+            response += f"**Idiom {code} Violations:**\n\nNO VIOLATIONS FOUND\n\n"
+        else: 
+            response += f"**Idiom {code} Violations:**\n"
+            for num, violation in enumerate(violations):
+                if include_message:
+                    det_dict = {"line": "", "span": "", "message": violation["message"], "fix": None}
+                else: det_dict = {"line": "", "span": "", "fix": None}
+                det_line = []
+                det_span = []
+                edits = []
+
+                for lineno in range(violation['location']['row'], violation['end_location']['row']+1):
+                    line = stack_file_lines[lineno-1]
+                    if add_line_numbers:
+                        det_line.append(f"{str(lineno).rjust(3)} {line}")
+                    else: det_line.append(f"{line}")
+                    # populate span.
+                    span_line = line
+                    if lineno == violation['location']['row'] and lineno == violation['end_location']['row']:
+                        span_line = line[violation["location"]["column"]-1:violation["end_location"]["column"]-1]
+                    elif lineno == violation['location']['row']: # start line for multi-line span.
+                        span_line = line[violation["location"]["column"]-1:]
+                    elif lineno == violation['end_location']['row']: # end line for multi-line span.
+                        span_line = line[:violation["end_location"]["column"]-1]
+                    else: # intermediate line for multi-line span.
+                        span_line = line
+                    det_span.append(span_line)
+                det_dict["line"] = "\n".join(det_line)
+                det_dict["span"] = "\n".join(det_span)
+                if violation["fix"] is not None and violation['fix']["applicability"] == "safe":
+                    for edit in violation["fix"]["edits"]:
+                        before_span = []
+                        after_span = edit["content"]
+                        for lineno in range(edit["location"]["row"], edit["end_location"]["row"]+1):
+                            line = stack_file_lines[lineno-1]
+                            # populate span.
+                            span_line = line
+                            if lineno == edit['location']['row'] and lineno == edit['end_location']['row']:
+                                span_line = line[edit["location"]["column"]-1:edit["end_location"]["column"]-1]
+                            elif lineno == edit['location']['row']: # start line for multi-line span.
+                                span_line = line[edit["location"]["column"]-1:]
+                            elif lineno == edit['end_location']['row']: # end line for multi-line span.
+                                span_line = line[:edit["end_location"]["column"]-1]
+                            else: # intermediate line for multi-line span.
+                                span_line = line
+                            before_span.append(span_line)
+
+                        before_span = "\n".join(before_span)
+                        edits.append({"before": before_span, "after": after_span})
+                    det_dict["fix"] = edits
+
+                response += f"\n{json.dumps(det_dict)}"
+            response += "\n\n"
+
+    return response
+
+def reprocess_data(train_data, code_idiom_specs: dict, ruff_results: dict, stack_data: dict, add_line_numbers: bool=True):
+    for rec in tqdm(train_data):
+        blob_id = rec["id"].split("_")[-1].strip()
+        meta_task_idiom_codes = rec["id"].split("_")[0].strip().split("-")
+        stack_file = stack_data[blob_id]['content']
+        stack_file_lines = stack_data[blob_id]['content'].split("\n")
+        violations = ruff_results[blob_id]['violations']
+
+        response = generate_response_from_violations(
+            violations=violations, 
+            stack_file_lines=stack_file_lines, 
+            meta_task_idiom_codes=meta_task_idiom_codes,
+            add_line_numbers=add_line_numbers
+        )
+
+        stack_file_with_lineno = []
+        if add_line_numbers:
+            for lineno, line in enumerate(stack_file.split("\n")):
+                stack_file_with_lineno.append(f"{str(lineno+1).rjust(3)} {line}")
+        
+        if add_line_numbers:
+            CODE_FILE = "\n".join(stack_file_with_lineno)
+        else: CODE_FILE = stack_file
+        LIST_OF_IDIOM_SPECS = "\n\n".join([idiom_spec_extractor_for_ruff(code_idiom_specs[idiom_code]) for idiom_code in meta_task_idiom_codes])
+
+        rec["messages"][0]['content'] = META_LINTING_PROMPT_V2.format(LIST_OF_IDIOM_SPECS=LIST_OF_IDIOM_SPECS, CODE_FILE=CODE_FILE)
+        rec["messages"][1]['content'] = response
+
+    return train_data
 
 def convert_location_to_code_line(rec: dict, code_lines: list[str]): #stack_data: dict[str, dict]):
     violations = rec["violations"]

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for a re-defined slot in a subclass.",
+    "why-is-this-bad": "If a class defines a slot also defined in a base class, the\ninstance variable defined by the base class slot is inaccessible\n(except by retrieving its descriptor directly from the base class).",
+    "example": "class Base:\n    __slots__ = (\"a\", \"b\")\n\n\nclass Subclass(Base):\n    __slots__ = (\"a\", \"d\")  # slot \"a\" redefined\n\n\n\nUse instead:\n\n\nclass Base:\n    __slots__ = (\"a\", \"b\")\n\n\nclass Subclass(Base):\n    __slots__ = \"d\"",
+    "example-split": {
+        "example-before": "class Base:\n    __slots__ = (\"a\", \"b\")\n\n\nclass Subclass(Base):\n    __slots__ = (\"a\", \"d\")  # slot \"a\" redefined\n\n",
+        "example-after": "\nclass Base:\n    __slots__ = (\"a\", \"b\")"
+    }
+}

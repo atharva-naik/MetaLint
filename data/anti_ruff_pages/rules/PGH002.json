@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Check for usages of the deprecated warn method from the logging module.",
+    "why-is-this-bad": "The warn method is deprecated. Use warning instead.",
+    "example": "import logging\n\n\ndef foo():\n    logging.warn(\"Something happened\")\n\n\n\nUse instead:\n\n\nimport logging\n\n\ndef foo():\n    logging.warning(\"Something happened\")",
+    "example-split": {
+        "example-before": "import logging\n\n\ndef foo():\n    logging.warn(\"Something happened\")\n\n",
+        "example-after": "\nimport logging"
+    }
+}

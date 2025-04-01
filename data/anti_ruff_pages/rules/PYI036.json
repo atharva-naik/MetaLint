@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for incorrect function signatures on __exit__ and __aexit__\nmethods.",
+    "why-is-this-bad": "Improperly annotated __exit__ and __aexit__ methods can cause\nunexpected behavior when interacting with type checkers.",
+    "example": "from types import TracebackType\n\nclass Foo:\n    def __exit__(\n        self, typ: BaseException, exc: BaseException, tb: TracebackType\n    ) -> None: ...\n\n\n\nUse instead:\n\n\nfrom types import TracebackType\n\nclass Foo:\n    def __exit__(\n        self,\n        typ: type[BaseException] | None,\n        exc: BaseException | None,\n        tb: TracebackType | None,\n    ) -> None: ...",
+    "example-split": {
+        "example-before": "from types import TracebackType\n\nclass Foo:\n    def __exit__(\n        self, typ: BaseException, exc: BaseException, tb: TracebackType\n    ) -> None: ...\n\n",
+        "example-after": "\nfrom types import TracebackType"
+    }
+}

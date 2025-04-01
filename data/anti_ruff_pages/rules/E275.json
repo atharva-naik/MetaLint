@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for missing whitespace after keywords.",
+    "why-is-this-bad": "Missing whitespace after keywords makes the code harder to read.",
+    "example": "if(True):\n    pass\n\n\n\nUse instead:\n\n\nif (True):\n    pass",
+    "example-split": {
+        "example-before": "if(True):\n    pass\n\n",
+        "example-after": "\nif (True):\n    pass"
+    }
+}

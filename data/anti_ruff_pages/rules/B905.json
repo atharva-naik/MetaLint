@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for zip calls without an explicit strict parameter.",
+    "why-is-this-bad": "By default, if the iterables passed to zip are of different lengths, the\nresulting iterator will be silently truncated to the length of the shortest\niterable. This can lead to subtle bugs.\n\n\nPass strict=True to raise a ValueError if the iterables are of\nnon-uniform length. Alternatively, if the iterables are deliberately of\ndifferent lengths, pass strict=False to make the intention explicit.",
+    "example": "zip(a, b)\n\n\n\nUse instead:\n\n\nzip(a, b, strict=True)",
+    "fix-safety": "This rule's fix is marked as unsafe for zip calls that contain\n**kwargs, as adding a strict keyword argument to such a call may lead\nto a duplicate keyword argument error.",
+    "example-split": {
+        "example-before": "zip(a, b)\n\n",
+        "example-after": "\nzip(a, b, strict=True)"
+    }
+}

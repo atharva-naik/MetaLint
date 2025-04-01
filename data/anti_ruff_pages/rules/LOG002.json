@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for any usage of __cached__ and __file__ as an argument to\nlogging.getLogger().",
+    "why-is-this-bad": "The logging documentation recommends this pattern:\n\n\nlogging.getLogger(__name__)\n\n\n\nHere, __name__ is the fully qualified module name, such as foo.bar,\nwhich is the intended format for logger names.\n\n\nThis rule detects probably-mistaken usage of similar module-level dunder constants:\n\n\n\n__cached__ - the pathname of the module's compiled version, such as foo/__pycache__/bar.cpython-311.pyc.\n__file__ - the pathname of the module, such as foo/bar.py.",
+    "example": "import logging\n\nlogger = logging.getLogger(__file__)\n\n\n\nUse instead:\n\n\nimport logging\n\nlogger = logging.getLogger(__name__)",
+    "example-split": {
+        "example-before": "import logging\n\nlogger = logging.getLogger(__file__)\n\n",
+        "example-after": "\nimport logging"
+    }
+}

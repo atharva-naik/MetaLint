@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for docstrings that do not start with a capital letter.",
+    "why-is-this-bad": "The first non-whitespace character in a docstring should be\ncapitalized for grammatical correctness and consistency.",
+    "example": "def average(values: list[float]) -> float:\n    \"\"\"return the mean of the given values.\"\"\"\n\n\n\nUse instead:\n\n\ndef average(values: list[float]) -> float:\n    \"\"\"Return the mean of the given values.\"\"\"",
+    "example-split": {
+        "example-before": "def average(values: list[float]) -> float:\n    \"\"\"return the mean of the given values.\"\"\"\n\n",
+        "example-after": "\ndef average(values: list[float]) -> float:\n    \"\"\"Return the mean of the given values.\"\"\""
+    }
+}

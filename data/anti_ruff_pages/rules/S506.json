@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of the yaml.load function.",
+    "why-is-this-bad": "Running the yaml.load function over untrusted YAML files is insecure, as\nyaml.load allows for the creation of arbitrary Python objects, which can\nthen be used to execute arbitrary code.\n\n\nInstead, consider using yaml.safe_load, which allows for the creation of\nsimple Python objects like integers and lists, but prohibits the creation of\nmore complex objects like functions and classes.",
+    "example": "import yaml\n\nyaml.load(untrusted_yaml)\n\n\n\nUse instead:\n\n\nimport yaml\n\nyaml.safe_load(untrusted_yaml)",
+    "example-split": {
+        "example-before": "import yaml\n\nyaml.load(untrusted_yaml)\n\n",
+        "example-after": "\nimport yaml"
+    }
+}

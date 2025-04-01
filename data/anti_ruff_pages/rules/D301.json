@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for docstrings that include backslashes, but are not defined as\nraw string literals.",
+    "why-is-this-bad": "In Python, backslashes are typically used to escape characters in strings.\nIn raw strings (those prefixed with an r), however, backslashes are\ntreated as literal characters.\n\n\nPEP 257 recommends\nthe use of raw strings (i.e., r\"\"\"raw triple double quotes\"\"\") for\ndocstrings that include backslashes. The use of a raw string ensures that\nany backslashes are treated as literal characters, and not as escape\nsequences, which avoids confusion.",
+    "example": "def foobar():\n    \"\"\"Docstring for foo\\bar.\"\"\"\n\n\nfoobar.__doc__  # \"Docstring for foar.\"\n\n\n\nUse instead:\n\n\ndef foobar():\n    r\"\"\"Docstring for foo\\bar.\"\"\"\n\n\nfoobar.__doc__  # \"Docstring for foo\\bar.\"",
+    "example-split": {
+        "example-before": "def foobar():\n    \"\"\"Docstring for foo\\bar.\"\"\"\n\n\nfoobar.__doc__  # \"Docstring for foar.\"\n\n",
+        "example-after": "\ndef foobar():\n    r\"\"\"Docstring for foo\\bar.\"\"\""
+    }
+}
