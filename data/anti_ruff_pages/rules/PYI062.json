@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for duplicate members in a typing.Literal[] slice.",
+    "why-is-this-bad": "Duplicate literal members are redundant and should be removed.",
+    "example": "foo: Literal[\"a\", \"b\", \"a\"]\n\n\n\nUse instead:\n\n\nfoo: Literal[\"a\", \"b\"]",
+    "fix-safety": "This rule's fix is marked as safe, unless the type annotation contains comments.\n\n\nNote that while the fix may flatten nested literals into a single top-level literal,\nthe semantics of the annotation will remain unchanged.",
+    "example-split": {
+        "example-before": "foo: Literal[\"a\", \"b\", \"a\"]\n\n",
+        "example-after": "\nfoo: Literal[\"a\", \"b\"]"
+    }
+}

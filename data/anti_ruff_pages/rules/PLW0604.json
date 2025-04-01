@@ -1,0 +1,4 @@
+{
+    "what-it-does": "Checks for uses of the global keyword at the module level.",
+    "why-is-this-bad": "The global keyword is used within functions to indicate that a name\nrefers to a global variable, rather than a local variable.\n\n\nAt the module level, all names are global by default, so the global\nkeyword is redundant."
+}

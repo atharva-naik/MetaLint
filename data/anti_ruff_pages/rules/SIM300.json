@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for conditions that position a constant on the left-hand side of the\ncomparison operator, rather than the right-hand side.",
+    "why-is-this-bad": "These conditions (sometimes referred to as \"Yoda conditions\") are less\nreadable than conditions that place the variable on the left-hand side of\nthe comparison operator.\n\n\nIn some languages, Yoda conditions are used to prevent accidental\nassignment in conditions (i.e., accidental uses of the = operator,\ninstead of the == operator). However, Python does not allow assignments\nin conditions unless using the := operator, so Yoda conditions provide\nno benefit in this regard.",
+    "example": "if \"Foo\" == foo:\n    ...\n\n\n\nUse instead:\n\n\nif foo == \"Foo\":\n    ...",
+    "example-split": {
+        "example-before": "if \"Foo\" == foo:\n    ...\n\n",
+        "example-after": "\nif foo == \"Foo\":\n    ..."
+    }
+}

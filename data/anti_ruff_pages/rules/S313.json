@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of insecure XML parsers.",
+    "why-is-this-bad": "Many XML parsers are vulnerable to XML attacks (such as entity expansion),\nwhich cause excessive memory and CPU usage by exploiting recursion. An\nattacker could use such methods to access unauthorized resources.\n\n\nConsider using the defusedxml package when parsing untrusted XML data,\nto protect against XML attacks.\n\n\nIn preview, this rule will also flag references to insecure XML parsers.",
+    "example": "from xml.etree.cElementTree import parse\n\ntree = parse(\"untrusted.xml\")  # Vulnerable to XML attacks.\n\n\n\nUse instead:\n\n\nfrom defusedxml.cElementTree import parse\n\ntree = parse(\"untrusted.xml\")",
+    "example-split": {
+        "example-before": "from xml.etree.cElementTree import parse\n\ntree = parse(\"untrusted.xml\")  # Vulnerable to XML attacks.\n\n",
+        "example-after": "\nfrom defusedxml.cElementTree import parse"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for double negations (i.e., multiple not operators).",
+    "why-is-this-bad": "A double negation is redundant and less readable than omitting the not\noperators entirely.",
+    "example": "not (not a)\n\n\n\nUse instead:\n\n\na",
+    "example-split": {
+        "example-before": "not (not a)\n\n",
+        "example-after": "\na"
+    }
+}

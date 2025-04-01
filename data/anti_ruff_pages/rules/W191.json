@@ -1,0 +1,4 @@
+{
+    "what-it-does": "Checks for indentation that uses tabs.",
+    "why-is-this-bad": "According to PEP 8, spaces are preferred over tabs (unless used to remain\nconsistent with code that is already indented with tabs)."
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for function calls in default function arguments.",
+    "why-is-this-bad": "Any function call that's used in a default argument will only be performed\nonce, at definition time. The returned value will then be reused by all\ncalls to the function, which can lead to unexpected behaviour.\n\n\nParameters with immutable type annotations will be ignored by this rule.\nThose whose default arguments are NewType calls where the original type\nis immutable are also ignored.\n\n\nCalls and types outside of the standard library can be marked as an exception\nto this rule with the lint.flake8-bugbear.extend-immutable-calls configuration option.",
+    "example": "def create_list() -> list[int]:\n    return [1, 2, 3]\n\n\ndef mutable_default(arg: list[int] = create_list()) -> list[int]:\n    arg.append(4)\n    return arg\n\n\n\nUse instead:\n\n\ndef better(arg: list[int] | None = None) -> list[int]:\n    if arg is None:\n        arg = create_list()\n\n    arg.append(4)\n    return arg\n\n\n\nIf the use of a singleton is intentional, assign the result call to a\nmodule-level variable, and use that variable in the default argument:\n\n\nERROR = ValueError(\"Hosts weren't successfully added\")\n\n\ndef add_host(error: Exception = ERROR) -> None: ...",
+    "example-split": {
+        "example-before": "def create_list() -> list[int]:\n    return [1, 2, 3]\n\n\ndef mutable_default(arg: list[int] = create_list()) -> list[int]:\n    arg.append(4)\n    return arg\n\n",
+        "example-after": "\ndef better(arg: list[int] | None = None) -> list[int]:\n    if arg is None:\n        arg = create_list()"
+    }
+}

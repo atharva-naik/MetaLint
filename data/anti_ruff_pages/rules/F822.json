@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for undefined names in __all__.",
+    "why-is-this-bad": "In Python, the __all__ variable is used to define the names that are\nexported when a module is imported as a wildcard (e.g.,\nfrom foo import *). The names in __all__ must be defined in the module,\nbut are included as strings.\n\n\nIncluding an undefined name in __all__ is likely to raise NameError at\nruntime, when the module is imported.\n\n\nIn preview, this rule will flag undefined names in __init__.py file,\neven if those names implicitly refer to other modules in the package. Users\nthat rely on implicit exports should disable this rule in __init__.py\nfiles via lint.per-file-ignores.",
+    "example": "from foo import bar\n\n\n__all__ = [\"bar\", \"baz\"]  # undefined name `baz` in `__all__`\n\n\n\nUse instead:\n\n\nfrom foo import bar, baz\n\n\n__all__ = [\"bar\", \"baz\"]",
+    "example-split": {
+        "example-before": "from foo import bar\n\n\n__all__ = [\"bar\", \"baz\"]  # undefined name `baz` in `__all__`\n\n",
+        "example-after": "\nfrom foo import bar, baz"
+    }
+}

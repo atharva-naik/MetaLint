@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for 1 blank line between nested function or class definitions.",
+    "why-is-this-bad": "PEP 8 recommends using blank lines as follows:\n\n\n\nTwo blank lines are expected between functions and classes\nOne blank line is expected between methods of a class.",
+    "example": "def outer():\n    def inner():\n        pass\n    def inner2():\n        pass\n\n\n\nUse instead:\n\n\ndef outer():\n    def inner():\n        pass\n\n    def inner2():\n        pass",
+    "example-split": {
+        "example-before": "def outer():\n    def inner():\n        pass\n    def inner2():\n        pass\n\n",
+        "example-after": "\ndef outer():\n    def inner():\n        pass"
+    }
+}

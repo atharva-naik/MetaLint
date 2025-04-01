@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of open and write that can be replaced by pathlib\nmethods, like Path.write_text and Path.write_bytes.",
+    "why-is-this-bad": "When writing a single string to a file, it's simpler and more concise\nto use pathlib methods like Path.write_text and Path.write_bytes\ninstead of open and write calls via with statements.",
+    "example": "with open(filename, \"w\") as f:\n    f.write(contents)\n\n\n\nUse instead:\n\n\nfrom pathlib import Path\n\nPath(filename).write_text(contents)",
+    "example-split": {
+        "example-before": "with open(filename, \"w\") as f:\n    f.write(contents)\n\n",
+        "example-after": "\nfrom pathlib import Path"
+    }
+}

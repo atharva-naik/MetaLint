@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for too many positional arguments for a logging format string.",
+    "why-is-this-bad": "A TypeError will be raised if the statement is run.",
+    "example": "import logging\n\ntry:\n    function()\nexcept Exception as e:\n    logging.error(\"Error occurred: %s\", type(e), e)\n    raise\n\n\n\nUse instead:\n\n\nimport logging\n\ntry:\n    function()\nexcept Exception as e:\n    logging.error(\"%s error occurred: %s\", type(e), e)\n    raise",
+    "example-split": {
+        "example-before": "import logging\n\ntry:\n    function()\nexcept Exception as e:\n    logging.error(\"Error occurred: %s\", type(e), e)\n    raise\n\n",
+        "example-after": "\nimport logging"
+    }
+}

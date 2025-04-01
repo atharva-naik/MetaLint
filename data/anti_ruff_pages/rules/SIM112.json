@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Check for environment variables that are not capitalized.",
+    "why-is-this-bad": "By convention, environment variables should be capitalized.\n\n\nOn Windows, environment variables are case-insensitive and are converted to\nuppercase, so using lowercase environment variables can lead to subtle bugs.",
+    "example": "import os\n\nos.environ[\"foo\"]\n\n\n\nUse instead:\n\n\nimport os\n\nos.environ[\"FOO\"]",
+    "example-split": {
+        "example-before": "import os\n\nos.environ[\"foo\"]\n\n",
+        "example-after": "\nimport os"
+    }
+}

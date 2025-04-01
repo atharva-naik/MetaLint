@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for direct instantiation of logging.Logger, as opposed to using\nlogging.getLogger().",
+    "why-is-this-bad": "The Logger Objects documentation states that:\n\n\n\nNote that Loggers should NEVER be instantiated directly, but always\nthrough the module-level function logging.getLogger(name).\n\n\n\nIf a logger is directly instantiated, it won't be added to the logger\ntree, and will bypass all configuration. Messages logged to it will\nonly be sent to the \"handler of last resort\", skipping any filtering\nor formatting.",
+    "example": "import logging\n\nlogger = logging.Logger(__name__)\n\n\n\nUse instead:\n\n\nimport logging\n\nlogger = logging.getLogger(__name__)",
+    "example-split": {
+        "example-before": "import logging\n\nlogger = logging.Logger(__name__)\n\n",
+        "example-after": "\nimport logging"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for __bytes__ implementations that return types other than bytes.",
+    "why-is-this-bad": "The __bytes__ method should return a bytes object. Returning a different\ntype may cause unexpected behavior.",
+    "example": "class Foo:\n    def __bytes__(self):\n        return 2\n\n\n\nUse instead:\n\n\nclass Foo:\n    def __bytes__(self):\n        return b\"2\"",
+    "example-split": {
+        "example-before": "class Foo:\n    def __bytes__(self):\n        return 2\n\n",
+        "example-after": "\nclass Foo:\n    def __bytes__(self):\n        return b\"2\""
+    }
+}

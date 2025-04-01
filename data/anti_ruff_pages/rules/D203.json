@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for docstrings on class definitions that are not preceded by a\nblank line.",
+    "why-is-this-bad": "Use a blank line to separate the docstring from the class definition, for\nconsistency.\n\n\nThis rule may not apply to all projects; its applicability is a matter of\nconvention. By default, this rule is disabled when using the google,\nnumpy, and pep257 conventions.\n\n\nFor an alternative, see D211.",
+    "example": "class PhotoMetadata:\n    \"\"\"Metadata about a photo.\"\"\"\n\n\n\nUse instead:\n\n\nclass PhotoMetadata:\n\n    \"\"\"Metadata about a photo.\"\"\"",
+    "example-split": {
+        "example-before": "class PhotoMetadata:\n    \"\"\"Metadata about a photo.\"\"\"\n\n",
+        "example-after": "\nclass PhotoMetadata:"
+    }
+}

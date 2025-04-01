@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for private type alias definitions suffixed with 'T'.",
+    "why-is-this-bad": "It's conventional to use the 'T' suffix for type variables; the use of\nsuch a suffix implies that the object is a TypeVar.\n\n\nAdding the 'T' suffix to a non-TypeVar, it can be misleading and should\nbe avoided.",
+    "example": "from typing import TypeAlias\n\n_MyTypeT: TypeAlias = int\n\n\n\nUse instead:\n\n\nfrom typing import TypeAlias\n\n_MyType: TypeAlias = int",
+    "example-split": {
+        "example-before": "from typing import TypeAlias\n\n_MyTypeT: TypeAlias = int\n\n",
+        "example-after": "\nfrom typing import TypeAlias"
+    }
+}

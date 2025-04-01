@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for dict.get() calls that pass None as the default value.",
+    "why-is-this-bad": "None is the default value for dict.get(), so it is redundant to pass it\nexplicitly.",
+    "example": "ages = {\"Tom\": 23, \"Maria\": 23, \"Dog\": 11}\nage = ages.get(\"Cat\", None)\n\n\n\nUse instead:\n\n\nages = {\"Tom\": 23, \"Maria\": 23, \"Dog\": 11}\nage = ages.get(\"Cat\")",
+    "example-split": {
+        "example-before": "ages = {\"Tom\": 23, \"Maria\": 23, \"Dog\": 11}\nage = ages.get(\"Cat\", None)\n\n",
+        "example-after": "\nages = {\"Tom\": 23, \"Maria\": 23, \"Dog\": 11}\nage = ages.get(\"Cat\")"
+    }
+}

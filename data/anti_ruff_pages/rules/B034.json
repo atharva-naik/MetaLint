@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for calls to re.sub, re.subn, and re.split that pass count,\nmaxsplit, or flags as positional arguments.",
+    "why-is-this-bad": "Passing count, maxsplit, or flags as positional arguments to\nre.sub, re.subn, or re.split can lead to confusion, as most methods in\nthe re module accept flags as the third positional argument, while\nre.sub, re.subn, and re.split have different signatures.\n\n\nInstead, pass count, maxsplit, and flags as keyword arguments.",
+    "example": "import re\n\nre.split(\"pattern\", \"replacement\", 1)\n\n\n\nUse instead:\n\n\nimport re\n\nre.split(\"pattern\", \"replacement\", maxsplit=1)",
+    "example-split": {
+        "example-before": "import re\n\nre.split(\"pattern\", \"replacement\", 1)\n\n",
+        "example-after": "\nimport re"
+    }
+}

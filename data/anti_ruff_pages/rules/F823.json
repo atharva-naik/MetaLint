@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for undefined local variables.",
+    "why-is-this-bad": "Referencing a local variable before it has been assigned will raise\nan UnboundLocalError at runtime.",
+    "example": "x = 1\n\n\ndef foo():\n    x += 1\n\n\n\nUse instead:\n\n\nx = 1\n\n\ndef foo():\n    global x\n    x += 1",
+    "example-split": {
+        "example-before": "x = 1\n\n\ndef foo():\n    x += 1\n\n",
+        "example-after": "\nx = 1"
+    }
+}

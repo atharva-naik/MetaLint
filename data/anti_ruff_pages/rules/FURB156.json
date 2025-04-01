@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of hardcoded charsets, which are defined in Python string module.",
+    "why-is-this-bad": "Usage of named charsets from the standard library is more readable and less error-prone.",
+    "example": "x = \"0123456789\"\ny in \"abcdefghijklmnopqrstuvwxyz\"\n\n\n\nUse instead\n\n\nimport string\n\nx = string.digits\ny in string.ascii_lowercase",
+    "example-split": {
+        "example-before": "x = \"0123456789\"\ny in \"abcdefghijklmnopqrstuvwxyz\"\n\n\n\nUse instead\n\n\nimport string\n\nx = string.digits\ny in string.ascii_lowercase",
+        "example-after": "x = \"0123456789\"\ny in \"abcdefghijklmnopqrstuvwxyz\""
+    }
+}
