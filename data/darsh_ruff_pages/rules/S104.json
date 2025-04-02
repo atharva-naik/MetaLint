@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for hardcoded bindings to all network interfaces (0.0.0.0).",
-    "why-is-this-bad": "Binding to all network interfaces is insecure as it allows access from\nunintended interfaces, which may be poorly secured or unauthorized.\n\n\nInstead, bind to specific interfaces.",
-    "example": "ALLOWED_HOSTS = [\"0.0.0.0\"]\n\n\n\nUse instead:\n\n\nALLOWED_HOSTS = [\"127.0.0.1\", \"localhost\"]",
-    "example-split": {
-        "example-before": "ALLOWED_HOSTS = [\"0.0.0.0\"]\n\n",
-        "example-after": "\nALLOWED_HOSTS = [\"127.0.0.1\", \"localhost\"]"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for raise statements within try blocks. The only raises\ncaught are those that throw exceptions caught by the try statement itself.",
-    "why-is-this-bad": "Raising and catching exceptions within the same try block is redundant,\nas the code can be refactored to avoid the try block entirely.\n\n\nAlternatively, the raise can be moved within an inner function, making\nthe exception reusable across multiple call sites.",
-    "example": "def bar():\n    pass\n\n\ndef foo():\n    try:\n        a = bar()\n        if not a:\n            raise ValueError\n    except ValueError:\n        raise\n\n\n\nUse instead:\n\n\ndef bar():\n    raise ValueError\n\n\ndef foo():\n    try:\n        a = bar()  # refactored `bar` to raise `ValueError`\n    except ValueError:\n        raise",
-    "example-split": {
-        "example-before": "def bar():\n    pass\n\n\ndef foo():\n    try:\n        a = bar()\n        if not a:\n            raise ValueError\n    except ValueError:\n        raise\n\n",
-        "example-after": "\ndef bar():\n    raise ValueError"
-    }
-}

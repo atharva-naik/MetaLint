@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Check for an invalid mode argument in open calls.",
-    "why-is-this-bad": "The open function accepts a mode argument that specifies how the file\nshould be opened (e.g., read-only, write-only, append-only, etc.).\n\n\nPython supports a variety of open modes: r, w, a, and x, to control\nreading, writing, appending, and creating, respectively, along with\nb (binary mode), + (read and write), and U (universal newlines),\nthe latter of which is only valid alongside r. This rule detects both\ninvalid combinations of modes and invalid characters in the mode string\nitself.",
-    "example": "with open(\"file\", \"rwx\") as f:\n    return f.read()\n\n\n\nUse instead:\n\n\nwith open(\"file\", \"r\") as f:\n    return f.read()",
-    "example-split": {
-        "example-before": "with open(\"file\", \"rwx\") as f:\n    return f.read()\n\n",
-        "example-after": "\nwith open(\"file\", \"r\") as f:\n    return f.read()"
-    }
-}

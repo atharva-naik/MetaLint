@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for repeated keyword arguments in function calls.",
-    "why-is-this-bad": "Python does not allow repeated keyword arguments in function calls. If a\nfunction is called with the same keyword argument multiple times, the\ninterpreter will raise an exception.",
-    "example": "func(1, 2, c=3, **{\"c\": 4})",
-    "example-split": {
-        "example-before": "func(1, 2, c=3, **{\"c\": 4})",
-        "example-after": "func(1, 2, c=3, **{\"c\": 4})"
-    }
-}

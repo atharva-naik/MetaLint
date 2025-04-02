@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for except blocks that handle all exceptions, but are not the last\nexcept block in a try statement.",
-    "why-is-this-bad": "When an exception is raised within a try block, the except blocks are\nevaluated in order, and the first matching block is executed. If an except\nblock handles all exceptions, but isn't the last block, Python will raise a\nSyntaxError, as the following blocks would never be executed.",
-    "example": "def reciprocal(n):\n    try:\n        reciprocal = 1 / n\n    except:\n        print(\"An exception occurred.\")\n    except ZeroDivisionError:\n        print(\"Cannot divide by zero.\")\n    else:\n        return reciprocal\n\n\n\nUse instead:\n\n\ndef reciprocal(n):\n    try:\n        reciprocal = 1 / n\n    except ZeroDivisionError:\n        print(\"Cannot divide by zero.\")\n    except:\n        print(\"An exception occurred.\")\n    else:\n        return reciprocal",
-    "example-split": {
-        "example-before": "def reciprocal(n):\n    try:\n        reciprocal = 1 / n\n    except:\n        print(\"An exception occurred.\")\n    except ZeroDivisionError:\n        print(\"Cannot divide by zero.\")\n    else:\n        return reciprocal\n\n",
-        "example-after": "\ndef reciprocal(n):\n    try:\n        reciprocal = 1 / n\n    except ZeroDivisionError:\n        print(\"Cannot divide by zero.\")\n    except:\n        print(\"An exception occurred.\")\n    else:\n        return reciprocal"
-    }
-}

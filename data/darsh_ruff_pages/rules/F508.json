@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for printf-style format strings that use the * specifier with\nnon-tuple values.",
-    "why-is-this-bad": "The use of the * specifier with non-tuple values will raise a\nTypeError at runtime.",
-    "example": "from math import pi\n\n\"%(n).*f\" % {\"n\": (2, pi)}\n\n\n\nUse instead:\n\n\nfrom math import pi\n\n\"%.*f\" % (2, pi)  # 3.14",
-    "example-split": {
-        "example-before": "from math import pi\n\n\"%(n).*f\" % {\"n\": (2, pi)}\n\n",
-        "example-after": "\nfrom math import pi"
-    }
-}

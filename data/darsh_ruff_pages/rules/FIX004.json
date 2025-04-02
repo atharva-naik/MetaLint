@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for \"HACK\" comments.",
-    "why-is-this-bad": "\"HACK\" comments are used to describe an issue that should be resolved\n(usually, a suboptimal solution or temporary workaround).\n\n\nConsider resolving the issue before deploying the code.\n\n\nNote that if you use \"HACK\" comments as a form of documentation, this\nrule may not be appropriate for your project.",
-    "example": "import os\n\n\ndef running_windows():  # HACK: Use platform module instead.\n    try:\n        os.mkdir(\"C:\\\\Windows\\\\System32\\\\\")\n    except FileExistsError:\n        return True\n    else:\n        os.rmdir(\"C:\\\\Windows\\\\System32\\\\\")\n        return False",
-    "example-split": {
-        "example-before": "import os\n\n\ndef running_windows():  # HACK: Use platform module instead.\n    try:\n        os.mkdir(\"C:\\\\Windows\\\\System32\\\\\")\n    except FileExistsError:\n        return True\n    else:\n        os.rmdir(\"C:\\\\Windows\\\\System32\\\\\")\n        return False",
-        "example-after": "import os"
-    }
-}

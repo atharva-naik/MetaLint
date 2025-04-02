@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of the SNMPv3 protocol without encryption.",
-    "why-is-this-bad": "Unencrypted SNMPv3 communication can be intercepted and read by\nunauthorized parties. Instead, enable encryption when using SNMPv3.",
-    "example": "from pysnmp.hlapi import UsmUserData\n\nUsmUserData(\"user\")\n\n\n\nUse instead:\n\n\nfrom pysnmp.hlapi import UsmUserData\n\nUsmUserData(\"user\", \"authkey\", \"privkey\")",
-    "example-split": {
-        "example-before": "from pysnmp.hlapi import UsmUserData\n\nUsmUserData(\"user\")\n\n",
-        "example-after": "\nfrom pysnmp.hlapi import UsmUserData"
-    }
-}

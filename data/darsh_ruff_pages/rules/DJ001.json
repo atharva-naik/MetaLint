@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks nullable string-based fields (like CharField and TextField)\nin Django models.",
-    "why-is-this-bad": "If a string-based field is nullable, then your model will have two possible\nrepresentations for \"no data\": None and the empty string. This can lead to\nconfusion, as clients of the API have to check for both None and the\nempty string when trying to determine if the field has data.\n\n\nThe Django convention is to use the empty string in lieu of None for\nstring-based fields.",
-    "example": "from django.db import models\n\n\nclass MyModel(models.Model):\n    field = models.CharField(max_length=255, null=True)\n\n\n\nUse instead:\n\n\nfrom django.db import models\n\n\nclass MyModel(models.Model):\n    field = models.CharField(max_length=255, default=\"\")",
-    "example-split": {
-        "example-before": "from django.db import models\n\n\nclass MyModel(models.Model):\n    field = models.CharField(max_length=255, null=True)\n\n",
-        "example-after": "\nfrom django.db import models"
-    }
-}

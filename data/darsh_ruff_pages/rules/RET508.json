@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for else statements with a break statement in the preceding if\nblock.",
-    "why-is-this-bad": "The else statement is not needed, as the break statement will always\nbreak out of the loop. Removing the else will reduce nesting and make the\ncode more readable.",
-    "example": "def foo(bar, baz):\n    for i in bar:\n        if i > baz:\n            break\n        else:\n            x = 0\n\n\n\nUse instead:\n\n\ndef foo(bar, baz):\n    for i in bar:\n        if i > baz:\n            break\n        x = 0",
-    "example-split": {
-        "example-before": "def foo(bar, baz):\n    for i in bar:\n        if i > baz:\n            break\n        else:\n            x = 0\n\n",
-        "example-after": "\ndef foo(bar, baz):\n    for i in bar:\n        if i > baz:\n            break\n        x = 0"
-    }
-}

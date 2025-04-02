@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for extraneous whitespace before keywords.",
-    "why-is-this-bad": "",
-    "example": "True  and False\n\n\n\nUse instead:\n\n\nTrue and False",
-    "example-split": {
-        "example-before": "True  and False\n\n",
-        "example-after": "\nTrue and False"
-    }
-}

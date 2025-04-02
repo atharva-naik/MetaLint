@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of the assert keyword.",
-    "why-is-this-bad": "Assertions are removed when Python is run with optimization requested\n(i.e., when the -O flag is present), which is a common practice in\nproduction environments. As such, assertions should not be used for runtime\nvalidation of user input or to enforce interface constraints.\n\n\nConsider raising a meaningful error instead of using assert.",
-    "example": "assert x > 0, \"Expected positive value.\"\n\n\n\nUse instead:\n\n\nif not x > 0:\n    raise ValueError(\"Expected positive value.\")\n\n# or even better:\nif x <= 0:\n    raise ValueError(\"Expected positive value.\")",
-    "example-split": {
-        "example-before": "assert x > 0, \"Expected positive value.\"\n\n",
-        "example-after": "\nif not x > 0:\n    raise ValueError(\"Expected positive value.\")"
-    }
-}

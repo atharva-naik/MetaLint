@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for else statements with a raise statement in the preceding if\nblock.",
-    "why-is-this-bad": "The else statement is not needed as the raise statement will always\nbreak out of the current scope. Removing the else will reduce nesting\nand make the code more readable.",
-    "example": "def foo(bar, baz):\n    if bar == \"Specific Error\":\n        raise Exception(bar)\n    else:\n        raise Exception(baz)\n\n\n\nUse instead:\n\n\ndef foo(bar, baz):\n    if bar == \"Specific Error\":\n        raise Exception(bar)\n    raise Exception(baz)",
-    "example-split": {
-        "example-before": "def foo(bar, baz):\n    if bar == \"Specific Error\":\n        raise Exception(bar)\n    else:\n        raise Exception(baz)\n\n",
-        "example-after": "\ndef foo(bar, baz):\n    if bar == \"Specific Error\":\n        raise Exception(bar)\n    raise Exception(baz)"
-    }
-}

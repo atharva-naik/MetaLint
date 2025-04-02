@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of .at on Pandas objects.",
-    "why-is-this-bad": "The .at method selects a single value from a DataFrame or Series based on\na label index, and is slightly faster than using .loc. However, .loc is\nmore idiomatic and versatile, as it can be used to select multiple values at\nonce.\n\n\nIf performance is an important consideration, convert the object to a NumPy\narray, which will provide a much greater performance boost than using .at\nover .loc.",
-    "example": "import pandas as pd\n\nstudents_df = pd.read_csv(\"students.csv\")\nstudents_df.at[\"Maria\"]\n\n\n\nUse instead:\n\n\nimport pandas as pd\n\nstudents_df = pd.read_csv(\"students.csv\")\nstudents_df.loc[\"Maria\"]",
-    "example-split": {
-        "example-before": "import pandas as pd\n\nstudents_df = pd.read_csv(\"students.csv\")\nstudents_df.at[\"Maria\"]\n\n",
-        "example-after": "\nimport pandas as pd"
-    }
-}

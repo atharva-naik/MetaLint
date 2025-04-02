@@ -1,4 +1,0 @@
-{
-    "what-it-does": "Checks for uses of os.replace.",
-    "why-is-this-bad": "pathlib offers a high-level API for path manipulation, as compared to\nthe lower-level API offered by os. When possible, using Path object\nmethods such as Path.replace() can improve readability over the os\nmodule's counterparts (e.g., os.replace()).\n\n\nNote that os functions may be preferable if performance is a concern,\ne.g., in hot loops."
-}

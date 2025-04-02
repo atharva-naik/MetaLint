@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for single strings assigned to __slots__.",
-    "why-is-this-bad": "In Python, the __slots__ attribute allows you to explicitly define the\nattributes (instance variables) that a class can have. By default, Python\nuses a dictionary to store an object's attributes, which incurs some memory\noverhead. However, when __slots__ is defined, Python uses a more compact\ninternal structure to store the object's attributes, resulting in memory\nsavings.\n\n\nAny string iterable may be assigned to __slots__ (most commonly, a\ntuple of strings). If a string is assigned to __slots__, it is\ninterpreted as a single attribute name, rather than an iterable of attribute\nnames. This can cause confusion, as users that iterate over the __slots__\nvalue may expect to iterate over a sequence of attributes, but would instead\niterate over the characters of the string.\n\n\nTo use a single string attribute in __slots__, wrap the string in an\niterable container type, like a tuple.",
-    "example": "class Person:\n    __slots__: str = \"name\"\n\n    def __init__(self, name: str) -> None:\n        self.name = name\n\n\n\nUse instead:\n\n\nclass Person:\n    __slots__: tuple[str, ...] = (\"name\",)\n\n    def __init__(self, name: str) -> None:\n        self.name = name",
-    "example-split": {
-        "example-before": "class Person:\n    __slots__: str = \"name\"\n\n    def __init__(self, name: str) -> None:\n        self.name = name\n\n",
-        "example-after": "\nclass Person:\n    __slots__: tuple[str, ...] = (\"name\",)"
-    }
-}

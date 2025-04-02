@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for cases where files are opened (e.g., using the builtin open() function)\nwithout using a context manager.",
-    "why-is-this-bad": "If a file is opened without a context manager, it is not guaranteed that\nthe file will be closed (e.g., if an exception is raised), which can cause\nresource leaks. The rule detects a wide array of IO calls where context managers\ncould be used, such as open, pathlib.Path(...).open(), tempfile.TemporaryFile()\nortarfile.TarFile(...).gzopen().",
-    "example": "file = open(\"foo.txt\")\n...\nfile.close()\n\n\n\nUse instead:\n\n\nwith open(\"foo.txt\") as file:\n    ...",
-    "example-split": {
-        "example-before": "file = open(\"foo.txt\")\n...\nfile.close()\n\n",
-        "example-after": "\nwith open(\"foo.txt\") as file:\n    ..."
-    }
-}

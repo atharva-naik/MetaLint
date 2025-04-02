@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for commented-out Python code.",
-    "why-is-this-bad": "Commented-out code is dead code, and is often included inadvertently.\nIt should be removed.",
-    "example": "# print(\"Hello, world!\")",
-    "example-split": {
-        "example-before": "# print(\"Hello, world!\")",
-        "example-after": "# print(\"Hello, world!\")"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for @pytest.mark.usefixtures() decorators that aren't passed any\narguments.",
-    "why-is-this-bad": "A @pytest.mark.usefixtures() decorator that isn't passed any arguments is\nuseless and should be removed.",
-    "example": "import pytest\n\n\n@pytest.mark.usefixtures()\ndef test_something(): ...\n\n\n\nUse instead:\n\n\ndef test_something(): ...",
-    "example-split": {
-        "example-before": "import pytest\n\n\n@pytest.mark.usefixtures()\ndef test_something(): ...\n\n",
-        "example-after": "\ndef test_something(): ..."
-    }
-}

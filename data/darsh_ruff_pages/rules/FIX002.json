@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for \"TODO\" comments.",
-    "why-is-this-bad": "\"TODO\" comments are used to describe an issue that should be resolved\n(usually, a missing feature, optimization, or refactoring opportunity).\n\n\nConsider resolving the issue before deploying the code.\n\n\nNote that if you use \"TODO\" comments as a form of documentation (e.g.,\nto provide context for future work),\nthis rule may not be appropriate for your project.",
-    "example": "def greet(name):\n    return f\"Hello, {name}!\"  # TODO: Add support for custom greetings.",
-    "example-split": {
-        "example-before": "def greet(name):\n    return f\"Hello, {name}!\"  # TODO: Add support for custom greetings.",
-        "example-after": "def greet(name):\n    return f\"Hello, {name}!\"  # TODO: Add support for custom greetings."
-    }
-}

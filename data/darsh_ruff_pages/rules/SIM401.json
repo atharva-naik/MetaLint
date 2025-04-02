@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for if statements that can be replaced with dict.get calls.",
-    "why-is-this-bad": "dict.get() calls can be used to replace if statements that assign a\nvalue to a variable in both branches, falling back to a default value if\nthe key is not found. When possible, using dict.get is more concise and\nmore idiomatic.\n\n\nUnder preview mode, this rule will\nalso suggest replacing if-else expressions with dict.get calls.",
-    "example": "if \"bar\" in foo:\n    value = foo[\"bar\"]\nelse:\n    value = 0\n\n\n\nUse instead:\n\n\nvalue = foo.get(\"bar\", 0)\n\n\n\nIf preview mode is enabled:\n\n\nvalue = foo[\"bar\"] if \"bar\" in foo else 0\n\n\n\nUse instead:\n\n\nvalue = foo.get(\"bar\", 0)",
-    "example-split": {
-        "example-before": "if \"bar\" in foo:\n    value = foo[\"bar\"]\nelse:\n    value = 0\n\n",
-        "example-after": "\nvalue = foo.get(\"bar\", 0)"
-    }
-}

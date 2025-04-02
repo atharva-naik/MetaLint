@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for functions names that do not follow the snake_case naming\nconvention.",
-    "why-is-this-bad": "PEP 8 recommends that function names follow snake_case:\n\n\n\nFunction names should be lowercase, with words separated by underscores as necessary to\nimprove readability. mixedCase is allowed only in contexts where that\u2019s already the\nprevailing style (e.g. threading.py), to retain backwards compatibility.\n\n\n\nNames can be excluded from this rule using the lint.pep8-naming.ignore-names\nor lint.pep8-naming.extend-ignore-names configuration options. For example,\nto ignore all functions starting with test_ from this rule, set the\nlint.pep8-naming.extend-ignore-names option to [\"test_*\"].",
-    "example": "def myFunction():\n    pass\n\n\n\nUse instead:\n\n\ndef my_function():\n    pass",
-    "example-split": {
-        "example-before": "def myFunction():\n    pass\n\n",
-        "example-after": "\ndef my_function():\n    pass"
-    }
-}

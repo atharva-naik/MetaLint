@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for list comprehensions that are immediately unpacked.",
-    "why-is-this-bad": "There is no reason to use a list comprehension if the result is immediately\nunpacked. Instead, use a generator expression, which avoids allocating\nan intermediary list.",
-    "example": "a, b, c = [foo(x) for x in items]\n\n\n\nUse instead:\n\n\na, b, c = (foo(x) for x in items)",
-    "example-split": {
-        "example-before": "a, b, c = [foo(x) for x in items]\n\n",
-        "example-after": "\na, b, c = (foo(x) for x in items)"
-    }
-}

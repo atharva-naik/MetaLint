@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for variable (and function) assignments that use the same names\nas builtins.",
-    "why-is-this-bad": "Reusing a builtin name for the name of a variable increases the\ndifficulty of reading and maintaining the code, and can cause\nnon-obvious errors, as readers may mistake the variable for the\nbuiltin and vice versa.\n\n\nBuiltins can be marked as exceptions to this rule via the\nlint.flake8-builtins.builtins-ignorelist configuration option.",
-    "example": "def find_max(list_of_lists):\n    max = 0\n    for flat_list in list_of_lists:\n        for value in flat_list:\n            max = max(max, value)  # TypeError: 'int' object is not callable\n    return max\n\n\n\nUse instead:\n\n\ndef find_max(list_of_lists):\n    result = 0\n    for flat_list in list_of_lists:\n        for value in flat_list:\n            result = max(result, value)\n    return result",
-    "example-split": {
-        "example-before": "def find_max(list_of_lists):\n    max = 0\n    for flat_list in list_of_lists:\n        for value in flat_list:\n            max = max(max, value)  # TypeError: 'int' object is not callable\n    return max\n\n",
-        "example-after": "\ndef find_max(list_of_lists):\n    result = 0\n    for flat_list in list_of_lists:\n        for value in flat_list:\n            result = max(result, value)\n    return result"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for if expressions that can be replaced with min() or max()\ncalls.",
-    "why-is-this-bad": "An if expression that selects the lesser or greater of two\nsub-expressions can be replaced with a min() or max() call\nrespectively. When possible, prefer min() and max(), as they're more\nconcise and readable than the equivalent if expression.",
-    "example": "highest_score = score1 if score1 > score2 else score2\n\n\n\nUse instead:\n\n\nhighest_score = max(score2, score1)",
-    "example-split": {
-        "example-before": "highest_score = score1 if score1 > score2 else score2\n\n",
-        "example-after": "\nhighest_score = max(score2, score1)"
-    }
-}

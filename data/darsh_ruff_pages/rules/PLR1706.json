@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of the known pre-Python 2.5 ternary syntax.",
-    "why-is-this-bad": "Prior to the introduction of the if-expression (ternary) operator in Python\n2.5, the only way to express a conditional expression was to use the and\nand or operators.\n\n\nThe if-expression construct is clearer and more explicit, and should be\npreferred over the use of and and or for ternary expressions.",
-    "example": "x, y = 1, 2\nmaximum = x >= y and x or y\n\n\n\nUse instead:\n\n\nx, y = 1, 2\nmaximum = x if x >= y else y",
-    "example-split": {
-        "example-before": "x, y = 1, 2\nmaximum = x >= y and x or y\n\n",
-        "example-after": "\nx, y = 1, 2\nmaximum = x if x >= y else y"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for variables defined in for, try, with statements\nthat redefine function parameters.",
-    "why-is-this-bad": "Redefined variables can cause unexpected behavior because of overridden function parameters.\nIf nested functions are declared, an inner function's body can override an outer function's parameters.",
-    "example": "def show(host_id=10.11):\n    for host_id, host in [[12.13, \"Venus\"], [14.15, \"Mars\"]]:\n        print(host_id, host)\n\n\n\nUse instead:\n\n\ndef show(host_id=10.11):\n    for inner_host_id, host in [[12.13, \"Venus\"], [14.15, \"Mars\"]]:\n        print(host_id, inner_host_id, host)",
-    "example-split": {
-        "example-before": "def show(host_id=10.11):\n    for host_id, host in [[12.13, \"Venus\"], [14.15, \"Mars\"]]:\n        print(host_id, host)\n\n",
-        "example-after": "\ndef show(host_id=10.11):\n    for inner_host_id, host in [[12.13, \"Venus\"], [14.15, \"Mars\"]]:\n        print(host_id, inner_host_id, host)"
-    }
-}

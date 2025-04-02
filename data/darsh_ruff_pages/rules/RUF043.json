@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for non-raw literal string arguments passed to the match parameter\nof pytest.raises() where the string contains at least one unescaped\nregex metacharacter.",
-    "why-is-this-bad": "The match argument is implicitly converted to a regex under the hood.\nIt should be made explicit whether the string is meant to be a regex or a \"plain\" pattern\nby prefixing the string with the r suffix, escaping the metacharacter(s)\nin the string using backslashes, or wrapping the entire string in a call to\nre.escape().",
-    "example": "import pytest\n\n\nwith pytest.raises(Exception, match=\"A full sentence.\"):\n    do_thing_that_raises()\n\n\n\nUse instead:\n\n\nimport pytest\n\n\nwith pytest.raises(Exception, match=r\"A full sentence.\"):\n    do_thing_that_raises()\n\n\n\nAlternatively:\n\n\nimport pytest\nimport re\n\n\nwith pytest.raises(Exception, match=re.escape(\"A full sentence.\")):\n    do_thing_that_raises()\n\n\n\nor:\n\n\nimport pytest\nimport re\n\n\nwith pytest.raises(Exception, \"A full sentence\\\\.\"):\n    do_thing_that_raises()",
-    "example-split": {
-        "example-before": "import pytest\n\n\nwith pytest.raises(Exception, match=\"A full sentence.\"):\n    do_thing_that_raises()\n\n",
-        "example-after": "\nimport pytest"
-    }
-}

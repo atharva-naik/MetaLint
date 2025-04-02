@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for if statements with complex conditionals in stubs.",
-    "why-is-this-bad": "Type checkers understand simple conditionals to express variations between\ndifferent Python versions and platforms. However, complex tests may not be\nunderstood by a type checker, leading to incorrect inferences when they\nanalyze your code.",
-    "example": "import sys\n\nif (3, 10) <= sys.version_info < (3, 12): ...\n\n\n\nUse instead:\n\n\nimport sys\n\nif sys.version_info >= (3, 10) and sys.version_info < (3, 12): ...",
-    "example-split": {
-        "example-before": "import sys\n\nif (3, 10) <= sys.version_info < (3, 12): ...\n\n",
-        "example-after": "\nimport sys"
-    }
-}

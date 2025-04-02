@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for imports that are not at the top of the file.",
-    "why-is-this-bad": "According to PEP 8, \"imports are always put at the top of the file, just after any\nmodule comments and docstrings, and before module globals and constants.\"\n\n\nThis rule makes an exception for both sys.path modifications (allowing for\nsys.path.insert, sys.path.append, etc.) and os.environ modifications\nbetween imports.",
-    "example": "\"One string\"\n\"Two string\"\na = 1\nimport os\nfrom sys import x\n\n\n\nUse instead:\n\n\nimport os\nfrom sys import x\n\n\"One string\"\n\"Two string\"\na = 1",
-    "example-split": {
-        "example-before": "\"One string\"\n\"Two string\"\na = 1\nimport os\nfrom sys import x\n\n",
-        "example-after": "\nimport os\nfrom sys import x"
-    }
-}

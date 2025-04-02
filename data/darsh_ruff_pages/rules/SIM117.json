@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the unnecessary nesting of multiple consecutive context\nmanagers.",
-    "why-is-this-bad": "In Python 3, a single with block can include multiple context\nmanagers.\n\n\nCombining multiple context managers into a single with statement\nwill minimize the indentation depth of the code, making it more\nreadable.\n\n\nThe following context managers are exempt when used as standalone\nstatements:\n\n\n\nanyio.{CancelScope, fail_after, move_on_after}\nasyncio.{timeout, timeout_at}\ntrio.{fail_after, fail_at, move_on_after, move_on_at}",
-    "example": "with A() as a:\n    with B() as b:\n        pass\n\n\n\nUse instead:\n\n\nwith A() as a, B() as b:\n    pass",
-    "example-split": {
-        "example-before": "with A() as a:\n    with B() as b:\n        pass\n\n",
-        "example-after": "\nwith A() as a, B() as b:\n    pass"
-    }
-}

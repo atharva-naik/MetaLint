@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for pytest.warns calls without a match parameter.",
-    "why-is-this-bad": "pytest.warns(Warning) will catch any Warning and may catch warnings that\nare unrelated to the code under test. To avoid this, pytest.warns should\nbe called with a match parameter. The warning names that require a match\nparameter can be configured via the\nlint.flake8-pytest-style.warns-require-match-for and\nlint.flake8-pytest-style.warns-extend-require-match-for settings.",
-    "example": "import pytest\n\n\ndef test_foo():\n    with pytest.warns(RuntimeWarning):\n        ...\n\n    # empty string is also an error\n    with pytest.warns(RuntimeWarning, match=\"\"):\n        ...\n\n\n\nUse instead:\n\n\nimport pytest\n\n\ndef test_foo():\n    with pytest.warns(RuntimeWarning, match=\"expected message\"):\n        ...",
-    "example-split": {
-        "example-before": "import pytest\n\n\ndef test_foo():\n    with pytest.warns(RuntimeWarning):\n        ...\n\n    # empty string is also an error\n    with pytest.warns(RuntimeWarning, match=\"\"):\n        ...\n\n",
-        "example-after": "\nimport pytest"
-    }
-}

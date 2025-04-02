@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the use of glob.glob() and glob.iglob().",
-    "why-is-this-bad": "pathlib offers a high-level API for path manipulation, as compared to\nthe lower-level API offered by os and glob.\n\n\nWhen possible, using Path object methods such as Path.glob() can\nimprove readability over their low-level counterparts (e.g.,\nglob.glob()).\n\n\nNote that glob.glob() and Path.glob() are not exact equivalents:\n\n\n\n\n\n\nglob-module functions\nPath.glob()\n\n\n\n\nHidden files\nHidden files are excluded by default. On Python 3.11+, the include_hidden keyword can be used to include hidden directories.\nIncludes hidden files by default.\n\n\nEagerness\nglob.iglob() returns a lazy iterator. Under the hood, glob.glob() simply converts the iterator to a list.\nPath.glob() returns a lazy iterator.\n\n\nWorking directory\nglob.glob() and glob.iglob() take a root_dir keyword to set the current working directory.\nPath.rglob() can be used to return the relative path.\n\n\nGlobstar (**)\nThe recursive flag must be set to True for the ** pattern to match any files and zero or more directories, subdirectories, and symbolic links.\nThe ** pattern in Path.glob() means \"this directory and all subdirectories, recursively\". In other words, it enables recursive globbing.",
-    "example": "import glob\nimport os\n\nglob.glob(os.path.join(\"my_path\", \"requirements*.txt\"))\n\n\n\nUse instead:\n\n\nfrom pathlib import Path\n\nPath(\"my_path\").glob(\"requirements*.txt\")",
-    "example-split": {
-        "example-before": "import glob\nimport os\n\nglob.glob(os.path.join(\"my_path\", \"requirements*.txt\"))\n\n",
-        "example-after": "\nfrom pathlib import Path"
-    }
-}

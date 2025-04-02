@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks that a \"TODO\" tag contains a description of the issue following the\ntag itself.",
-    "why-is-this-bad": "TODO comments should include a description of the issue to provide context\nfor future readers.",
-    "example": "# TODO(charlie)\n\n\n\nUse instead:\n\n\n# TODO(charlie): fix some issue",
-    "example-split": {
-        "example-before": "# TODO(charlie)\n\n",
-        "example-after": "\n# TODO(charlie): fix some issue"
-    }
-}

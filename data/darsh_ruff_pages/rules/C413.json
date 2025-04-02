@@ -1,5 +1,0 @@
-{
-    "what-it-does": "Checks for unnecessary list() or reversed() calls around sorted()\ncalls.",
-    "why-is-this-bad": "It is unnecessary to use list() around sorted(), as the latter already\nreturns a list.\n\n\nIt is also unnecessary to use reversed() around sorted(), as the latter\nhas a reverse argument that can be used in lieu of an additional\nreversed() call.\n\n\nIn both cases, it's clearer and more efficient to avoid the redundant call.",
-    "fix-safety": "This rule's fix is marked as unsafe, as reversed() and reverse=True will\nyield different results in the event of custom sort keys or equality\nfunctions. Specifically, reversed() will reverse the order of the\ncollection, while sorted() with reverse=True will perform a stable\nreverse sort, which will preserve the order of elements that compare as\nequal."
-}

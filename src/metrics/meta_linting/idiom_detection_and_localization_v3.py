@@ -193,7 +193,7 @@ def compute_idiom_wise_pr(data):
         idiom_precisions[idiom_code] = precision_score(idiom_binary_presence_gt[idiom_code], idiom_binary_presence_pred[idiom_code], zero_division=0) # NaN output for undefined recall (no GT present for several idioms).
         if sum(idiom_binary_presence_gt[idiom_code]) == 0: 
             IDIOMS_ABSENT_FROM_TEST_SET.add(idiom_code)
-            # print(idiom_code) 
+            print(idiom_code)
         idiom_recalls[idiom_code] = recall_score(idiom_binary_presence_gt[idiom_code], idiom_binary_presence_pred[idiom_code], zero_division=0) # NaN output for undefined recall (no GT present for several idioms).
     # print(tool_group_freq)
     return idiom_precisions, idiom_recalls

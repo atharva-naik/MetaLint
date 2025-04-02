@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for over-indented docstrings.",
-    "why-is-this-bad": "PEP 257 recommends that docstrings be indented to the same level as their\nopening quotes. Avoid over-indenting docstrings, for consistency.",
-    "example": "def sort_list(l: list[int]) -> list[int]:\n    \"\"\"Return a sorted copy of the list.\n\n        Sort the list in ascending order and return a copy of the result using the\n        bubble sort algorithm.\n    \"\"\"\n\n\n\nUse instead:\n\n\ndef sort_list(l: list[int]) -> list[int]:\n    \"\"\"Return a sorted copy of the list.\n\n    Sort the list in ascending order and return a copy of the result using the bubble\n    sort algorithm.\n    \"\"\"",
-    "example-split": {
-        "example-before": "def sort_list(l: list[int]) -> list[int]:\n    \"\"\"Return a sorted copy of the list.\n\n        Sort the list in ascending order and return a copy of the result using the\n        bubble sort algorithm.\n    \"\"\"\n\n",
-        "example-after": "\ndef sort_list(l: list[int]) -> list[int]:\n    \"\"\"Return a sorted copy of the list."
-    }
-}

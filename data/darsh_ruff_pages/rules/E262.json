@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks if one space is used after inline comments.",
-    "why-is-this-bad": "An inline comment is a comment on the same line as a statement.\n\n\nPer PEP 8, inline comments should start with a # and a single space.",
-    "example": "x = x + 1  #Increment x\nx = x + 1  #  Increment x\nx = x + 1  # \\xa0Increment x\n\n\n\nUse instead:\n\n\nx = x + 1  # Increment x\nx = x + 1    # Increment x",
-    "example-split": {
-        "example-before": "x = x + 1  #Increment x\nx = x + 1  #  Increment x\nx = x + 1  # \\xa0Increment x\n\n",
-        "example-after": "\nx = x + 1  # Increment x\nx = x + 1    # Increment x"
-    }
-}

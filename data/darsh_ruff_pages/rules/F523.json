@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for str.format calls with unused positional arguments.",
-    "why-is-this-bad": "Unused positional arguments are redundant, and often indicative of a mistake.\nThey should be removed.",
-    "example": "\"Hello, {0}\".format(\"world\", \"!\")\n\n\n\nUse instead:\n\n\n\"Hello, {0}\".format(\"world\")",
-    "example-split": {
-        "example-before": "\"Hello, {0}\".format(\"world\", \"!\")\n\n",
-        "example-after": "\n\"Hello, {0}\".format(\"world\")"
-    }
-}

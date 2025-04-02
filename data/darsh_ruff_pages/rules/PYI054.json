@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for numeric literals with a string representation longer than ten\ncharacters.",
-    "why-is-this-bad": "If a function has a default value where the literal representation is\ngreater than 50 characters, the value is likely to be an implementation\ndetail or a constant that varies depending on the system you're running on.\n\n\nDefault values like these should generally be omitted from stubs. Use\nellipses (...) instead.",
-    "example": "def foo(arg: int = 693568516352839939918568862861217771399698285293568) -> None: ...\n\n\n\nUse instead:\n\n\ndef foo(arg: int = ...) -> None: ...",
-    "example-split": {
-        "example-before": "def foo(arg: int = 693568516352839939918568862861217771399698285293568) -> None: ...\n\n",
-        "example-after": "\ndef foo(arg: int = ...) -> None: ..."
-    }
-}

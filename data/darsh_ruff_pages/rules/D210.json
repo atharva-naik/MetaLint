@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for surrounding whitespace in docstrings.",
-    "why-is-this-bad": "Remove surrounding whitespace from the docstring, for consistency.",
-    "example": "def factorial(n: int) -> int:\n    \"\"\" Return the factorial of n. \"\"\"\n\n\n\nUse instead:\n\n\ndef factorial(n: int) -> int:\n    \"\"\"Return the factorial of n.\"\"\"",
-    "example-split": {
-        "example-before": "def factorial(n: int) -> int:\n    \"\"\" Return the factorial of n. \"\"\"\n\n",
-        "example-after": "\ndef factorial(n: int) -> int:\n    \"\"\"Return the factorial of n.\"\"\""
-    }
-}

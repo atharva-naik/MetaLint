@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for import statements that import the current module.",
-    "why-is-this-bad": "Importing a module from itself is a circular dependency and results\nin an ImportError exception.",
-    "example": "# file: this_file.py\nfrom this_file import foo\n\n\ndef foo(): ...",
-    "example-split": {
-        "example-before": "# file: this_file.py\nfrom this_file import foo\n\n\ndef foo(): ...",
-        "example-after": "# file: this_file.py\nfrom this_file import foo"
-    }
-}

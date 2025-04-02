@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of str(), repr(), and ascii() as explicit type\nconversions within f-strings.",
-    "why-is-this-bad": "f-strings support dedicated conversion flags for these types, which are\nmore succinct and idiomatic.\n\n\nNote that, in many cases, calling str() within an f-string is\nunnecessary and can be removed entirely, as the value will be converted\nto a string automatically, the notable exception being for classes that\nimplement a custom __format__ method.",
-    "example": "a = \"some string\"\nf\"{repr(a)}\"\n\n\n\nUse instead:\n\n\na = \"some string\"\nf\"{a!r}\"",
-    "example-split": {
-        "example-before": "a = \"some string\"\nf\"{repr(a)}\"\n\n",
-        "example-after": "\na = \"some string\"\nf\"{a!r}\""
-    }
-}

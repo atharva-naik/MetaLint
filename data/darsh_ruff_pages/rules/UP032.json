@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for str.format calls that can be replaced with f-strings.",
-    "why-is-this-bad": "f-strings are more readable and generally preferred over str.format\ncalls.",
-    "example": "\"{}\".format(foo)\n\n\n\nUse instead:\n\n\nf\"{foo}\"",
-    "example-split": {
-        "example-before": "\"{}\".format(foo)\n\n",
-        "example-after": "\nf\"{foo}\""
-    }
-}

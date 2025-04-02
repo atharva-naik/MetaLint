@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the use of type comments (e.g., x = 1  # type: int) in stub\nfiles.",
-    "why-is-this-bad": "Stub (.pyi) files should use type annotations directly, rather\nthan type comments, even if they're intended to support Python 2, since\nstub files are not executed at runtime. The one exception is # type: ignore.",
-    "example": "x = 1  # type: int\n\n\n\nUse instead:\n\n\nx: int = 1",
-    "example-split": {
-        "example-before": "x = 1  # type: int\n\n",
-        "example-after": "\nx: int = 1"
-    }
-}

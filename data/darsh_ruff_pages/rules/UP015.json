@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for redundant open mode parameters.",
-    "why-is-this-bad": "Redundant open mode parameters are unnecessary and should be removed to\navoid confusion.",
-    "example": "with open(\"foo.txt\", \"r\") as f:\n    ...\n\n\n\nUse instead:\n\n\nwith open(\"foo.txt\") as f:\n    ...",
-    "example-split": {
-        "example-before": "with open(\"foo.txt\", \"r\") as f:\n    ...\n\n",
-        "example-after": "\nwith open(\"foo.txt\") as f:\n    ..."
-    }
-}

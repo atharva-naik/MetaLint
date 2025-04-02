@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for imports of the subprocess module.",
-    "why-is-this-bad": "It is possible to inject malicious commands into subprocess calls. Consider\npossible security implications associated with this module.",
-    "example": "import subprocess",
-    "example-split": {
-        "example-before": "import subprocess",
-        "example-after": "import subprocess"
-    }
-}

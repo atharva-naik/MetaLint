@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of exception-related assertion methods from the unittest\nmodule.",
-    "why-is-this-bad": "To enforce the assertion style recommended by pytest, pytest.raises is\npreferred over the exception-related assertion methods in unittest, like\nassertRaises.",
-    "example": "import unittest\n\n\nclass TestFoo(unittest.TestCase):\n    def test_foo(self):\n        with self.assertRaises(ValueError):\n            raise ValueError(\"foo\")\n\n\n\nUse instead:\n\n\nimport unittest\nimport pytest\n\n\nclass TestFoo(unittest.TestCase):\n    def test_foo(self):\n        with pytest.raises(ValueError):\n            raise ValueError(\"foo\")",
-    "example-split": {
-        "example-before": "import unittest\n\n\nclass TestFoo(unittest.TestCase):\n    def test_foo(self):\n        with self.assertRaises(ValueError):\n            raise ValueError(\"foo\")\n\n",
-        "example-after": "\nimport unittest\nimport pytest"
-    }
-}

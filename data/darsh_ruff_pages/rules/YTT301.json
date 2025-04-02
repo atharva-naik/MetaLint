@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of sys.version[0].",
-    "why-is-this-bad": "If the current major or minor version consists of multiple digits,\nsys.version[0] will select the first digit of the major version number\nonly (e.g., \"10.2\" would evaluate to \"1\"). This is likely unintended,\nand can lead to subtle bugs if the version string is used to test against a\nmajor version number.\n\n\nInstead, use sys.version_info.major to access the current major version\nnumber.",
-    "example": "import sys\n\nsys.version[0]  # If using Python 10, this evaluates to \"1\".\n\n\n\nUse instead:\n\n\nimport sys\n\nf\"{sys.version_info.major}\"  # If using Python 10, this evaluates to \"10\".",
-    "example-split": {
-        "example-before": "import sys\n\nsys.version[0]  # If using Python 10, this evaluates to \"1\".\n\n",
-        "example-after": "\nimport sys"
-    }
-}

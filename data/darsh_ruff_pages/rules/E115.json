@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for comments in a code blocks that are lacking indentation.",
-    "why-is-this-bad": "Comments within an indented block should themselves be indented, to\nindicate that they are part of the block.",
-    "example": "for item in items:\n# Hi\n    pass\n\n\n\nUse instead:\n\n\nfor item in items:\n    # Hi\n    pass",
-    "example-split": {
-        "example-before": "for item in items:\n# Hi\n    pass\n\n",
-        "example-after": "\nfor item in items:\n    # Hi\n    pass"
-    }
-}

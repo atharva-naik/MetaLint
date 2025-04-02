@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the unintentional use of type annotations.",
-    "why-is-this-bad": "The use of a colon (:) in lieu of an assignment (=) can be syntactically valid, but\nis almost certainly a mistake when used in a subscript or attribute assignment.",
-    "example": "a[\"b\"]: 1\n\n\n\nUse instead:\n\n\na[\"b\"] = 1",
-    "example-split": {
-        "example-before": "a[\"b\"]: 1\n\n",
-        "example-after": "\na[\"b\"] = 1"
-    }
-}

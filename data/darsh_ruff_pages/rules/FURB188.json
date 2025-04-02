@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for code that could be written more idiomatically using\nstr.removeprefix()\nor str.removesuffix().\n\n\nSpecifically, the rule flags code that conditionally removes a prefix or suffix\nusing a slice operation following an if test that uses str.startswith() or str.endswith().\n\n\nThe rule is only applied if your project targets Python 3.9 or later.",
-    "why-is-this-bad": "The methods str.removeprefix()\nand str.removesuffix(),\nintroduced in Python 3.9, have the same behavior while being more readable and efficient.",
-    "example": "def example(filename: str, text: str):\n    filename = filename[:-4] if filename.endswith(\".txt\") else filename\n\n    if text.startswith(\"pre\"):\n        text = text[3:]\n\n\n\nUse instead:\n\n\ndef example(filename: str, text: str):\n    filename = filename.removesuffix(\".txt\")\n    text = text.removeprefix(\"pre\")",
-    "example-split": {
-        "example-before": "def example(filename: str, text: str):\n    filename = filename[:-4] if filename.endswith(\".txt\") else filename\n\n    if text.startswith(\"pre\"):\n        text = text[3:]\n\n",
-        "example-after": "\ndef example(filename: str, text: str):\n    filename = filename.removesuffix(\".txt\")\n    text = text.removeprefix(\"pre\")"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for bidirectional unicode characters.",
-    "why-is-this-bad": "The interaction between bidirectional unicode characters and the\nsurrounding code can be surprising to those that are unfamiliar\nwith right-to-left writing systems.\n\n\nIn some cases, bidirectional unicode characters can also be used to\nobfuscate code and introduce or mask security vulnerabilities.",
-    "example": "s = \"\u05d0\" * 100  #  \"\u05d0\" is assigned\nprint(s)  # prints a 100-character string",
-    "example-split": {
-        "example-before": "s = \"\u05d0\" * 100  #  \"\u05d0\" is assigned\nprint(s)  # prints a 100-character string",
-        "example-after": "s = \"\u05d0\" * 100  #  \"\u05d0\" is assigned\nprint(s)  # prints a 100-character string"
-    }
-}

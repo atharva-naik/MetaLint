@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for single-element tuples in exception handlers (e.g.,\nexcept (ValueError,):).\n\n\nNote: Single-element tuples consisting of a starred expression\nare allowed.",
-    "why-is-this-bad": "A tuple with a single element can be more concisely and idiomatically\nexpressed as a single value.",
-    "example": "try:\n    ...\nexcept (ValueError,):\n    ...\n\n\n\nUse instead:\n\n\ntry:\n    ...\nexcept ValueError:\n    ...",
-    "example-split": {
-        "example-before": "try:\n    ...\nexcept (ValueError,):\n    ...\n\n",
-        "example-after": "\ntry:\n    ...\nexcept ValueError:\n    ..."
-    }
-}

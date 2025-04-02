@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for redundant unions between a Literal and a builtin supertype of\nthat Literal.",
-    "why-is-this-bad": "Using a Literal type in a union with its builtin supertype is redundant,\nas the supertype will be strictly more general than the Literal type.\nFor example, Literal[\"A\"] | str is equivalent to str, and\nLiteral[1] | int is equivalent to int, as str and int are the\nsupertypes of \"A\" and 1 respectively.",
-    "example": "from typing import Literal\n\nx: Literal[\"A\", b\"B\"] | str\n\n\n\nUse instead:\n\n\nfrom typing import Literal\n\nx: Literal[b\"B\"] | str",
-    "example-split": {
-        "example-before": "from typing import Literal\n\nx: Literal[\"A\", b\"B\"] | str\n\n",
-        "example-after": "\nfrom typing import Literal"
-    }
-}

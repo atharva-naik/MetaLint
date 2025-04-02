@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for pytest fixtures that do not return a value, but are not named\nwith a leading underscore.",
-    "why-is-this-bad": "By convention, fixtures that don't return a value should be named with a\nleading underscore, while fixtures that do return a value should not.\n\n\nThis rule ignores abstract fixtures and generators.",
-    "example": "import pytest\n\n\n@pytest.fixture()\ndef patch_something(mocker):\n    mocker.patch(\"module.object\")\n\n\n@pytest.fixture()\ndef use_context():\n    with create_context():\n        yield\n\n\n\nUse instead:\n\n\nimport pytest\n\n\n@pytest.fixture()\ndef _patch_something(mocker):\n    mocker.patch(\"module.object\")\n\n\n@pytest.fixture()\ndef _use_context():\n    with create_context():\n        yield",
-    "example-split": {
-        "example-before": "import pytest\n\n\n@pytest.fixture()\ndef patch_something(mocker):\n    mocker.patch(\"module.object\")\n\n\n@pytest.fixture()\ndef use_context():\n    with create_context():\n        yield\n\n",
-        "example-after": "\nimport pytest"
-    }
-}

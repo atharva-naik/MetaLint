@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the type of parameter names passed to pytest.mark.parametrize.",
-    "why-is-this-bad": "The argnames argument of pytest.mark.parametrize takes a string or\na sequence of strings. For a single parameter, it's preferable to use a\nstring. For multiple parameters, it's preferable to use the style\nconfigured via the lint.flake8-pytest-style.parametrize-names-type setting.",
-    "example": "import pytest\n\n\n# single parameter, always expecting string\n@pytest.mark.parametrize((\"param\",), [1, 2, 3])\ndef test_foo(param): ...\n\n\n# multiple parameters, expecting tuple\n@pytest.mark.parametrize([\"param1\", \"param2\"], [(1, 2), (3, 4)])\ndef test_bar(param1, param2): ...\n\n\n# multiple parameters, expecting tuple\n@pytest.mark.parametrize(\"param1,param2\", [(1, 2), (3, 4)])\ndef test_baz(param1, param2): ...\n\n\n\nUse instead:\n\n\nimport pytest\n\n\n@pytest.mark.parametrize(\"param\", [1, 2, 3])\ndef test_foo(param): ...\n\n\n@pytest.mark.parametrize((\"param1\", \"param2\"), [(1, 2), (3, 4)])\ndef test_bar(param1, param2): ...",
-    "example-split": {
-        "example-before": "import pytest\n\n\n# single parameter, always expecting string\n@pytest.mark.parametrize((\"param\",), [1, 2, 3])\ndef test_foo(param): ...\n\n\n# multiple parameters, expecting tuple\n@pytest.mark.parametrize([\"param1\", \"param2\"], [(1, 2), (3, 4)])\ndef test_bar(param1, param2): ...\n\n\n# multiple parameters, expecting tuple\n@pytest.mark.parametrize(\"param1,param2\", [(1, 2), (3, 4)])\ndef test_baz(param1, param2): ...\n\n",
-        "example-after": "\nimport pytest"
-    }
-}

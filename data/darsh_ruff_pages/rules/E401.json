@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Check for multiple imports on one line.",
-    "why-is-this-bad": "According to PEP 8, \"imports should usually be on separate lines.\"",
-    "example": "import sys, os\n\n\n\nUse instead:\n\n\nimport os\nimport sys",
-    "example-split": {
-        "example-before": "import sys, os\n\n",
-        "example-after": "\nimport os\nimport sys"
-    }
-}

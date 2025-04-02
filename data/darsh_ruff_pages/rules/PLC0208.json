@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for iteration over a set literal where each element in the set is\nitself a literal value.",
-    "why-is-this-bad": "Iterating over a set is less efficient than iterating over a sequence\ntype, like list or tuple.",
-    "example": "for number in {1, 2, 3}:\n    ...\n\n\n\nUse instead:\n\n\nfor number in (1, 2, 3):\n    ...",
-    "example-split": {
-        "example-before": "for number in {1, 2, 3}:\n    ...\n\n",
-        "example-after": "\nfor number in (1, 2, 3):\n    ..."
-    }
-}

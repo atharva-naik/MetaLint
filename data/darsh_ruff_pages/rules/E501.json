@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for lines that exceed the specified maximum character length.",
-    "why-is-this-bad": "Overlong lines can hurt readability. PEP 8, for example, recommends\nlimiting lines to 79 characters. By default, this rule enforces a limit\nof 88 characters for compatibility with Black and the Ruff formatter,\nthough that limit is configurable via the line-length setting.\n\n\nIn the interest of pragmatism, this rule makes a few exceptions when\ndetermining whether a line is overlong. Namely, it:\n\n\n\nIgnores lines that consist of a single \"word\" (i.e., without any\n    whitespace between its characters).\nIgnores lines that end with a URL, as long as the URL starts before\n    the line-length threshold.\nIgnores line that end with a pragma comment (e.g., # type: ignore\n    or # noqa), as long as the pragma comment starts before the\n    line-length threshold. That is, a line will not be flagged as\n    overlong if a pragma comment causes it to exceed the line length.\n    (This behavior aligns with that of the Ruff formatter.)\nIgnores SPDX license identifiers and copyright notices\n    (e.g., # SPDX-License-Identifier: MIT), which are machine-readable\n    and should not wrap over multiple lines.\n\n\n\nIf lint.pycodestyle.ignore-overlong-task-comments is true, this rule will\nalso ignore comments that start with any of the specified lint.task-tags\n(e.g., # TODO:).",
-    "example": "my_function(param1, param2, param3, param4, param5, param6, param7, param8, param9, param10)\n\n\n\nUse instead:\n\n\nmy_function(\n    param1, param2, param3, param4, param5,\n    param6, param7, param8, param9, param10\n)",
-    "example-split": {
-        "example-before": "my_function(param1, param2, param3, param4, param5, param6, param7, param8, param9, param10)\n\n",
-        "example-after": "\nmy_function(\n    param1, param2, param3, param4, param5,\n    param6, param7, param8, param9, param10\n)"
-    }
-}

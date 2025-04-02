@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for if statements that can be replaced with bool.",
-    "why-is-this-bad": "if statements that return True for a truthy condition and False for\na falsey condition can be replaced with boolean casts.",
-    "example": "Given:\n\n\nif x > 0:\n    return True\nelse:\n    return False\n\n\n\nUse instead:\n\n\nreturn x > 0\n\n\n\nOr, given:\n\n\nif x > 0:\n    return True\nreturn False\n\n\n\nUse instead:\n\n\nreturn x > 0",
-    "example-split": {
-        "example-before": "Given:\n\n\nif x > 0:\n    return True\nelse:\n    return False\n\n",
-        "example-after": "\nreturn x > 0"
-    }
-}

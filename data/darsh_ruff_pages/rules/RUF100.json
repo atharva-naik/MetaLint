@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for noqa directives that are no longer applicable.",
-    "why-is-this-bad": "A noqa directive that no longer matches any diagnostic violations is\nlikely included by mistake, and should be removed to avoid confusion.",
-    "example": "import foo  # noqa: F401\n\n\ndef bar():\n    foo.bar()\n\n\n\nUse instead:\n\n\nimport foo\n\n\ndef bar():\n    foo.bar()",
-    "example-split": {
-        "example-before": "import foo  # noqa: F401\n\n\ndef bar():\n    foo.bar()\n\n",
-        "example-after": "\nimport foo"
-    }
-}

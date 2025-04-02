@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for redundant exc_info keyword arguments in logging statements.",
-    "why-is-this-bad": "exc_info is True by default for logging.exception, and False by\ndefault for logging.error.\n\n\nPassing exc_info=True to logging.exception calls is redundant, as is\npassing exc_info=False to logging.error calls.",
-    "example": "import logging\n\ntry:\n    ...\nexcept ValueError:\n    logging.exception(\"Exception occurred\", exc_info=True)\n\n\n\nUse instead:\n\n\nimport logging\n\ntry:\n    ...\nexcept ValueError:\n    logging.exception(\"Exception occurred\")",
-    "example-split": {
-        "example-before": "import logging\n\ntry:\n    ...\nexcept ValueError:\n    logging.exception(\"Exception occurred\", exc_info=True)\n\n",
-        "example-after": "\nimport logging"
-    }
-}

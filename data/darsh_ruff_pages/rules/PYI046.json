@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the presence of unused private typing.Protocol definitions.",
-    "why-is-this-bad": "A private typing.Protocol that is defined but not used is likely a\nmistake. It should either be used, made public, or removed to avoid\nconfusion.",
-    "example": "import typing\n\nclass _PrivateProtocol(typing.Protocol):\n    foo: int\n\n\n\nUse instead:\n\n\nimport typing\n\nclass _PrivateProtocol(typing.Protocol):\n    foo: int\n\ndef func(arg: _PrivateProtocol) -> None: ...",
-    "example-split": {
-        "example-before": "import typing\n\nclass _PrivateProtocol(typing.Protocol):\n    foo: int\n\n",
-        "example-after": "\nimport typing"
-    }
-}

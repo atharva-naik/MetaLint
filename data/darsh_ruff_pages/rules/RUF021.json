@@ -1,4 +1,0 @@
-{
-    "what-it-does": "Checks for chained operators where adding parentheses could improve the\nclarity of the code.",
-    "why-is-this-bad": "and always binds more tightly than or when chaining the two together,\nbut this can be hard to remember (and sometimes surprising).\nAdding parentheses in these situations can greatly improve code readability,\nwith no change to semantics or performance.\n\n\nFor example:\n\n\na, b, c = 1, 0, 2\nx = a or b and c\n\nd, e, f = 0, 1, 2\ny = d and e or f\n\n\n\nUse instead:\n\n\na, b, c = 1, 0, 2\nx = a or (b and c)\n\nd, e, f = 0, 1, 2\ny = (d and e) or f"
-}

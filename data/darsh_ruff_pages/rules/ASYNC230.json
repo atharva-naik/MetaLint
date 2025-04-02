@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks that async functions do not open files with blocking methods like open.",
-    "why-is-this-bad": "Blocking an async function via a blocking call will block the entire\nevent loop, preventing it from executing other tasks while waiting for the\ncall to complete, negating the benefits of asynchronous programming.\n\n\nInstead of making a blocking call, use an equivalent asynchronous library\nor function.",
-    "example": "async def foo():\n    with open(\"bar.txt\") as f:\n        contents = f.read()\n\n\n\nUse instead:\n\n\nimport anyio\n\n\nasync def foo():\n    async with await anyio.open_file(\"bar.txt\") as f:\n        contents = await f.read()",
-    "example-split": {
-        "example-before": "async def foo():\n    with open(\"bar.txt\") as f:\n        contents = f.read()\n\n",
-        "example-after": "\nimport anyio"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "De-duplicates, groups, and sorts imports based on the provided isort settings.",
-    "why-is-this-bad": "Consistency is good. Use a common convention for imports to make your code\nmore readable and idiomatic.",
-    "example": "import pandas\nimport numpy as np\n\n\n\nUse instead:\n\n\nimport numpy as np\nimport pandas",
-    "example-split": {
-        "example-before": "import pandas\nimport numpy as np\n\n",
-        "example-after": "\nimport numpy as np\nimport pandas"
-    }
-}

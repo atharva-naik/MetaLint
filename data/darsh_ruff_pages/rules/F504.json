@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for unused mapping keys in printf-style format strings.",
-    "why-is-this-bad": "Unused named placeholders in printf-style format strings are unnecessary,\nand likely indicative of a mistake. They should be removed.",
-    "example": "\"Hello, %(name)s\" % {\"greeting\": \"Hello\", \"name\": \"World\"}\n\n\n\nUse instead:\n\n\n\"Hello, %(name)s\" % {\"name\": \"World\"}",
-    "example-split": {
-        "example-before": "\"Hello, %(name)s\" % {\"greeting\": \"Hello\", \"name\": \"World\"}\n\n",
-        "example-after": "\n\"Hello, %(name)s\" % {\"name\": \"World\"}"
-    }
-}

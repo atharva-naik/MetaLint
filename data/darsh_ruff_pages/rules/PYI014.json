@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for untyped function arguments in stubs with default values that\nare not \"simple\" /// (i.e., int, float, complex, bytes, str,\nbool, None, ..., or simple container literals).",
-    "why-is-this-bad": "Stub (.pyi) files exist to define type hints, and are not evaluated at\nruntime. As such, function arguments in stub files should not have default\nvalues, as they are ignored by type checkers.\n\n\nHowever, the use of default values may be useful for IDEs and other\nconsumers of stub files, and so \"simple\" values may be worth including and\nare permitted by this rule.\n\n\nInstead of including and reproducing a complex value, use ... to indicate\nthat the assignment has a default value, but that the value is non-simple\nor varies according to the current platform or Python version.",
-    "example": "def foo(arg=[]) -> None: ...\n\n\n\nUse instead:\n\n\ndef foo(arg=...) -> None: ...",
-    "example-split": {
-        "example-before": "def foo(arg=[]) -> None: ...\n\n",
-        "example-after": "\ndef foo(arg=...) -> None: ..."
-    }
-}

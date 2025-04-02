@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks that the task variable name matches the task_id value for\nAirflow Operators.",
-    "why-is-this-bad": "When initializing an Airflow Operator, for consistency, the variable\nname should match the task_id value. This makes it easier to\nfollow the flow of the DAG.",
-    "example": "from airflow.operators import PythonOperator\n\n\nincorrect_name = PythonOperator(task_id=\"my_task\")\n\n\n\nUse instead:\n\n\nfrom airflow.operators import PythonOperator\n\n\nmy_task = PythonOperator(task_id=\"my_task\")",
-    "example-split": {
-        "example-before": "from airflow.operators import PythonOperator\n\n\nincorrect_name = PythonOperator(task_id=\"my_task\")\n\n",
-        "example-after": "\nfrom airflow.operators import PythonOperator"
-    }
-}

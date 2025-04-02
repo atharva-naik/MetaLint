@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for public __init__ method definitions that are missing\ndocstrings.",
-    "why-is-this-bad": "Public __init__ methods are used to initialize objects. __init__\nmethods should be documented via docstrings to describe the method's\nbehavior, arguments, side effects, exceptions, and any other information\nthat may be relevant to the user.\n\n\nIf the codebase adheres to a standard format for __init__ method docstrings,\nfollow that format for consistency.",
-    "example": "class City:\n    def __init__(self, name: str, population: int) -> None:\n        self.name: str = name\n        self.population: int = population\n\n\n\nUse instead:\n\n\nclass City:\n    def __init__(self, name: str, population: int) -> None:\n        \"\"\"Initialize a city with a name and population.\"\"\"\n        self.name: str = name\n        self.population: int = population",
-    "example-split": {
-        "example-before": "class City:\n    def __init__(self, name: str, population: int) -> None:\n        self.name: str = name\n        self.population: int = population\n\n",
-        "example-after": "\nclass City:\n    def __init__(self, name: str, population: int) -> None:\n        \"\"\"Initialize a city with a name and population.\"\"\"\n        self.name: str = name\n        self.population: int = population"
-    }
-}

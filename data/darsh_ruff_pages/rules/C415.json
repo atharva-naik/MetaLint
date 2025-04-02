@@ -1,4 +1,0 @@
-{
-    "what-it-does": "Checks for unnecessary subscript reversal of iterable.",
-    "why-is-this-bad": "It's unnecessary to reverse the order of an iterable when passing it\ninto reversed(), set() or sorted() functions as they will change\nthe order of the elements again."
-}

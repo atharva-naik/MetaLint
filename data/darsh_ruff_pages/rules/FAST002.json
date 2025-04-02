@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Identifies FastAPI routes with deprecated uses of Depends or similar.",
-    "why-is-this-bad": "The FastAPI documentation recommends the use of typing.Annotated for\ndefining route dependencies and parameters, rather than using Depends,\nQuery or similar as a default value for a parameter. Using this approach\neverywhere helps ensure consistency and clarity in defining dependencies\nand parameters.\n\n\nAnnotated was added to the typing module in Python 3.9; however,\nthe third-party typing_extensions package provides a backport that can be\nused on older versions of Python.",
-    "example": "from fastapi import Depends, FastAPI\n\napp = FastAPI()\n\n\nasync def common_parameters(q: str | None = None, skip: int = 0, limit: int = 100):\n    return {\"q\": q, \"skip\": skip, \"limit\": limit}\n\n\n@app.get(\"/items/\")\nasync def read_items(commons: dict = Depends(common_parameters)):\n    return commons\n\n\n\nUse instead:\n\n\nfrom typing import Annotated\n\nfrom fastapi import Depends, FastAPI\n\napp = FastAPI()\n\n\nasync def common_parameters(q: str | None = None, skip: int = 0, limit: int = 100):\n    return {\"q\": q, \"skip\": skip, \"limit\": limit}\n\n\n@app.get(\"/items/\")\nasync def read_items(commons: Annotated[dict, Depends(common_parameters)]):\n    return commons",
-    "example-split": {
-        "example-before": "from fastapi import Depends, FastAPI\n\napp = FastAPI()\n\n\nasync def common_parameters(q: str | None = None, skip: int = 0, limit: int = 100):\n    return {\"q\": q, \"skip\": skip, \"limit\": limit}\n\n\n@app.get(\"/items/\")\nasync def read_items(commons: dict = Depends(common_parameters)):\n    return commons\n\n",
-        "example-after": "\nfrom typing import Annotated"
-    }
-}

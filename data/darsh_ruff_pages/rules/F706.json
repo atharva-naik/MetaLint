@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for return statements outside of functions.",
-    "why-is-this-bad": "The use of a return statement outside of a function will raise a\nSyntaxError.",
-    "example": "class Foo:\n    return 1",
-    "example-split": {
-        "example-before": "class Foo:\n    return 1",
-        "example-after": "class Foo:\n    return 1"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for asyncio.create_task and asyncio.ensure_future calls\nthat do not store a reference to the returned result.",
-    "why-is-this-bad": "Per the asyncio documentation, the event loop only retains a weak\nreference to tasks. If the task returned by asyncio.create_task and\nasyncio.ensure_future is not stored in a variable, or a collection,\nor otherwise referenced, it may be garbage collected at any time. This\ncan lead to unexpected and inconsistent behavior, as your tasks may or\nmay not run to completion.",
-    "example": "import asyncio\n\nfor i in range(10):\n    # This creates a weak reference to the task, which may be garbage\n    # collected at any time.\n    asyncio.create_task(some_coro(param=i))\n\n\n\nUse instead:\n\n\nimport asyncio\n\nbackground_tasks = set()\n\nfor i in range(10):\n    task = asyncio.create_task(some_coro(param=i))\n\n    # Add task to the set. This creates a strong reference.\n    background_tasks.add(task)\n\n    # To prevent keeping references to finished tasks forever,\n    # make each task remove its own reference from the set after\n    # completion:\n    task.add_done_callback(background_tasks.discard)",
-    "example-split": {
-        "example-before": "import asyncio\n\nfor i in range(10):\n    # This creates a weak reference to the task, which may be garbage\n    # collected at any time.\n    asyncio.create_task(some_coro(param=i))\n\n",
-        "example-after": "\nimport asyncio"
-    }
-}

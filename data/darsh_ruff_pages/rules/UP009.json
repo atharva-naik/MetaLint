@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for unnecessary UTF-8 encoding declarations.",
-    "why-is-this-bad": "PEP 3120 makes UTF-8 the default encoding, so a UTF-8 encoding\ndeclaration is unnecessary.",
-    "example": "# -*- coding: utf-8 -*-\nprint(\"Hello, world!\")\n\n\n\nUse instead:\n\n\nprint(\"Hello, world!\")",
-    "example-split": {
-        "example-before": "# -*- coding: utf-8 -*-\nprint(\"Hello, world!\")\n\n",
-        "example-after": "\nprint(\"Hello, world!\")"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks that function *args arguments have type annotations.",
-    "why-is-this-bad": "Type annotations are a good way to document the types of function arguments. They also\nhelp catch bugs, when used alongside a type checker, by ensuring that the types of\nany provided arguments match expectation.",
-    "example": "def foo(*args): ...\n\n\n\nUse instead:\n\n\ndef foo(*args: int): ...",
-    "example-split": {
-        "example-before": "def foo(*args): ...\n\n",
-        "example-after": "\ndef foo(*args: int): ..."
-    }
-}

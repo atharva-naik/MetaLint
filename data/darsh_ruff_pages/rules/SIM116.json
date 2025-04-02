@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for three or more consecutive if-statements with direct returns",
-    "why-is-this-bad": "These can be simplified by using a dictionary",
-    "example": "if x == 1:\n    return \"Hello\"\nelif x == 2:\n    return \"Goodbye\"\nelse:\n    return \"Goodnight\"\n\n\n\nUse instead:\n\n\nreturn {1: \"Hello\", 2: \"Goodbye\"}.get(x, \"Goodnight\")",
-    "example-split": {
-        "example-before": "if x == 1:\n    return \"Hello\"\nelif x == 2:\n    return \"Goodbye\"\nelse:\n    return \"Goodnight\"\n\n",
-        "example-after": "\nreturn {1: \"Hello\", 2: \"Goodbye\"}.get(x, \"Goodnight\")"
-    }
-}

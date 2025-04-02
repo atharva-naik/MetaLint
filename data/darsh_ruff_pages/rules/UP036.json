@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for conditional blocks gated on sys.version_info comparisons\nthat are outdated for the minimum supported Python version.",
-    "why-is-this-bad": "In Python, code can be conditionally executed based on the active\nPython version by comparing against the sys.version_info tuple.\n\n\nIf a code block is only executed for Python versions older than the\nminimum supported version, it should be removed.",
-    "example": "import sys\n\nif sys.version_info < (3, 0):\n    print(\"py2\")\nelse:\n    print(\"py3\")\n\n\n\nUse instead:\n\n\nprint(\"py3\")",
-    "example-split": {
-        "example-before": "import sys\n\nif sys.version_info < (3, 0):\n    print(\"py2\")\nelse:\n    print(\"py3\")\n\n",
-        "example-after": "\nprint(\"py3\")"
-    }
-}

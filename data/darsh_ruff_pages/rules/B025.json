@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for try-except blocks with duplicate exception handlers.",
-    "why-is-this-bad": "Duplicate exception handlers are redundant, as the first handler will catch\nthe exception, making the second handler unreachable.",
-    "example": "try:\n    ...\nexcept ValueError:\n    ...\nexcept ValueError:\n    ...\n\n\n\nUse instead:\n\n\ntry:\n    ...\nexcept ValueError:\n    ...",
-    "example-split": {
-        "example-before": "try:\n    ...\nexcept ValueError:\n    ...\nexcept ValueError:\n    ...\n\n",
-        "example-after": "\ntry:\n    ...\nexcept ValueError:\n    ..."
-    }
-}

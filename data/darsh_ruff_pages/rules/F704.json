@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for yield, yield from, and await usages outside of functions.",
-    "why-is-this-bad": "The use of yield, yield from, or await outside of a function will\nraise a SyntaxError.",
-    "example": "class Foo:\n    yield 1",
-    "example-split": {
-        "example-before": "class Foo:\n    yield 1",
-        "example-after": "class Foo:\n    yield 1"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for pathlib.Path objects that are initialized with the current\ndirectory.",
-    "why-is-this-bad": "The Path() constructor defaults to the current directory, so passing it\nin explicitly (as \".\") is unnecessary.",
-    "example": "from pathlib import Path\n\n_ = Path(\".\")\n\n\n\nUse instead:\n\n\nfrom pathlib import Path\n\n_ = Path()",
-    "example-split": {
-        "example-before": "from pathlib import Path\n\n_ = Path(\".\")\n\n",
-        "example-after": "\nfrom pathlib import Path"
-    }
-}

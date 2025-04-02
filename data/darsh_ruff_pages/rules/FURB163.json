@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for math.log calls with a redundant base.",
-    "why-is-this-bad": "The default base of math.log is e, so specifying it explicitly is\nredundant.\n\n\nInstead of passing 2 or 10 as the base, use math.log2 or math.log10\nrespectively, as these dedicated variants are typically more accurate\nthan math.log.",
-    "example": "import math\n\nmath.log(4, math.e)\nmath.log(4, 2)\nmath.log(4, 10)\n\n\n\nUse instead:\n\n\nimport math\n\nmath.log(4)\nmath.log2(4)\nmath.log10(4)",
-    "example-split": {
-        "example-before": "import math\n\nmath.log(4, math.e)\nmath.log(4, 2)\nmath.log(4, 10)\n\n",
-        "example-after": "\nimport math"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for global variable names that follow the mixedCase convention.",
-    "why-is-this-bad": "PEP 8 recommends that global variable names should be lower case and\nseparated by underscores (also known as snake_case).\n\n\n\nGlobal Variable Names\n(Let\u2019s hope that these variables are meant for use inside one module\nonly.) The conventions are about the same as those for functions.\nModules that are designed for use via from M import * should use the\nall mechanism to prevent exporting globals, or use the older\nconvention of prefixing such globals with an underscore (which you might\nwant to do to indicate these globals are \u201cmodule non-public\u201d).\nFunction and Variable Names\nFunction names should be lowercase, with words separated by underscores\nas necessary to improve readability.\nVariable names follow the same convention as function names.\nmixedCase is allowed only in contexts where that\u2019s already the prevailing\nstyle (e.g. threading.py), to retain backwards compatibility.",
-    "example": "myVariable = \"hello\"\nanother_variable = \"world\"\nyet_anotherVariable = \"foo\"\n\n\n\nUse instead:\n\n\nmy_variable = \"hello\"\nanother_variable = \"world\"\nyet_another_variable = \"foo\"",
-    "example-split": {
-        "example-before": "myVariable = \"hello\"\nanother_variable = \"world\"\nyet_anotherVariable = \"foo\"\n\n",
-        "example-after": "\nmy_variable = \"hello\"\nanother_variable = \"world\"\nyet_another_variable = \"foo\""
-    }
-}

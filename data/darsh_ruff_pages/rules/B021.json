@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for docstrings that are written via f-strings.",
-    "why-is-this-bad": "Python will interpret the f-string as a joined string, rather than as a\ndocstring. As such, the \"docstring\" will not be accessible via the\n__doc__ attribute, nor will it be picked up by any automated\ndocumentation tooling.",
-    "example": "def foo():\n    f\"\"\"Not a docstring.\"\"\"\n\n\n\nUse instead:\n\n\ndef foo():\n    \"\"\"A docstring.\"\"\"",
-    "example-split": {
-        "example-before": "def foo():\n    f\"\"\"Not a docstring.\"\"\"\n\n",
-        "example-after": "\ndef foo():\n    \"\"\"A docstring.\"\"\""
-    }
-}

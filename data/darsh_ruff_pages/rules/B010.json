@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of setattr that take a constant attribute value as an\nargument (e.g., setattr(obj, \"foo\", 42)).",
-    "why-is-this-bad": "setattr is used to set attributes dynamically. If the attribute is\ndefined as a constant, it is no safer than a typical property access. When\npossible, prefer property access over setattr calls, as the former is\nmore concise and idiomatic.",
-    "example": "setattr(obj, \"foo\", 42)\n\n\n\nUse instead:\n\n\nobj.foo = 42",
-    "example-split": {
-        "example-before": "setattr(obj, \"foo\", 42)\n\n",
-        "example-after": "\nobj.foo = 42"
-    }
-}

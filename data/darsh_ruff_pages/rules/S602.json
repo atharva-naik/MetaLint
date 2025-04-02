@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Check for method calls that initiate a subprocess with a shell.",
-    "why-is-this-bad": "Starting a subprocess with a shell can allow attackers to execute arbitrary\nshell commands. Consider starting the process without a shell call and\nsanitize the input to mitigate the risk of shell injection.",
-    "example": "import subprocess\n\nsubprocess.run(\"ls -l\", shell=True)\n\n\n\nUse instead:\n\n\nimport subprocess\n\nsubprocess.run([\"ls\", \"-l\"])",
-    "example-split": {
-        "example-before": "import subprocess\n\nsubprocess.run(\"ls -l\", shell=True)\n\n",
-        "example-after": "\nimport subprocess"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of named expressions (e.g., a := 42) that can be\nreplaced by regular assignment statements (e.g., a = 42).",
-    "why-is-this-bad": "While a top-level named expression is syntactically and semantically valid,\nit's less clear than a regular assignment statement. Named expressions are\nintended to be used in comprehensions and generator expressions, where\nassignment statements are not allowed.",
-    "example": "(a := 42)\n\n\n\nUse instead:\n\n\na = 42",
-    "example-split": {
-        "example-before": "(a := 42)\n\n",
-        "example-after": "\na = 42"
-    }
-}

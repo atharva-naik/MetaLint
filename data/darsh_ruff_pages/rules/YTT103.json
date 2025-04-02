@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for comparisons that test sys.version against string literals,\nsuch that the comparison will evaluate to False on Python 3.10 or later.",
-    "why-is-this-bad": "Comparing sys.version to a string is error-prone and may cause subtle\nbugs, as the comparison will be performed lexicographically, not\nsemantically. For example, sys.version > \"3.9\" will evaluate to False\nwhen using Python 3.10, as \"3.10\" is lexicographically \"less\" than\n\"3.9\".\n\n\nInstead, use sys.version_info to access the current major and minor\nversion numbers as a tuple, which can be compared to other tuples\nwithout issue.",
-    "example": "import sys\n\nsys.version > \"3.9\"  # `False` on Python 3.10.\n\n\n\nUse instead:\n\n\nimport sys\n\nsys.version_info > (3, 9)  # `True` on Python 3.10.",
-    "example-split": {
-        "example-before": "import sys\n\nsys.version > \"3.9\"  # `False` on Python 3.10.\n\n",
-        "example-after": "\nimport sys"
-    }
-}

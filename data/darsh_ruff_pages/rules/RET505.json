@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for else statements with a return statement in the preceding\nif block.",
-    "why-is-this-bad": "The else statement is not needed as the return statement will always\nbreak out of the enclosing function. Removing the else will reduce\nnesting and make the code more readable.",
-    "example": "def foo(bar, baz):\n    if bar:\n        return 1\n    else:\n        return baz\n\n\n\nUse instead:\n\n\ndef foo(bar, baz):\n    if bar:\n        return 1\n    return baz",
-    "example-split": {
-        "example-before": "def foo(bar, baz):\n    if bar:\n        return 1\n    else:\n        return baz\n\n",
-        "example-after": "\ndef foo(bar, baz):\n    if bar:\n        return 1\n    return baz"
-    }
-}

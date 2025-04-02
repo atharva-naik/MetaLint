@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for consecutive calls to append.",
-    "why-is-this-bad": "Consecutive calls to append can be less efficient than batching them into\na single extend. Each append resizes the list individually, whereas an\nextend can resize the list once for all elements.",
-    "example": "nums = [1, 2, 3]\n\nnums.append(4)\nnums.append(5)\nnums.append(6)\n\n\n\nUse instead:\n\n\nnums = [1, 2, 3]\n\nnums.extend((4, 5, 6))",
-    "example-split": {
-        "example-before": "nums = [1, 2, 3]\n\nnums.append(4)\nnums.append(5)\nnums.append(6)\n\n",
-        "example-after": "\nnums = [1, 2, 3]"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks that __all__, __match_args__, and __slots__ variables are\nassigned to values when defined in stub files.",
-    "why-is-this-bad": "Special variables like __all__ have the same semantics in stub files\nas they do in Python modules, and so should be consistent with their\nruntime counterparts.",
-    "example": "__all__: list[str]\n\n\n\nUse instead:\n\n\n__all__: list[str] = [\"foo\", \"bar\"]",
-    "example-split": {
-        "example-before": "__all__: list[str]\n\n",
-        "example-after": "\n__all__: list[str] = [\"foo\", \"bar\"]"
-    }
-}

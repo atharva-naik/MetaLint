@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for pytest.fixture calls with positional arguments.",
-    "why-is-this-bad": "For clarity and consistency, prefer using keyword arguments to specify\nfixture configuration.",
-    "example": "import pytest\n\n\n@pytest.fixture(\"module\")\ndef my_fixture(): ...\n\n\n\nUse instead:\n\n\nimport pytest\n\n\n@pytest.fixture(scope=\"module\")\ndef my_fixture(): ...",
-    "example-split": {
-        "example-before": "import pytest\n\n\n@pytest.fixture(\"module\")\ndef my_fixture(): ...\n\n",
-        "example-after": "\nimport pytest"
-    }
-}

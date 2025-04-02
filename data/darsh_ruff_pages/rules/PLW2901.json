@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for variables defined in for loops and with statements that\nget overwritten within the body, for example by another for loop or\nwith statement or by direct assignment.",
-    "why-is-this-bad": "Redefinition of a loop variable inside the loop's body causes its value\nto differ from the original loop iteration for the remainder of the\nblock, in a way that will likely cause bugs.\n\n\nIn Python, unlike many other languages, for loops and with\nstatements don't define their own scopes. Therefore, a nested loop that\nuses the same target variable name as an outer loop will reuse the same\nactual variable, and the value from the last iteration will \"leak out\"\ninto the remainder of the enclosing loop.\n\n\nWhile this mistake is easy to spot in small examples, it can be hidden\nin larger blocks of code, where the definition and redefinition of the\nvariable may not be visible at the same time.",
-    "example": "for i in range(10):\n    i = 9\n    print(i)  # prints 9 every iteration\n\nfor i in range(10):\n    for i in range(10):  # original value overwritten\n        pass\n    print(i)  # also prints 9 every iteration\n\nwith path1.open() as f:\n    with path2.open() as f:\n        f = path2.open()\n    print(f.readline())  # prints a line from path2",
-    "example-split": {
-        "example-before": "for i in range(10):\n    i = 9\n    print(i)  # prints 9 every iteration\n\nfor i in range(10):\n    for i in range(10):  # original value overwritten\n        pass\n    print(i)  # also prints 9 every iteration\n\nwith path1.open() as f:\n    with path2.open() as f:\n        f = path2.open()\n    print(f.readline())  # prints a line from path2",
-        "example-after": "for i in range(10):\n    i = 9\n    print(i)  # prints 9 every iteration"
-    }
-}

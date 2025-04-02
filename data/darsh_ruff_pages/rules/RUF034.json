@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for useless if-else conditions with identical arms.",
-    "why-is-this-bad": "Useless if-else conditions add unnecessary complexity to the code without\nproviding any logical benefit. Assigning the value directly is clearer.",
-    "example": "foo = x if y else x\n\n\n\nUse instead:\n\n\nfoo = x",
-    "example-split": {
-        "example-before": "foo = x if y else x\n\n",
-        "example-after": "\nfoo = x"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for return statements in try blocks.",
-    "why-is-this-bad": "The try-except statement has an else clause for code that should\nrun only if no exceptions were raised. Returns in try blocks may\nexhibit confusing or unwanted behavior, such as being overridden by\ncontrol flow in except and finally blocks, or unintentionally\nsuppressing an exception.",
-    "example": "import logging\n\n\ndef reciprocal(n):\n    try:\n        rec = 1 / n\n        print(f\"reciprocal of {n} is {rec}\")\n        return rec\n    except ZeroDivisionError:\n        logging.exception(\"Exception occurred\")\n\n\n\nUse instead:\n\n\nimport logging\n\n\ndef reciprocal(n):\n    try:\n        rec = 1 / n\n    except ZeroDivisionError:\n        logging.exception(\"Exception occurred\")\n    else:\n        print(f\"reciprocal of {n} is {rec}\")\n        return rec",
-    "example-split": {
-        "example-before": "import logging\n\n\ndef reciprocal(n):\n    try:\n        rec = 1 / n\n        print(f\"reciprocal of {n} is {rec}\")\n        return rec\n    except ZeroDivisionError:\n        logging.exception(\"Exception occurred\")\n\n",
-        "example-after": "\nimport logging"
-    }
-}

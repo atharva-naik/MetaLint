@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for runtime imports defined in a type-checking block.",
-    "why-is-this-bad": "The type-checking block is not executed at runtime, so the import will not\nbe available at runtime.\n\n\nIf lint.flake8-type-checking.quote-annotations is set to true,\nannotations will be wrapped in quotes if doing so would enable the\ncorresponding import to remain in the type-checking block.",
-    "example": "from typing import TYPE_CHECKING\n\nif TYPE_CHECKING:\n    import foo\n\n\ndef bar() -> None:\n    foo.bar()  # raises NameError: name 'foo' is not defined\n\n\n\nUse instead:\n\n\nimport foo\n\n\ndef bar() -> None:\n    foo.bar()",
-    "example-split": {
-        "example-before": "from typing import TYPE_CHECKING\n\nif TYPE_CHECKING:\n    import foo\n\n\ndef bar() -> None:\n    foo.bar()  # raises NameError: name 'foo' is not defined\n\n",
-        "example-after": "\nimport foo"
-    }
-}

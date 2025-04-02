@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the use of .digest().hex() on a hashlib hash, like sha512.",
-    "why-is-this-bad": "When generating a hex digest from a hash, it's preferable to use the\n.hexdigest() method, rather than calling .digest() and then .hex(),\nas the former is more concise and readable.",
-    "example": "from hashlib import sha512\n\nhashed = sha512(b\"some data\").digest().hex()\n\n\n\nUse instead:\n\n\nfrom hashlib import sha512\n\nhashed = sha512(b\"some data\").hexdigest()",
-    "example-split": {
-        "example-before": "from hashlib import sha512\n\nhashed = sha512(b\"some data\").digest().hex()\n\n",
-        "example-after": "\nfrom hashlib import sha512"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for assignments to attributes that are not defined in __slots__.",
-    "why-is-this-bad": "When using __slots__, only the specified attributes are allowed.\nAttempting to assign to an attribute that is not defined in __slots__\nwill result in an AttributeError at runtime.",
-    "example": "class Student:\n    __slots__ = (\"name\",)\n\n    def __init__(self, name, surname):\n        self.name = name\n        self.surname = surname  # [assigning-non-slot]\n        self.setup()\n\n    def setup(self):\n        pass\n\n\n\nUse instead:\n\n\nclass Student:\n    __slots__ = (\"name\", \"surname\")\n\n    def __init__(self, name, surname):\n        self.name = name\n        self.surname = surname\n        self.setup()\n\n    def setup(self):\n        pass",
-    "example-split": {
-        "example-before": "class Student:\n    __slots__ = (\"name\",)\n\n    def __init__(self, name, surname):\n        self.name = name\n        self.surname = surname  # [assigning-non-slot]\n        self.setup()\n\n    def setup(self):\n        pass\n\n",
-        "example-after": "\nclass Student:\n    __slots__ = (\"name\", \"surname\")"
-    }
-}

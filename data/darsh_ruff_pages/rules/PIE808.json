@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for range calls with an unnecessary start argument.",
-    "why-is-this-bad": "range(0, x) is equivalent to range(x), as 0 is the default value for\nthe start argument. Omitting the start argument makes the code more\nconcise and idiomatic.",
-    "example": "range(0, 3)\n\n\n\nUse instead:\n\n\nrange(3)",
-    "example-split": {
-        "example-before": "range(0, 3)\n\n",
-        "example-after": "\nrange(3)"
-    }
-}

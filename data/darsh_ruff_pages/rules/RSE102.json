@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for unnecessary parentheses on raised exceptions.",
-    "why-is-this-bad": "If an exception is raised without any arguments, parentheses are not\nrequired, as the raise statement accepts either an exception instance\nor an exception class (which is then implicitly instantiated).\n\n\nRemoving the parentheses makes the code more concise.",
-    "example": "raise TypeError()\n\n\n\nUse instead:\n\n\nraise TypeError",
-    "example-split": {
-        "example-before": "raise TypeError()\n\n",
-        "example-after": "\nraise TypeError"
-    }
-}

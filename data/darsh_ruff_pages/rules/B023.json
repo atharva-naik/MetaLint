@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for function definitions that use a loop variable.",
-    "why-is-this-bad": "The loop variable is not bound in the function definition, so it will always\nhave the value it had in the last iteration when the function is called.\n\n\nInstead, consider using a default argument to bind the loop variable at\nfunction definition time. Or, use functools.partial.",
-    "example": "adders = [lambda x: x + i for i in range(3)]\nvalues = [adder(1) for adder in adders]  # [3, 3, 3]\n\n\n\nUse instead:\n\n\nadders = [lambda x, i=i: x + i for i in range(3)]\nvalues = [adder(1) for adder in adders]  # [1, 2, 3]\n\n\n\nOr:\n\n\nfrom functools import partial\n\nadders = [partial(lambda x, i: x + i, i=i) for i in range(3)]\nvalues = [adder(1) for adder in adders]  # [1, 2, 3]",
-    "example-split": {
-        "example-before": "adders = [lambda x: x + i for i in range(3)]\nvalues = [adder(1) for adder in adders]  # [3, 3, 3]\n\n",
-        "example-after": "\nadders = [lambda x, i=i: x + i for i in range(3)]\nvalues = [adder(1) for adder in adders]  # [1, 2, 3]"
-    }
-}

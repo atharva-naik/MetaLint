@@ -1,4 +1,0 @@
-{
-    "what-it-does": "Checks for the use of Telnet-related functions.",
-    "why-is-this-bad": "Telnet is considered insecure because it does not encrypt data sent over\nthe connection and is vulnerable to numerous attacks.\n\n\nInstead, consider using a more secure protocol such as SSH.\n\n\nIn preview, this rule will also flag references to Telnet-related functions."
-}

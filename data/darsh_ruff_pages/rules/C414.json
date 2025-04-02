@@ -1,5 +1,0 @@
-{
-    "what-it-does": "Checks for unnecessary list(), reversed(), set(), sorted(), and\ntuple() call within list(), set(), sorted(), and tuple() calls.",
-    "why-is-this-bad": "It's unnecessary to double-cast or double-process iterables by wrapping\nthe listed functions within an additional list(), set(), sorted(), or\ntuple() call. Doing so is redundant and can be confusing for readers.",
-    "fix-safety": "This rule's fix is marked as unsafe, as it may occasionally drop comments\nwhen rewriting the call. In most cases, though, comments will be preserved."
-}

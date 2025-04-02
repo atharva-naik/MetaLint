@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks that the colon after a \"TODO\" tag is followed by a space.",
-    "why-is-this-bad": "\"TODO\" tags are typically followed by a parenthesized author name, a colon,\na space, and a description of the issue, in that order.\n\n\nDeviating from this pattern can lead to inconsistent and non-idiomatic\ncomments.",
-    "example": "# TODO(charlie):fix this\n\n\n\nUse instead:\n\n\n# TODO(charlie): fix this",
-    "example-split": {
-        "example-before": "# TODO(charlie):fix this\n\n",
-        "example-after": "\n# TODO(charlie): fix this"
-    }
-}

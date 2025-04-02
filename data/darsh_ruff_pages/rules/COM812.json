@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the absence of trailing commas.",
-    "why-is-this-bad": "The presence of a trailing comma can reduce diff size when parameters or\nelements are added or removed from function calls, function definitions,\nliterals, etc.",
-    "example": "foo = {\n    \"bar\": 1,\n    \"baz\": 2\n}\n\n\n\nUse instead:\n\n\nfoo = {\n    \"bar\": 1,\n    \"baz\": 2,\n}",
-    "example-split": {
-        "example-before": "foo = {\n    \"bar\": 1,\n    \"baz\": 2\n}\n\n",
-        "example-after": "\nfoo = {\n    \"bar\": 1,\n    \"baz\": 2,\n}"
-    }
-}

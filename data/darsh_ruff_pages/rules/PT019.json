@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for pytest test functions that should be decorated with\n@pytest.mark.usefixtures.",
-    "why-is-this-bad": "In pytest, fixture injection is used to activate fixtures in a test\nfunction.\n\n\nFixtures can be injected either by passing them as parameters to the test\nfunction, or by using the @pytest.mark.usefixtures decorator.\n\n\nIf the test function depends on the fixture being activated, but does not\nuse it in the test body or otherwise rely on its return value, prefer\nthe @pytest.mark.usefixtures decorator, to make the dependency explicit\nand avoid the confusion caused by unused arguments.",
-    "example": "import pytest\n\n\n@pytest.fixture\ndef _patch_something(): ...\n\n\ndef test_foo(_patch_something): ...\n\n\n\nUse instead:\n\n\nimport pytest\n\n\n@pytest.fixture\ndef _patch_something(): ...\n\n\n@pytest.mark.usefixtures(\"_patch_something\")\ndef test_foo(): ...",
-    "example-split": {
-        "example-before": "import pytest\n\n\n@pytest.fixture\ndef _patch_something(): ...\n\n\ndef test_foo(_patch_something): ...\n\n",
-        "example-after": "\nimport pytest"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for unnecessary yield expressions in pytest fixtures.",
-    "why-is-this-bad": "In pytest fixtures, the yield expression should only be used for fixtures\nthat include teardown code, to clean up the fixture after the test function\nhas finished executing.",
-    "example": "import pytest\n\n\n@pytest.fixture()\ndef my_fixture():\n    resource = acquire_resource()\n    yield resource\n\n\n\nUse instead:\n\n\nimport pytest\n\n\n@pytest.fixture()\ndef my_fixture_with_teardown():\n    resource = acquire_resource()\n    yield resource\n    resource.release()\n\n\n@pytest.fixture()\ndef my_fixture_without_teardown():\n    resource = acquire_resource()\n    return resource",
-    "example-split": {
-        "example-before": "import pytest\n\n\n@pytest.fixture()\ndef my_fixture():\n    resource = acquire_resource()\n    yield resource\n\n",
-        "example-after": "\nimport pytest"
-    }
-}

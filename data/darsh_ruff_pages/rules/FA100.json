@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for missing from __future__ import annotations imports upon\ndetecting type annotations that can be written more succinctly under\nPEP 563.",
-    "why-is-this-bad": "PEP 585 enabled the use of a number of convenient type annotations, such as\nlist[str] instead of List[str]. However, these annotations are only\navailable on Python 3.9 and higher, unless the from __future__ import annotations\nimport is present.\n\n\nSimilarly, PEP 604 enabled the use of the | operator for unions, such as\nstr | None instead of Optional[str]. However, these annotations are only\navailable on Python 3.10 and higher, unless the from __future__ import annotations\nimport is present.\n\n\nBy adding the __future__ import, the pyupgrade rules can automatically\nmigrate existing code to use the new syntax, even for older Python versions.\nThis rule thus pairs well with pyupgrade and with Ruff's pyupgrade rules.\n\n\nThis rule respects the target-version setting. For example, if your\nproject targets Python 3.10 and above, adding from __future__ import annotations\ndoes not impact your ability to leverage PEP 604-style unions (e.g., to\nconvert Optional[str] to str | None). As such, this rule will only\nflag such usages if your project targets Python 3.9 or below.",
-    "example": "from typing import List, Dict, Optional\n\n\ndef func(obj: Dict[str, Optional[int]]) -> None: ...\n\n\n\nUse instead:\n\n\nfrom __future__ import annotations\n\nfrom typing import List, Dict, Optional\n\n\ndef func(obj: Dict[str, Optional[int]]) -> None: ...\n\n\n\nAfter running the additional pyupgrade rules:\n\n\nfrom __future__ import annotations\n\n\ndef func(obj: dict[str, int | None]) -> None: ...",
-    "example-split": {
-        "example-before": "from typing import List, Dict, Optional\n\n\ndef func(obj: Dict[str, Optional[int]]) -> None: ...\n\n",
-        "example-after": "\nfrom __future__ import annotations"
-    }
-}

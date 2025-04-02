@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for imports of wsgiref.handlers.CGIHandler and\ntwisted.web.twcgi.CGIScript.",
-    "why-is-this-bad": "httpoxy is a set of vulnerabilities that affect application code running in\nCGI or CGI-like environments. The use of CGI for web applications should be\navoided to prevent this class of attack.",
-    "example": "import wsgiref.handlers.CGIHandler",
-    "example-split": {
-        "example-before": "import wsgiref.handlers.CGIHandler",
-        "example-after": "import wsgiref.handlers.CGIHandler"
-    }
-}

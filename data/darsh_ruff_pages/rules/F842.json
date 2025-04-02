@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for local variables that are annotated but never used.",
-    "why-is-this-bad": "Annotations are used to provide type hints to static type checkers. If a\nvariable is annotated but never used, the annotation is unnecessary.",
-    "example": "def foo():\n    bar: int",
-    "example-split": {
-        "example-before": "def foo():\n    bar: int",
-        "example-after": "def foo():\n    bar: int"
-    }
-}

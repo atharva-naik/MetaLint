@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks duplicate characters in str.strip calls.",
-    "why-is-this-bad": "All characters in str.strip calls are removed from both the leading and\ntrailing ends of the string. Including duplicate characters in the call\nis redundant and often indicative of a mistake.\n\n\nIn Python 3.9 and later, you can use str.removeprefix and\nstr.removesuffix to remove an exact prefix or suffix from a string,\nrespectively, which should be preferred when possible.",
-    "example": "# Evaluates to \"foo\".\n\"bar foo baz\".strip(\"bar baz \")\n\n\n\nUse instead:\n\n\n# Evaluates to \"foo\".\n\"bar foo baz\".strip(\"abrz \")  # \"foo\"\n\n\n\nOr:\n\n\n# Evaluates to \"foo\".\n\"bar foo baz\".removeprefix(\"bar \").removesuffix(\" baz\")",
-    "example-split": {
-        "example-before": "# Evaluates to \"foo\".\n\"bar foo baz\".strip(\"bar baz \")\n\n",
-        "example-after": "\n# Evaluates to \"foo\".\n\"bar foo baz\".strip(\"abrz \")  # \"foo\""
-    }
-}

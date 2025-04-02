@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for dictionary keys that are repeated with different values.",
-    "why-is-this-bad": "Dictionary keys should be unique. If a key is repeated with a different\nvalue, the first values will be overwritten and the key will correspond to\nthe last value. This is likely a mistake.",
-    "example": "foo = {\n    bar: 1,\n    baz: 2,\n    baz: 3,\n}\nfoo[baz]  # 3\n\n\n\nUse instead:\n\n\nfoo = {\n    bar: 1,\n    baz: 2,\n}\nfoo[baz]  # 2",
-    "example-split": {
-        "example-before": "foo = {\n    bar: 1,\n    baz: 2,\n    baz: 3,\n}\nfoo[baz]  # 3\n\n",
-        "example-after": "\nfoo = {\n    bar: 1,\n    baz: 2,\n}\nfoo[baz]  # 2"
-    }
-}

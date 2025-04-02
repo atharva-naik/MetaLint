@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for use of zip() to iterate over successive pairs of elements.",
-    "why-is-this-bad": "When iterating over successive pairs of elements, prefer\nitertools.pairwise() over zip().\n\n\nitertools.pairwise() is more readable and conveys the intent of the code\nmore clearly.",
-    "example": "letters = \"ABCD\"\nzip(letters, letters[1:])  # (\"A\", \"B\"), (\"B\", \"C\"), (\"C\", \"D\")\n\n\n\nUse instead:\n\n\nfrom itertools import pairwise\n\nletters = \"ABCD\"\npairwise(letters)  # (\"A\", \"B\"), (\"B\", \"C\"), (\"C\", \"D\")",
-    "example-split": {
-        "example-before": "letters = \"ABCD\"\nzip(letters, letters[1:])  # (\"A\", \"B\"), (\"B\", \"C\"), (\"C\", \"D\")\n\n",
-        "example-after": "\nfrom itertools import pairwise"
-    }
-}

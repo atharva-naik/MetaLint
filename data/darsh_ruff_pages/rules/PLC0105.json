@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for type names that do not match the variance of their associated\ntype parameter.",
-    "why-is-this-bad": "PEP 484 recommends the use of the _co and _contra suffixes for\ncovariant and contravariant type parameters, respectively (while invariant\ntype parameters should not have any such suffix).",
-    "example": "from typing import TypeVar\n\nT = TypeVar(\"T\", covariant=True)\nU = TypeVar(\"U\", contravariant=True)\nV_co = TypeVar(\"V_co\")\n\n\n\nUse instead:\n\n\nfrom typing import TypeVar\n\nT_co = TypeVar(\"T_co\", covariant=True)\nU_contra = TypeVar(\"U_contra\", contravariant=True)\nV = TypeVar(\"V\")",
-    "example-split": {
-        "example-before": "from typing import TypeVar\n\nT = TypeVar(\"T\", covariant=True)\nU = TypeVar(\"U\", contravariant=True)\nV_co = TypeVar(\"V_co\")\n\n",
-        "example-after": "\nfrom typing import TypeVar"
-    }
-}

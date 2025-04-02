@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for code that branches on sys.version_info comparisons where\nbranches corresponding to older Python versions come before branches\ncorresponding to newer Python versions.",
-    "why-is-this-bad": "As a convention, branches that correspond to newer Python versions should\ncome first. This makes it easier to understand the desired behavior, which\ntypically corresponds to the latest Python versions.\n\n\nThis rule enforces the convention by checking for if tests that compare\nsys.version_info with < rather than >=.\n\n\nBy default, this rule only applies to stub files.\nIn preview, it will also flag this anti-pattern in non-stub files.",
-    "example": "import sys\n\nif sys.version_info < (3, 10):\n    def read_data(x, *, preserve_order=True): ...\n\nelse:\n    def read_data(x): ...\n\n\n\nUse instead:\n\n\nif sys.version_info >= (3, 10):\n    def read_data(x): ...\n\nelse:\n    def read_data(x, *, preserve_order=True): ...",
-    "example-split": {
-        "example-before": "import sys\n\nif sys.version_info < (3, 10):\n    def read_data(x, *, preserve_order=True): ...\n\nelse:\n    def read_data(x): ...\n\n",
-        "example-after": "\nif sys.version_info >= (3, 10):\n    def read_data(x): ..."
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks that async functions do not run processes with blocking methods.",
-    "why-is-this-bad": "Blocking an async function via a blocking call will block the entire\nevent loop, preventing it from executing other tasks while waiting for the\ncall to complete, negating the benefits of asynchronous programming.\n\n\nInstead of making a blocking call, use an equivalent asynchronous library\nor function, like trio.run_process()\nor anyio.run_process().",
-    "example": "async def foo():\n    subprocess.run(cmd)\n\n\n\nUse instead:\n\n\nasync def foo():\n    asyncio.create_subprocess_shell(cmd)",
-    "example-split": {
-        "example-before": "async def foo():\n    subprocess.run(cmd)\n\n",
-        "example-after": "\nasync def foo():\n    asyncio.create_subprocess_shell(cmd)"
-    }
-}

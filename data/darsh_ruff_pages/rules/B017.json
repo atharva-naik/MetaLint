@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for assertRaises and pytest.raises context managers that catch\nException or BaseException.",
-    "why-is-this-bad": "These forms catch every Exception, which can lead to tests passing even\nif, e.g., the code under consideration raises a SyntaxError or\nIndentationError.\n\n\nEither assert for a more specific exception (builtin or custom), or use\nassertRaisesRegex or pytest.raises(..., match=<REGEX>) respectively.",
-    "example": "self.assertRaises(Exception, foo)\n\n\n\nUse instead:\n\n\nself.assertRaises(SomeSpecificException, foo)",
-    "example-split": {
-        "example-before": "self.assertRaises(Exception, foo)\n\n",
-        "example-after": "\nself.assertRaises(SomeSpecificException, foo)"
-    }
-}

@@ -101,7 +101,7 @@ def impose_idiom_mix_ceilings(data, ceiling: int=5000):
     cateogry_to_data = defaultdict(lambda: [])
     for rec in data:
         violation_present = "yes" if rec['messages'][1]['content'] == "NO VIOLATIONS FOUND" else "no"
-        category_to_data[rec['source']+"-"+vioaltion_present].append(rec)
+        category_to_data[rec['source']+"-"+violation_present].append(rec)
     category_to_data = dict(category_to_data)
     final_data = []
     for category, data_subset in category_to_data.items():

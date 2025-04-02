@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for instances where URL open functions are used with unexpected schemes.",
-    "why-is-this-bad": "Some URL open functions allow the use of file: or custom schemes (for use\ninstead of http: or https:). An attacker may be able to use these\nschemes to access or modify unauthorized resources, and cause unexpected\nbehavior.\n\n\nTo mitigate this risk, audit all uses of URL open functions and ensure that\nonly permitted schemes are used (e.g., allowing http: and https:, and\ndisallowing file: and ftp:).\n\n\nIn preview, this rule will also flag references to URL open functions.",
-    "example": "from urllib.request import urlopen\n\nurl = input(\"Enter a URL: \")\n\nwith urlopen(url) as response:\n    ...\n\n\n\nUse instead:\n\n\nfrom urllib.request import urlopen\n\nurl = input(\"Enter a URL: \")\n\nif not url.startswith((\"http:\", \"https:\")):\n    raise ValueError(\"URL must start with 'http:' or 'https:'\")\n\nwith urlopen(url) as response:\n    ...",
-    "example-split": {
-        "example-before": "from urllib.request import urlopen\n\nurl = input(\"Enter a URL: \")\n\nwith urlopen(url) as response:\n    ...\n\n",
-        "example-after": "\nfrom urllib.request import urlopen"
-    }
-}

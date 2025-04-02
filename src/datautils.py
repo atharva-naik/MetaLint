@@ -334,8 +334,8 @@ Violations per idiom:
 """
 
 def generate_response_from_violations(violations, stack_file_lines: list[str], meta_task_idiom_codes, include_message: bool=False, add_line_numbers: bool=False):
-    filt_violations = [violation for violation in violations if violation['code'] in meta_task_idiom_codes]
-    grouped_violations = {code: [] for code in meta_task_idiom_codes}
+    filt_violations = [violation for violation in violations if violation['code'] in meta_task_idiom_codes if code not in ["ANN001", "ANN201"]]
+    grouped_violations = {code: [] for code in meta_task_idiom_codes if code not in ["ANN001", "ANN201"]}
     # group violations by each idiom in the meta-task.
     for violation in filt_violations:
         grouped_violations[violation['code']].append(violation)
@@ -423,7 +423,7 @@ def reprocess_data(train_data, code_idiom_specs: dict, ruff_results: dict, stack
         if add_line_numbers:
             CODE_FILE = "\n".join(stack_file_with_lineno)
         else: CODE_FILE = stack_file
-        LIST_OF_IDIOM_SPECS = "\n\n".join([idiom_spec_extractor_for_ruff(code_idiom_specs[idiom_code]) for idiom_code in meta_task_idiom_codes])
+        LIST_OF_IDIOM_SPECS = "\n\n".join([idiom_spec_extractor_for_ruff(code_idiom_specs[idiom_code]) for idiom_code in meta_task_idiom_codes if idiom_code not in ["ANN001", "ANN201"]])
 
         rec["messages"][0]['content'] = META_LINTING_PROMPT_V2.format(LIST_OF_IDIOM_SPECS=LIST_OF_IDIOM_SPECS, CODE_FILE=CODE_FILE)
         rec["messages"][1]['content'] = response

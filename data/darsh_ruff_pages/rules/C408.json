@@ -1,5 +1,0 @@
-{
-    "what-it-does": "Checks for unnecessary dict(), list() or tuple() calls that can be\nrewritten as empty literals.",
-    "why-is-this-bad": "It's unnecessary to call, e.g., dict() as opposed to using an empty\nliteral ({}). The former is slower because the name dict must be\nlooked up in the global scope in case it has been rebound.",
-    "fix-safety": "This rule's fix is marked as unsafe, as it may occasionally drop comments\nwhen rewriting the call. In most cases, though, comments will be preserved."
-}

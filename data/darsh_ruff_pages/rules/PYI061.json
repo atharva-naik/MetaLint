@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for redundant Literal[None] annotations.",
-    "why-is-this-bad": "While Literal[None] is a valid type annotation, it is semantically equivalent to None.\nPrefer None over Literal[None] for both consistency and readability.",
-    "example": "from typing import Literal\n\nLiteral[None]\nLiteral[1, 2, 3, \"foo\", 5, None]\n\n\n\nUse instead:\n\n\nfrom typing import Literal\n\nNone\nLiteral[1, 2, 3, \"foo\", 5] | None",
-    "example-split": {
-        "example-before": "from typing import Literal\n\nLiteral[None]\nLiteral[1, 2, 3, \"foo\", 5, None]\n\n",
-        "example-after": "\nfrom typing import Literal"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for raise statements in exception handlers that lack a from\nclause.",
-    "why-is-this-bad": "In Python, raise can be used with or without an exception from which the\ncurrent exception is derived. This is known as exception chaining. When\nprinting the stack trace, chained exceptions are displayed in such a way\nso as make it easier to trace the exception back to its root cause.\n\n\nWhen raising an exception from within an except clause, always include a\nfrom clause to facilitate exception chaining. If the exception is not\nchained, it will be difficult to trace the exception back to its root cause.",
-    "example": "try:\n    ...\nexcept FileNotFoundError:\n    if ...:\n        raise RuntimeError(\"...\")\n    else:\n        raise UserWarning(\"...\")\n\n\n\nUse instead:\n\n\ntry:\n    ...\nexcept FileNotFoundError as exc:\n    if ...:\n        raise RuntimeError(\"...\") from None\n    else:\n        raise UserWarning(\"...\") from exc",
-    "example-split": {
-        "example-before": "try:\n    ...\nexcept FileNotFoundError:\n    if ...:\n        raise RuntimeError(\"...\")\n    else:\n        raise UserWarning(\"...\")\n\n",
-        "example-after": "\ntry:\n    ...\nexcept FileNotFoundError as exc:\n    if ...:\n        raise RuntimeError(\"...\") from None\n    else:\n        raise UserWarning(\"...\") from exc"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for class variable names that follow the mixedCase convention.",
-    "why-is-this-bad": "PEP 8 recommends that variable names should be lower case and separated\nby underscores (also known as snake_case).\n\n\n\nFunction names should be lowercase, with words separated by underscores\nas necessary to improve readability.\nVariable names follow the same convention as function names.\nmixedCase is allowed only in contexts where that\u2019s already the\nprevailing style (e.g. threading.py), to retain backwards compatibility.",
-    "example": "class MyClass:\n    myVariable = \"hello\"\n    another_variable = \"world\"\n\n\n\nUse instead:\n\n\nclass MyClass:\n    my_variable = \"hello\"\n    another_variable = \"world\"",
-    "example-split": {
-        "example-before": "class MyClass:\n    myVariable = \"hello\"\n    another_variable = \"world\"\n\n",
-        "example-after": "\nclass MyClass:\n    my_variable = \"hello\"\n    another_variable = \"world\""
-    }
-}

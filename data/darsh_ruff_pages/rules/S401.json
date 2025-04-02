@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for imports of the telnetlib module.",
-    "why-is-this-bad": "Telnet is considered insecure. It is deprecated since version 3.11, and\nwas removed in version 3.13. Instead, use SSH or another encrypted\nprotocol.",
-    "example": "import telnetlib",
-    "example-split": {
-        "example-before": "import telnetlib",
-        "example-after": "import telnetlib"
-    }
-}

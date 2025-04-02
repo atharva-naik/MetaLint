@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for repeated equality comparisons that can rewritten as a membership\ntest.",
-    "why-is-this-bad": "To check if a variable is equal to one of many values, it is common to\nwrite a series of equality comparisons (e.g.,\nfoo == \"bar\" or foo == \"baz\").\n\n\nInstead, prefer to combine the values into a collection and use the in\noperator to check for membership, which is more performant and succinct.\nIf the items are hashable, use a set for efficiency; otherwise, use a\ntuple.\n\n\nIn preview, this rule will try to determine if the values are hashable\nand the fix will use a set if they are. If unable to determine, the fix\nwill use a tuple and continue to suggest the use of a set.",
-    "example": "foo == \"bar\" or foo == \"baz\" or foo == \"qux\"\n\n\n\nUse instead:\n\n\nfoo in {\"bar\", \"baz\", \"qux\"}",
-    "example-split": {
-        "example-before": "foo == \"bar\" or foo == \"baz\" or foo == \"qux\"\n\n",
-        "example-after": "\nfoo in {\"bar\", \"baz\", \"qux\"}"
-    }
-}

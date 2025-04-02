@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of isinstance that check if an object is of type None.",
-    "why-is-this-bad": "There is only ever one instance of None, so it is more efficient and\nreadable to use the is operator to check if an object is None.",
-    "example": "isinstance(obj, type(None))\n\n\n\nUse instead:\n\n\nobj is None",
-    "example-split": {
-        "example-before": "isinstance(obj, type(None))\n\n",
-        "example-after": "\nobj is None"
-    }
-}

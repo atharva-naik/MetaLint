@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for explicit casts to list on for-loop iterables.",
-    "why-is-this-bad": "Using a list() call to eagerly iterate over an already-iterable type\n(like a tuple, list, or set) is inefficient, as it forces Python to create\na new list unnecessarily.\n\n\nRemoving the list() call will not change the behavior of the code, but\nmay improve performance.\n\n\nNote that, as with all perflint rules, this is only intended as a\nmicro-optimization, and will have a negligible impact on performance in\nmost cases.",
-    "example": "items = (1, 2, 3)\nfor i in list(items):\n    print(i)\n\n\n\nUse instead:\n\n\nitems = (1, 2, 3)\nfor i in items:\n    print(i)",
-    "example-split": {
-        "example-before": "items = (1, 2, 3)\nfor i in list(items):\n    print(i)\n\n",
-        "example-after": "\nitems = (1, 2, 3)\nfor i in items:\n    print(i)"
-    }
-}

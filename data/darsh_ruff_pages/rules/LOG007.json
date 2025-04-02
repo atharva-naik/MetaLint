@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of logging.exception() with exc_info set to False.",
-    "why-is-this-bad": "The logging.exception() method captures the exception automatically, but\naccepts an optional exc_info argument to override this behavior. Setting\nexc_info to False disables the automatic capture of the exception and\nstack trace.\n\n\nInstead of setting exc_info to False, prefer logging.error(), which\nhas equivalent behavior to logging.exception() with exc_info set to\nFalse, but is clearer in intent.",
-    "example": "logging.exception(\"...\", exc_info=False)\n\n\n\nUse instead:\n\n\nlogging.error(\"...\")",
-    "example-split": {
-        "example-before": "logging.exception(\"...\", exc_info=False)\n\n",
-        "example-after": "\nlogging.error(\"...\")"
-    }
-}

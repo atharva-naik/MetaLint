@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of enumerate that discard either the index or the value\nwhen iterating over a sequence.",
-    "why-is-this-bad": "The built-in enumerate function is useful when you need both the index and\nvalue of a sequence.\n\n\nIf you only need the index or values of a sequence, you should iterate over\nrange(len(...)) or the sequence itself, respectively, instead. This is\nmore efficient and communicates the intent of the code more clearly.",
-    "example": "for index, _ in enumerate(sequence):\n    print(index)\n\nfor _, value in enumerate(sequence):\n    print(value)\n\n\n\nUse instead:\n\n\nfor index in range(len(sequence)):\n    print(index)\n\nfor value in sequence:\n    print(value)",
-    "example-split": {
-        "example-before": "for index, _ in enumerate(sequence):\n    print(index)\n\nfor _, value in enumerate(sequence):\n    print(value)\n\n",
-        "example-after": "\nfor index in range(len(sequence)):\n    print(index)"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of .split(os.sep)",
-    "why-is-this-bad": "The pathlib module in the standard library should be used for path\nmanipulation. It provides a high-level API with the functionality\nneeded for common operations on Path objects.",
-    "example": "If not all parts of the path are needed, then the name and parent\nattributes of the Path object should be used. Otherwise, the parts\nattribute can be used as shown in the last example.\n\n\nimport os\n\n\"path/to/file_name.txt\".split(os.sep)[-1]\n\n\"path/to/file_name.txt\".split(os.sep)[-2]\n\n# Iterating over the path parts\nif any(part in blocklist for part in \"my/file/path\".split(os.sep)):\n    ...\n\n\n\nUse instead:\n\n\nfrom pathlib import Path\n\nPath(\"path/to/file_name.txt\").name\n\nPath(\"path/to/file_name.txt\").parent.name\n\n# Iterating over the path parts\nif any(part in blocklist for part in Path(\"my/file/path\").parts):\n    ...",
-    "example-split": {
-        "example-before": "If not all parts of the path are needed, then the name and parent\nattributes of the Path object should be used. Otherwise, the parts\nattribute can be used as shown in the last example.\n\n\nimport os\n\n\"path/to/file_name.txt\".split(os.sep)[-1]\n\n\"path/to/file_name.txt\".split(os.sep)[-2]\n\n# Iterating over the path parts\nif any(part in blocklist for part in \"my/file/path\".split(os.sep)):\n    ...\n\n",
-        "example-after": "\nfrom pathlib import Path"
-    }
-}

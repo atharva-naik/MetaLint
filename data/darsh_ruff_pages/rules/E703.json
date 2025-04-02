@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for statements that end with an unnecessary semicolon.",
-    "why-is-this-bad": "A trailing semicolon is unnecessary and should be removed.",
-    "example": "do_four();  # useless semicolon\n\n\n\nUse instead:\n\n\ndo_four()",
-    "example-split": {
-        "example-before": "do_four();  # useless semicolon\n\n",
-        "example-after": "\ndo_four()"
-    }
-}

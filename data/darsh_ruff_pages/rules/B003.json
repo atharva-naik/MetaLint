@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for assignments to os.environ.",
-    "why-is-this-bad": "In Python, os.environ is a mapping that represents the environment of the\ncurrent process.\n\n\nHowever, reassigning to os.environ does not clear the environment. Instead,\nit merely updates the os.environ for the current process. This can lead to\nunexpected behavior, especially when running the program in a subprocess.\n\n\nInstead, use os.environ.clear() to clear the environment, or use the\nenv argument of subprocess.Popen to pass a custom environment to\na subprocess.",
-    "example": "import os\n\nos.environ = {\"foo\": \"bar\"}\n\n\n\nUse instead:\n\n\nimport os\n\nos.environ.clear()\nos.environ[\"foo\"] = \"bar\"",
-    "example-split": {
-        "example-before": "import os\n\nos.environ = {\"foo\": \"bar\"}\n\n",
-        "example-after": "\nimport os"
-    }
-}

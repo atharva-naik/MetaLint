@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Detects attempts to use super without parentheses.",
-    "why-is-this-bad": "The super() callable\ncan be used inside method definitions to create a proxy object that\ndelegates attribute access to a superclass of the current class. Attempting\nto access attributes on super itself, however, instead of the object\nreturned by a call to super(), will raise AttributeError.",
-    "example": "class Animal:\n    @staticmethod\n    def speak():\n        return \"This animal says something.\"\n\n\nclass Dog(Animal):\n    @staticmethod\n    def speak():\n        original_speak = super.speak()  # ERROR: `super.speak()`\n        return f\"{original_speak} But as a dog, it barks!\"\n\n\n\nUse instead:\n\n\nclass Animal:\n    @staticmethod\n    def speak():\n        return \"This animal says something.\"\n\n\nclass Dog(Animal):\n    @staticmethod\n    def speak():\n        original_speak = super().speak()  # Correct: `super().speak()`\n        return f\"{original_speak} But as a dog, it barks!\"",
-    "example-split": {
-        "example-before": "class Animal:\n    @staticmethod\n    def speak():\n        return \"This animal says something.\"\n\n\nclass Dog(Animal):\n    @staticmethod\n    def speak():\n        original_speak = super.speak()  # ERROR: `super.speak()`\n        return f\"{original_speak} But as a dog, it barks!\"\n\n",
-        "example-after": "\nclass Animal:\n    @staticmethod\n    def speak():\n        return \"This animal says something.\""
-    }
-}

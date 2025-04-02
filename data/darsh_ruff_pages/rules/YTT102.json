@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of sys.version[2].",
-    "why-is-this-bad": "If the current major or minor version consists of multiple digits,\nsys.version[2] will select the first digit of the minor number only\n(e.g., \"3.10\" would evaluate to \"1\"). This is likely unintended, and\ncan lead to subtle bugs if the version is used to test against a minor\nversion number.\n\n\nInstead, use sys.version_info.minor to access the current minor version\nnumber.",
-    "example": "import sys\n\nsys.version[2]  # Evaluates to \"1\" on Python 3.10.\n\n\n\nUse instead:\n\n\nimport sys\n\nf\"{sys.version_info.minor}\"  # Evaluates to \"10\" on Python 3.10.",
-    "example-split": {
-        "example-before": "import sys\n\nsys.version[2]  # Evaluates to \"1\" on Python 3.10.\n\n",
-        "example-after": "\nimport sys"
-    }
-}

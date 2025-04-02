@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for invalid escape sequences.",
-    "why-is-this-bad": "Invalid escape sequences are deprecated in Python 3.6.",
-    "example": "regex = \"\\.png$\"\n\n\n\nUse instead:\n\n\nregex = r\"\\.png$\"\n\n\n\nOr, if the string already contains a valid escape sequence:\n\n\nvalue = \"new line\\nand invalid escape \\_ here\"\n\n\n\nUse instead:\n\n\nvalue = \"new line\\nand invalid escape \\\\_ here\"",
-    "example-split": {
-        "example-before": "regex = \"\\.png$\"\n\n",
-        "example-after": "\nvalue = \"new line\\nand invalid escape \\\\_ here\""
-    }
-}

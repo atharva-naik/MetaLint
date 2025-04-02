@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for first-party imports that are only used for type annotations, but\naren't defined in a type-checking block.",
-    "why-is-this-bad": "Unused imports add a performance overhead at runtime, and risk creating\nimport cycles. If an import is only used in typing-only contexts, it can\ninstead be imported conditionally under an if TYPE_CHECKING: block to\nminimize runtime overhead.\n\n\nIf lint.flake8-type-checking.quote-annotations is set to true,\nannotations will be wrapped in quotes if doing so would enable the\ncorresponding import to be moved into an if TYPE_CHECKING: block.\n\n\nIf a class requires that type annotations be available at runtime (as is\nthe case for Pydantic, SQLAlchemy, and other libraries), consider using\nthe lint.flake8-type-checking.runtime-evaluated-base-classes and\nlint.flake8-type-checking.runtime-evaluated-decorators settings to mark them\nas such.",
-    "example": "from __future__ import annotations\n\nimport local_module\n\n\ndef func(sized: local_module.Container) -> int:\n    return len(sized)\n\n\n\nUse instead:\n\n\nfrom __future__ import annotations\n\nfrom typing import TYPE_CHECKING\n\nif TYPE_CHECKING:\n    import local_module\n\n\ndef func(sized: local_module.Container) -> int:\n    return len(sized)",
-    "example-split": {
-        "example-before": "from __future__ import annotations\n\nimport local_module\n\n\ndef func(sized: local_module.Container) -> int:\n    return len(sized)\n\n",
-        "example-after": "\nfrom __future__ import annotations"
-    }
-}

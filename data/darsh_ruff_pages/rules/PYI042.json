@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for type aliases that do not use the CamelCase naming convention.",
-    "why-is-this-bad": "It's conventional to use the CamelCase naming convention for type aliases,\nto distinguish them from other variables.",
-    "example": "type_alias_name: TypeAlias = int\n\n\n\nUse instead:\n\n\nTypeAliasName: TypeAlias = int",
-    "example-split": {
-        "example-before": "type_alias_name: TypeAlias = int\n\n",
-        "example-after": "\nTypeAliasName: TypeAlias = int"
-    }
-}

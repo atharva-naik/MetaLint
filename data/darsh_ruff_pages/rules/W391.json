@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for files with multiple trailing blank lines.\n\n\nIn the case of notebooks, this check is applied to\neach cell separately.",
-    "why-is-this-bad": "Trailing blank lines in a file are superfluous.\n\n\nHowever, the last line of the file should end with a newline.",
-    "example": "spam(1)\\n\\n\\n\n\n\n\nUse instead:\n\n\nspam(1)\\n",
-    "example-split": {
-        "example-before": "spam(1)\\n\\n\\n\n\n",
-        "example-after": "\nspam(1)\\n"
-    }
-}

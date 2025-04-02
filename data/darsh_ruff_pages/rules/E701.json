@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for compound statements (multiple statements on the same line).",
-    "why-is-this-bad": "According to PEP 8, \"compound statements are generally discouraged\".",
-    "example": "if foo == \"blah\": do_blah_thing()\n\n\n\nUse instead:\n\n\nif foo == \"blah\":\n    do_blah_thing()",
-    "example-split": {
-        "example-before": "if foo == \"blah\": do_blah_thing()\n\n",
-        "example-after": "\nif foo == \"blah\":\n    do_blah_thing()"
-    }
-}

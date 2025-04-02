@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks that private functions and methods have return type annotations.",
-    "why-is-this-bad": "Type annotations are a good way to document the return types of functions. They also\nhelp catch bugs, when used alongside a type checker, by ensuring that the types of\nany returned values, and the types expected by callers, match expectation.",
-    "example": "def _add(a, b):\n    return a + b\n\n\n\nUse instead:\n\n\ndef _add(a: int, b: int) -> int:\n    return a + b",
-    "example-split": {
-        "example-before": "def _add(a, b):\n    return a + b\n\n",
-        "example-after": "\ndef _add(a: int, b: int) -> int:\n    return a + b"
-    }
-}

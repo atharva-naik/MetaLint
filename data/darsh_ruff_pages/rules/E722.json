@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for bare except catches in try-except statements.",
-    "why-is-this-bad": "A bare except catches BaseException which includes\nKeyboardInterrupt, SystemExit, Exception, and others. Catching\nBaseException can make it hard to interrupt the program (e.g., with\nCtrl-C) and can disguise other problems.",
-    "example": "try:\n    raise KeyboardInterrupt(\"You probably don't mean to break CTRL-C.\")\nexcept:\n    print(\"But a bare `except` will ignore keyboard interrupts.\")\n\n\n\nUse instead:\n\n\ntry:\n    do_something_that_might_break()\nexcept MoreSpecificException as e:\n    handle_error(e)\n\n\n\nIf you actually need to catch an unknown error, use Exception which will\ncatch regular program errors but not important system exceptions.\n\n\ndef run_a_function(some_other_fn):\n    try:\n        some_other_fn()\n    except Exception as e:\n        print(f\"How exceptional! {e}\")",
-    "example-split": {
-        "example-before": "try:\n    raise KeyboardInterrupt(\"You probably don't mean to break CTRL-C.\")\nexcept:\n    print(\"But a bare `except` will ignore keyboard interrupts.\")\n\n",
-        "example-after": "\ntry:\n    do_something_that_might_break()\nexcept MoreSpecificException as e:\n    handle_error(e)"
-    }
-}

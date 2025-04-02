@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of metaclass=abc.ABCMeta to define abstract base classes\n(ABCs).",
-    "why-is-this-bad": "Instead of class C(metaclass=abc.ABCMeta): ..., use class C(ABC): ...\nto define an abstract base class. Inheriting from the ABC wrapper class\nis semantically identical to setting metaclass=abc.ABCMeta, but more\nsuccinct.",
-    "example": "class C(metaclass=ABCMeta):\n    pass\n\n\n\nUse instead:\n\n\nclass C(ABC):\n    pass",
-    "example-split": {
-        "example-before": "class C(metaclass=ABCMeta):\n    pass\n\n",
-        "example-after": "\nclass C(ABC):\n    pass"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for pytest.mark.usefixtures decorators applied to pytest\nfixtures.",
-    "why-is-this-bad": "The pytest.mark.usefixtures decorator has no effect on pytest fixtures.",
-    "example": "import pytest\n\n\n@pytest.fixture()\ndef a():\n    pass\n\n\n@pytest.mark.usefixtures(\"a\")\n@pytest.fixture()\ndef b(a):\n    pass\n\n\n\nUse instead:\n\n\nimport pytest\n\n\n@pytest.fixture()\ndef a():\n    pass\n\n\n@pytest.fixture()\ndef b(a):\n    pass",
-    "example-split": {
-        "example-before": "import pytest\n\n\n@pytest.fixture()\ndef a():\n    pass\n\n\n@pytest.mark.usefixtures(\"a\")\n@pytest.fixture()\ndef b(a):\n    pass\n\n",
-        "example-after": "\nimport pytest"
-    }
-}

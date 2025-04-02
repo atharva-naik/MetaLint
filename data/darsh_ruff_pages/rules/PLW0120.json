@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for else clauses on loops without a break statement.",
-    "why-is-this-bad": "When a loop includes an else statement, the code inside the else clause\nwill be executed if the loop terminates \"normally\" (i.e., without a\nbreak).\n\n\nIf a loop always terminates \"normally\" (i.e., does not contain a\nbreak), then the else clause is redundant, as the code inside the\nelse clause will always be executed.\n\n\nIn such cases, the code inside the else clause can be moved outside the\nloop entirely, and the else clause can be removed.",
-    "example": "for item in items:\n    print(item)\nelse:\n    print(\"All items printed\")\n\n\n\nUse instead:\n\n\nfor item in items:\n    print(item)\nprint(\"All items printed\")",
-    "example-split": {
-        "example-before": "for item in items:\n    print(item)\nelse:\n    print(\"All items printed\")\n\n",
-        "example-after": "\nfor item in items:\n    print(item)\nprint(\"All items printed\")"
-    }
-}

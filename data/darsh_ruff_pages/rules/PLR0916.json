@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for too many Boolean expressions in an if statement.\n\n\nBy default, this rule allows up to 5 expressions. This can be configured\nusing the lint.pylint.max-bool-expr option.",
-    "why-is-this-bad": "if statements with many Boolean expressions are harder to understand\nand maintain. Consider assigning the result of the Boolean expression,\nor any of its sub-expressions, to a variable.",
-    "example": "if a and b and c and d and e and f and g and h:\n    ...",
-    "example-split": {
-        "example-before": "if a and b and c and d and e and f and g and h:\n    ...",
-        "example-after": "if a and b and c and d and e and f and g and h:\n    ..."
-    }
-}

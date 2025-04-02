@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks that \"special\" methods, like __init__, __new__, and __call__, have\nreturn type annotations.",
-    "why-is-this-bad": "Type annotations are a good way to document the return types of functions. They also\nhelp catch bugs, when used alongside a type checker, by ensuring that the types of\nany returned values, and the types expected by callers, match expectation.\n\n\nNote that type checkers often allow you to omit the return type annotation for\n__init__ methods, as long as at least one argument has a type annotation. To\nopt in to this behavior, use the mypy-init-return setting in your pyproject.toml\nor ruff.toml file:\n\n\n[tool.ruff.lint.flake8-annotations]\nmypy-init-return = true",
-    "example": "class Foo:\n    def __init__(self, x: int):\n        self.x = x\n\n\n\nUse instead:\n\n\nclass Foo:\n    def __init__(self, x: int) -> None:\n        self.x = x",
-    "example-split": {
-        "example-before": "class Foo:\n    def __init__(self, x: int):\n        self.x = x\n\n",
-        "example-after": "\nclass Foo:\n    def __init__(self, x: int) -> None:\n        self.x = x"
-    }
-}
