@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for CamelCase imports that are aliased as acronyms.",
-    "why-is-this-bad": "PEP 8 recommends naming conventions for classes, functions,\nconstants, and more. The use of inconsistent naming styles between\nimport and alias names may lead readers to expect an import to be of\nanother type (e.g., confuse a Python class with a constant).\n\n\nImport aliases should thus follow the same naming style as the member\nbeing imported.\n\n\nNote that this rule is distinct from camelcase-imported-as-constant\nto accommodate selective enforcement.\n\n\nAlso note that import aliases following an import convention according to the\nlint.flake8-import-conventions.aliases option are allowed.",
-    "example": "from example import MyClassName as MCN\n\n\n\nUse instead:\n\n\nfrom example import MyClassName",
-    "example-split": {
-        "example-before": "from example import MyClassName as MCN\n\n",
-        "example-after": "\nfrom example import MyClassName"
-    }
-}

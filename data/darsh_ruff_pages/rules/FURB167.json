@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the use of shorthand aliases for regular expression flags\n(e.g., re.I instead of re.IGNORECASE).",
-    "why-is-this-bad": "The regular expression module provides descriptive names for each flag,\nalong with single-letter aliases. Prefer the descriptive names, as they\nare more readable and self-documenting.",
-    "example": "import re\n\nif re.match(\"^hello\", \"hello world\", re.I):\n    ...\n\n\n\nUse instead:\n\n\nimport re\n\nif re.match(\"^hello\", \"hello world\", re.IGNORECASE):\n    ...",
-    "example-split": {
-        "example-before": "import re\n\nif re.match(\"^hello\", \"hello world\", re.I):\n    ...\n\n",
-        "example-after": "\nimport re"
-    }
-}

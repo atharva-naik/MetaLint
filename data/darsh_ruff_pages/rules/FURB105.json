@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for print calls with unnecessary empty strings as positional\narguments and unnecessary sep keyword arguments.",
-    "why-is-this-bad": "Prefer calling print without any positional arguments, which is\nequivalent and more concise.\n\n\nSimilarly, when printing one or fewer items, the sep keyword argument,\n(used to define the string that separates the print arguments) can be\nomitted, as it's redundant when there are no items to separate.",
-    "example": "print(\"\")\n\n\n\nUse instead:\n\n\nprint()",
-    "example-split": {
-        "example-before": "print(\"\")\n\n",
-        "example-after": "\nprint()"
-    }
-}

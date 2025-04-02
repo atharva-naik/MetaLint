@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for single-line docstrings that are broken across multiple lines.",
-    "why-is-this-bad": "PEP 257 recommends that docstrings that can fit on one line should be\nformatted on a single line, for consistency and readability.",
-    "example": "def average(values: list[float]) -> float:\n    \"\"\"\n    Return the mean of the given values.\n    \"\"\"\n\n\n\nUse instead:\n\n\ndef average(values: list[float]) -> float:\n    \"\"\"Return the mean of the given values.\"\"\"",
-    "example-split": {
-        "example-before": "def average(values: list[float]) -> float:\n    \"\"\"\n    Return the mean of the given values.\n    \"\"\"\n\n",
-        "example-after": "\ndef average(values: list[float]) -> float:\n    \"\"\"Return the mean of the given values.\"\"\""
-    }
-}

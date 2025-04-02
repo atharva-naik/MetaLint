@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for TypeVar, TypeVarTuple, ParamSpec, and NewType\ndefinitions in which the name of the type parameter does not match the name\nof the variable to which it is assigned.",
-    "why-is-this-bad": "When defining a TypeVar or a related type parameter, Python allows you to\nprovide a name for the type parameter. According to PEP 484, the name\nprovided to the TypeVar constructor must be equal to the name of the\nvariable to which it is assigned.",
-    "example": "from typing import TypeVar\n\nT = TypeVar(\"U\")\n\n\n\nUse instead:\n\n\nfrom typing import TypeVar\n\nT = TypeVar(\"T\")",
-    "example-split": {
-        "example-before": "from typing import TypeVar\n\nT = TypeVar(\"U\")\n\n",
-        "example-after": "\nfrom typing import TypeVar"
-    }
-}

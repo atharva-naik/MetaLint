@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of logging.WARN.",
-    "why-is-this-bad": "The logging.WARN constant is an undocumented alias for logging.WARNING.\n\n\nAlthough it\u2019s not explicitly deprecated, logging.WARN is not mentioned\nin the logging documentation. Prefer logging.WARNING instead.",
-    "example": "import logging\n\n\nlogging.basicConfig(level=logging.WARN)\n\n\n\nUse instead:\n\n\nimport logging\n\n\nlogging.basicConfig(level=logging.WARNING)",
-    "example-split": {
-        "example-before": "import logging\n\n\nlogging.basicConfig(level=logging.WARN)\n\n",
-        "example-after": "\nimport logging"
-    }
-}

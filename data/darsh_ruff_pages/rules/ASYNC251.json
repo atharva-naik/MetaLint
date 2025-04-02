@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks that async functions do not call time.sleep.",
-    "why-is-this-bad": "Blocking an async function via a time.sleep call will block the entire\nevent loop, preventing it from executing other tasks while waiting for the\ntime.sleep, negating the benefits of asynchronous programming.\n\n\nInstead of time.sleep, use asyncio.sleep.",
-    "example": "async def fetch():\n    time.sleep(1)\n\n\n\nUse instead:\n\n\nasync def fetch():\n    await asyncio.sleep(1)",
-    "example-split": {
-        "example-before": "async def fetch():\n    time.sleep(1)\n\n",
-        "example-after": "\nasync def fetch():\n    await asyncio.sleep(1)"
-    }
-}

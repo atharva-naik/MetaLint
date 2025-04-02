@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for exceptions that are re-raised without specifying the cause via\nthe from keyword.",
-    "why-is-this-bad": "The from keyword sets the __cause__ attribute of the exception, which\nstores the \"cause\" of the exception. The availability of an exception\n\"cause\" is useful for debugging.",
-    "example": "def reciprocal(n):\n    try:\n        return 1 / n\n    except ZeroDivisionError:\n        raise ValueError()\n\n\n\nUse instead:\n\n\ndef reciprocal(n):\n    try:\n        return 1 / n\n    except ZeroDivisionError as exc:\n        raise ValueError() from exc",
-    "example-split": {
-        "example-before": "def reciprocal(n):\n    try:\n        return 1 / n\n    except ZeroDivisionError:\n        raise ValueError()\n\n",
-        "example-after": "\ndef reciprocal(n):\n    try:\n        return 1 / n\n    except ZeroDivisionError as exc:\n        raise ValueError() from exc"
-    }
-}

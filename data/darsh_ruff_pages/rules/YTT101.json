@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of sys.version[:3].",
-    "why-is-this-bad": "If the current major or minor version consists of multiple digits,\nsys.version[:3] will truncate the version number (e.g., \"3.10\" would\nbecome \"3.1\"). This is likely unintended, and can lead to subtle bugs if\nthe version string is used to test against a specific Python version.\n\n\nInstead, use sys.version_info to access the current major and minor\nversion numbers as a tuple, which can be compared to other tuples\nwithout issue.",
-    "example": "import sys\n\nsys.version[:3]  # Evaluates to \"3.1\" on Python 3.10.\n\n\n\nUse instead:\n\n\nimport sys\n\nsys.version_info[:2]  # Evaluates to (3, 10) on Python 3.10.",
-    "example-split": {
-        "example-before": "import sys\n\nsys.version[:3]  # Evaluates to \"3.1\" on Python 3.10.\n\n",
-        "example-after": "\nimport sys"
-    }
-}

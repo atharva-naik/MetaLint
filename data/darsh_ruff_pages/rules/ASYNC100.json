@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for timeout context managers which do not contain a checkpoint.\n\n\nFor the purposes of this check, yield is considered a checkpoint,\nsince checkpoints may occur in the caller to which we yield.",
-    "why-is-this-bad": "Some asynchronous context managers, such as asyncio.timeout and\ntrio.move_on_after, have no effect unless they contain a checkpoint.\nThe use of such context managers without an await, async with or\nasync for statement is likely a mistake.",
-    "example": "async def func():\n    async with asyncio.timeout(2):\n        do_something()\n\n\n\nUse instead:\n\n\nasync def func():\n    async with asyncio.timeout(2):\n        do_something()\n        await awaitable()",
-    "example-split": {
-        "example-before": "async def func():\n    async with asyncio.timeout(2):\n        do_something()\n\n",
-        "example-after": "\nasync def func():\n    async with asyncio.timeout(2):\n        do_something()\n        await awaitable()"
-    }
-}

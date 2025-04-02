@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of type that compare the type of an object to the type of\nNone.",
-    "why-is-this-bad": "There is only ever one instance of None, so it is more efficient and\nreadable to use the is operator to check if an object is None.",
-    "example": "type(obj) is type(None)\n\n\n\nUse instead:\n\n\nobj is None",
-    "example-split": {
-        "example-before": "type(obj) is type(None)\n\n",
-        "example-after": "\nobj is None"
-    }
-}

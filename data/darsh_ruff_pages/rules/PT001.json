@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for argument-free @pytest.fixture() decorators with or without\nparentheses, depending on the lint.flake8-pytest-style.fixture-parentheses\nsetting.",
-    "why-is-this-bad": "If a @pytest.fixture() doesn't take any arguments, the parentheses are\noptional.\n\n\nEither removing those unnecessary parentheses or requiring them for all\nfixtures is fine, but it's best to be consistent. The rule defaults to\nremoving unnecessary parentheses, to match the documentation of the\nofficial pytest projects.",
-    "example": "import pytest\n\n\n@pytest.fixture()\ndef my_fixture(): ...\n\n\n\nUse instead:\n\n\nimport pytest\n\n\n@pytest.fixture\ndef my_fixture(): ...",
-    "example-split": {
-        "example-before": "import pytest\n\n\n@pytest.fixture()\ndef my_fixture(): ...\n\n",
-        "example-after": "\nimport pytest"
-    }
-}

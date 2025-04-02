@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for datetime instantiations that do not specify a timezone.",
-    "why-is-this-bad": "datetime objects are \"naive\" by default, in that they do not include\ntimezone information. \"Naive\" objects are easy to understand, but ignore\nsome aspects of reality, which can lead to subtle bugs. Timezone-aware\ndatetime objects are preferred, as they represent a specific moment in\ntime, unlike \"naive\" objects.\n\n\nBy providing a non-None value for tzinfo, a datetime can be made\ntimezone-aware.",
-    "example": "import datetime\n\ndatetime.datetime(2000, 1, 1, 0, 0, 0)\n\n\n\nUse instead:\n\n\nimport datetime\n\ndatetime.datetime(2000, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc)\n\n\n\nOr, on Python 3.11 and later:\n\n\nimport datetime\n\ndatetime.datetime(2000, 1, 1, 0, 0, 0, tzinfo=datetime.UTC)",
-    "example-split": {
-        "example-before": "import datetime\n\ndatetime.datetime(2000, 1, 1, 0, 0, 0)\n\n",
-        "example-after": "\nimport datetime"
-    }
-}

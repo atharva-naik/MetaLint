@@ -1,4 +1,0 @@
-{
-    "what-it-does": "Checks for unannotated assignments in stub (.pyi) files.",
-    "why-is-this-bad": "Stub files exist to provide type hints, and are never executed. As such,\nall assignments in stub files should be annotated with a type."
-}

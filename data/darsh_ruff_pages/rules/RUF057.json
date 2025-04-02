@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for round() calls that have no effect on the input.",
-    "why-is-this-bad": "Rounding a value that's already an integer is unnecessary.\nIt's clearer to use the value directly.",
-    "example": "a = round(1, 0)\n\n\n\nUse instead:\n\n\na = 1",
-    "example-split": {
-        "example-before": "a = round(1, 0)\n\n",
-        "example-after": "\na = 1"
-    }
-}

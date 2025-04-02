@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of collections.namedtuple in stub files.",
-    "why-is-this-bad": "typing.NamedTuple is the \"typed version\" of collections.namedtuple.\n\n\nInheriting from typing.NamedTuple creates a custom tuple subclass in\nthe same way as using the collections.namedtuple factory function.\nHowever, using typing.NamedTuple allows you to provide a type annotation\nfor each field in the class. This means that type checkers will have more\ninformation to work with, and will be able to analyze your code more\nprecisely.",
-    "example": "from collections import namedtuple\n\nperson = namedtuple(\"Person\", [\"name\", \"age\"])\n\n\n\nUse instead:\n\n\nfrom typing import NamedTuple\n\nclass Person(NamedTuple):\n    name: str\n    age: int",
-    "example-split": {
-        "example-before": "from collections import namedtuple\n\nperson = namedtuple(\"Person\", [\"name\", \"age\"])\n\n",
-        "example-after": "\nfrom typing import NamedTuple"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for type annotations where None is not at the end of an union.",
-    "why-is-this-bad": "Type annotation unions are associative, meaning that the order of the elements\ndoes not matter. The None literal represents the absence of a value. For\nreadability, it's preferred to write the more informative type expressions first.",
-    "example": "def func(arg: None | int): ...\n\n\n\nUse instead:\n\n\ndef func(arg: int | None): ...",
-    "example-split": {
-        "example-before": "def func(arg: None | int): ...\n\n",
-        "example-after": "\ndef func(arg: int | None): ..."
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of typing.Text.",
-    "why-is-this-bad": "typing.Text is an alias for str, and only exists for Python 2\ncompatibility. As of Python 3.11, typing.Text is deprecated. Use str\ninstead.",
-    "example": "from typing import Text\n\nfoo: Text = \"bar\"\n\n\n\nUse instead:\n\n\nfoo: str = \"bar\"",
-    "example-split": {
-        "example-before": "from typing import Text\n\nfoo: Text = \"bar\"\n\n",
-        "example-after": "\nfoo: str = \"bar\""
-    }
-}

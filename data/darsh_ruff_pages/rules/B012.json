@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for break, continue, and return statements in finally\nblocks.",
-    "why-is-this-bad": "The use of break, continue, and return statements in finally blocks\ncan cause exceptions to be silenced.\n\n\nfinally blocks execute regardless of whether an exception is raised. If a\nbreak, continue, or return statement is reached in a finally block,\nany exception raised in the try or except blocks will be silenced.",
-    "example": "def speed(distance, time):\n    try:\n        return distance / time\n    except ZeroDivisionError:\n        raise ValueError(\"Time cannot be zero\")\n    finally:\n        return 299792458  # `ValueError` is silenced\n\n\n\nUse instead:\n\n\ndef speed(distance, time):\n    try:\n        return distance / time\n    except ZeroDivisionError:\n        raise ValueError(\"Time cannot be zero\")",
-    "example-split": {
-        "example-before": "def speed(distance, time):\n    try:\n        return distance / time\n    except ZeroDivisionError:\n        raise ValueError(\"Time cannot be zero\")\n    finally:\n        return 299792458  # `ValueError` is silenced\n\n",
-        "example-after": "\ndef speed(distance, time):\n    try:\n        return distance / time\n    except ZeroDivisionError:\n        raise ValueError(\"Time cannot be zero\")"
-    }
-}

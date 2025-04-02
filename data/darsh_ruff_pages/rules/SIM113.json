@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for for loops with explicit loop-index variables that can be replaced\nwith enumerate().",
-    "why-is-this-bad": "When iterating over a sequence, it's often desirable to keep track of the\nindex of each element alongside the element itself. Prefer the enumerate\nbuiltin over manually incrementing a counter variable within the loop, as\nenumerate is more concise and idiomatic.",
-    "example": "fruits = [\"apple\", \"banana\", \"cherry\"]\nfor fruit in fruits:\n    print(f\"{i + 1}. {fruit}\")\n    i += 1\n\n\n\nUse instead:\n\n\nfruits = [\"apple\", \"banana\", \"cherry\"]\nfor i, fruit in enumerate(fruits):\n    print(f\"{i + 1}. {fruit}\")",
-    "example-split": {
-        "example-before": "fruits = [\"apple\", \"banana\", \"cherry\"]\nfor fruit in fruits:\n    print(f\"{i + 1}. {fruit}\")\n    i += 1\n\n",
-        "example-after": "\nfruits = [\"apple\", \"banana\", \"cherry\"]\nfor i, fruit in enumerate(fruits):\n    print(f\"{i + 1}. {fruit}\")"
-    }
-}

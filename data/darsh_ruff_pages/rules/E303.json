@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for extraneous blank lines.",
-    "why-is-this-bad": "PEP 8 recommends using blank lines as follows:\n\n\n\nNo more than two blank lines between top-level statements.\nNo more than one blank line between non-top-level statements.",
-    "example": "def func1():\n    pass\n\n\n\ndef func2():\n    pass\n\n\n\nUse instead:\n\n\ndef func1():\n    pass\n\n\ndef func2():\n    pass",
-    "example-split": {
-        "example-before": "def func1():\n    pass\n\n\n\ndef func2():\n    pass\n\n",
-        "example-after": "\ndef func1():\n    pass"
-    }
-}

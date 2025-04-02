@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for and expressions that include both an expression and its\nnegation.",
-    "why-is-this-bad": "An and expression that includes both an expression and its negation will\nalways evaluate to False.",
-    "example": "x and not x",
-    "example-split": {
-        "example-before": "x and not x",
-        "example-after": "x and not x"
-    }
-}

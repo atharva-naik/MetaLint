@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for __eq__ and __ne__ implementations that use typing.Any as\nthe type annotation for their second parameter.",
-    "why-is-this-bad": "The Python documentation recommends the use of object to \"indicate that a\nvalue could be any type in a typesafe manner\". Any, on the other hand,\nshould be seen as an \"escape hatch when you need to mix dynamically and\nstatically typed code\". Since using Any allows you to write highly unsafe\ncode, you should generally only use Any when the semantics of your code\nwould otherwise be inexpressible to the type checker.\n\n\nThe expectation in Python is that a comparison of two arbitrary objects\nusing == or != should never raise an exception. This contract can be\nfully expressed in the type system and does not involve requesting unsound\nbehaviour from a type checker. As such, object is a more appropriate\nannotation than Any for the second parameter of the methods implementing\nthese comparison operators -- __eq__ and __ne__.",
-    "example": "class Foo:\n    def __eq__(self, obj: typing.Any) -> bool: ...\n\n\n\nUse instead:\n\n\nclass Foo:\n    def __eq__(self, obj: object) -> bool: ...",
-    "example-split": {
-        "example-before": "class Foo:\n    def __eq__(self, obj: typing.Any) -> bool: ...\n\n",
-        "example-after": "\nclass Foo:\n    def __eq__(self, obj: object) -> bool: ..."
-    }
-}

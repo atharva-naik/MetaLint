@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for identity comparisons using not {foo} is {bar}.",
-    "why-is-this-bad": "According to PEP8, testing for an object's identity with is not is more\nreadable.",
-    "example": "if not X is Y:\n    pass\nZ = not X.B is Y\n\n\n\nUse instead:\n\n\nif X is not Y:\n    pass\nZ = X.B is not Y",
-    "example-split": {
-        "example-before": "if not X is Y:\n    pass\nZ = not X.B is Y\n\n",
-        "example-after": "\nif X is not Y:\n    pass\nZ = X.B is not Y"
-    }
-}

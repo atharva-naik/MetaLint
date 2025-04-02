@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for extraneous tabs after keywords.",
-    "why-is-this-bad": "",
-    "example": "True and\\tFalse\n\n\n\nUse instead:\n\n\nTrue and False",
-    "example-split": {
-        "example-before": "True and\\tFalse\n\n",
-        "example-after": "\nTrue and False"
-    }
-}

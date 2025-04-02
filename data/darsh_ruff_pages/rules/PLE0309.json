@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for __hash__ implementations that return non-integer values.",
-    "why-is-this-bad": "The __hash__ method should return an integer. Returning a different\ntype may cause unexpected behavior.\n\n\nNote: bool is a subclass of int, so it's technically valid for __hash__ to\nreturn True or False. However, for consistency with other rules, Ruff will\nstill emit a diagnostic when __hash__ returns a bool.",
-    "example": "class Foo:\n    def __hash__(self):\n        return \"2\"\n\n\n\nUse instead:\n\n\nclass Foo:\n    def __hash__(self):\n        return 2",
-    "example-split": {
-        "example-before": "class Foo:\n    def __hash__(self):\n        return \"2\"\n\n",
-        "example-after": "\nclass Foo:\n    def __hash__(self):\n        return 2"
-    }
-}

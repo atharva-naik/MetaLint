@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for assignments with multiple or non-name targets in stub files.",
-    "why-is-this-bad": "In general, stub files should be thought of as \"data files\" for a type\nchecker, and are not intended to be executed. As such, it's useful to\nenforce that only a subset of Python syntax is allowed in a stub file, to\nensure that everything in the stub is unambiguous for the type checker.\n\n\nThe need to perform multi-assignment, or assignment to a non-name target,\nlikely indicates a misunderstanding of how stub files are intended to be\nused.",
-    "example": "from typing import TypeAlias\n\na = b = int\n\nclass Klass: ...\n\nKlass.X: TypeAlias = int\n\n\n\nUse instead:\n\n\nfrom typing import TypeAlias\n\na: TypeAlias = int\nb: TypeAlias = int\n\nclass Klass:\n    X: TypeAlias = int",
-    "example-split": {
-        "example-before": "from typing import TypeAlias\n\na = b = int\n\nclass Klass: ...\n\nKlass.X: TypeAlias = int\n\n",
-        "example-after": "\nfrom typing import TypeAlias"
-    }
-}

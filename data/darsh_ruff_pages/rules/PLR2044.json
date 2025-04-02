@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for a # symbol appearing on a line not followed by an actual comment.",
-    "why-is-this-bad": "Empty comments don't provide any clarity to the code, and just add clutter.\nEither add a comment or delete the empty comment.",
-    "example": "class Foo:  #\n    pass\n\n\n\nUse instead:\n\n\nclass Foo:\n    pass",
-    "example-split": {
-        "example-before": "class Foo:  #\n    pass\n\n",
-        "example-after": "\nclass Foo:\n    pass"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks that async functions do not contain blocking HTTP calls.",
-    "why-is-this-bad": "Blocking an async function via a blocking HTTP call will block the entire\nevent loop, preventing it from executing other tasks while waiting for the\nHTTP response, negating the benefits of asynchronous programming.\n\n\nInstead of making a blocking HTTP call, use an asynchronous HTTP client\nlibrary such as aiohttp or httpx.",
-    "example": "async def fetch():\n    urllib.request.urlopen(\"https://example.com/foo/bar\").read()\n\n\n\nUse instead:\n\n\nasync def fetch():\n    async with aiohttp.ClientSession() as session:\n        async with session.get(\"https://example.com/foo/bar\") as resp:\n            ...",
-    "example-split": {
-        "example-before": "async def fetch():\n    urllib.request.urlopen(\"https://example.com/foo/bar\").read()\n\n",
-        "example-after": "\nasync def fetch():\n    async with aiohttp.ClientSession() as session:\n        async with session.get(\"https://example.com/foo/bar\") as resp:\n            ..."
-    }
-}

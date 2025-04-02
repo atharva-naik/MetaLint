@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the presence of a return None statement when None is the only\npossible return value.",
-    "why-is-this-bad": "Python implicitly assumes return None if an explicit return value is\nomitted. Therefore, explicitly returning None is redundant and should be\navoided when it is the only possible return value across all code paths\nin a given function.",
-    "example": "def foo(bar):\n    if not bar:\n        return\n    return None\n\n\n\nUse instead:\n\n\ndef foo(bar):\n    if not bar:\n        return\n    return",
-    "example-split": {
-        "example-before": "def foo(bar):\n    if not bar:\n        return\n    return None\n\n",
-        "example-after": "\ndef foo(bar):\n    if not bar:\n        return\n    return"
-    }
-}

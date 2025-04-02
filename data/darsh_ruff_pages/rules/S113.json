@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of the Python requests or httpx module that omit the\ntimeout parameter.",
-    "why-is-this-bad": "The timeout parameter is used to set the maximum time to wait for a\nresponse from the server. By omitting the timeout parameter, the program\nmay hang indefinitely while awaiting a response.",
-    "example": "import requests\n\nrequests.get(\"https://www.example.com/\")\n\n\n\nUse instead:\n\n\nimport requests\n\nrequests.get(\"https://www.example.com/\", timeout=10)",
-    "example-split": {
-        "example-before": "import requests\n\nrequests.get(\"https://www.example.com/\")\n\n",
-        "example-after": "\nimport requests"
-    }
-}

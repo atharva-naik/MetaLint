@@ -1,5 +1,0 @@
-{
-    "what-it-does": "Checks for unnecessary generators that can be rewritten as dict\ncomprehensions.",
-    "why-is-this-bad": "It is unnecessary to use dict() around a generator expression, since\nthere are equivalent comprehensions for these types. Using a\ncomprehension is clearer and more idiomatic.",
-    "fix-safety": "This rule's fix is marked as unsafe, as it may occasionally drop comments\nwhen rewriting the call. In most cases, though, comments will be preserved."
-}

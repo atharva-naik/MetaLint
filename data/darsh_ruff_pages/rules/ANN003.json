@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks that function **kwargs arguments have type annotations.",
-    "why-is-this-bad": "Type annotations are a good way to document the types of function arguments. They also\nhelp catch bugs, when used alongside a type checker, by ensuring that the types of\nany provided arguments match expectation.",
-    "example": "def foo(**kwargs): ...\n\n\n\nUse instead:\n\n\ndef foo(**kwargs: int): ...",
-    "example-split": {
-        "example-before": "def foo(**kwargs): ...\n\n",
-        "example-after": "\ndef foo(**kwargs: int): ..."
-    }
-}

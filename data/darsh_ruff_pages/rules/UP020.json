@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of io.open.",
-    "why-is-this-bad": "In Python 3, io.open is an alias for open. Prefer using open directly,\nas it is more idiomatic.",
-    "example": "import io\n\nwith io.open(\"file.txt\") as f:\n    ...\n\n\n\nUse instead:\n\n\nwith open(\"file.txt\") as f:\n    ...",
-    "example-split": {
-        "example-before": "import io\n\nwith io.open(\"file.txt\") as f:\n    ...\n\n",
-        "example-after": "\nwith open(\"file.txt\") as f:\n    ..."
-    }
-}

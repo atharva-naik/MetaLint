@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for unnecessary __future__ imports.",
-    "why-is-this-bad": "The __future__ module is used to enable features that are not yet\navailable in the current Python version. If a feature is already\navailable in the minimum supported Python version, importing it\nfrom __future__ is unnecessary and should be removed to avoid\nconfusion.",
-    "example": "from __future__ import print_function\n\nprint(\"Hello, world!\")\n\n\n\nUse instead:\n\n\nprint(\"Hello, world!\")",
-    "example-split": {
-        "example-before": "from __future__ import print_function\n\nprint(\"Hello, world!\")\n\n",
-        "example-after": "\nprint(\"Hello, world!\")"
-    }
-}

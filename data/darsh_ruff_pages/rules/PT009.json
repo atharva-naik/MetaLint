@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of assertion methods from the unittest module.",
-    "why-is-this-bad": "To make use of pytest's assertion rewriting, a regular assert statement\nis preferred over unittest's assertion methods.",
-    "example": "import unittest\n\n\nclass TestFoo(unittest.TestCase):\n    def test_foo(self):\n        self.assertEqual(a, b)\n\n\n\nUse instead:\n\n\nimport unittest\n\n\nclass TestFoo(unittest.TestCase):\n    def test_foo(self):\n        assert a == b",
-    "example-split": {
-        "example-before": "import unittest\n\n\nclass TestFoo(unittest.TestCase):\n    def test_foo(self):\n        self.assertEqual(a, b)\n\n",
-        "example-after": "\nimport unittest"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for pytest.fail calls without a message.",
-    "why-is-this-bad": "pytest.fail calls without a message make it harder to understand and debug test failures.",
-    "example": "import pytest\n\n\ndef test_foo():\n    pytest.fail()\n\n\ndef test_bar():\n    pytest.fail(\"\")\n\n\ndef test_baz():\n    pytest.fail(reason=\"\")\n\n\n\nUse instead:\n\n\nimport pytest\n\n\ndef test_foo():\n    pytest.fail(\"...\")\n\n\ndef test_bar():\n    pytest.fail(reason=\"...\")",
-    "example-split": {
-        "example-before": "import pytest\n\n\ndef test_foo():\n    pytest.fail()\n\n\ndef test_bar():\n    pytest.fail(\"\")\n\n\ndef test_baz():\n    pytest.fail(reason=\"\")\n\n",
-        "example-after": "\nimport pytest"
-    }
-}

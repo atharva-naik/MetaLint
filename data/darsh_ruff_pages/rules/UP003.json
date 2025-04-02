@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of type that take a primitive as an argument.",
-    "why-is-this-bad": "type() returns the type of a given object. A type of a primitive can\nalways be known in advance and accessed directly, which is more concise\nand explicit than using type().",
-    "example": "type(1)\n\n\n\nUse instead:\n\n\nint",
-    "example-split": {
-        "example-before": "type(1)\n\n",
-        "example-after": "\nint"
-    }
-}

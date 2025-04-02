@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for declared assignments to the same variable multiple times\nin the same assignment.",
-    "why-is-this-bad": "Assigning a variable multiple times in the same assignment is redundant,\nas the final assignment to the variable is what the value will be.",
-    "example": "a, b, a = (1, 2, 3)\nprint(a)  # 3\n\n\n\nUse instead:\n\n\n# this is assuming you want to assign 3 to `a`\n_, b, a = (1, 2, 3)\nprint(a)  # 3",
-    "example-split": {
-        "example-before": "a, b, a = (1, 2, 3)\nprint(a)  # 3\n\n",
-        "example-after": "\n# this is assuming you want to assign 3 to `a`\n_, b, a = (1, 2, 3)\nprint(a)  # 3"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for useless expressions.",
-    "why-is-this-bad": "Useless expressions have no effect on the program, and are often included\nby mistake. Assign a useless expression to a variable, or remove it\nentirely.",
-    "example": "1 + 1\n\n\n\nUse instead:\n\n\nfoo = 1 + 1",
-    "example-split": {
-        "example-before": "1 + 1\n\n",
-        "example-after": "\nfoo = 1 + 1"
-    }
-}

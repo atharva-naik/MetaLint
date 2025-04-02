@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of functools.lru_cache that set maxsize=None.",
-    "why-is-this-bad": "Since Python 3.9, functools.cache can be used as a drop-in replacement\nfor functools.lru_cache(maxsize=None). When possible, prefer\nfunctools.cache as it is more readable and idiomatic.",
-    "example": "import functools\n\n\n@functools.lru_cache(maxsize=None)\ndef foo(): ...\n\n\n\nUse instead:\n\n\nimport functools\n\n\n@functools.cache\ndef foo(): ...",
-    "example-split": {
-        "example-before": "import functools\n\n\n@functools.lru_cache(maxsize=None)\ndef foo(): ...\n\n",
-        "example-after": "\nimport functools"
-    }
-}

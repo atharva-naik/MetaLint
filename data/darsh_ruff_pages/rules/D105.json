@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for undocumented magic method definitions.",
-    "why-is-this-bad": "Magic methods (methods with names that start and end with double\nunderscores) are used to implement operator overloading and other special\nbehavior. Such methods should be documented via docstrings to\noutline their behavior.\n\n\nGenerally, magic method docstrings should describe the method's behavior,\narguments, side effects, exceptions, return values, and any other\ninformation that may be relevant to the user.\n\n\nIf the codebase adheres to a standard format for method docstrings, follow\nthat format for consistency.",
-    "example": "class Cat(Animal):\n    def __str__(self) -> str:\n        return f\"Cat: {self.name}\"\n\n\ncat = Cat(\"Dusty\")\nprint(cat)  # \"Cat: Dusty\"\n\n\n\nUse instead:\n\n\nclass Cat(Animal):\n    def __str__(self) -> str:\n        \"\"\"Return a string representation of the cat.\"\"\"\n        return f\"Cat: {self.name}\"\n\n\ncat = Cat(\"Dusty\")\nprint(cat)  # \"Cat: Dusty\"",
-    "example-split": {
-        "example-before": "class Cat(Animal):\n    def __str__(self) -> str:\n        return f\"Cat: {self.name}\"\n\n\ncat = Cat(\"Dusty\")\nprint(cat)  # \"Cat: Dusty\"\n\n",
-        "example-after": "\nclass Cat(Animal):\n    def __str__(self) -> str:\n        \"\"\"Return a string representation of the cat.\"\"\"\n        return f\"Cat: {self.name}\""
-    }
-}

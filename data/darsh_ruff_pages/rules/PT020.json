@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for pytest.yield_fixture usage.",
-    "why-is-this-bad": "pytest.yield_fixture is deprecated. pytest.fixture should be used instead.",
-    "example": "import pytest\n\n\n@pytest.yield_fixture()\ndef my_fixture():\n    obj = SomeClass()\n    yield obj\n    obj.cleanup()\n\n\n\nUse instead:\n\n\nimport pytest\n\n\n@pytest.fixture()\ndef my_fixture():\n    obj = SomeClass()\n    yield obj\n    obj.cleanup()",
-    "example-split": {
-        "example-before": "import pytest\n\n\n@pytest.yield_fixture()\ndef my_fixture():\n    obj = SomeClass()\n    yield obj\n    obj.cleanup()\n\n",
-        "example-after": "\nimport pytest"
-    }
-}

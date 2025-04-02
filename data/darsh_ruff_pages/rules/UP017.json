@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of datetime.timezone.utc.",
-    "why-is-this-bad": "As of Python 3.11, datetime.UTC is an alias for datetime.timezone.utc.\nThe alias is more readable and generally preferred over the full path.",
-    "example": "import datetime\n\ndatetime.timezone.utc\n\n\n\nUse instead:\n\n\nimport datetime\n\ndatetime.UTC",
-    "example-split": {
-        "example-before": "import datetime\n\ndatetime.timezone.utc\n\n",
-        "example-after": "\nimport datetime"
-    }
-}

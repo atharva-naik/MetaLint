@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for else blocks that consist of a single if statement.",
-    "why-is-this-bad": "If an else block contains a single if statement, it can be collapsed\ninto an elif, thus reducing the indentation level.",
-    "example": "def check_sign(value: int) -> None:\n    if value > 0:\n        print(\"Number is positive.\")\n    else:\n        if value < 0:\n            print(\"Number is negative.\")\n        else:\n            print(\"Number is zero.\")\n\n\n\nUse instead:\n\n\ndef check_sign(value: int) -> None:\n    if value > 0:\n        print(\"Number is positive.\")\n    elif value < 0:\n        print(\"Number is negative.\")\n    else:\n        print(\"Number is zero.\")",
-    "example-split": {
-        "example-before": "def check_sign(value: int) -> None:\n    if value > 0:\n        print(\"Number is positive.\")\n    else:\n        if value < 0:\n            print(\"Number is negative.\")\n        else:\n            print(\"Number is zero.\")\n\n",
-        "example-after": "\ndef check_sign(value: int) -> None:\n    if value > 0:\n        print(\"Number is positive.\")\n    elif value < 0:\n        print(\"Number is negative.\")\n    else:\n        print(\"Number is zero.\")"
-    }
-}

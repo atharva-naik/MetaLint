@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for common mistakes when using mock objects.",
-    "why-is-this-bad": "The mock module exposes an assertion API that can be used to verify that\nmock objects undergo expected interactions. This rule checks for common\nmistakes when using this API.\n\n\nFor example, it checks for mock attribute accesses that should be replaced\nwith mock method calls.",
-    "example": "my_mock.assert_called\n\n\n\nUse instead:\n\n\nmy_mock.assert_called()",
-    "example-split": {
-        "example-before": "my_mock.assert_called\n\n",
-        "example-after": "\nmy_mock.assert_called()"
-    }
-}

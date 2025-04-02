@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of comparators other than < and >= for\nsys.version_info checks. All other comparators, such\nas >, <=, and ==, are banned.",
-    "why-is-this-bad": "Comparing sys.version_info with == or <= has unexpected behavior\nand can lead to bugs.\n\n\nFor example, sys.version_info > (3, 8, 1) will resolve to True if your\nPython version is 3.8.1; meanwhile, sys.version_info <= (3, 8) will not\nresolve to True if your Python version is 3.8.10:\n\n\n>>> import sys\n>>> print(sys.version_info)\nsys.version_info(major=3, minor=8, micro=10, releaselevel='final', serial=0)\n>>> print(sys.version_info > (3, 8))\nTrue\n>>> print(sys.version_info == (3, 8))\nFalse\n>>> print(sys.version_info <= (3, 8))\nFalse\n>>> print(sys.version_info in (3, 8))\nFalse",
-    "example": "import sys\n\nif sys.version_info > (3, 8): ...\n\n\n\nUse instead:\n\n\nimport sys\n\nif sys.version_info >= (3, 9): ...",
-    "example-split": {
-        "example-before": "import sys\n\nif sys.version_info > (3, 8): ...\n\n",
-        "example-after": "\nimport sys"
-    }
-}

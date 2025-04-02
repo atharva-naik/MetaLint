@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for over-indented code.",
-    "why-is-this-bad": "According to PEP 8, 4 spaces per indentation level should be preferred. Increased\nindentation can lead to inconsistent formatting, which can hurt\nreadability.",
-    "example": "for item in items:\n      pass\n\n\n\nUse instead:\n\n\nfor item in items:\n    pass",
-    "example-split": {
-        "example-before": "for item in items:\n      pass\n\n",
-        "example-after": "\nfor item in items:\n    pass"
-    }
-}

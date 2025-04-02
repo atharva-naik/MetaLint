@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for pytest.fixture calls with scope=\"function\".",
-    "why-is-this-bad": "scope=\"function\" can be omitted, as it is the default.",
-    "example": "import pytest\n\n\n@pytest.fixture(scope=\"function\")\ndef my_fixture(): ...\n\n\n\nUse instead:\n\n\nimport pytest\n\n\n@pytest.fixture()\ndef my_fixture(): ...",
-    "example-split": {
-        "example-before": "import pytest\n\n\n@pytest.fixture(scope=\"function\")\ndef my_fixture(): ...\n\n",
-        "example-after": "\nimport pytest"
-    }
-}

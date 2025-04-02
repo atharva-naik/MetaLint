@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for relative imports.",
-    "why-is-this-bad": "Absolute imports, or relative imports from siblings, are recommended by PEP 8:\n\n\n\nAbsolute imports are recommended, as they are usually more readable and tend to be better behaved...\nimport mypkg.sibling\nfrom mypkg import sibling\nfrom mypkg.sibling import example\n\nHowever, explicit relative imports are an acceptable alternative to absolute imports,\nespecially when dealing with complex package layouts where using absolute imports would be\nunnecessarily verbose:\nfrom . import sibling\nfrom .sibling import example",
-    "example": "from .. import foo\n\n\n\nUse instead:\n\n\nfrom mypkg import foo",
-    "example-split": {
-        "example-before": "from .. import foo\n\n",
-        "example-after": "\nfrom mypkg import foo"
-    }
-}

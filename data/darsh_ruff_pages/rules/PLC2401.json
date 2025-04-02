@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the use of non-ASCII characters in variable names.",
-    "why-is-this-bad": "The use of non-ASCII characters in variable names can cause confusion\nand compatibility issues (see: PEP 672).",
-    "example": "\u00e1pple_count: int\n\n\n\nUse instead:\n\n\napple_count: int",
-    "example-split": {
-        "example-before": "\u00e1pple_count: int\n\n",
-        "example-after": "\napple_count: int"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for missing blank lines after the end of function or class.",
-    "why-is-this-bad": "PEP 8 recommends using blank lines as follows:\n\n\n\nTwo blank lines are expected between functions and classes\nOne blank line is expected between methods of a class.",
-    "example": "class User(object):\n    pass\nuser = User()\n\n\n\nUse instead:\n\n\nclass User(object):\n    pass\n\n\nuser = User()",
-    "example-split": {
-        "example-before": "class User(object):\n    pass\nuser = User()\n\n",
-        "example-after": "\nclass User(object):\n    pass"
-    }
-}

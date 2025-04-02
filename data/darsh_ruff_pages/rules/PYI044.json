@@ -1,4 +1,0 @@
-{
-    "what-it-does": "Checks for the presence of the from __future__ import annotations import\nstatement in stub files.",
-    "why-is-this-bad": "Stub files natively support forward references in all contexts, as stubs are\nnever executed at runtime. (They should be thought of as \"data files\" for\ntype checkers.) As such, the from __future__ import annotations import\nstatement has no effect and should be omitted."
-}

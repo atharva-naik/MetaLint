@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of cryptographically weak pseudo-random number generators.",
-    "why-is-this-bad": "Cryptographically weak pseudo-random number generators are insecure, as they\nare easily predictable. This can allow an attacker to guess the generated\nnumbers and compromise the security of the system.\n\n\nInstead, use a cryptographically secure pseudo-random number generator\n(such as using the secrets module)\nwhen generating random numbers for security purposes.\n\n\nIn preview, this rule will also flag references to these generators.",
-    "example": "import random\n\nrandom.randrange(10)\n\n\n\nUse instead:\n\n\nimport secrets\n\nsecrets.randbelow(10)",
-    "example-split": {
-        "example-before": "import random\n\nrandom.randrange(10)\n\n",
-        "example-after": "\nimport secrets"
-    }
-}

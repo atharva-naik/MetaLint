@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for print statements that use the >> syntax.",
-    "why-is-this-bad": "In Python 2, the print statement can be used with the >> syntax to\nprint to a file-like object. This print >> sys.stderr syntax no\nlonger exists in Python 3, where print is only a function, not a\nstatement.\n\n\nInstead, use the file keyword argument to the print function, the\nsys.stderr.write function, or the logging module.",
-    "example": "from __future__ import print_function\nimport sys\n\nprint >> sys.stderr, \"Hello, world!\"\n\n\n\nUse instead:\n\n\nprint(\"Hello, world!\", file=sys.stderr)\n\n\n\nOr:\n\n\nimport sys\n\nsys.stderr.write(\"Hello, world!\\n\")\n\n\n\nOr:\n\n\nimport logging\n\nlogging.error(\"Hello, world!\")",
-    "example-split": {
-        "example-before": "from __future__ import print_function\nimport sys\n\nprint >> sys.stderr, \"Hello, world!\"\n\n",
-        "example-after": "\nprint(\"Hello, world!\", file=sys.stderr)"
-    }
-}

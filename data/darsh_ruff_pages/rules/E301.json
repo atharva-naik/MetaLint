@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for missing blank lines between methods of a class.",
-    "why-is-this-bad": "PEP 8 recommends exactly one blank line between methods of a class.",
-    "example": "class MyClass(object):\n    def func1():\n        pass\n    def func2():\n        pass\n\n\n\nUse instead:\n\n\nclass MyClass(object):\n    def func1():\n        pass\n\n    def func2():\n        pass",
-    "example-split": {
-        "example-before": "class MyClass(object):\n    def func1():\n        pass\n    def func2():\n        pass\n\n",
-        "example-after": "\nclass MyClass(object):\n    def func1():\n        pass"
-    }
-}

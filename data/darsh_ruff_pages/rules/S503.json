@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for function definitions with default arguments set to insecure SSL\nand TLS protocol versions.",
-    "why-is-this-bad": "Several highly publicized exploitable flaws have been discovered in all\nversions of SSL and early versions of TLS. The following versions are\nconsidered insecure, and should be avoided:\n\n\n\nSSL v2\nSSL v3\nTLS v1\nTLS v1.1",
-    "example": "import ssl\n\n\ndef func(version=ssl.PROTOCOL_TLSv1): ...\n\n\n\nUse instead:\n\n\nimport ssl\n\n\ndef func(version=ssl.PROTOCOL_TLSv1_2): ...",
-    "example-split": {
-        "example-before": "import ssl\n\n\ndef func(version=ssl.PROTOCOL_TLSv1): ...\n\n",
-        "example-after": "\nimport ssl"
-    }
-}

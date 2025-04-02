@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for an empty type-checking block.",
-    "why-is-this-bad": "The type-checking block does not do anything and should be removed to avoid\nconfusion.",
-    "example": "from typing import TYPE_CHECKING\n\nif TYPE_CHECKING:\n    pass\n\nprint(\"Hello, world!\")\n\n\n\nUse instead:\n\n\nprint(\"Hello, world!\")",
-    "example-split": {
-        "example-before": "from typing import TYPE_CHECKING\n\nif TYPE_CHECKING:\n    pass\n\nprint(\"Hello, world!\")\n\n",
-        "example-after": "\nprint(\"Hello, world!\")"
-    }
-}

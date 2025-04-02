@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for whitespace before a shebang directive.",
-    "why-is-this-bad": "In Python, a shebang (also known as a hashbang) is the first line of a\nscript, which specifies the interpreter that should be used to run the\nscript.\n\n\nThe shebang's #! prefix must be the first two characters of a file. The\npresence of whitespace before the shebang will cause the shebang to be\nignored, which is likely a mistake.",
-    "example": " #!/usr/bin/env python3\n\n\n\nUse instead:\n\n\n#!/usr/bin/env python3",
-    "example-split": {
-        "example-before": " #!/usr/bin/env python3\n\n",
-        "example-after": "\n#!/usr/bin/env python3"
-    }
-}

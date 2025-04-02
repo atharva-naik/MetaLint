@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for pytest.warns calls without an expected warning.",
-    "why-is-this-bad": "pytest.warns expects to receive an expected warning as its first\nargument. If omitted, the pytest.warns call will fail at runtime.",
-    "example": "import pytest\n\n\ndef test_foo():\n    with pytest.warns():\n        do_something()\n\n\n\nUse instead:\n\n\nimport pytest\n\n\ndef test_foo():\n    with pytest.warns(SomeWarning):\n        do_something()",
-    "example-split": {
-        "example-before": "import pytest\n\n\ndef test_foo():\n    with pytest.warns():\n        do_something()\n\n",
-        "example-after": "\nimport pytest"
-    }
-}

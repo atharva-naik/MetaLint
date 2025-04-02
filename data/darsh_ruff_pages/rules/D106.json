@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for undocumented public class definitions, for nested classes.",
-    "why-is-this-bad": "Public classes should be documented via docstrings to outline their\npurpose and behavior.\n\n\nNested classes do not inherit the docstring of their enclosing class, so\nthey should have their own docstrings.\n\n\nIf the codebase adheres to a standard format for class docstrings, follow\nthat format for consistency.",
-    "example": "class Foo:\n    \"\"\"Class Foo.\"\"\"\n\n    class Bar: ...\n\n\nbar = Foo.Bar()\nbar.__doc__  # None\n\n\n\nUse instead:\n\n\nclass Foo:\n    \"\"\"Class Foo.\"\"\"\n\n    class Bar:\n        \"\"\"Class Bar.\"\"\"\n\n\nbar = Foo.Bar()\nbar.__doc__  # \"Class Bar.\"",
-    "example-split": {
-        "example-before": "class Foo:\n    \"\"\"Class Foo.\"\"\"\n\n    class Bar: ...\n\n\nbar = Foo.Bar()\nbar.__doc__  # None\n\n",
-        "example-after": "\nclass Foo:\n    \"\"\"Class Foo.\"\"\""
-    }
-}

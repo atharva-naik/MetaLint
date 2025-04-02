@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for pytest.raises calls without a match parameter.",
-    "why-is-this-bad": "pytest.raises(Error) will catch any Error and may catch errors that are\nunrelated to the code under test. To avoid this, pytest.raises should be\ncalled with a match parameter. The exception names that require a match\nparameter can be configured via the\nlint.flake8-pytest-style.raises-require-match-for and\nlint.flake8-pytest-style.raises-extend-require-match-for settings.",
-    "example": "import pytest\n\n\ndef test_foo():\n    with pytest.raises(ValueError):\n        ...\n\n    # empty string is also an error\n    with pytest.raises(ValueError, match=\"\"):\n        ...\n\n\n\nUse instead:\n\n\nimport pytest\n\n\ndef test_foo():\n    with pytest.raises(ValueError, match=\"expected message\"):\n        ...",
-    "example-split": {
-        "example-before": "import pytest\n\n\ndef test_foo():\n    with pytest.raises(ValueError):\n        ...\n\n    # empty string is also an error\n    with pytest.raises(ValueError, match=\"\"):\n        ...\n\n",
-        "example-after": "\nimport pytest"
-    }
-}

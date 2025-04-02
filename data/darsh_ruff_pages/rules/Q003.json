@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for strings that include escaped quotes, and suggests changing\nthe quote style to avoid the need to escape them.",
-    "why-is-this-bad": "It's preferable to avoid escaped quotes in strings. By changing the\nouter quote style, you can avoid escaping inner quotes.",
-    "example": "foo = 'bar\\'s'\n\n\n\nUse instead:\n\n\nfoo = \"bar's\"",
-    "example-split": {
-        "example-before": "foo = 'bar\\'s'\n\n",
-        "example-after": "\nfoo = \"bar's\""
-    }
-}

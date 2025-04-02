@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for import bindings that are shadowed by loop variables.",
-    "why-is-this-bad": "Shadowing an import with loop variables makes the code harder to read and\nreason about, as the identify of the imported binding is no longer clear.\nIt's also often indicative of a mistake, as it's unlikely that the loop\nvariable is intended to be used as the imported binding.\n\n\nConsider using a different name for the loop variable.",
-    "example": "from os import path\n\nfor path in files:\n    print(path)\n\n\n\nUse instead:\n\n\nfrom os import path\n\n\nfor filename in files:\n    print(filename)",
-    "example-split": {
-        "example-before": "from os import path\n\nfor path in files:\n    print(path)\n\n",
-        "example-after": "\nfrom os import path"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the use of unnamed numerical constants (\"magic\") values in\ncomparisons.",
-    "why-is-this-bad": "The use of \"magic\" values can make code harder to read and maintain, as\nreaders will have to infer the meaning of the value from the context.\nSuch values are discouraged by PEP 8.\n\n\nFor convenience, this rule excludes a variety of common values from the\n\"magic\" value definition, such as 0, 1, \"\", and \"__main__\".",
-    "example": "def apply_discount(price: float) -> float:\n    if price <= 100:\n        return price / 2\n    else:\n        return price\n\n\n\nUse instead:\n\n\nMAX_DISCOUNT = 100\n\n\ndef apply_discount(price: float) -> float:\n    if price <= MAX_DISCOUNT:\n        return price / 2\n    else:\n        return price",
-    "example-split": {
-        "example-before": "def apply_discount(price: float) -> float:\n    if price <= 100:\n        return price / 2\n    else:\n        return price\n\n",
-        "example-after": "\nMAX_DISCOUNT = 100"
-    }
-}

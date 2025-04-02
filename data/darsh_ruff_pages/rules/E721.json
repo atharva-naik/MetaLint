@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for object type comparisons using == and other comparison\noperators.",
-    "why-is-this-bad": "Unlike a direct type comparison, isinstance will also check if an object\nis an instance of a class or a subclass thereof.\n\n\nIf you want to check for an exact type match, use is or is not.",
-    "example": "if type(obj) == type(1):\n    pass\n\nif type(obj) == int:\n    pass\n\n\n\nUse instead:\n\n\nif isinstance(obj, int):\n    pass",
-    "example-split": {
-        "example-before": "if type(obj) == type(1):\n    pass\n\nif type(obj) == int:\n    pass\n\n",
-        "example-after": "\nif isinstance(obj, int):\n    pass"
-    }
-}
