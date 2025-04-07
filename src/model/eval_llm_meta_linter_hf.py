@@ -14,6 +14,7 @@ from src.datautils import read_jsonl
 def get_args():
     parser = argparse.ArgumentParser(description="Run inference with different settings.")
     parser.add_argument("--cot", action="store_true", help="Run inference with Chain-of-Thought (CoT) prompting.")
+    parser.add_argument("--subtask_cot", action="store_true", help="Run inference with Chain-of-Thought (CoT) prompting.")
     parser.add_argument("--lineno", action="store_true", help="Include line numbers in the code prompt during inference.")
     parser.add_argument("--step", type=int, default=2000, help="Number of training steps the model has undergone (default: 2000).")
     
@@ -24,10 +25,14 @@ if __name__ == "__main__":
     train_steps = args.step
     cot = args.cot
     lineno = args.lineno
+    subtask_cot = args.subtask_cot
     # model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-v2-data/checkpoint-{train_steps}"
     if cot == True: 
         write_path = f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{train_steps}_transfer_v4_cot.jsonl"
         model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-cot/checkpoint-{train_steps}"
+    elif subtask_cot:
+        write_path = f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{train_steps}_transfer_v4_subtask_cot.jsonl"
+        model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-subtask-cot/checkpoint-{train_steps}"
     elif lineno:
         write_path = f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{train_steps}_transfer_v4_lineno.jsonl"
         model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-lineno/checkpoint-{train_steps}"        
@@ -80,7 +85,7 @@ if __name__ == "__main__":
 
         generated_ids = model.generate(
             **model_inputs,
-            max_new_tokens=1024,
+            max_new_tokens=2048,
         )
         generated_ids = [
             output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
