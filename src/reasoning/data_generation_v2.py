@@ -35,15 +35,26 @@ Code file:
 
 Now I'm going to give you the ground truth violations per idiom.
 
+### Ground Truth Idiom Violations:
+
 {IDIOM_VIOLATIONS}
 
 Below are the code constructs you need to look at to detect them
 
-Code Constructs:
+### Code Constructs:
 
 {CODE_CONSTRUCTS_FOR_META_TASK}
 
+Given these code constructs, do a top to bottom analysis of the file looking at only the relevant code constructs mentioned in "### Code Comstructs" and arrive at the same violations as the ones given in "### Ground Truth Idiom Violations:". However do not make any reference to ground truth and pretend like you came up with these results on your own. Also try to brief and do not repeat the code file in your analysis only mention relevant lines with line numbers.
+
 Step by step analysis:"""
+
+def add_line_no_to_stack_file(stack_file: str):
+    stack_file_with_lineno = []
+    for lineno, line in enumerate(stack_file.split("\n")):
+        stack_file_with_lineno.append(f"{str(lineno+1).rjust(3)} {line}")
+
+    return "\n".join(stack_file_with_lineno)
 
 def generate_code_construct_for_meta_task_cot_prompts(sft_data, code_idiom_specs: dict) -> list[str]:
     code_construct_cot_gen_prompts = defaultdict(lambda: set())
@@ -114,7 +125,7 @@ def generate_idiom_det_and_loc_cot_prompts(sft_data, stack_data: dict, code_idio
         idiom_codes_list = [code.strip() for code in rec["source"].split("/")[-1].split("-")]
 
         # get code file, list of idiom specs and idiom violations.
-        CODE_FILE = stack_data[blob_id]["content"]
+        CODE_FILE = add_line_no_to_stack_file(stack_data[blob_id]["content"])
         
         LIST_OF_IDIOM_SPECS = "\n\n".join([idiom_spec_extractor_for_ruff(code_idiom_specs[idiom_code]) for idiom_code in idiom_codes_list])
         
@@ -133,30 +144,43 @@ def generate_idiom_det_and_loc_cot_prompts(sft_data, stack_data: dict, code_idio
         
     return cot_gen_prompts
 
-def generate_cots(prompts: list[str], task: str, model: str="gpt-4o-mini"):
+def generate_cots(prompts: list[str], task: str, model: str="gpt-4o-mini", start_point=0):
     encoder = tiktoken.encoding_for_model(model)
-    cache_path = f"./data/ruff_meta_linting/cot_gen/{model}-{task}-cot-gen-cache.jsonl"
+    cache_path = f"./data/ruff_meta_linting/cot_gen/{model}-{task}-cot-gen-cache_start_{start_point}.jsonl"
     print(cache_path)
     if os.path.exists(cache_path):
         cache = {rec["id"]: rec for rec in read_jsonl(cache_path)}
     else: cache = {}
     break_ctr = 0
-    pbar = tqdm(prompts, desc="getting ChatGPT CoT")
-    for rec in pbar:
+    pbar = tqdm(
+        enumerate(prompts), 
+        total=len(prompts), 
+        desc="getting ChatGPT CoT"
+    )
+    for ii,rec in pbar:
+        if ii < start_point: continue
         if rec["id"] in cache: 
             break_ctr += 1
             continue
-        pbar.set_description(f"getting CoTs ({break_ctr}/2000)")
+        pbar.set_description(f"CoTs obtained for ({break_ctr})")
         prompt = rec["prompt"]
         tokens = encoder.encode(prompt, disallowed_special=())
-        if len(tokens)>2488: continue # 3000-512
+        if len(tokens)>2400: continue # 3000-600
         # print(prompt)
-        response = client.chat.completions.create(
-            model=model,
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=512
-        )
-        response = response.choices[0].message.content
+        if model == "o3-mini":
+            response = client.chat.completions.create(
+                model=model,
+                messages=[{"role": "user", "content": prompt}],
+                max_completion_tokens=3000
+            )
+            response = response.choices[0].message.content
+        else:
+            response = client.chat.completions.create(
+                model=model,
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=512
+            )
+            response = response.choices[0].message.content
 
         with open(cache_path, "a") as f:
             write_rec = {}
@@ -164,7 +188,7 @@ def generate_cots(prompts: list[str], task: str, model: str="gpt-4o-mini"):
             write_rec["response"] = response
             f.write(json.dumps(write_rec)+"\n")
             break_ctr += 1
-        if break_ctr >= 40000: break
+        if break_ctr >= 1000000: break
 
 # main
 if __name__ == "__main__":
@@ -188,9 +212,13 @@ if __name__ == "__main__":
     # with open("./data/ruff_meta_linting/cot_gen/code_construct_cots_for_meta_tasks.json", "w") as f:
     #     json.dump(code_construct_cot_gen_cots, f, indent=4)
     
-    code_construct_cots = {rec["id"]: rec for rec in read_jsonl("data/ruff_meta_linting/cot_gen/gpt-4o-code_construct-cot-gen-cache.jsonl")}
-    sft_train_data = json.load(open("./data/ruff_meta_linting/train_v4.json"))
-    code_idiom_specs = load_ruff_idiom_specs("./data/ruff_pages")
-    stack_data = load_stack_dump("./data/STACK-V2", as_dict=True)
+    # code_construct_cots = {rec["id"]: rec["response"] for rec in read_jsonl("data/ruff_meta_linting/cot_gen/gpt-4o-code_construct-cot-gen-cache.jsonl")}
+    # sft_train_data = json.load(open("./data/ruff_meta_linting/train_v4_new_format_with_lineno.json"))
+    # code_idiom_specs = load_ruff_idiom_specs("./data/ruff_pages")
+    # stack_data = load_stack_dump("./data/STACK-V2", as_dict=True)
     
-    generate_idiom_det_and_loc_cot_prompts(sft_train_data, stack_data, code_idiom_specs, code_construct_cots, "./data/ruff_meta_linting/cot_gen/train_v4_cot_v2.jsonl")
+    # generate_idiom_det_and_loc_cot_prompts(sft_train_data, stack_data, code_idiom_specs, code_construct_cots, "./data/ruff_meta_linting/cot_gen/train_v4_cot_v2.jsonl")
+    
+    start_point = int(sys.argv[1])
+    prompts = read_jsonl("./data/ruff_meta_linting/cot_gen/train_v4_cot_v2.jsonl")
+    generate_cots(prompts, task="loc_and_det_cot", model="gpt-4o-mini", start_point=start_point)
