@@ -1,0 +1,16 @@
+{
+    "blob_id": "pep_557_0",
+    "violations": [
+        {
+            "start_lineno": 1,
+            "end_lineno": 7,
+            "pep": "557",
+            "line": "class Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n\n    def __repr__(self):\n        return f\"Point(x={self.x}, y={self.y})\" ",
+            "span": "Point",
+            "fix": {
+                "before": "class Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n\n    def __repr__(self):\n        return f\"Point(x={self.x}, y={self.y})\" ",
+                "after": "from dataclasses import dataclass\n\n@dataclass\nclass Point:\n    x: int\n    y: int"
+            }
+        }
+    ]
+}
