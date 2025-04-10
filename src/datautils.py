@@ -333,6 +333,30 @@ Code file:
 Violations per idiom:
 """
 
+META_LINTING_PROMPT_ZERO_SHOT = """Look at the following list of code idiom specifications with definitions and examples:
+{LIST_OF_IDIOM_SPECS}
+
+Given these idioms, your task is to look at a code file and detect violations of the above idioms, and flag them like a linter. You should also suggest a fix if possible. Report the results per idiom specification mentioned above and just say 'NO VIOLATIONS FOUND' if no violations are found for a given idiom. Do not detect any idioms not specified above.
+
+Code file:
+{CODE_FILE}
+
+Your output should follow the format below and should be enclosed in a section called "### Final Idiom Violations:". For idioms where violations are found you should have a JSON on a new line per vioaltion. For idioms where violations are not found you should have the text "NO VIOLATIONS FOUND". Look at the partiale example output below.
+
+### Final Idiom Violations:
+**Idiom 506 Violations:**
+
+{"line": "  7     password =  "".join(random.choice(characters) for x in range(16))", "span": "random", "fix": null}
+{"line": "  8     password =  "".join(random.choice(characters) for x in range(16))", "span": "random", "fix": null}
+
+**Idiom 557 Violations:**
+
+NO VIOLATIONS FOUND
+....
+
+Now provide the violations per idiom for the given code file:
+"""
+
 def generate_response_from_violations(violations, stack_file_lines: list[str], meta_task_idiom_codes, include_message: bool=False, add_line_numbers: bool=False):
     filt_violations = [violation for violation in violations if violation['code'] in meta_task_idiom_codes if code not in ["ANN001", "ANN201"]]
     grouped_violations = {code: [] for code in meta_task_idiom_codes if code not in ["ANN001", "ANN201"]}

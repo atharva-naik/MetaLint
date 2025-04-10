@@ -14,32 +14,49 @@ sys.path.append(module_path)
 from src.datautils import read_jsonl
 
 # vLLM server details
-VLLM_SERVER_URL = "http://localhost:8001/v1/chat/completions"
+VLLM_SERVER_URL = "http://0.0.0.0:8001/v1/chat/completions"
 MAX_RETRIES = 5
+MAX_SEQ_LEN = 32768
+MAX_NEW_TOKENS = 2048
 
 def get_args():
     parser = argparse.ArgumentParser(description="Run inference with different settings.")
-    parser.add_argument("--cot", action="store_true", help="Run inference with Chain-of-Thought (CoT) prompting.")
-    parser.add_argument("--subtask_cot", action="store_true", help="Run inference with Chain-of-Thought (CoT) prompting.")
+    # parser.add_argument("--cot", action="store_true", help="Run inference with Chain-of-Thought (CoT) prompting.")
+    # parser.add_argument("--subtask_cot", action="store_true", help="Run inference with Chain-of-Thought (CoT) prompting.")
     parser.add_argument("--lineno", action="store_true", help="Include line numbers in the code prompt during inference.")
-    parser.add_argument("--step", type=int, default=2000, help="Number of training steps the model has undergone (default: 2000).")
+    parser.add_argument("--model_name", type=str, required=True, help="which model is to be queried")
+    parser.add_argument("--write_path", type=str, required=True, help="name of the file where predictions should be written")
+    # parser.add_argument("--step", type=int, default=2000, help="Number of training steps the model has undergone (default: 2000).")
     
     return parser.parse_args()
+
+from openai import OpenAI
+
+# client = OpenAI(
+#     base_url="http://localhost:8001/v1",  # Use your vLLM server port
+#     api_key="not-needed",  # Required by SDK, even if unused
+# )
+
+# response = client.chat.completions.create(
+#     model="Qwen2.5Coder-3B",  # Use whatever name vLLM logs as loaded
+#     messages=[{"role": "user", "content": "Write a Python function to sort a list"}],
+#     temperature=0.7,
+# )
 
 async def generate_response(rec: dict, model_name: str):
     """ Sends a request to vLLM for generating a response """
     user_prompt = rec['messages'][0]['content']
     gt_response = rec['messages'][1]['content']
     # truncate extremely long user prompts.
-    if len(user_prompt) > 800000:
-        user_prompt = rec['messages'][0]['content'][:100000]+rec['messages'][0]['content'][-100000:]
+    if len(user_prompt) > MAX_SEQ_LEN - MAX_NEW_TOKENS:
+        user_prompt = rec['messages'][0]['content'][:15000]+rec['messages'][0]['content'][-15000:]
     messages = [
         {"role": "user", "content": user_prompt}
     ]
     payload = {
         "model": model_name,
         "messages": messages,
-        "max_tokens": 2048,
+        "max_tokens": MAX_NEW_TOKENS,
     }
 
     for _ in range(MAX_RETRIES):
@@ -56,6 +73,7 @@ async def generate_response(rec: dict, model_name: str):
             }
             break
         except Exception as e:
+            print(response)
             print(e)
             exit()
             return {
@@ -113,23 +131,34 @@ async def process_records(pbar, model_name: str, skip_index_till: int=-1):
 
 if __name__ == "__main__":
     args = get_args()
-    train_steps = args.step
-    cot = args.cot
+    # train_steps = args.step
+    # cot = args.cot
     lineno = args.lineno
-    subtask_cot = args.subtask_cot
+    # subtask_cot = args.subtask_cot
     # model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-v2-data/checkpoint-{train_steps}"
-    if cot == True: 
-        write_path = f"./data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{train_steps}_transfer_v4_cot.jsonl"
-        model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-cot/checkpoint-{train_steps}"
-    elif subtask_cot:
-        write_path = f"./data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{train_steps}_transfer_v4_subtask_cot.jsonl"
-        model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-subtask-cot/checkpoint-{train_steps}"
-    elif lineno:
-        write_path = f"./data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{train_steps}_transfer_v4_lineno.jsonl"
-        model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-lineno/checkpoint-{train_steps}"        
-    else: 
-        write_path = f"./data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{train_steps}_transfer_v4.jsonl"
-        model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4/checkpoint-{train_steps}"
+    
+    # if cot == True: 
+    #     write_path = f"./data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{train_steps}_transfer_v4_cot.jsonl"
+    #     model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-cot/checkpoint-{train_steps}/"
+    # elif subtask_cot:
+    #     write_path = f"./data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{train_steps}_transfer_v4_subtask_cot.jsonl"
+    #     model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-subtask-cot/checkpoint-{train_steps}/"
+    # elif lineno:
+    #     write_path = f"./data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{train_steps}_transfer_v4_lineno.jsonl"
+    #     model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-lineno/checkpoint-{train_steps}/"        
+    # else: 
+    #     write_path = f"./data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{train_steps}_transfer_v4.jsonl"
+    #     model_name = f"alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4/checkpoint-{train_steps}/"
+
+    # subtask-cot-v2-lite
+    # model_name: "alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-subtask-cot-v2-lite/"
+    # write_path: "./data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_500_transfer_v4_subtask_cot_v2_lite.jsonl"
+
+    model_name = args.model_name
+    write_path = args.write_path
+    
+    # model_name = "alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-subtask-cot/checkpoint-2000/"
+
     #"Qwen/Qwen2.5-7B-Instruct-1M"
     # model = AutoModelForCausalLM.from_pretrained(
     #     model_name, torch_dtype="auto",
@@ -138,11 +167,13 @@ if __name__ == "__main__":
     # tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     # test_data = json.load(open("data/ruff_meta_linting/test_v3.json"))
+    
+    ### Load test data.
     if lineno: test_data = json.load(open("data/ruff_meta_linting/test_v4_new_format_with_lineno.json"))
     else: test_data = json.load(open("data/ruff_meta_linting/test_v4.json"))
     # test_data = json.load(open("data/ruff_meta_linting/hardness_experiment/test.json"))
+
     model_preds = []
-    
     skip_index_till: int = -1
     if not os.path.exists(write_path):
         f = open(write_path, "w")

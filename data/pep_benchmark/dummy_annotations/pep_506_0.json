@@ -1,0 +1,18 @@
+{
+    "blob_id": "pep_506_0",
+    "violations": [
+        {
+            "start_lineno": 8,
+            "end_lineno": 8,
+            "pep": "506",
+            "line": "password =  \"\".join(random.choice(characters) for x in range(16))",
+            "span": "random.choice",
+            "fix": [
+                {
+                    "before": "random.choice",
+                    "after": "secrets.choice"
+                }
+            ]
+        }
+    ]
+}

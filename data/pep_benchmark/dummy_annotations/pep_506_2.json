@@ -1,0 +1,13 @@
+{
+    "blob_id": "pep_506_2",
+    "violations": [
+        {
+            "start_lineno": 7,
+            "end_lineno": 7,
+            "pep": "506",
+            "line": "password = ''.join(random.sample(characters, length))",
+            "span": "random.sample",
+            "fix": null
+        }
+    ]
+}

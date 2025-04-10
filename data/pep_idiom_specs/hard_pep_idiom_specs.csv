@@ -1,0 +1,455 @@
+code,name,what-it-does,why-is-this-bad,example,
+506,use-of-random-module-for-secrets,"Checks for usage of the random module in unsafe scenarios like password generation or secrets, such as account authentication, tokens, and similar.","The pseudo-random generators in the random module should NOT be used for security purposes as it is cryptographically insecure. The secrets module should be used to reliably generate cryptographically strong pseudo-random values suitable for managing secrets, such as account authentication, tokens, and similar.","characters = string.ascii_letters + string.punctuation  + string.digits
+password =  """".join(random.choice(characters) for x in range(16))
+
+Use instead:
+
+characters = string.ascii_letters + string.punctuation  + string.digits
+password =  """".join(secrets.choice(characters) for x in range(16))",
+557,dataclasses-not-used,Checks for cases where dataclasses can be used to simplify a custom class code,Creation of a custom class for a scenario that can be handled by dataclasses leads to unecessary duplication of code negatively affecting maintainability.,"class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __repr__(self):
+        return f""Point(x={self.x}, y={self.y})""
+
+Use instead:
+
+from dataclasses import dataclass
+
+@dataclass
+class Point:
+    x: int
+    y: int",
+655,use-requirement-markings-for-typed-dict,Checks for cases where required or not required markings can be used to simplify TypedDict classes.,Creation of multiple subclasses to accomodate optional keys in TypedDict with a base class containing required keys leads to inefficient design and duplicated code that negatively impacts maintainability.,"class _MovieBase(TypedDict):  # implicitly total=True
+    title: str
+
+class Movie(_MovieBase, total=False):
+    year: int
+
+Use instead:
+
+class Movie(TypedDict):
+    title: str
+    year: NotRequired[int]",
+634,use-structural-pattern-matching,Checks for cases where structural pattern matching can be used to simplify branching.,Having a complex if-else branching structure can lead to inefficient and unreadable code. Replacing it with an equivalent structural pattern matching or switch-case style structure can lead to more readable and efficient branching code.,"def handle_response(response):
+    if isinstance(response, dict):
+        if ""error"" in response:
+            print(f""Error: {response['error']}"")
+        elif ""data"" in response:
+            print(f""Data: {response['data']}"")
+        else:
+            print(""Unknown response format"")
+    elif isinstance(response, list):
+        print(""List of items:"", response)
+    else:
+        print(""Invalid response type"")
+
+Use instead:
+
+def handle_response(response):
+    match response:
+        case {""error"": error_message}:
+            print(f""Error: {error_message}"")
+        case {""data"": data_content}:
+            print(f""Data: {data_content}"")
+        case list(items):
+            print(""List of items:"", items)
+        case _:
+            print(""Invalid response type"")",
+614,Relaxed Decorator Grammar,"Allows arbitrary expressions in decorator syntax, not just names, attribute references, or calls","temporary function or variable to use complex expressions as decorators, make code more verbose","def create_decorator(condition):
+    return decorator_a if condition else decorator_b
+decorator = create_decorator(some_condition)
+
+@decorator
+def func():
+    pass
+
+Use instead:
+
+@(decorator_a if some_condition else decorator_b)
+def func():
+    pass
+
+
+OR
+
+@lambda func: timed(threshold=0.5)(func)
+def heavy_calculation():
+
+Use instead
+
+ime_check = lambda func: timed(threshold=0.5)(func)
+@time_check
+def heavy_calculation():",
+616,String Prefix/Suffix Removal,Replaces manual slicing with dedicated methods,Manual slicing patterns are error-prone and obscure intent,"if s.startswith(prefix): s = s[len(prefix):]
+
+Use instead:
+
+s = s.removeprefix(prefix)
+
+OR
+
+s[:-len(suffix)]
+
+Use instead:
+
+s.removesuffix(suffix)",
+584,Dictionary Union Operator,"Introduces | and |= operators for a more concise and intuitive syntax that mirrors set operations, providing a consistent and clear way to merge dictionaries.","Using dictionary unpacking ({**dict1, **dict2}), is verbose and creates a new dictionary each time, whereas using dict.update() modifies a dictionary in-place and returns None. Both methods pos challenges for readability and functional programming practices. ","d1 = {'a': 1, 'b': 2}
+d2 = {'c': 3, 'd': 4}
+merged = d1.copy()  
+merged.update(d2)
+d1 = {'a': 1, 'b': 2}
+d2 = {'c': 3, 'd': 4}
+merged = {**d1, **d2}
+d1 = {'a': 1, 'b': 2}
+d2 = {'c': 3, 'd': 4}
+merged = dict(list(d1.items()) + list(d2.items()))
+
+Use instead:
+
+d1 = {'a': 1, 'b': 2}
+d2 = {'c': 3, 'd': 4}
+merged = d1 | d2
+
+d1 = {'a': 1, 'b': 2}
+d2 = {'c': 3, 'd': 4}
+d1 |= d2  # d1 is now {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+
+
+
+
+",
+593,Type Metadata Annotation,"Allows adding context-specific metadata to type annotations without affecting the runtime type checker behavior, while Annotated provides a more structured way to include metadata, it doesn't automatically replace all comment-based annotations.","Manual metadata tracking via comments/custom classes and using custom container types or comment-based approaches for additional type metadata makes code harder to understand and maintain, is error-prone and couldn't capture complex metadata structures effectively","# Using comments or custom attributes for metadata
+from typing import List
+
+def process_data(data: List[int]):
+    
+    pass
+
+Use instead:
+
+from typing import Annotated, List
+
+def process_data(data: List[Annotated[int, ""non-negative""]]):
+    pass
+",
+570,Positional-Only Args,"Enforces API clarity with / syntax: positional-only enforcement restricts parameters to positional use only, aligning with Python’s built-in functions (e.g., len(obj) cannot be called as len(obj=...)), improving stability, and clarifying design intent.","Without the / syntax, users can call the function with keyword arguments (e.g., parse(format=""json"", data={...})), violating the intended parameter-order semantics. This allows mixed positional/keyword parameter usage, which creates API unpredictability and maintenance risks.","def compute_area(width, height):
+    return width * height
+
+area = compute_area(width=5, height=10)
+print(""Area:"", area)
+
+Use instead:
+
+def compute_area(width, height, /):
+    return width * height
+
+area = compute_area(5, 10)
+print(""Area:"", area)",
+567,Context-Aware Variables,"introduces context variables that allow managing context-local state in a way that works well with asynchronous code, replacing or supplementing thread-local storage.","thread-local state does not propagate correctly across asynchronous tasks, leading to unexpected behavior and bugs. Violations occur when code continues to use thread-local variables instead of leveraging context variables,","import threading
+
+_thread_local = threading.local()
+
+def set_context(value):
+    _thread_local.value = value
+
+def get_context():
+    return getattr(_thread_local, 'value', None)
+
+Use instead:
+
+# With PEP567: Using ContextVar for proper context-local state in asynchronous environments
+from contextvars import ContextVar
+
+context_var = ContextVar('value')
+
+def set_context(value):
+    context_var.set(value)
+
+def get_context():
+    return context_var.get()
+",
+530,Async Comprehension Optimization,Detects manual async loops that could be replaced with async for comprehensions,"Manual async loops using async for with append() obscure intent, create performance overhead by generating intermediate objects, risk improper await handling, and bypass Python 3.6+ async iterator protocols.","result = []
+async for i in aiter():
+if i % 2:
+result.append(i)
+
+Use instead:
+
+result = [i async for i in aiter() if i % 2]",
+525,Async Generator Opportunity,"Introduces asynchronous generator functions so that asynchronous iteration can be written using ""async for"" syntax.","asynchronous iteration was forced to use synchronous generators or manual event loop management. This led to verbose, error-prone code that was hard to read and maintain. Developers had to implement complex workarounds, which not only cluttered the codebase but also introduced subtle bugs and inefficiencies.","class Ticker:
+    """"""Yield numbers from 0 to `to` every `delay` seconds.""""""
+
+    def __init__(self, delay, to):
+        self.delay = delay
+        self.i = 0
+        self.to = to
+
+    def __aiter__(self):
+        return self
+
+    async def __anext__(self):
+        i = self.i
+        if i >= self.to:
+            raise StopAsyncIteration
+        self.i += 1
+        if i:
+            await asyncio.sleep(self.delay)
+        return i
+
+Use instead:
+
+async def ticker(delay, to):
+    """"""Yield numbers from 0 to `to` every `delay` seconds.""""""
+    for i in range(to):
+        yield i
+        await asyncio.sleep(delay)
+",
+520,Preserving Class Attribute Definition Order,Automatically preserves the order in which class attributes are defined and exposes that order via __definition_order__.,"Although the presence of __definition_order__ is easily detected, violations occur when developers ignore it—manually reordering or sorting attributes instead of using the natural definition order. Detecting such “missed opportunities” requires semantic reasoning beyond AST analysis.","class Person:
+name = ""Alice"" 
+age = 30
+city = ""Wonderland""
+
+def display_attributes(self):
+# Manually sorting keys (inefficient and obscures intended order)
+for key in sorted(self.__class__.__dict__.keys()):
+    if not key.startswith(""__""):
+          print(key, getattr(self, key))
+
+Use instead:
+
+class Person:
+name = ""Alice""
+age = 30
+city = ""Wonderland""
+
+def display_attributes(self):
+# Directly iterate over the preserved definition order
+for key in self.__class__.__definition_order__:
+    print(key, getattr(self, key))",
+498,f-string literals,Introduces a more concise and readable way to embed expressions inside string literals,"Using older string formatting methods creates more verbose, error-prone, and less readable code","name = ""Alice""
+age = 30
+greeting = ""Hello, "" + name + ""! You are "" + str(age) + "" years old.""
+
+Use instead:
+
+name = ""Alice""
+age = 30
+greeting = f""Hello, {name}! You are {age} years old.""
+
+OR
+
+value = 12.3456
+formatted = ""The value is {:.2f}"".format(value)
+
+Use instead:
+
+value = 12.3456
+formatted = f""The value is {value:.2f}""",
+487,simpler sub class creation customization,"Introduces ""__init_subclass__"" and descriptor ""__set_name__"" to simplify class customization without metaclasses",Using metaclasses for simple customization tasks makes code unnecessarily complex and harder to maintain,"class Meta(type):
+    def __new__(meta, name, bases, namespace):
+        for key, value in namespace.items():
+            if isinstance(value, Descriptor):
+                value.name = key
+        return super().__new__(meta, name, bases, namespace)
+
+class MyClass(metaclass=Meta):
+    attr = Descriptor()
+
+Use instead:
+
+class Descriptor:
+    def __set_name__(self, owner, name):
+        self.name = name
+
+class MyClass:
+    attr = Descriptor()
+
+OR
+
+class PluginBase(type):
+    plugins = {}
+
+    def __new__(meta, name, bases, namespace):
+        if name != 'Plugin':
+            meta.plugins[name] = namespace['priority']
+        return super().__new__(meta, name, bases, namespace)
+
+class Plugin(metaclass=PluginBase):
+    priority = 0
+
+class HighPriority(Plugin):
+    priority = 10
+
+
+Use instead:
+
+class Plugin:
+    plugins = {}
+    priority = 0
+
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        cls.plugins[cls.__name__] = cls.priority
+
+class HighPriority(Plugin):
+    priority = 10
+
+
+",
+526,Variable Annotations,Introduces a syntax for annotating variables with type hints,Using comments or docstrings for type information creates inconsistency with function annotations and makes it harder for static analyzers to work properly,"# type: List[int]
+numbers = []
+
+Use instead:
+
+numbers: List[int] = []
+
+OR
+
+class Player:
+# type: str<br>    name = ""Guest""
+
+Use instead:
+
+class Player:
+    name: str = ""Guest""",
+589,TypedDict: Type Hints for Dictionaries with a Fixed Set of Keys,"Introduces TypedDict, a typing construct that allows you to define dictionaries with a fixed set of keys, each having a specific value type. This lets type checkers validate that the right keys and value types are used in dictionary-like data structures, commonly used for structured data like JSON.","Without TypedDict, the only way to type hint such structured dictionaries is by using overly general types like Dict[str, Any] or Dict[str, Union[str, int]], which fail to catch mistakes such as missing required keys, invalid extra keys, or mismatched value types. This lack of precision leads to weaker static type checking and can allow subtle bugs in data handling to go unnoticed.","movie = {'name': 'Blade Runner',
+         'year': 1982}
+
+Use instead:
+
+from typing import TypedDict
+
+class Movie(TypedDict):
+    name: str
+    year: int
+
+movie: Movie = {'name': 'Blade Runner',
+                'year': 1982}",
+572,Assignment Expressions," Introduces the := operator (the ""walrus operator"") to allow assignment of values to variables as part of an expression. This enables more concise and potentially more efficient code by combining assignment and evaluation, especially useful in conditions, comprehensions, and loops.","Before this PEP, Python required assignments to be standalone statements, which made some patterns unnecessarily verbose, duplicated computation, or introduced inefficiencies (like repeating the same function call). It also made certain idioms, such as filtering and transformation in comprehensions or reading in loops, harder to express concisely and clearly.","match = pattern.search(data)  
+if match is not None:  
+    process(match)
+
+Use instead:
+
+if (match := pattern.search(data)) is not None:  
+    process(match)",
+gh-82626,os.path.exists() takes bool as argument and returns True,"Emit a warning when bool is used as a file descriptor
+
+","Booleans in Python are a subclass of integers (True == 1, False == 0). As a result, passing True or False to functions expecting file descriptors (like os.path.exists) silently works by treating them as file descriptors 1 and 0. This is almost always unintended and can lead to incorrect checks or operations on unrelated system resources (e.g., stdin or stdout). These bugs are hard to spot because the call technically ""succeeds"", even though it doesn't do what the programmer likely intended.","import os
+print(os.path.exists(False))  # Returns True on some systems because 0 (stdin) exists
+
+Use instead:
+
+import os
+
+path = ""/some/actual/file.txt""
+print(os.path.exists(path))  # Explicitly pass a valid path","[""fchdir"", ""dup"", 
+""fdatasync"", ""fstat"",
+ ""fstatvfs"", ""fsync"",
+ ""tcgetpgrp"", ""ttyname""]
+
+path.exists
+chown
+chmod
+utime"
+gh-66449,ConfigParser does not handle files without sections,"Adds support for unnamed sections in ConfigParser, allowing the parser to accept configuration files that do not contain explicit section headers.","The current implementation of ConfigParser requires a section header, causing errors when parsing files that don't conform to this structure. This limitation can cause unexpected behavior, as files with options outside of a section can lead to unnecessary exceptions or incorrect parsing results. Without this support, certain legacy or custom configuration formats cannot be processed properly, leading to potential bugs in configuration handling.","import configparser
+config = configparser.ConfigParser(default_section=configparser.TOP_LEVEL)
+config.read_string(""""""
+a = 1
+b = 2
+"""""")
+print(config[configparser.TOP_LEVEL]['a'])
+print(config[configparser.TOP_LEVEL]['b'])
+
+# Use instead:
+output = io.StringIO()
+config.write(output)",
+gh-118465,pydoc is obscenely slow for some modules	,Add __firstlineno__ attribute to class,"The current method used by pydoc to generate documentation for modules has quadratic complexity when dealing with classes without docstrings, which results in excessive processing time for large modules. This inefficiency leads to significant delays in generating documentation (e.g., 32 seconds for test.test_enum), which worsens with larger or more complex modules. The slow performance is exacerbated by the need to traverse the module's source repeatedly to find classes and their respective comments, which could result in frustrating user experiences, especially in environments where quick access to documentation is essential.","import inspect
+
+def slow_class_search(module):
+    for name, obj in inspect.getmembers(module):
+        if isinstance(obj, type):
+            source = inspect.findsource(obj) 
+            print(f""Class {name} defined at line {source[1]}"")
+
+Use instead:
+
+def optimized_class_search(module):
+    for name, obj in inspect.getmembers(module):
+        if isinstance(obj, type):
+            print(f""Class {name} defined at line {getattr(obj, '__firstlineno__', 'Unknown')}"")
+            
+class MyClass:
+    pass
+
+MyClass.__firstlineno__ = 10",
+gh-118216,__future__ imports allow dots before them,"prevents relative imports (leading dots) from being used with __future__ imports. It ensures that only standard, absolute imports are allowed for __future__ features.","Allowing leading dots before __future__ imports leads to inconsistent behavior and invalid import syntax. __future__ is part of the standard library, and relative imports (with dots) are not valid in this context, causing errors or unexpected behavior, especially when running the code in different environments (e.g., standalone or as part of a package).","from .__future__ import barry_as_FLUFL
+
+Use instead:
+
+from __future__ import barry_as_FLUFL",
+gh-111123,global declaration in except has incorrect prior use,"Reorders how Python's symbol table processes try statements so that except blocks are analyzed before the else block. This ensures that global declarations inside except blocks are correctly recognized, preventing false SyntaxErrors.","Python raises a misleading SyntaxError when a global declaration appears inside an except block, incorrectly claiming the variable was used before the global statement. This happens because the compiler visits the else block of a try statement before processing the except blocks, so any reference to the variable in the else is mistakenly seen as occurring before the global declaration—even if, in source code order and logical flow, that's not the case. This creates confusion for developers, breaks otherwise valid and understandable code, and can frustrate users who rely on consistent scoping rules, especially when writing code generators or performing static analysis.","a = 5
+
+def f():
+    try:
+        pass
+    except:
+        global a
+    else:
+        print(a)
+
+Use instead:
+
+a = 5
+
+def f():
+    try:
+        pass
+    except:
+        global a
+    print(a)",
+gh-109649,os.process_cpu_count(): get the number CPUs usable by the current process,"Adds a new function os.process_cpu_count() that returns the number of CPUs actually usable by the current process, respecting CPU affinity or container limits—unlike os.cpu_count(), which shows the total number of system CPUs.","Before the fix, os.cpu_count() returned the total number of CPUs available on the system, without considering whether the current process could actually use all of them. This was problematic in scenarios where CPU affinity was set (e.g., via sched_setaffinity on Unix) or in containerized environments where CPU access is restricted. As a result, developers could mistakenly assume they had more computational resources than they really did, leading to inefficient use of multiprocessing or threading—like spawning too many worker threads or processes, which could degrade performance or waste resources. Moreover, the workaround (len(os.sched_getaffinity(0))) was not portable across platforms and wasn’t discoverable for many users, making it easy to misuse and hard to write cross-platform code.","import os
+
+num_workers = os.cpu_count()
+
+Use instead:
+
+import os
+
+num_workers = os.process_cpu_count()",
+"gh-109118, gh-118160",Annotation scopes containing nested scopes,The fix disallows nested scopes—such as comprehensions or lambdas—within annotation scopes of classes using generic parameters (as introduced by PEP 695). This prevents the compiler and interpreter from running into inconsistent or ambiguous behavior when resolving variable names in complex nested contexts.,"Python could crash at compile time or even during runtime when a generic class included nested scopes in its annotations. These scopes sometimes referenced variables that were defined in outer class bodies or other scopes, which confused the compiler due to improper handling of name resolution. This led to cryptic SystemErrors, NameErrors, and even fatal assertion failures in the garbage collector. The root cause was the incorrect assumptions the compiler made about variable visibility in these highly-nested generic constructs. Such crashes were not only confusing but also made it difficult for tools like code generators to safely produce valid Python code.","class Outer[T]:
+    T = ""class level""
+
+    class Inner[U]((T for _ in (1,)), T):  # genexp and direct reference to T
+        pass
+
+Use instead:
+
+def make_base(arg):
+    class Base:
+        __arg__ = arg
+    return Base
+
+class Outer[T]:
+    T = ""class level""
+    base1 = make_base([T for _ in (1,)])
+    base2 = make_base(T)
+
+    class Inner[U](base1, base2):
+        pass",
+gh-106487,Allow str.replace's 'count' to be a keyword argument,"This enhancement allows the third argument of str.replace—called count—to be passed as a keyword argument, not just as a positional one. This makes the function more readable and consistent with modern Python coding practices.","The count parameter in str.replace(old, new, count) could only be supplied positionally. This was inconvenient and less readable, especially in codebases where clarity and keyword arguments are preferred. Trying to use count as a keyword raised a TypeError, which was surprising and inconsistent with many other built-in functions that allow keywords for optional parameters. It also made code harder to understand at a glance, particularly when multiple literal values were passed.","result = ""aaa"".replace(""a"", ""b"", 2)
+
+Use instead:
+
+result = ""aaa"".replace(""a"", ""b"", count=2)",
+gh-105879,Allow eval and exec to take keyword arguments,"This change allows Python’s built-in eval() and exec() functions to accept globals and locals as keyword arguments—not just positional ones. This makes calling these functions more readable and intuitive, especially for those familiar with using keyword arguments in other Python built-ins.","eval() and exec() only accepted globals and locals as positional arguments. If you tried to do something like eval(code, globals=..., locals=...), Python would throw a TypeError.
+This was frustrating for users reading the docs, where parameters like globals and locals are explicitly named. It also made the function calls less readable, especially when you had to remember the exact order of optional parameters.","eval(""x + y"", {""x"": 1, ""y"": 2})
+exec(""print(x)"", {""x"": 5})
+
+Use instead:
+
+eval(""x + y"", globals={""x"": 1, ""y"": 2})
+exec(""print(x)"", globals={""x"": 5})",
