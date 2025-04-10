@@ -177,3 +177,4 @@ data/ruff_meta_linting/cot_gen/gpt-4o-mini-cot-gen-cache.jsonl
 data/ruff_meta_linting/cot_gen/train_v4_cot_v2.jsonl
 data/ruff_meta_linting/cot_gen/train_v4.jsonl
 data/ruff_meta_linting/hardness_experiment
+data/ruff_meta_linting/cot_gen/*.jsonl
