@@ -3,6 +3,7 @@
 import os
 import sys
 import json
+import random
 import openai
 import pathlib
 import tiktoken
@@ -22,7 +23,22 @@ CODE_CONSTRUCT_COMPILATION_PROMPT = """Look at the following list of code idiom 
 
 {LIST_OF_IDIOM_SPECS}
 
-Given these idioms compile an exhaustive list of code constructs that should be closely analyzed within a given Python code to figure out whether the idiom is present in the code."""
+Given these idioms compile an exhaustive list of code constructs that should be closely analyzed as well as conditions that should be applied and fixes to be suggested (if provided in the list). 
+Please note that for the conditions to be applied you should only include conditions explicitly mentioned in the definition. 
+However you can try and extrapolate the examples provided to broaden the search of code constructs while strictly enforcing the definitions provided.
+Remember to make the conditions exactly as specific as the definitions no more and no less.
+Follow this format:
+
+Idiom B012: jump-statement-in-finally
+Code Constructs to Analyze: 
+...
+
+Condition:
+...
+
+Fix:
+...
+"""
 
 COT_GENERATION_PROMPT_V2 = """Look at the following list of code idiom specifications with definitions and examples:
 
@@ -45,9 +61,53 @@ Below are the code constructs you need to look at to detect them
 
 {CODE_CONSTRUCTS_FOR_META_TASK}
 
-Given these code constructs, do a top to bottom analysis of the file looking at only the relevant code constructs mentioned in "### Code Comstructs" and arrive at the same violations as the ones given in "### Ground Truth Idiom Violations:". However do not make any reference to ground truth and pretend like you came up with these results on your own. Also try to brief and do not repeat the code file in your analysis only mention relevant lines with line numbers.
+Given these code constructs, do a top to bottom analysis of the file looking at only the relevant code constructs mentioned in "### Code Comstructs" and arrive at the same violations as the ones given in "### Ground Truth Idiom Violations:". However do not make any reference to ground truth and pretend like you came up with these results on your own. Also try to brief and do not repeat the code file in your analysis only mention relevant lines with line numbers. Finally make sure to analyze all potential locations for idiom violations even the ones that are not a part of the "### Ground Truth Idiom Violations:"
 
 Step by step analysis:"""
+
+COT_GENERATION_PROMPT_NO_GROUND_TRUTH = """Look at the following list of code idiom specifications with definitions and examples:
+
+{LIST_OF_IDIOM_SPECS}
+
+Given these idioms, your task is to look at a code file and detect violations of the above idioms, and flag them like a linter. You should also suggest a fix if possible based on the idiom specification. Report the results per idiom specification mentioned above and just say 'NO VIOLATIONS FOUND' if no violations are found for a given idiom. Do not detect any idioms not specified above. 
+
+Code file:
+{CODE_FILE}
+
+Now I'm going to give you the ground truth violations per idiom.
+
+### Ground Truth Idiom Violations:
+
+{IDIOM_VIOLATIONS}
+
+Below are the code constructs you need to look at to detect them
+
+### Code Constructs:
+
+{CODE_CONSTRUCTS_FOR_META_TASK}
+
+Given these code constructs, do a top to bottom analysis of the file looking at only the relevant code constructs mentioned in "### Code Comstructs" and arrive at the same violations as the ones given in "### Ground Truth Idiom Violations:". However do not make any reference to ground truth and pretend like you came up with these results on your own. Also try to brief and do not repeat the code file in your analysis only mention relevant lines with line numbers. Finally make sure to analyze all potential locations for idiom violations even the ones that are not a part of the "### Ground Truth Idiom Violations:"
+
+Step by step analysis:"""
+
+def load_linter_results(text):
+    results = []
+    idiom_code = None
+    for line in text.split("\n"):
+        line = line.strip()
+        if line == "": continue
+        elif line.startswith("**Idiom") and line.endswith("Violations:**"):
+            idiom_code = line.removesuffix("Violations:**").removeprefix("**Idiom").strip()
+        elif line == "NO VIOLATIONS FOUND": continue
+        else:
+            try: 
+                result = json.loads(line)
+                result["code"] = idiom_code
+                results.append(result)
+            except Exception as e: pass
+                # print(e)
+                # print(f"{e}: {line}")
+    return results
 
 def add_line_no_to_stack_file(stack_file: str):
     stack_file_with_lineno = []
@@ -86,7 +146,35 @@ def generate_code_construct_for_meta_task_cot_prompts(sft_data, code_idiom_specs
 
     return code_construct_cot_gen_prompts
 
-def estimate_gpt4o_mini_cost(input_texts, output_tokens=512, input_cost_per_million=0.15, output_cost_per_million=0.6):
+def intelligent_downsample(sft_train_data: list[dict], model: str="o3-mini"):
+    encoder = tiktoken.encoding_for_model(model)
+    random.seed(42)
+    strata = defaultdict(lambda: [])
+    prompt_lens = []
+    for rec in tqdm(sft_train_data):
+        prompt = rec["messages"][0]["content"]
+        prompt_len = len(encoder.encode(prompt, disallowed_special=()))
+        if prompt_len > 1000: continue # exclude prompts with more than 2000 tokens.
+        response = rec["messages"][-1]["content"]
+        source = rec["source"]
+        linter_results = load_linter_results(response)
+        if len(linter_results) == 0: 
+            strata[f"{source}_NO_VIOLATIONS"].append(rec)
+        else:
+            num_unique_codes = len(set(violation['code'] for violation in linter_results))
+            strata[f"{source}_{num_unique_codes}_VIOLATIONS"].append(rec)
+    print(f"original data size: {len(sft_train_data)}")
+    downsampled_data = []
+    print("no. strata (atmost 60 possible)", len(strata))
+    for k,v in strata.items():
+        stratum_datum = random.sample(v, k=min(len(v), 100))
+        downsampled_data.extend(stratum_datum)
+        print(k, len(stratum_datum))
+    print(f"downsampled data size: {len(downsampled_data)}")
+    # exit()
+    return downsampled_data
+
+def estimate_gpt_cost(input_texts, output_tokens=512, input_cost_per_million=0.15, output_cost_per_million=0.6):
     """
     Estimates the cost of using GPT-4o-mini on a given dataset.
     
@@ -195,7 +283,8 @@ if __name__ == "__main__":
     openai.api_key = os.environ["ORACLE_PROJECT_COT_API_KEY"]
     client = openai.OpenAI(api_key=os.environ["ORACLE_PROJECT_COT_API_KEY"])
 
-    # # CODE CONSTRUCT LIST COT GENERATION
+    ### CODE CONSTRUCT LIST COT GENERATION
+
     # sft_train_data = json.load(open("./data/ruff_meta_linting/train_v4.json"))
     # code_idiom_specs = load_ruff_idiom_specs("./data/ruff_pages")
     
@@ -207,18 +296,21 @@ if __name__ == "__main__":
 
     # with open("./data/ruff_meta_linting/cot_gen/code_construct_prompts_for_meta_tasks.json", "w") as f:
     #     json.dump(code_construct_cot_gen_data, f, indent=4)
-    # generate_cots(code_construct_cot_gen_data, task="code_construct", model="gpt-4o")
-
-    # with open("./data/ruff_meta_linting/cot_gen/code_construct_cots_for_meta_tasks.json", "w") as f:
-    #     json.dump(code_construct_cot_gen_cots, f, indent=4)
+    # generate_cots(code_construct_cot_gen_data, task="code_construct_v2", model="gpt-4o")
     
-    # code_construct_cots = {rec["id"]: rec["response"] for rec in read_jsonl("data/ruff_meta_linting/cot_gen/gpt-4o-code_construct-cot-gen-cache.jsonl")}
+    ### SCAN FILE COT GENERATION
+
+    # code_construct_cots = {rec["id"]: rec["response"] for rec in read_jsonl("data/ruff_meta_linting/cot_gen/gpt-4o-code_construct_v2-cot-gen-cache_start_0.jsonl")}
     # sft_train_data = json.load(open("./data/ruff_meta_linting/train_v4_new_format_with_lineno.json"))
+    # sft_train_data = intelligent_downsample(sft_train_data)
+    # # exit()
     # code_idiom_specs = load_ruff_idiom_specs("./data/ruff_pages")
     # stack_data = load_stack_dump("./data/STACK-V2", as_dict=True)
     
-    # generate_idiom_det_and_loc_cot_prompts(sft_train_data, stack_data, code_idiom_specs, code_construct_cots, "./data/ruff_meta_linting/cot_gen/train_v4_cot_v2.jsonl")
-    
-    start_point = int(sys.argv[1])
-    prompts = read_jsonl("./data/ruff_meta_linting/cot_gen/train_v4_cot_v2.jsonl")
-    generate_cots(prompts, task="loc_and_det_cot", model="gpt-4o-mini", start_point=start_point)
+    # generate_idiom_det_and_loc_cot_prompts(sft_train_data, stack_data, code_idiom_specs, code_construct_cots, "./data/ruff_meta_linting/cot_gen/train_v4_cot_v3.jsonl")
+    prompts = read_jsonl("./data/ruff_meta_linting/cot_gen/train_v4_cot_v3.jsonl")
+    # estimate_gpt_cost([rec["prompt"] for rec in prompts], output_tokens=600, output_cost_per_million=1.1, input_cost_per_million=4.4)
+
+    try: start_point = int(sys.argv[1])
+    except IndexError: start_point = 0
+    generate_cots(prompts, task="loc_and_det_cot_v2", model="o3-mini", start_point=start_point)

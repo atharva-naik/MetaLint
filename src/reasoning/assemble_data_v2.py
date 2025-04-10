@@ -13,13 +13,15 @@ from src.datautils import generate_cot_gen_prompts, load_ruff_idiom_specs, load_
 if __name__ == "__main__":
     dataset_version = "train_v4_new_format_with_lineno"
     train_data = json.load(open(f"./data/ruff_meta_linting/{dataset_version}.json"))
-    list_constructs = {rec["id"]: rec['response'] for rec in read_jsonl("./data/ruff_meta_linting/cot_gen/gpt-4o-code_construct-cot-gen-cache.jsonl")}
+    # list_constructs = {rec["id"]: rec['response'] for rec in read_jsonl("./data/ruff_meta_linting/cot_gen/gpt-4o-code_construct-cot-gen-cache.jsonl")}
+    list_constructs = {rec["id"]: rec['response'] for rec in read_jsonl("data/ruff_meta_linting/cot_gen/gpt-4o-code_construct_v2-cot-gen-cache_start_0.jsonl")}
     
-    start_points = [None, 65000]
+    start_points = [0]#[None, 65000]
     cot_data = []
     for start_point in start_points:
         start_point = "" if start_point is None else f"_start_{start_point}"
-        cot_data_path = f"./data/ruff_meta_linting/cot_gen/gpt-4o-mini-loc_and_det_cot-cot-gen-cache{start_point}.jsonl"
+        # cot_data_path = f"./data/ruff_meta_linting/cot_gen/gpt-4o-mini-loc_and_det_cot-cot-gen-cache{start_point}.jsonl"
+        cot_data_path = f"data/ruff_meta_linting/cot_gen/o3-mini-loc_and_det_cot_v2-cot-gen-cache{start_point}.jsonl"
         # print(cot_data_path)
         cot_data += read_jsonl(cot_data_path)
     print(len(cot_data))
@@ -55,5 +57,5 @@ if __name__ == "__main__":
     # print(f"% cot train data with violations: {sum(['NO VIOLATIONS FOUND' not in rec["messages"][-1]['content'] for rec in train_data_with_cot])/len(train_data_with_cot)}")
     print(f"train_data original: {len(train_data)}")
     print(f"train_data with CoT: {len(train_data_with_cot)}")
-    with open(f"data/ruff_meta_linting/{dataset_version}_subtask_cot.json", "w") as f:
+    with open(f"data/ruff_meta_linting/{dataset_version}_subtask_cot_v2_lite.json", "w") as f:
         json.dump(train_data_with_cot, f, indent=4)
