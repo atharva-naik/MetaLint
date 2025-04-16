@@ -1,0 +1,18 @@
+{
+  "blob_id": "763eb611fc29cf105ba11ec6b8c8c76850de42a2",
+  "violations": [
+    {
+      "start_lineno": 5,
+      "end_lineno": 5,
+      "pep": "506",
+      "line": "return (random.randrange(1, difficulty+1, 1))",
+      "span": "random.randrange",
+      "fix": [
+        {
+          "before": "random.randrange",
+          "after": "secrets.randrange"
+        }
+      ]
+    }
+  ]
+}

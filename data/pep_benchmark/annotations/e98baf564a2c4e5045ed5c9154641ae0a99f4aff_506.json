@@ -1,0 +1,18 @@
+{
+  "blob_id": "e98baf564a2c4e5045ed5c9154641ae0a99f4aff",
+  "violations": [
+    {
+      "start_lineno": 12,
+      "end_lineno": 12,
+      "pep": "506",
+      "line": "return random.choice(keywords)",
+      "span": "random.choice",
+      "fix": [
+        {
+          "before": "random.choice",
+          "after": "secrets.choice"
+        }
+      ]
+    }
+  ]
+}

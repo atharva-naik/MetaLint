@@ -1,0 +1,19 @@
+{
+  "blob_id": "548439ff669f3f0d005ab4790ec8a3cb6a20f164",
+  "violations": [
+    {
+      "start_lineno": 4,
+      "end_lineno": 5,
+      "pep": "557",
+      "line": "class _OFFICIATES():\n\tdef __init__(self,): ",
+      "span": "class _OFFICIATES():",
+      "fix": [
+        {
+          "before": "class _OFFICIATES",
+          "after": "from dataclasses import dataclass, field\nfrom typing import Any, List, Dict\n\n@dataclass\nclass _OFFICIATES:\n    name: str = \"OFFICIATES\"\n    definitions: Any = None  # Replace None with `officiate` if officiate is defined at module level.\n    parents: List[Any] = field(default_factory=list)\n    childen: List[Any] = field(default_factory=list)  # Note: 'childen' seems like a typo; consider 'children'\n    properties: List[Any] = field(default_factory=list)\n    jsondata: Dict[Any, Any] = field(default_factory=dict)\n    basic: List[str] = field(default_factory=lambda: ['officiate'])"
+
+        }
+      ]
+    }
+  ]
+}
