@@ -1,0 +1,27 @@
+{
+    "blob_id": "pep_634_1",
+    "violations": [
+        {
+            "start_lineno": 7,
+            "end_lineno": 17,
+            "pep": "634",
+            "line": "    if isinstance(response, dict):\n        if \"error\" in response:\n            print(f\"Error: {response['error']}\")\n        elif \"data\" in response:\n            print(f\"Data: {response['data']}\")\n        else:\n            print(\"Unknown response format\")\n    elif isinstance(response, list):\n        print(\"List of items:\", response)\n    else:\n        print(\"Invalid response type\")",
+            "span": "    if isinstance(response, dict):\n        if \"error\" in response:\n            print(f\"Error: {response['error']}\")\n        elif \"data\" in response:\n            print(f\"Data: {response['data']}\")\n        else:\n            print(\"Unknown response format\")\n    elif isinstance(response, list):\n        print(\"List of items:\", response)\n    else:\n        print(\"Invalid response type\")",
+            "fix": {
+                "before": "    if isinstance(response, dict):\n        if \"error\" in response:\n            print(f\"Error: {response['error']}\")\n        elif \"data\" in response:\n            print(f\"Data: {response['data']}\")\n        else:\n            print(\"Unknown response format\")\n    elif isinstance(response, list):\n        print(\"List of items:\", response)\n    else:\n        print(\"Invalid response type\")",
+                "after": "    match response:\n        case {\"error\": error_message}:\n            print(f\"Error: {error_message}\")\n        case {\"data\": data_content}:\n            print(f\"Data: {data_content}\")\n        case list(items):\n            print(\"List of items:\", items)\n        case _:\n            print(\"Invalid response type\")" 
+            }
+        },
+        {
+            "start_lineno": 20,
+            "end_lineno": 31,
+            "pep": "634",
+            "line": "    if isinstance(expr, tuple):\n        op, left, right = expr\n        if op == '+':\n            return eval_expr(left) + eval_expr(right)\n        elif op == '*':\n            return eval_expr(left) * eval_expr(right)\n        else:\n            raise ValueError(f\"Unknown operator {op}\")\n    elif isinstance(expr, int):\n        return expr\n    else:\n        raise TypeError(\"Invalid expression\")",
+            "span": "    if isinstance(expr, tuple):\n        op, left, right = expr\n        if op == '+':\n            return eval_expr(left) + eval_expr(right)\n        elif op == '*':\n            return eval_expr(left) * eval_expr(right)\n        else:\n            raise ValueError(f\"Unknown operator {op}\")\n    elif isinstance(expr, int):\n        return expr\n    else:\n        raise TypeError(\"Invalid expression\")",
+            "fix": {
+                "before": "    if isinstance(expr, tuple):\n        op, left, right = expr\n        if op == '+':\n            return eval_expr(left) + eval_expr(right)\n        elif op == '*':\n            return eval_expr(left) * eval_expr(right)\n        else:\n            raise ValueError(f\"Unknown operator {op}\")\n    elif isinstance(expr, int):\n        return expr\n    else:\n        raise TypeError(\"Invalid expression\")",
+                "after": "    match expr:\n        case ('+', left, right):\n            return eval_expr(left) + eval_expr(right)\n        case ('*', left, right):\n            return eval_expr(left) * eval_expr(right)\n        case int(value):\n            return value\n        case _:\n            raise ValueError(\"Invalid expression\")"
+            }
+        }
+    ]
+}

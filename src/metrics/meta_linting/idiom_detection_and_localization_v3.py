@@ -226,7 +226,8 @@ if __name__ == "__main__":
     # test_preds = read_jsonl(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_lineno.jsonl")
     # test_preds = read_jsonl(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot.jsonl")
     # test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot_v2_lite.jsonl")
-    test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot.jsonl")
+    test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot_v3_lite.jsonl")
+    # test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot.jsonl")
     # test_preds = read_jsonl(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_cot.jsonl")
     test_data = json.load(open("data/ruff_meta_linting/test_v4_new_format_with_lineno.json"))
     

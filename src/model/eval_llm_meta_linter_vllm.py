@@ -57,6 +57,9 @@ async def generate_response(rec: dict, model_name: str):
         "model": model_name,
         "messages": messages,
         "max_tokens": MAX_NEW_TOKENS,
+        "temperature": 0.7, # greedy decoding for reproducibility
+        "top_p": 0.95,
+        "seed": 42  # seed for reproducibility
     }
 
     for _ in range(MAX_RETRIES):
@@ -169,8 +172,11 @@ if __name__ == "__main__":
     # test_data = json.load(open("data/ruff_meta_linting/test_v3.json"))
     
     ### Load test data.
-    if lineno: test_data = json.load(open("data/ruff_meta_linting/test_v4_new_format_with_lineno.json"))
-    else: test_data = json.load(open("data/ruff_meta_linting/test_v4.json"))
+    # if lineno: 
+    #     test_data = json.load(open("data/ruff_meta_linting/test_v4_new_format_with_lineno.json"))
+    # else: test_data = json.load(open("data/ruff_meta_linting/test_v4.json"))
+    test_data = json.load(open("data/ruff_meta_linting/test_v4_new_format_with_lineno.json"))
+
     # test_data = json.load(open("data/ruff_meta_linting/hardness_experiment/test.json"))
 
     model_preds = []
