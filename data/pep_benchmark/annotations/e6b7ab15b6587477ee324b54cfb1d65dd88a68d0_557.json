@@ -1,0 +1,18 @@
+{
+  "blob_id": "e6b7ab15b6587477ee324b54cfb1d65dd88a68d0",
+  "violations": [
+    {
+      "start_lineno": 4,
+      "end_lineno": 5,
+      "pep": "557",
+      "line": "class _WISCONSINITES():\n\tdef __init__(self,): ",
+      "span": "class_WISCONSINITES()",
+      "fix": [
+        {
+          "before": "class _WISCONSINITES",
+          "after": "from dataclasses import dataclass, field\n\n@dataclass\nclass _WISCONSINITES:\n    name: str = 'WISCONSINITES'\n    definitions: Any = wisconsinite\n    parents: list = field(default_factory=list)\n    childen: list = field(default_factory=list)\n    properties: list = field(default_factory=list)\n    jsondata: dict = field(default_factory=dict)\n    basic: list = field(default_factory=lambda: ['wisconsinite'])"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "blob_id": "6c6909650bdbfd7ef4430a58bcfc78f2dfaa3dd3",
+  "violations": [
+    {
+      "start_lineno": 32,
+      "end_lineno": 32,
+      "pep": "506",
+      "line": "rand_num = random.randint(0,len(AnimalBook.animalarray)-1)",
+      "span": "random.randint",
+      "fix": [
+        {
+          "before": "random.randint",
+          "after": "secrets.randint"
+        }
+      ]
+    }
+  ]
+}

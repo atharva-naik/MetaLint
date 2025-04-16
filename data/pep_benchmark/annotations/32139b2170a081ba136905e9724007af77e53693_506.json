@@ -1,0 +1,57 @@
+{
+  "blob_id": "32139b2170a081ba136905e9724007af77e53693",
+  "violations": [
+    {
+      "start_lineno": 8,
+      "end_lineno": 8,
+      "pep": "506",
+      "line": "strLen = random.choice(range(minLen,maxLen))",
+      "span": "random.choice",
+      "fix": [
+        {
+          "before": "random.choice",
+          "after": "secrets.choice"
+        }
+      ]
+    },
+    {
+      "start_lineno": 22,
+      "end_lineno": 22,
+      "pep": "506",
+      "line": "idLen = random.choice(valid_lengths)",
+      "span": "random.choice",
+      "fix": [
+        {
+          "before": "random.choice",
+          "after": "secrets.choice"
+        }
+      ]
+    },
+    {
+      "start_lineno": 49,
+      "end_lineno": 49,
+      "pep": "506",
+      "line": "idLen = random.choice(valid_lengths)",
+      "span": "random.choice",
+      "fix": [
+        {
+          "before": "random.choice",
+          "after": "secrets.choice"
+        }
+      ]
+    },
+    {
+      "start_lineno": 9,
+      "end_lineno": 9,
+      "pep": "506",
+      "line": "return ''.join(random.choice(string.ascii_lowercase) for i in range(strLen))",
+      "span": "random.choice",
+      "fix": [
+        {
+          "before": "random.choice",
+          "after": "secrets.choice"
+        }
+      ]
+    }
+  ]
+}

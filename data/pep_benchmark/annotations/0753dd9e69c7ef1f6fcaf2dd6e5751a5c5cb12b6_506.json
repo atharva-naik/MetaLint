@@ -1,0 +1,18 @@
+{
+  "blob_id": "0753dd9e69c7ef1f6fcaf2dd6e5751a5c5cb12b6",
+  "violations": [
+    {
+      "start_lineno": 32,
+      "end_lineno": 32,
+      "pep": "506",
+      "line": "fileID = str(random.randint(0, 100000)) + \".jpg\"",
+      "span": "random.randint",
+      "fix": [
+        {
+          "before": "random.randint",
+          "after": "secrets.randint"
+        }
+      ]
+    }
+  ]
+}
