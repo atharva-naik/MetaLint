@@ -1,0 +1,18 @@
+{
+  "blob_id": "95b84bdb31fb8d15a6125e393c6a3c410d477038",
+  "violations": [
+    {
+      "start_lineno": 4,
+      "end_lineno": 5,
+      "pep": "557",
+      "line": "class _STATIONERS():\n\tdef __init__(self,): ",
+      "span": "class  _STATIONERS():",
+      "fix": [
+        {
+          "before": "class _STATIONERS",
+          "after": "@dataclass\nclass _STATIONERS"
+        }
+      ]
+    }
+  ]
+}

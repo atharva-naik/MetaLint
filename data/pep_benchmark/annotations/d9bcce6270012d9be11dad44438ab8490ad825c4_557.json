@@ -1,0 +1,18 @@
+{
+  "blob_id": "d9bcce6270012d9be11dad44438ab8490ad825c4",
+  "violations": [
+    {
+      "start_lineno": 5,
+      "end_lineno": 9,
+      "pep": "557",
+      "line": "class NoSubClass(Error):\n    def __init__(self, class_name):\n        self.class_name = class_name\n\n    def __repr__(self):",
+      "span": "class NoSubClass(Error):",
+      "fix": [
+        {
+          "before": "class Error(Exception):\n    pass\n\n\nclass NoSubClass(Error):\n    def __init__(self, class_name):\n        self.class_name = class_name\n\n    def __repr__(self):\n        pass",
+          "after": "from dataclasses import dataclass\n\nclass Error(Exception):\n    pass\n\n\n@dataclass\nclass NoSubClass(Error):\n    class_name: str"
+        }
+      ]
+    }
+  ]
+}

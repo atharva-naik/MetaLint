@@ -1,0 +1,57 @@
+{
+  "blob_id": "0ba082e2e60c95bcf7907b233e4e9f2dd4812606",
+  "violations": [
+    {
+      "start_lineno": 23,
+      "end_lineno": 23,
+      "pep": "506",
+      "line": "suhu=random.randint(25, 35)",
+      "span": "random.randint",
+      "fix": [
+        {
+          "before": "random.randint",
+          "after": "secrets.randint"
+        }
+      ]
+    },
+    {
+      "start_lineno": 26,
+      "end_lineno": 26,
+      "pep": "506",
+      "line": "led=random.randint(0, 1)",
+      "span": "random.randint",
+      "fix": [
+        {
+          "before": "random.randint",
+          "after": "secrets.randint"
+        }
+      ]
+    },
+    {
+      "start_lineno": 24,
+      "end_lineno": 24,
+      "pep": "506",
+      "line": "cahaya=random.randint(0, 100)/100",
+      "span": "random.randint",
+      "fix": [
+        {
+          "before": "random.randint",
+          "after": "secrets.randint"
+        }
+      ]
+    },
+    {
+      "start_lineno": 25,
+      "end_lineno": 25,
+      "pep": "506",
+      "line": "kelembaban=random.randint(7500, 9000)/100",
+      "span": "random.randint",
+      "fix": [
+        {
+          "before": "random.randint",
+          "after": "secrets.randint"
+        }
+      ]
+    }
+  ]
+}
