@@ -1,0 +1,18 @@
+{
+  "blob_id": "5fcb0fdd0cc7bcc8eab83fdebeabfa6a556b9cf7_506",
+  "violations": [
+    {
+      "start_lineno": 22,
+      "end_lineno": 22,
+      "pep": "506",
+      "line": "str += chars[random.randint(0, length)]",
+      "span": "random.randint",
+      "fix": [
+        {
+          "before": "random.randint",
+          "after": "secrets.randint"
+        }
+      ]
+    }
+  ]
+}

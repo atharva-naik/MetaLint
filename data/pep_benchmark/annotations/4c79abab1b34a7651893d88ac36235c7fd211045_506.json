@@ -1,0 +1,31 @@
+{
+  "blob_id": "4c79abab1b34a7651893d88ac36235c7fd211045",
+  "violations": [
+    {
+      "start_lineno": 23,
+      "end_lineno": 23,
+      "pep": "506",
+      "line": "random.shuffle(words)",
+      "span": "random.shuffle",
+      "fix": [
+        {
+          "before": "random.shuffle",
+          "after": "secrets.shuffle"
+        }
+      ]
+    },
+    {
+      "start_lineno": 24,
+      "end_lineno": 24,
+      "pep": "506",
+      "line": "q = random.choice(words)",
+      "span": "random.choice",
+      "fix": [
+        {
+          "before": "random.choice",
+          "after": "secrets.choice"
+        }
+      ]
+    }
+  ]
+}

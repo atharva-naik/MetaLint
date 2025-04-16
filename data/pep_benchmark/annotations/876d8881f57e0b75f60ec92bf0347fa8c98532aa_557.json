@@ -1,0 +1,22 @@
+{
+  "blob_id": "876d8881f57e0b75f60ec92bf0347fa8c98532aa_557",
+  "violations": [
+    {
+      "start_lineno": 1,
+      "end_lineno": 4,
+      "pep": "557",
+      "line": "class book:\n    \n    \n    def __init__(self,bookName,price):",
+      "span": "class definition",
+      "fix": [
+        {
+          "before": "class book",
+          "after": "@dataclass\nclass book"
+        },
+        {
+          "before": "def __init__(self,bookName,price):\n        self.bookName=bookName\n        self.price=price",
+          "after": ""
+        }
+      ]
+    }
+  ]
+}
