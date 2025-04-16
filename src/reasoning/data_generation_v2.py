@@ -65,11 +65,11 @@ Given these code constructs, do a top to bottom analysis of the file looking at 
 
 Step by step analysis:"""
 
-COT_GENERATION_PROMPT_NO_GROUND_TRUTH = """Look at the following list of code idiom specifications with definitions and examples:
+COT_GENERATION_PROMPT_V3 = """Look at the following list of code idiom specifications with definitions and examples:
 
 {LIST_OF_IDIOM_SPECS}
 
-Given these idioms, your task is to look at a code file and detect violations of the above idioms, and flag them like a linter. You should also suggest a fix if possible based on the idiom specification. Report the results per idiom specification mentioned above and just say 'NO VIOLATIONS FOUND' if no violations are found for a given idiom. Do not detect any idioms not specified above. 
+Given these idioms, your task is to look at a code file and detect violations of the above idioms, and flag them like a linter. You should also suggest a fix if possible. Report the results per idiom specification mentioned above and just say 'NO VIOLATIONS FOUND' if no violations are found for a given idiom. Do not detect any idioms not specified above.
 
 Code file:
 {CODE_FILE}
@@ -86,7 +86,26 @@ Below are the code constructs you need to look at to detect them
 
 {CODE_CONSTRUCTS_FOR_META_TASK}
 
-Given these code constructs, do a top to bottom analysis of the file looking at only the relevant code constructs mentioned in "### Code Comstructs" and arrive at the same violations as the ones given in "### Ground Truth Idiom Violations:". However do not make any reference to ground truth and pretend like you came up with these results on your own. Also try to brief and do not repeat the code file in your analysis only mention relevant lines with line numbers. Finally make sure to analyze all potential locations for idiom violations even the ones that are not a part of the "### Ground Truth Idiom Violations:"
+Given these code constructs, do a line by line analysis of the code file, but focus only on the relevant code constructs mentioned in "### Code Constructs" and arrive at the same violations as the ones given in "### Ground Truth Idiom Violations:". While doing your analysis go through each line of code only once and check for each line if any of the 5 idioms apply. Do not do a separate analysis per idiom. Let's say line 6 employs a construct like a `for` loop which is releavant for idiom B007, while line 21 uses `exec()` which is relevant for idiom S102, your analysis should look roughly like:
+
+Line 6: Detected `for` loop relevant to idiom B007:
+ - Conditions for idiom B007 state that ...
+ - Here ...
+ - In conclusion B007 is not violated!
+
+Line 21: Detected `exec` call which is relevant to idiom S102:
+ - Conditions for idiom S102 state that ...
+ - Here ...
+ - In conclusion S102 is violated!
+
+### Additional Instructions:
+
+- Follow the reasoning format mentioned above strictly and cover the lines in a sorted order from the lowest line number to the highest.
+- Do not make any reference to ground truth in your analysis and pretend you are doing this analysis on your own.
+- Do not repeat the whole code file in your analysis. 
+- Make sure to analyze all potential lines based on the "### Code Constructs" for all the idioms even the ones that don't end up in the "### Ground Truth Idiom Violations:". However while analyzing them provide reasoning for why they don't end up in the final result.
+- Don't literally mention every line, only mention ones that contain the constructs mentioned in the "### Code Constructs".
+- After finishing up the analysis summarize the results to match the "### Ground Truth Idiom Violations:". 
 
 Step by step analysis:"""
 
@@ -180,9 +199,9 @@ def estimate_gpt_cost(input_texts, output_tokens=512, input_cost_per_million=0.1
     
     Parameters:
     - input_texts (list of str): List of input prompts.
-    - output_tokens (int): Fixed number of output tokens per input (default: 500).
-    - input_cost_per_million (float): Cost per million input tokens ($0.25 by default).
-    - output_cost_per_million (float): Cost per million output tokens ($1.25 by default).
+    - output_tokens (int): Fixed number of output tokens per input (default: 512).
+    - input_cost_per_million (float): Cost per million input tokens ($0.15 by default).
+    - output_cost_per_million (float): Cost per million output tokens ($0.6 by default).
     
     Returns:
     - total_cost (float): Estimated cost in USD.
@@ -220,7 +239,7 @@ def generate_idiom_det_and_loc_cot_prompts(sft_data, stack_data: dict, code_idio
         IDIOM_VIOLATIONS = rec["messages"][-1]["content"]
         CODE_CONSTRUCTS_FOR_META_TASK = code_construct_cots[rec['source']]
         
-        prompt = COT_GENERATION_PROMPT_V2.format(
+        prompt = COT_GENERATION_PROMPT_V3.format(
             LIST_OF_IDIOM_SPECS=LIST_OF_IDIOM_SPECS,
             CODE_FILE=CODE_FILE, IDIOM_VIOLATIONS=IDIOM_VIOLATIONS,
             CODE_CONSTRUCTS_FOR_META_TASK=CODE_CONSTRUCTS_FOR_META_TASK,
@@ -300,17 +319,20 @@ if __name__ == "__main__":
     
     ### SCAN FILE COT GENERATION
 
-    # code_construct_cots = {rec["id"]: rec["response"] for rec in read_jsonl("data/ruff_meta_linting/cot_gen/gpt-4o-code_construct_v2-cot-gen-cache_start_0.jsonl")}
-    # sft_train_data = json.load(open("./data/ruff_meta_linting/train_v4_new_format_with_lineno.json"))
-    # sft_train_data = intelligent_downsample(sft_train_data)
-    # # exit()
-    # code_idiom_specs = load_ruff_idiom_specs("./data/ruff_pages")
-    # stack_data = load_stack_dump("./data/STACK-V2", as_dict=True)
+    code_construct_cots = {rec["id"]: rec["response"] for rec in read_jsonl("data/ruff_meta_linting/cot_gen/gpt-4o-code_construct_v2-cot-gen-cache_start_0.jsonl")}
+    sft_train_data = json.load(open("./data/ruff_meta_linting/train_v4_new_format_with_lineno.json"))
+    sft_train_data = intelligent_downsample(sft_train_data)
+    # exit()
+    code_idiom_specs = load_ruff_idiom_specs("./data/ruff_pages")
+    stack_data = load_stack_dump("./data/STACK-V2", as_dict=True)
     
-    # generate_idiom_det_and_loc_cot_prompts(sft_train_data, stack_data, code_idiom_specs, code_construct_cots, "./data/ruff_meta_linting/cot_gen/train_v4_cot_v3.jsonl")
-    prompts = read_jsonl("./data/ruff_meta_linting/cot_gen/train_v4_cot_v3.jsonl")
+    generate_idiom_det_and_loc_cot_prompts(sft_train_data, stack_data, code_idiom_specs, code_construct_cots, "./data/ruff_meta_linting/cot_gen/train_v4_cot_v4.jsonl")
+    prompts = read_jsonl("./data/ruff_meta_linting/cot_gen/train_v4_cot_v4.jsonl")
+
+    estimate_gpt_cost([rec["prompt"] for rec in prompts], output_tokens=600, output_cost_per_million=0.15, input_cost_per_million=0.6)
     # estimate_gpt_cost([rec["prompt"] for rec in prompts], output_tokens=600, output_cost_per_million=1.1, input_cost_per_million=4.4)
 
     try: start_point = int(sys.argv[1])
     except IndexError: start_point = 0
-    generate_cots(prompts, task="loc_and_det_cot_v2", model="o3-mini", start_point=start_point)
+    # generate_cots(prompts, task="loc_and_det_cot_v3", model="o3-mini", start_point=start_point)
+    generate_cots(prompts, task="loc_and_det_cot_v3", model="gpt-4o-mini", start_point=start_point)
