@@ -1,0 +1,135 @@
+{
+    "blob_id": "e0c1fc871b54a428d9be422686fb8526e1953a0a",
+    "violations": [
+        {
+            "start_lineno": 12,
+            "end_lineno": 12,
+            "pep": "614",
+            "line": "@app.before_request",
+            "span": "@app.before_request",
+            "fix": [
+                {
+                    "before": "@app.before_request",
+                    "after": "@[d for d in [app.before_request]][0]"
+                }
+            ]
+        },
+        {
+            "start_lineno": 17,
+            "end_lineno": 17,
+            "pep": "614",
+            "line": "@app.teardown_request",
+            "span": "@app.teardown_request",
+            "fix": [
+                {
+                    "before": "@app.teardown_request",
+                    "after": "@((lambda x: x)(app)).teardown_request"
+                }
+            ]
+        },
+        {
+            "start_lineno": 22,
+            "end_lineno": 22,
+            "pep": "614",
+            "line": "@app.errorhandler(404)",
+            "span": "@app.errorhandler(404)",
+            "fix": [
+                {
+                    "before": "@app.errorhandler(404)",
+                    "after": "@((lambda f: f)(app.errorhandler))(404)"
+                }
+            ]
+        },
+        {
+            "start_lineno": 26,
+            "end_lineno": 26,
+            "pep": "614",
+            "line": "@app.route('/')",
+            "span": "@app.route('/')",
+            "fix": [
+                {
+                    "before": "@app.route('/')",
+                    "after": "@((app).route)('/')"
+                }
+            ]
+        },
+        {
+            "start_lineno": 32,
+            "end_lineno": 32,
+            "pep": "614",
+            "line": "@app.route('/login', methods = ['GET', 'POST'])",
+            "span": "@app.route('/login', methods = ['GET', 'POST'])",
+            "fix": [
+                {
+                    "before": "@app.route('/login', methods = ['GET', 'POST'])",
+                    "after": "@(getattr(app, 'route'))('/login', methods = ['GET', 'POST'])"
+                }
+            ]
+        },
+        {
+            "start_lineno": 40,
+            "end_lineno": 40,
+            "pep": "614",
+            "line": "@app.route('/pages')",
+            "span": "@app.route('/pages')",
+            "fix": [
+                {
+                    "before": "@app.route('/pages')",
+                    "after": "@(lambda r: r)(app.route)('/pages')"
+                }
+            ]
+        },
+        {
+            "start_lineno": 50,
+            "end_lineno": 50,
+            "pep": "614",
+            "line": "@app.route('/pages/<name>')",
+            "span": "@app.route('/pages/<name>')",
+            "fix": [
+                {
+                    "before": "@app.route('/pages/<name>')",
+                    "after": "@[x for x in [app.route]][0]('/pages/<name>')"
+                }
+            ]
+        },
+        {
+            "start_lineno": 61,
+            "end_lineno": 61,
+            "pep": "614",
+            "line": "@app.route('/form', methods = ['GET', 'POST'])",
+            "span": "@app.route('/form', methods = ['GET', 'POST'])",
+            "fix": [
+                {
+                    "before": "@app.route('/form', methods = ['GET', 'POST'])",
+                    "after": "@(app.route)('/form', methods = ['GET', 'POST'])"
+                }
+            ]
+        },
+        {
+            "start_lineno": 82,
+            "end_lineno": 82,
+            "pep": "614",
+            "line": "@app.route('/admin', methods = ['GET', 'POST'])",
+            "span": "@app.route('/admin', methods = ['GET', 'POST'])",
+            "fix": [
+                {
+                    "before": "@app.route('/admin', methods = ['GET', 'POST'])",
+                    "after": "@((lambda x: x.route)(app))('/admin', methods = ['GET', 'POST'])"
+                }
+            ]
+        },
+        {
+            "start_lineno": 109,
+            "end_lineno": 109,
+            "pep": "614",
+            "line": "@app.route('/admin/index')",
+            "span": "@app.route('/admin/index')",
+            "fix": [
+                {
+                    "before": "@app.route('/admin/index')",
+                    "after": "@(getattr(app, 'route'))('/admin/index')"
+                }
+            ]
+        }
+    ]
+}
