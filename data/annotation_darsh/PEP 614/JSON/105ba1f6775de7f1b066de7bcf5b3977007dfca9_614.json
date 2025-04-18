@@ -1,0 +1,18 @@
+{
+    "blob_id": "105ba1f6775de7f1b066de7bcf5b3977007dfca9",
+    "violations": [
+      {
+        "start_lineno": 79,
+        "end_lineno": 79,
+        "pep": "614",
+        "line": "@atexit.register",
+        "span": "@atexit.register",
+        "fix": [
+          {
+            "before": "@atexit.register",
+            "after": "@(lambda fn: atexit.register(fn))"
+          }
+        ]
+      }
+    ]
+  }

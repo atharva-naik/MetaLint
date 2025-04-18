@@ -1,0 +1,18 @@
+{
+    "blob_id": "eb877217a9565d183c10e1efdddee9fa98105c96",
+    "violations": [
+        {
+            "start_lineno": 231,
+            "end_lineno": 231,
+            "pep": "614",
+            "line": "@uses_settings({'MANAGERS':'managers', 'DEFAULT_FROM_EMAIL':'default_from_email'})",
+            "span": "@uses_settings({'MANAGERS':'managers', 'DEFAULT_FROM_EMAIL':'default_from_email'})",
+            "fix": [
+                {
+                    "before": "@uses_settings({'MANAGERS':'managers', 'DEFAULT_FROM_EMAIL':'default_from_email'})",
+                    "after": "@uses_settings({'MANAGERS':'managers', 'DEFAULT_FROM_EMAIL':'default_from_email'})"
+                }
+            ]
+        }
+    ]
+}
