@@ -1,0 +1,19 @@
+{
+    "blob_id": "c05138d110d2ba3aa685f8caea100716668bc2a6",
+    "violations": [
+      {
+        "start_lineno": 22,
+        "end_lineno": 22,
+        "pep": "614",
+        "line": "@jwt.jwt_error_handler",
+        "span": "@jwt.jwt_error_handler",
+        "fix": [
+          {
+            "before": "@jwt.jwt_error_handler",
+            "after": "@(lambda f: jwt.jwt_error_handler(f))"
+          }
+        ]
+      }
+    ]
+  }
+  

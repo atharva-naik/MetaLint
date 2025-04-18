@@ -1,0 +1,44 @@
+{
+    "blob_id": "d41d8cd98f00b204e9800998ecf8427e",
+    "violations": [
+      {
+        "start_lineno": 22,
+        "end_lineno": 22,
+        "pep": "614",
+        "line": "@app.route('/')",
+        "span": "@app.route('/')",
+        "fix": [
+          {
+            "before": "@app.route('/')",
+            "after": "@(lambda f: app.route('/')(f))"
+          }
+        ]
+      },
+      {
+        "start_lineno": 27,
+        "end_lineno": 27,
+        "pep": "614",
+        "line": "@app.route('/', methods=['POST', 'GET'])",
+        "span": "@app.route('/', methods=['POST', 'GET'])",
+        "fix": [
+          {
+            "before": "@app.route('/', methods=['POST', 'GET'])",
+            "after": "@(lambda f: app.route('/', methods=['POST', 'GET'])(f))"
+          }
+        ]
+      },
+      {
+        "start_lineno": 34,
+        "end_lineno": 34,
+        "pep": "614",
+        "line": "@app.route('/success/<name>')",
+        "span": "@app.route('/success/<name>')",
+        "fix": [
+          {
+            "before": "@app.route('/success/<name>')",
+            "after": "@(lambda f: app.route('/success/<name>')(f))"
+          }
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,31 @@
+{
+    "blob_id": "f0757cf64760f87471f7aff2b9859a711f29b54a",
+    "violations": [
+        {
+            "start_lineno": 7,
+            "end_lineno": 7,
+            "pep": "593",
+            "line": "def analyze(request)",
+            "span": "request",
+            "fix": [
+                {
+                    "before": "request",
+                    "after": "request: Annotated[HttpRequest, \"Django POST request expected\"]"
+                }
+            ]
+        },
+        {
+            "start_lineno": 9,
+            "end_lineno": 9,
+            "pep": "593",
+            "line": "djtext = request.POST.get('text', 'default')",
+            "span": "djtext",
+            "fix": [
+                {
+                    "before": "djtext",
+                    "after": "djtext: Annotated[str, \"User-input text\"]"
+                }
+            ]
+        }
+    ]
+}
