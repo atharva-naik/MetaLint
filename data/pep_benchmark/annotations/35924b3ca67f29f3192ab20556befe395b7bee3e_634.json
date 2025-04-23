@@ -1,0 +1,18 @@
+{
+    "blob_id": "35924b3ca67f29f3192ab20556befe395b7bee3e",
+    "violations": [
+        {
+            "start_lineno": 27,
+            "end_lineno": 44,
+            "pep": "634",
+            "line": "if menu =='s': inter_airline() elif menu =='d': dom_airline() elif menu == 'q': QuitBookMgr() elif menu == 'w': weather() elif menu == 'h': airportDomainSearch() elif menu == 'r': generalWeatherCondition() elif menu =='f': searchDutyFacilities() elif menu =='n': searchNodutyFacilities() else: print(\"유효하지 않은 메뉴 키입니다.\")",
+            "span": "if menu =='s'",
+            "fix": [
+                {
+                    "before": "if menu =='s': inter_airline() elif menu =='d': dom_airline() elif menu == 'q': QuitBookMgr() elif menu == 'w': weather() elif menu == 'h': airportDomainSearch() elif menu == 'r': generalWeatherCondition() elif menu =='f': searchDutyFacilities() elif menu =='n': searchNodutyFacilities() else: print(\"유효하지 않은 메뉴 키입니다.\")",
+                    "after": "match menu: case 's': inter_airline() case 'd': dom_airline() case 'q': QuitBookMgr() case 'w': weather() case 'h': airportDomainSearch() case 'r': generalWeatherCondition() case 'f': searchDutyFacilities() case 'n': searchNodutyFacilities() case _: print(\"유효하지 않은 메뉴 키입니다.\")"
+                }
+            ]
+        }
+    ]
+}

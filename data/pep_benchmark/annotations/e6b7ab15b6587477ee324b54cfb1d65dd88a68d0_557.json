@@ -6,7 +6,7 @@
       "end_lineno": 5,
       "pep": "557",
       "line": "class _WISCONSINITES():\n\tdef __init__(self,): ",
-      "span": "class_WISCONSINITES()",
+      "span": "WISCONSINITES",
       "fix": [
         {
           "before": "class _WISCONSINITES",

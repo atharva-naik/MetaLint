@@ -6,7 +6,7 @@
       "end_lineno": 5,
       "pep": "557",
       "line": "class Player():\n    def __init__(self, name, current_room, items, awake=True):",
-      "span": "class Player():",
+      "span": "Player",
       "fix": [
         {
           "before": "class Player():\n def __init__(self, name, current_room, items, awake=True):\n self.name = name\n self.current_room = current_room\n self.items = items\n self.awake = awake",

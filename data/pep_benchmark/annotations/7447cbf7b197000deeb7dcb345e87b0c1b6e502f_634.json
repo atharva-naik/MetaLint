@@ -1,0 +1,18 @@
+{
+    "blob_id": "7447cbf7b197000deeb7dcb345e87b0c1b6e502f",
+    "violations": [
+        {
+            "start_lineno": 18,
+            "end_lineno": 30,
+            "pep": "634",
+            "line": "if username and password:\\n        user = authenticate(username=username, password=password)\\n\\n        if user:\\n            if not user.is_active:\\n                msg = _('User account is disabled.')\\n                raise exceptions.ValidationError(msg)\\n        else:\\n            msg = _('Esas credenciales incorrectas.')\\n            raise exceptions.ValidationError(msg)\\n    else:\\n        msg = _('Must include \\\"username\\\" and \\\"password\\\".')\\n        raise exceptions.ValidationError(msg)\\n\\n    attrs['user'] = user\\n    return attrs",
+            "span": "if username and password",
+            "fix": [
+                {
+                    "before": "if username and password:\\n        user = authenticate(username=username, password=password)\\n\\n        if user:\\n            if not user.is_active:\\n                msg = _('User account is disabled.')\\n                raise exceptions.ValidationError(msg)\\n        else:\\n            msg = _('Esas credenciales incorrectas.')\\n            raise exceptions.ValidationError(msg)\\n    else:\\n        msg = _('Must include \\\"username\\\" and \\\"password\\\".')\\n        raise exceptions.ValidationError(msg)\\n\\n    attrs['user'] = user\\n    return attrs",
+                    "after": "match (username, password):\\n        case (str(u), str(p)):\\n            user = authenticate(username=u, password=p)\\n            match user:\\n                case None:\\n                    raise exceptions.ValidationError(_('Esas credenciales incorrectas.'))\\n                case u if not u.is_active:\\n                    raise exceptions.ValidationError(_('User account is disabled.'))\\n        case _:\\n            raise exceptions.ValidationError(_('Must include \\\"username\\\" and \\\"password\\\".'))\\n\\n    attrs['user'] = user\\n    return attrs"
+                }
+            ]
+        }
+    ]
+}

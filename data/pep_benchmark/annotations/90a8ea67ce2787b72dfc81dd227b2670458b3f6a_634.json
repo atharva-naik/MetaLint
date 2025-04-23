@@ -1,0 +1,18 @@
+{
+    "blob_id": "90a8ea67ce2787b72dfc81dd227b2670458b3f6a",
+    "violations": [
+        {
+            "start_lineno": 10,
+            "end_lineno": 19,
+            "pep": "634",
+            "line": "if isinstance(v, RtlSignalBase):\n    assert isinstance(v._dtype, Bits)\n    return v\nelif isinstance(v, Value):\n    if isinstance(v, Bits):\n        return v\n    else:\n        return v._auto_cast(INT)\nelse:\n    return INT.from_py(v)",
+            "span": "if isinstance(v, RtlSignalBase)",
+            "fix": [
+                {
+                    "before": "if isinstance(v, RtlSignalBase):\n    assert isinstance(v._dtype, Bits)\n    return v\nelif isinstance(v, Value):\n    if isinstance(v, Bits):\n        return v\n    else:\n        return v._auto_cast(INT)\nelse:\n    return INT.from_py(v)",
+                    "after": "match v:\n    case v if isinstance(v, RtlSignalBase):\n        assert isinstance(v._dtype, Bits)\n        return v\n    case v if isinstance(v, Value):\n        return v if isinstance(v, Bits) else v._auto_cast(INT)\n    case _:\n        return INT.from_py(v)"
+                }
+            ]
+        }
+    ]
+}

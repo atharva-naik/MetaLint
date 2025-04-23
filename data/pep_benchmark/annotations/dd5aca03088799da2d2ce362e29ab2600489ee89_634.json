@@ -1,0 +1,18 @@
+{
+    "blob_id": "dd5aca03088799da2d2ce362e29ab2600489ee89",
+    "violations": [
+        {
+            "start_lineno": 73,
+            "end_lineno": 93,
+            "pep": "634",
+            "line": "if cmd == \"--help\" or cmd == \"-h\":\n    printHelp()\nelif cmd == \"build\":\n    status = True\n    if len(sys.argv) == 3 and sys.argv[2] == \"Debug\":\n        status &= build(\"Debug\")\n    else:\n        status &= build(\"Release\")\n    if not status:\n        sys.exit(-1)\nelif cmd == \"run\":\n    if len(sys.argv) < 3:\n        print(\"please input a target to run, available targets are:\")\n        print(targets)\n        sys.exit(0)\n    runTarget(sys.argv[2])\nelif cmd == \"clean\":\n    clean()\nelse:\n    print(\"unknown option \" + cmd)\n    printHelp()",
+            "span": "if cmd == \"--help\" or cmd == \"-h\"",
+            "fix": [
+                {
+                    "before": "if cmd == \"--help\" or cmd == \"-h\":\n    printHelp()\nelif cmd == \"build\":\n    status = True\n    if len(sys.argv) == 3 and sys.argv[2] == \"Debug\":\n        status &= build(\"Debug\")\n    else:\n        status &= build(\"Release\")\n    if not status:\n        sys.exit(-1)\nelif cmd == \"run\":\n    if len(sys.argv) < 3:\n        print(\"please input a target to run, available targets are:\")\n        print(targets)\n        sys.exit(0)\n    runTarget(sys.argv[2])\nelif cmd == \"clean\":\n    clean()\nelse:\n    print(\"unknown option \" + cmd)\n    printHelp()",
+                    "after": "match cmd:\n    case \"--help\" | \"-h\":\n        printHelp()\n    case \"build\":\n        status = True\n        if len(sys.argv) == 3 and sys.argv[2] == \"Debug\":\n            status &= build(\"Debug\")\n        else:\n            status &= build(\"Release\")\n        if not status:\n            sys.exit(-1)\n    case \"run\":\n        if len(sys.argv) < 3:\n            print(\"please input a target to run, available targets are:\")\n            print(targets)\n            sys.exit(0)\n        runTarget(sys.argv[2])\n    case \"clean\":\n        clean()\n    case _:\n        print(\"unknown option \" + cmd)\n        printHelp()"
+                }
+            ]
+        }
+    ]
+}

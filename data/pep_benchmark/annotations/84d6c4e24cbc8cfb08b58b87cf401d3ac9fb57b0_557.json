@@ -6,7 +6,7 @@
       "end_lineno": 15,
       "pep": "557",
       "line": "class Player:\n    def __init__(self):",
-      "span": "class definition",
+      "span": "Player",
       "fix": [
         {
           "before": "class Player",
