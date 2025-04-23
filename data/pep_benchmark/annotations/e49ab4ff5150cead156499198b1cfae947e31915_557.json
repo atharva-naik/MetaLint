@@ -6,7 +6,7 @@
       "end_lineno": 11,
       "pep": "557",
       "line": "class LCDResponseError(IOError):\n    \"\"\"Triggered when response from LCD is not 2xx status code\"\"\"\n\n    def __init__(self, message, response):\n        self.message = message\n        self.response = response\n\n    def __str__(self):",
-      "span": "class LCDResponseError(IOError)",
+      "span": "LCDResponseError",
       "fix": [
         {
           "before": "class LCDResponseError(IOError):\n    \"\"\"Triggered when response from LCD is not 2xx status code\"\"\"\n\n    def __init__(self, message, response):\n        self.message = message\n        self.response = response\n\n    def __str__(self):",

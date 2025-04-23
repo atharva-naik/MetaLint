@@ -6,7 +6,7 @@
       "end_lineno": 6,
       "pep": "557",
       "line": "class Person:\n    def __init__(self, name, username, password, clearance):\n self.name = name\n self.username = username\n self.password = password\n self.clearance = clearance  ",
-      "span": "class Person",
+      "span": "Person",
       "fix": [
         {
           "before": "class Person:\n    def __init__(self, name, username, password, clearance):\n self.name = name\n self.username = username\n self.password = password\n self.clearance = clearance  ",

@@ -1,0 +1,18 @@
+{
+    "blob_id": "fba550631baba462a141361bd6c32d21b3e001e9",
+    "violations": [
+        {
+            "start_lineno": 13,
+            "end_lineno": 25,
+            "pep": "634",
+            "line": "if request.method == \"POST\":\\n    form = LoginForm(request.POST)\\n    if form.is_valid():\\n        username = form.cleaned_data[\"username\"]\\n        password = form.cleaned_data[\"password\"]\\n        user = authenticate(username=username, password=password)\\n        if user:\\n            messages.success(request, 'Vous êtes connecté')\\n            login(request, user)\\n        else:\\n            error = True\\nelse:\\n    form = LoginForm()",
+            "span": "if request.method == \"POST\"",
+            "fix": [
+                {
+                    "before":  "if request.method == \"POST\":\\n    form = LoginForm(request.POST)\\n    if form.is_valid():\\n        username = form.cleaned_data[\"username\"]\\n        password = form.cleaned_data[\"password\"]\\n        user = authenticate(username=username, password=password)\\n        if user:\\n            messages.success(request, 'Vous êtes connecté')\\n            login(request, user)\\n        else:\\n            error = True\\nelse:\\n    form = LoginForm()",
+                    "after": "match request.method:\\n    case \"POST\":\\n        form = LoginForm(request.POST)\\n        if form.is_valid():\\n            username = form.cleaned_data[\"username\"]\\n            password = form.cleaned_data[\"password\"]\\n            user = authenticate(username=username, password=password)\\n            if user:\\n                messages.success(request, 'Vous êtes connecté')\\n                login(request, user)\\n            else:\\n                error = True\\n    case _:\\n        form = LoginForm()"
+                }
+            ]
+        }
+    ]
+}
