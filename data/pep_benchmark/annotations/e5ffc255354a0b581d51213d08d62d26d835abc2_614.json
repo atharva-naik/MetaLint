@@ -1,0 +1,136 @@
+{
+    "blob_id": "e5ffc255354a0b581d51213d08d62d26d835abc2",
+    "violations": [
+      {
+        "start_lineno": 37,
+        "end_lineno": 42,
+        "pep": "614",
+        "line": "@pytest.mark.parametrize(\n    'setup_profiles',\n    [setup_params_general],\n    indirect=True,\n    scope=\"class\"\n)",
+        "span": "@pytest.mark.parametrize(\n    'setup_profiles',\n    [setup_params_general],\n    indirect=True,\n    scope=\"class\"\n)",
+        "fix": [
+          {
+            "before": "@pytest.mark.parametrize(\n    'setup_profiles',\n    [setup_params_general],\n    indirect=True,\n    scope=\"class\"\n)",
+            "after": "@(lambda f: pytest.mark.parametrize(\n    'setup_profiles',\n    [setup_params_general],\n    indirect=True,\n    scope=\"class\"\n)(f))"
+          }
+        ]
+      },
+      {
+        "start_lineno": 44,
+        "end_lineno": 44,
+        "pep": "614",
+        "line": "@pytest.mark.usefixtures(\"setup_profiles\")",
+        "span": "@pytest.mark.usefixtures(\"setup_profiles\")",
+        "fix": [
+          {
+            "before": "@pytest.mark.usefixtures(\"setup_profiles\")",
+            "after": "@(lambda f: pytest.mark.usefixtures(\"setup_profiles\")(f))"
+          }
+        ]
+      },
+      {
+        "start_lineno": 47,
+        "end_lineno": 47,
+        "pep": "614",
+        "line": "@pytest.mark.fiveg",
+        "span": "@pytest.mark.fiveg",
+        "fix": [
+          {
+            "before": "@pytest.mark.fiveg",
+            "after": "@(lambda f: pytest.mark.fiveg(f))"
+          }
+        ]
+      },
+      {
+        "start_lineno": 48,
+        "end_lineno": 48,
+        "pep": "614",
+        "line": "@pytest.mark.wpa2_personal",
+        "span": "@pytest.mark.wpa2_personal",
+        "fix": [
+          {
+            "before": "@pytest.mark.wpa2_personal",
+            "after": "@(lambda f: pytest.mark.wpa2_personal(f))"
+          }
+        ]
+      },
+      {
+        "start_lineno": 76,
+        "end_lineno": 76,
+        "pep": "614",
+        "line": "@pytest.mark.twog",
+        "span": "@pytest.mark.twog",
+        "fix": [
+          {
+            "before": "@pytest.mark.twog",
+            "after": "@(lambda f: pytest.mark.twog(f))"
+          }
+        ]
+      },
+      {
+        "start_lineno": 77,
+        "end_lineno": 77,
+        "pep": "614",
+        "line": "@pytest.mark.wpa2_personal",
+        "span": "@pytest.mark.wpa2_personal",
+        "fix": [
+          {
+            "before": "@pytest.mark.wpa2_personal",
+            "after": "@(lambda f: pytest.mark.wpa2_personal(f))"
+          }
+        ]
+      },
+      {
+        "start_lineno": 104,
+        "end_lineno": 104,
+        "pep": "614",
+        "line": "@pytest.mark.fiveg",
+        "span": "@pytest.mark.fiveg",
+        "fix": [
+          {
+            "before": "@pytest.mark.fiveg",
+            "after": "@(lambda f: pytest.mark.fiveg(f))"
+          }
+        ]
+      },
+      {
+        "start_lineno": 105,
+        "end_lineno": 105,
+        "pep": "614",
+        "line": "@pytest.mark.wpa",
+        "span": "@pytest.mark.wpa",
+        "fix": [
+          {
+            "before": "@pytest.mark.wpa",
+            "after": "@(lambda f: pytest.mark.wpa(f))"
+          }
+        ]
+      },
+      {
+        "start_lineno": 132,
+        "end_lineno": 132,
+        "pep": "614",
+        "line": "@pytest.mark.twog",
+        "span": "@pytest.mark.twog",
+        "fix": [
+          {
+            "before": "@pytest.mark.twog",
+            "after": "@(lambda f: pytest.mark.twog(f))"
+          }
+        ]
+      },
+      {
+        "start_lineno": 133,
+        "end_lineno": 133,
+        "pep": "614",
+        "line": "@pytest.mark.wpa",
+        "span": "@pytest.mark.wpa",
+        "fix": [
+          {
+            "before": "@pytest.mark.wpa",
+            "after": "@(lambda f: pytest.mark.wpa(f))"
+          }
+        ]
+      }
+    ]
+  }
+  
