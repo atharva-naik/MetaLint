@@ -178,3 +178,5 @@ data/ruff_meta_linting/cot_gen/train_v4_cot_v2.jsonl
 data/ruff_meta_linting/cot_gen/train_v4.jsonl
 data/ruff_meta_linting/hardness_experiment
 data/ruff_meta_linting/cot_gen/*.jsonl
+
+semantic_peps/heuristic_search_files/STACK_V2/
