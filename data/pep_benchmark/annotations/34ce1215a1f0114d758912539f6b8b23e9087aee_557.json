@@ -6,7 +6,7 @@
       "end_lineno": 8,
       "pep": "557",
       "line": "class Wizard:\n    def __init__(self, name, level):",
-      "span": "class Wizard",
+      "span": "Wizard",
       "fix": [
         {
           "before": "class Wizard",

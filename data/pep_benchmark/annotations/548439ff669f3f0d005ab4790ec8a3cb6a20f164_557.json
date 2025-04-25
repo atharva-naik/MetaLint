@@ -6,7 +6,7 @@
       "end_lineno": 5,
       "pep": "557",
       "line": "class _OFFICIATES():\n\tdef __init__(self,): ",
-      "span": "class _OFFICIATES():",
+      "span": "OFFICIATES",
       "fix": [
         {
           "before": "class _OFFICIATES",

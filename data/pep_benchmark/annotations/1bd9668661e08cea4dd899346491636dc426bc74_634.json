@@ -1,0 +1,18 @@
+{
+    "blob_id": "1bd9668661e08cea4dd899346491636dc426bc74",
+    "violations": [
+        {
+            "start_lineno": 57,
+            "end_lineno": 66,
+            "pep": "634",
+            "line": "if type(data) == dict:\n if '_ansible_verbose_override' in data:\n # avoid logging extraneous data\n data = 'omitted'\n else:\n data = data.copy()\n invocation = data.pop('invocation', None)\n data = json.dumps(data)\n if invocation is not None:\n data = json.dumps(invocation) + ' => %s ' % data",
+            "span": "if type(data) == dict",
+            "fix": [
+                {
+                    "before": "if type(data) == dict:\n if '_ansible_verbose_override' in data:\n # avoid logging extraneous data\n data = 'omitted'\n else:\n data = data.copy()\n invocation = data.pop('invocation', None)\n data = json.dumps(data)\n if invocation is not None:\n data = json.dumps(invocation) + ' => %s ' % data",
+                    "after": "match data:\\n    case {\"_ansible_verbose_override\": _}:\\n        data = \"omitted\"\\n    case dict() as d:\\n        d = d.copy()\\n        invocation = d.pop(\"invocation\", None)\\n        payload = json.dumps(d)\\n        match invocation:\\n            case None:\\n                data = payload\\n            case _:\\n                data = json.dumps(invocation) + \" => %s \" % payload"
+                }
+            ]
+        }
+    ]
+}

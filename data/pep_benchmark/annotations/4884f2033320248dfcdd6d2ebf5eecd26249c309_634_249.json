@@ -1,0 +1,31 @@
+{
+    "blob_id": "4884f2033320248dfcdd6d2ebf5eecd26249c309",
+    "violations": [
+        {
+            "start_lineno": 25,
+            "end_lineno": 33,
+            "pep": "634",
+            "line": "if hour>=0 and hour<12:\\n    reply = \\\"Hi, Good morning.\\\"\\nelif hour>=12 and hour<16:\\n    reply = \\\"Hi, Good Afternoon.\\\"\\nelif hour>=16 and hour<24:\\n    reply = \\\"Hi, Good Evening.\\\"\\nelse:\\n    reply = \\\"Hi, nice to meet you.\\\"",
+            "span": "if hour>=0 and hour<12",
+            "fix": [
+                {
+                    "before": "if hour>=0 and hour<12:\\n    reply = \\\"Hi, Good morning.\\\"\\nelif hour>=12 and hour<16:\\n    reply = \\\"Hi, Good Afternoon.\\\"\\nelif hour>=16 and hour<24:\\n    reply = \\\"Hi, Good Evening.\\\"\\nelse:\\n    reply = \\\"Hi, nice to meet you.\\\"",
+                    "after": "match hour:\\n    case h if 0 <= h < 12:\\n        reply = \\\"Hi, Good morning.\\\"\\n    case h if 12 <= h < 16:\\n        reply = \\\"Hi, Good Afternoon.\\\"\\n    case h if 16 <= h < 24:\\n        reply = \\\"Hi, Good Evening.\\\"\\n    case _:\\n        reply = \\\"Hi, nice to meet you.\\\""
+                }
+            ]
+        },
+        {
+            "start_lineno": 40,
+            "end_lineno": 40,
+            "pep": "249",
+            "line": "self.cur.execute(\"select balance from customer where customer_id='\" + str(customer_id) + \"'\")",
+            "span": "self.cur.execute",
+            "fix": [
+                {
+                    "before": "self.cur.execute(\"select balance from customer where customer_id='\" + str(customer_id) + \"'\")",
+                    "after": "self.cur.execute(\"SELECT balance FROM customer WHERE customer_id = %s\", (customer_id,))"
+                }
+            ]
+        }
+    ]
+}
