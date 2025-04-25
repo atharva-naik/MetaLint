@@ -1,0 +1,57 @@
+{
+    "blob_id": "3dd993f6f03823131322acc17b971c0a91733cae",
+    "violations": [
+        {
+            "start_lineno": 93,
+            "end_lineno": 93,
+            "pep": "614",
+            "line": "@staticmethod",
+            "span": "@staticmethod",
+            "fix": [
+                {
+                    "before": "@staticmethod",
+                    "after": "@decorators_list[0]"
+                }
+            ]
+        },
+        {
+            "start_lineno": 168,
+            "end_lineno": 168,
+            "pep": "614",
+            "line": "@staticmethod",
+            "span": "@staticmethod",
+            "fix": [
+                {
+                    "before": "@staticmethod",
+                    "after": "@decorators_map['static']"
+                }
+            ]
+        },
+        {
+            "start_lineno": 185,
+            "end_lineno": 185,
+            "pep": "614",
+            "line": "@staticmethod",
+            "span": "@staticmethod",
+            "fix": [
+                {
+                    "before": "@staticmethod",
+                    "after": "@decorators_map['static']"
+                }
+            ]
+        },
+        {
+            "start_lineno": 195,
+            "end_lineno": 195,
+            "pep": "614",
+            "line": "@staticmethod",
+            "span": "@staticmethod",
+            "fix": [
+                {
+                    "before": "@staticmethod",
+                    "after": "@decorators_map['static']"
+                }
+            ]
+        }
+    ]
+}

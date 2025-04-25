@@ -1,0 +1,31 @@
+{
+    "blob_id": "4cc3223fc3b550e593d5349191f6fa6293eadc09",
+    "violations": [
+        {
+            "start_lineno": 14,
+            "end_lineno": 26,
+            "pep": "634",
+            "line": "if self.root is None:\\n    return 1\\nelse:\\n    if self.left is None:\\n        if self.right is None:\\n            return self.root.value\\n        else:\\n            return self.right.cal_value() + self.root.value\\n    else:\\n        if self.right is None:\\n            return self.root.value + self.left.cal_value()\\n        else:\\n            return self.left.cal_value() * self.right.cal_value() + self.root.value",
+            "span": "if self.root is None",
+            "fix": [
+                {
+                    "before": "if self.root is None:\\n    return 1\\nelse:\\n    if self.left is None:\\n        if self.right is None:\\n            return self.root.value\\n        else:\\n            return self.right.cal_value() + self.root.value\\n    else:\\n        if self.right is None:\\n            return self.root.value + self.left.cal_value()\\n        else:\\n            return self.left.cal_value() * self.right.cal_value() + self.root.value",
+                    "after": "match self.root:\\n    case None:\\n        return 1\\n    case _:\\n        match (self.left, self.right):\\n            case (None, None):\\n                return self.root.value\\n            case (None, r):\\n                return r.cal_value() + self.root.value\\n            case (l, None):\\n                return self.root.value + l.cal_value()\\n            case (l, r):\\n                return l.cal_value() * r.cal_value() + self.root.value"
+                }
+            ]
+        },
+        {
+            "start_lineno": 46,
+            "end_lineno": 56,
+            "pep": "634",
+            "line": "if len(left_nodes) > 0:\\n            if len(right_nodes) > 0:\\n                for left_tree in produce_trees(left_nodes):\\n                    for right_tree in produce_trees(right_nodes):\\n                        s.append(Binary_tree(root_node, left_tree, right_tree))\\n            else:\\n                for left_tree in produce_trees(left_nodes):\\n                    s.append(Binary_tree(root_node, left_tree, None))\\n        else:\\n            for right_tree in produce_trees(right_nodes):\\n                s.append(Binary_tree(root_node, None, right_tree))",
+            "span": "if len(nodes) == 1",
+            "fix": [
+                {
+                    "before": "if len(left_nodes) > 0:\\n            if len(right_nodes) > 0:\\n                for left_tree in produce_trees(left_nodes):\\n                    for right_tree in produce_trees(right_nodes):\\n                        s.append(Binary_tree(root_node, left_tree, right_tree))\\n            else:\\n                for left_tree in produce_trees(left_nodes):\\n                    s.append(Binary_tree(root_node, left_tree, None))\\n        else:\\n            for right_tree in produce_trees(right_nodes):\\n                s.append(Binary_tree(root_node, None, right_tree))",
+                    "after": "match (left_nodes, right_nodes):\\n        case ([], r) if r:\\n            for right_tree in produce_trees(r):\\n                s.append(Binary_tree(root_node, None, right_tree))\\n        case (l, []) if l:\\n            for left_tree in produce_trees(l):\\n                s.append(Binary_tree(root_node, left_tree, None))\\n        case (l, r):\\n            for left_tree in produce_trees(l):\\n                for right_tree in produce_trees(r):\\n                    s.append(Binary_tree(root_node, left_tree, right_tree))\\nreturn s"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "blob_id": "bb0b2ce54e57b58e0ba1d3ca1c49f3b3e7830726",
+    "violations": [
+        {
+            "start_lineno": 21,
+            "end_lineno": 37,
+            "pep": "634",
+            "line": "if 'database_version' in conf.keys() and isinstance(conf['database_version'][0], str) and 'POSTGRES' in conf['database_version'][0]: if 'settings' in conf.keys(): self.evaluated_keys = ['database_version/[0]/POSTGRES', 'settings'] flags = conf['settings'][0].get('database_flags') if flags: evaluated_keys_prefix = 'settings/[0]/database_flags' if isinstance(flags[0], list): flags = flags[0] evaluated_keys_prefix += '/[0]' else: flags = [{key: flag[key][0] for key in flag} for flag in flags]",
+            "span": "if 'database_version' in conf.keys() and isinstance(conf['database_version'][0], str) and 'POSTGRES' in conf['database_version'][0]",
+            "fix": [
+                {
+                    "before": "if 'database_version' in conf.keys() and isinstance(conf['database_version'][0], str) and 'POSTGRES' in conf['database_version'][0]: if 'settings' in conf.keys(): self.evaluated_keys = ['database_version/[0]/POSTGRES', 'settings'] flags = conf['settings'][0].get('database_flags') if flags: evaluated_keys_prefix = 'settings/[0]/database_flags' if isinstance(flags[0], list): flags = flags[0] evaluated_keys_prefix += '/[0]' else: flags = [{key: flag[key][0] for key in flag} for flag in flags]",
+                    "after": "match conf.get('database_version', [None])[0]:\n    case str() if \"POSTGRES\" in conf['database_version'][0]:\n        if 'settings' in conf:\n            self.evaluated_keys = ['database_version/[0]/POSTGRES', 'settings']\n            flags = conf['settings'][0].get('database_flags')\n            if flags:\n                evaluated_keys_prefix = 'settings/[0]/database_flags'\n                match flags[0]:\n                    case list():\n                        flags = flags[0]\n                        evaluated_keys_prefix += '/[0]'\n                    case list() as _flags:\n                        flags = [{key: flag[key][0] for key in flag} for flag in _flags]\n                    case _:\n                        pass"
+                }
+            ]
+        }
+    ]
+}

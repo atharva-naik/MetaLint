@@ -1,0 +1,18 @@
+{
+    "blob_id": "19cedc2be1bf573464ac48b9541073f7d35cd6b5",
+    "violations": [
+        {
+            "start_lineno": 3,
+            "end_lineno": 12,
+            "pep": "634",
+            "line": "if score >= 90.0:\\n        return 'A'\\n    elif score >= 80.0:\\n        return 'B'\\n    elif score >= 70.0:\\n        return 'C'\\n    elif score >= 60.0:\\n        return 'D'\\n    else:\\n        return 'F'",
+            "span": "if score >= 90.0",
+            "fix": [
+                {
+                    "before": "if score >= 90.0:\\n        return 'A'\\n    elif score >= 80.0:\\n        return 'B'\\n    elif score >= 70.0:\\n        return 'C'\\n    elif score >= 60.0:\\n        return 'D'\\n    else:\\n        return 'F'",
+                    "after": "match score:\\n        case s if s >= 90.0:\\n            return 'A'\\n        case s if s >= 80.0:\\n            return 'B'\\n        case s if s >= 70.0:\\n            return 'C'\\n        case s if s >= 60.0:\\n            return 'D'\\n        case _:\\n            return 'F'"
+                }
+            ]
+        }
+    ]
+}

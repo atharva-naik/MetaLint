@@ -6,7 +6,7 @@
       "end_lineno": 9,
       "pep": "557",
       "line": "class NoSubClass(Error):\n    def __init__(self, class_name):\n        self.class_name = class_name\n\n    def __repr__(self):",
-      "span": "class NoSubClass(Error):",
+      "span": "NoSubClass",
       "fix": [
         {
           "before": "class Error(Exception):\n    pass\n\n\nclass NoSubClass(Error):\n    def __init__(self, class_name):\n        self.class_name = class_name\n\n    def __repr__(self):\n        pass",
