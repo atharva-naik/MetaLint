@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Check for shallow os.environ copies.",
+    "why-is-this-bad": "os.environ is not a dict object, but rather, a proxy object. As such, mutating a shallow\ncopy of os.environ will also mutate the original object.\n\n\nSee BPO 15373 for more information.",
+    "example": "import copy\nimport os\n\nenv = copy.copy(os.environ)\n\n\n\nUse instead:\n\n\nimport os\n\nenv = os.environ.copy()",
+    "fix-safety": "This rule's fix is marked as unsafe because replacing a shallow copy with a deep copy can lead\nto unintended side effects. If the program modifies the shallow copy at some point, changing it\nto a deep copy may prevent those modifications from affecting the original data, potentially\naltering the program's behavior.",
+    "example-split": {
+        "example-before": "import copy\nimport os\n\nenv = copy.copy(os.environ)\n\n",
+        "example-after": "\nimport os"
+    }
+}

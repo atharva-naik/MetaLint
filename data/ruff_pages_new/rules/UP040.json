@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for use of TypeAlias annotations and TypeAliasType assignments\nfor declaring type aliases.",
+    "why-is-this-bad": "The type keyword was introduced in Python 3.12 by PEP 695 for defining\ntype aliases. The type keyword is easier to read and provides cleaner\nsupport for generics.",
+    "example": "ListOfInt: TypeAlias = list[int]\nPositiveInt = TypeAliasType(\"PositiveInt\", Annotated[int, Gt(0)])\n\n\n\nUse instead:\n\n\ntype ListOfInt = list[int]\ntype PositiveInt = Annotated[int, Gt(0)]",
+    "fix-safety": "This fix is marked unsafe for TypeAlias assignments outside of stub files because of the\nruntime behavior around isinstance() calls noted above. The fix is also unsafe for\nTypeAliasType assignments if there are any comments in the replacement range that would be\ndeleted.",
+    "example-split": {
+        "example-before": "ListOfInt: TypeAlias = list[int]\nPositiveInt = TypeAliasType(\"PositiveInt\", Annotated[int, Gt(0)])\n\n",
+        "example-after": "\ntype ListOfInt = list[int]\ntype PositiveInt = Annotated[int, Gt(0)]"
+    }
+}

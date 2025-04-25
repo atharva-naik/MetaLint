@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for a DAG() class or @dag() decorator without an explicit\nschedule (or schedule_interval for Airflow 1) parameter.",
+    "why-is-this-bad": "The default value of the schedule parameter on Airflow 2 and\nschedule_interval on Airflow 1 is timedelta(days=1), which is almost\nnever what a user is looking for. Airflow 3 changed the default value to None,\nand would break existing dags using the implicit default.\n\n\nIf your dag does not have an explicit schedule / schedule_interval argument,\nAirflow 2 schedules a run for it every day (at the time determined by start_date).\nSuch a dag will no longer be scheduled on Airflow 3 at all, without any\nexceptions or other messages visible to the user.",
+    "example": "from airflow import DAG\n\n\n# Using the implicit default schedule.\ndag = DAG(dag_id=\"my_dag\")\n\n\n\nUse instead:\n\n\nfrom datetime import timedelta\n\nfrom airflow import DAG\n\n\ndag = DAG(dag_id=\"my_dag\", schedule=timedelta(days=1))",
+    "example-split": {
+        "example-before": "from airflow import DAG\n\n\n# Using the implicit default schedule.\ndag = DAG(dag_id=\"my_dag\")\n\n",
+        "example-after": "\nfrom datetime import timedelta"
+    }
+}

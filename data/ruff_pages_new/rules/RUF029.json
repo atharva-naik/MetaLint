@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for functions declared async that do not await or otherwise use features requiring the\nfunction to be declared async.",
+    "why-is-this-bad": "Declaring a function async when it's not is usually a mistake, and will artificially limit the\ncontexts where that function may be called. In some cases, labeling a function async is\nsemantically meaningful (e.g. with the trio library).",
+    "example": "async def foo():\n    bar()\n\n\n\nUse instead:\n\n\ndef foo():\n    bar()",
+    "example-split": {
+        "example-before": "async def foo():\n    bar()\n\n",
+        "example-after": "\ndef foo():\n    bar()"
+    }
+}

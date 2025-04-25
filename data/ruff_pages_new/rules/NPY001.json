@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for deprecated NumPy type aliases.",
+    "why-is-this-bad": "NumPy's np.int has long been an alias of the builtin int; the same\nis true of np.float and others. These aliases exist primarily\nfor historic reasons, and have been a cause of frequent confusion\nfor newcomers.\n\n\nThese aliases were deprecated in 1.20, and removed in 1.24.\nNote, however, that np.bool and np.long were reintroduced in 2.0 with\ndifferent semantics, and are thus omitted from this rule.",
+    "example": "import numpy as np\n\nnp.int\n\n\n\nUse instead:\n\n\nint",
+    "example-split": {
+        "example-before": "import numpy as np\n\nnp.int\n\n",
+        "example-after": "\nint"
+    }
+}

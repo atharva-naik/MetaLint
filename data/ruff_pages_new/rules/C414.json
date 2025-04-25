@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for unnecessary list(), reversed(), set(), sorted(), and\ntuple() call within list(), set(), sorted(), and tuple() calls.",
+    "why-is-this-bad": "It's unnecessary to double-cast or double-process iterables by wrapping\nthe listed functions within an additional list(), set(), sorted(), or\ntuple() call. Doing so is redundant and can be confusing for readers.",
+    "example": "list(tuple(iterable))\n\n\n\nUse instead:\n\n\nlist(iterable)\n\n\n\nThis rule applies to a variety of functions, including list(), reversed(),\nset(), sorted(), and tuple(). For example:\n\n\n\nInstead of list(list(iterable)), use list(iterable).\nInstead of list(tuple(iterable)), use list(iterable).\nInstead of tuple(list(iterable)), use tuple(iterable).\nInstead of tuple(tuple(iterable)), use tuple(iterable).\nInstead of set(set(iterable)), use set(iterable).\nInstead of set(list(iterable)), use set(iterable).\nInstead of set(tuple(iterable)), use set(iterable).\nInstead of set(sorted(iterable)), use set(iterable).\nInstead of set(reversed(iterable)), use set(iterable).\nInstead of sorted(list(iterable)), use sorted(iterable).\nInstead of sorted(tuple(iterable)), use sorted(iterable).\nInstead of sorted(sorted(iterable)), use sorted(iterable).\nInstead of sorted(reversed(iterable)), use sorted(iterable).",
+    "fix-safety": "This rule's fix is marked as unsafe, as it may occasionally drop comments\nwhen rewriting the call. In most cases, though, comments will be preserved.",
+    "example-split": {
+        "example-before": "list(tuple(iterable))\n\n",
+        "example-after": "\nlist(iterable)"
+    }
+}

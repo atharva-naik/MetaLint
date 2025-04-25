@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for use of PEP 695 type parameters with leading underscores in generic classes and\nfunctions.",
+    "why-is-this-bad": "PEP 695 type parameters are already restricted in scope to the class or function in which they\nappear, so leading underscores just hurt readability without the usual privacy benefits.\n\n\nHowever, neither a diagnostic nor a fix will be emitted for \"sunder\" (_T_) or \"dunder\"\n(__T__) type parameter names as these are not considered private.",
+    "example": "class GenericClass[_T]:\n    var: _T\n\n\ndef generic_function[_T](var: _T) -> list[_T]:\n    return var[0]\n\n\n\nUse instead:\n\n\nclass GenericClass[T]:\n    var: T\n\n\ndef generic_function[T](var: T) -> list[T]:\n    return var[0]",
+    "example-split": {
+        "example-before": "class GenericClass[_T]:\n    var: _T\n\n\ndef generic_function[_T](var: _T) -> list[_T]:\n    return var[0]\n\n",
+        "example-after": "\nclass GenericClass[T]:\n    var: T"
+    }
+}

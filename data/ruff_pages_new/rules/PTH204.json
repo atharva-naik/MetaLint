@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of os.path.getmtime.",
+    "why-is-this-bad": "pathlib offers a high-level API for path manipulation, as compared to\nthe lower-level API offered by os.path.\n\n\nWhen possible, using Path object methods such as Path.stat() can\nimprove readability over the os.path module's counterparts (e.g.,\nos.path.getmtime()).",
+    "example": "import os\n\nos.path.getmtime(__file__)\n\n\n\nUse instead:\n\n\nfrom pathlib import Path\n\nPath(__file__).stat().st_mtime",
+    "example-split": {
+        "example-before": "import os\n\nos.path.getmtime(__file__)\n\n",
+        "example-after": "\nfrom pathlib import Path"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for unnecessary from_float and from_decimal usages to construct\nDecimal and Fraction instances.",
+    "why-is-this-bad": "Since Python 3.2, the Fraction and Decimal classes can be constructed\nby passing float or decimal instances to the constructor directly. As such,\nthe use of from_float and from_decimal methods is unnecessary, and\nshould be avoided in favor of the more concise constructor syntax.",
+    "example": "Decimal.from_float(4.2)\nDecimal.from_float(float(\"inf\"))\nFraction.from_float(4.2)\nFraction.from_decimal(Decimal(\"4.2\"))\n\n\n\nUse instead:\n\n\nDecimal(4.2)\nDecimal(\"inf\")\nFraction(4.2)\nFraction(Decimal(4.2))",
+    "example-split": {
+        "example-before": "Decimal.from_float(4.2)\nDecimal.from_float(float(\"inf\"))\nFraction.from_float(4.2)\nFraction.from_decimal(Decimal(\"4.2\"))\n\n",
+        "example-after": "\nDecimal(4.2)\nDecimal(\"inf\")\nFraction(4.2)\nFraction(Decimal(4.2))"
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for dictionary unpacking in a for loop without calling .items().",
+    "why-is-this-bad": "When iterating over a dictionary in a for loop, if a dictionary is unpacked\nwithout calling .items(), it could lead to a runtime error if the keys are not\na tuple of two elements.\n\n\nIt is likely that you're looking for an iteration over (key, value) pairs which\ncan only be achieved when calling .items().",
+    "example": "data = {\"Paris\": 2_165_423, \"New York City\": 8_804_190, \"Tokyo\": 13_988_129}\n\nfor city, population in data:\n    print(f\"{city} has population {population}.\")\n\n\n\nUse instead:\n\n\ndata = {\"Paris\": 2_165_423, \"New York City\": 8_804_190, \"Tokyo\": 13_988_129}\n\nfor city, population in data.items():\n    print(f\"{city} has population {population}.\")",
+    "fix-safety": "Due to the known problem with tuple keys, this fix is unsafe.",
+    "example-split": {
+        "example-before": "data = {\"Paris\": 2_165_423, \"New York City\": 8_804_190, \"Tokyo\": 13_988_129}\n\nfor city, population in data:\n    print(f\"{city} has population {population}.\")\n\n",
+        "example-after": "\ndata = {\"Paris\": 2_165_423, \"New York City\": 8_804_190, \"Tokyo\": 13_988_129}"
+    }
+}

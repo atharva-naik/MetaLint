@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for formatter suppression comments that are ineffective or incompatible\nwith Ruff's formatter.",
+    "why-is-this-bad": "Suppression comments that do not actually prevent formatting could cause unintended changes\nwhen the formatter is run.",
+    "example": "In the following example, all suppression comments would cause\na rule violation.\n\n\ndef decorator():\n    pass\n\n\n@decorator\n# fmt: off\ndef example():\n    if True:\n        # fmt: skip\n        expression = [\n            # fmt: off\n            1,\n            2,\n        ]\n        # yapf: disable\n    # fmt: on\n    # yapf: enable",
+    "example-split": {
+        "example-before": "In the following example, all suppression comments would cause\na rule violation.\n\n\ndef decorator():\n    pass\n\n\n@decorator\n# fmt: off\ndef example():\n    if True:\n        # fmt: skip\n        expression = [\n            # fmt: off\n            1,\n            2,\n        ]\n        # yapf: disable\n    # fmt: on\n    # yapf: enable",
+        "example-after": "In the following example, all suppression comments would cause\na rule violation."
+    }
+}

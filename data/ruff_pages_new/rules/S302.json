@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for calls to marshal functions.",
+    "why-is-this-bad": "Deserializing untrusted data with marshal is insecure, as it can allow for\nthe creation of arbitrary objects, which can then be used to achieve\narbitrary code execution and otherwise unexpected behavior.\n\n\nAvoid deserializing untrusted data with marshal. Instead, consider safer\nformats, such as JSON.\n\n\nIf you must deserialize untrusted data with marshal, consider signing the\ndata with a secret key and verifying the signature before deserializing the\npayload. This will prevent an attacker from injecting arbitrary objects\ninto the serialized data.\n\n\nIn preview, this rule will also flag references to marshal functions.",
+    "example": "import marshal\n\nwith open(\"foo.marshal\", \"rb\") as file:\n    foo = marshal.load(file)\n\n\n\nUse instead:\n\n\nimport json\n\nwith open(\"foo.json\", \"rb\") as file:\n    foo = json.load(file)",
+    "example-split": {
+        "example-before": "import marshal\n\nwith open(\"foo.marshal\", \"rb\") as file:\n    foo = marshal.load(file)\n\n",
+        "example-after": "\nimport json"
+    }
+}

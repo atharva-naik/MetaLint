@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for logging calls with exc_info= outside exception handlers.",
+    "why-is-this-bad": "Using exc_info=True outside of an exception handler\nattaches None as the exception information, leading to confusing messages:\n\n\n>>> logging.warning(\"Uh oh\", exc_info=True)\nWARNING:root:Uh oh\nNoneType: None",
+    "example": "import logging\n\n\nlogging.warning(\"Foobar\", exc_info=True)\n\n\n\nUse instead:\n\n\nimport logging\n\n\nlogging.warning(\"Foobar\")",
+    "fix-safety": "The fix is always marked as unsafe, as it changes runtime behavior.",
+    "example-split": {
+        "example-before": "import logging\n\n\nlogging.warning(\"Foobar\", exc_info=True)\n\n",
+        "example-after": "\nimport logging"
+    }
+}

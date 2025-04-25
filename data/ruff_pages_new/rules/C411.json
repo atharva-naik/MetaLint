@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for unnecessary list() calls around list comprehensions.",
+    "why-is-this-bad": "It is redundant to use a list() call around a list comprehension.",
+    "example": "list([f(x) for x in foo])\n\n\n\nUse instead\n\n\n[f(x) for x in foo]",
+    "fix-safety": "This rule's fix is marked as unsafe, as it may occasionally drop comments\nwhen rewriting the call. In most cases, though, comments will be preserved.",
+    "example-split": {
+        "example-before": "list([f(x) for x in foo])\n\n\n\nUse instead\n\n\n[f(x) for x in foo]",
+        "example-after": "list([f(x) for x in foo])"
+    }
+}

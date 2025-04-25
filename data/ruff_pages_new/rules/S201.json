@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of debug=True in Flask.",
+    "why-is-this-bad": "Enabling debug mode shows an interactive debugger in the browser if an\nerror occurs, and allows running arbitrary Python code from the browser.\nThis could leak sensitive information, or allow an attacker to run\narbitrary code.",
+    "example": "import flask\n\napp = Flask()\n\napp.run(debug=True)\n\n\n\nUse instead:\n\n\nimport flask\n\napp = Flask()\n\napp.run(debug=os.environ[\"ENV\"] == \"dev\")",
+    "example-split": {
+        "example-before": "import flask\n\napp = Flask()\n\napp.run(debug=True)\n\n",
+        "example-after": "\nimport flask"
+    }
+}

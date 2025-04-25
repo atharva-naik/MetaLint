@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for long exception messages that are not defined in the exception\nclass itself.",
+    "why-is-this-bad": "By formatting an exception message at the raise site, the exception class\nbecomes less reusable, and may now raise inconsistent messages depending on\nwhere it is raised.\n\n\nIf the exception message is instead defined within the exception class, it\nwill be consistent across all raise invocations.\n\n\nThis rule is not enforced for some built-in exceptions that are commonly\nraised with a message and would be unusual to subclass, such as\nNotImplementedError.",
+    "example": "class CantBeNegative(Exception):\n    pass\n\n\ndef foo(x):\n    if x < 0:\n        raise CantBeNegative(f\"{x} is negative\")\n\n\n\nUse instead:\n\n\nclass CantBeNegative(Exception):\n    def __init__(self, number):\n        super().__init__(f\"{number} is negative\")\n\n\ndef foo(x):\n    if x < 0:\n        raise CantBeNegative(x)",
+    "example-split": {
+        "example-before": "class CantBeNegative(Exception):\n    pass\n\n\ndef foo(x):\n    if x < 0:\n        raise CantBeNegative(f\"{x} is negative\")\n\n",
+        "example-after": "\nclass CantBeNegative(Exception):\n    def __init__(self, number):\n        super().__init__(f\"{number} is negative\")"
+    }
+}

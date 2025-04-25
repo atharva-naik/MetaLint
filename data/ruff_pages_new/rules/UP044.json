@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for uses of Unpack[] on Python 3.11 and above, and suggests\nusing * instead.",
+    "why-is-this-bad": "PEP 646 introduced a new syntax for unpacking sequences based on the *\noperator. This syntax is more concise and readable than the previous\nUnpack[] syntax.",
+    "example": "from typing import Unpack\n\n\ndef foo(*args: Unpack[tuple[int, ...]]) -> None:\n    pass\n\n\n\nUse instead:\n\n\ndef foo(*args: *tuple[int, ...]) -> None:\n    pass",
+    "fix-safety": "This rule's fix is marked as unsafe, as Unpack[T] and *T are considered\ndifferent values when introspecting types at runtime. However, in most cases,\nthe fix should be safe to apply.",
+    "example-split": {
+        "example-before": "from typing import Unpack\n\n\ndef foo(*args: Unpack[tuple[int, ...]]) -> None:\n    pass\n\n",
+        "example-after": "\ndef foo(*args: *tuple[int, ...]) -> None:\n    pass"
+    }
+}

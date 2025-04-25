@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for undocumented public package definitions.",
+    "why-is-this-bad": "Public packages should be documented via docstrings to outline their\npurpose and contents.\n\n\nGenerally, package docstrings should list the modules and subpackages that\nare exported by the package.\n\n\nIf the codebase adheres to a standard format for package docstrings, follow\nthat format for consistency.",
+    "example": "__all__ = [\"Player\", \"Game\"]\n\n\n\nUse instead:\n\n\n\"\"\"Game and player management package.\n\nThis package provides classes for managing players and games.\n\"\"\"\n\n__all__ = [\"player\", \"game\"]",
+    "example-split": {
+        "example-before": "__all__ = [\"Player\", \"Game\"]\n\n",
+        "example-after": "\n\"\"\"Game and player management package."
+    }
+}

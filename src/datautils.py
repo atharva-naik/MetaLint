@@ -333,6 +333,28 @@ Code file:
 Violations per idiom:
 """
 
+SAMPLE_OUTPUT = """### Final Idiom Violations Found
+
+**Idiom ERA001 Violations:**
+
+{"line": " 12 \t\t#event = forms.ModelChoiceField(queryset=Inquiry.objects.filter(owner=kwargs.pop('user')))", "span": "#event = forms.ModelChoiceField(queryset=Inquiry.objects.filter(owner=kwargs.pop('user')))", "fix": null}
+
+**Idiom C901 Violations:**
+
+NO VIOLATIONS FOUND
+
+**Idiom I001 Violations:**
+
+{"line": "  1 from django import forms\n  2 from django.forms.models import inlineformset_factory\n  3 from .models import Request\n  4 from inquiry.models import *", "span": "from django import forms\nfrom django.forms.models import inlineformset_factory\nfrom .models import Request\nfrom inquiry.models import *", "fix": [{"before": "from django import forms\nfrom django.forms.models import inlineformset_factory\nfrom .models import Request\nfrom inquiry.models import *\n\n\n\n", "after": "from django import forms\nfrom django.forms.models import inlineformset_factory\nfrom inquiry.models import *\n\nfrom .models import Request\n\n\n"}]}
+
+**Idiom I002 Violations:**
+
+NO VIOLATIONS FOUND
+
+**Idiom BLE001 Violations:**
+
+NO VIOLATIONS FOUND"""
+
 META_LINTING_PROMPT_ZERO_SHOT = """Look at the following list of code idiom specifications with definitions and examples:
 {LIST_OF_IDIOM_SPECS}
 
@@ -341,24 +363,17 @@ Given these idioms, your task is to look at a code file and detect violations of
 Code file:
 {CODE_FILE}
 
-Your output should follow the format below and should be enclosed in a section called "### Final Idiom Violations:". For idioms where violations are found you should have a JSON on a new line per vioaltion. For idioms where violations are not found you should have the text "NO VIOLATIONS FOUND". Look at the partiale example output below.
+Your output should follow the format below and should be enclosed in a section called "### Final Idiom Violations:". For idioms where violations are found you should have a JSON on a new line per vioaltion WITHOUT including any ```json``` backticks. However for multi-line violations the whole violation should be put in a single json in a filed called "line". Additionally if a fix is possible it should be put in a field called "fix". For idioms where violations are not found you should have the text "NO VIOLATIONS FOUND". The JSON for each violation should be properly escaped. Look at the example output below. 
 
-### Final Idiom Violations:
-**Idiom 506 Violations:**
+{SAMPLE_OUTPUT}
 
-{"line": "  7     password =  "".join(random.choice(characters) for x in range(16))", "span": "random", "fix": null}
-{"line": "  8     password =  "".join(random.choice(characters) for x in range(16))", "span": "random", "fix": null}
+Now provide the violations per idiom for the given code file. Don't forget to include the "### Final Idiom Violations Found" section in your response and follow the output format shown above. Also please remember to NOT USE ```json``` backticks. Please remember to escape each JSON in the predictions (like escaping " as \" and always using " instead of ' for the JSON fields).
 
-**Idiom 557 Violations:**
-
-NO VIOLATIONS FOUND
-....
-
-Now provide the violations per idiom for the given code file:
+Violations per idiom:
 """
 
 def generate_response_from_violations(violations, stack_file_lines: list[str], meta_task_idiom_codes, include_message: bool=False, add_line_numbers: bool=False):
-    filt_violations = [violation for violation in violations if violation['code'] in meta_task_idiom_codes if code not in ["ANN001", "ANN201"]]
+    filt_violations = [violation for violation in violations if violation['code'] in meta_task_idiom_codes and violation['code'] not in ["ANN001", "ANN201"]]
     grouped_violations = {code: [] for code in meta_task_idiom_codes if code not in ["ANN001", "ANN201"]}
     # group violations by each idiom in the meta-task.
     for violation in filt_violations:
@@ -423,6 +438,13 @@ def generate_response_from_violations(violations, stack_file_lines: list[str], m
             response += "\n\n"
 
     return response
+
+def add_line_no_to_stack_file(stack_file: str):
+    stack_file_with_lineno = []
+    for lineno, line in enumerate(stack_file.split("\n")):
+        stack_file_with_lineno.append(f"{str(lineno+1).rjust(3)} {line}")
+
+    return "\n".join(stack_file_with_lineno)
 
 def reprocess_data(train_data, code_idiom_specs: dict, ruff_results: dict, stack_data: dict, add_line_numbers: bool=True):
     for rec in tqdm(train_data):
@@ -538,26 +560,28 @@ class MetaLinterDataset:
                 # code_lines = linter_rec["code_file"].split("\n")
                 num_code_lines = linter_rec["num_code_lines"]
                 if num_code_lines > max_code_lines: continue # skip files with too many lines of code.
-                prompt, response = self.generate_prompt_and_response(subset_idiom_specs, linter_record=linter_rec)
-                # except Exception as e: print(e); continue
-                ID = f"{'-'.join(idiom_list)}_{blob_id}"
-                source = "rull_linter/"+"-".join(idiom_list)
-                CTR += 1
-                data.append({
-                    "id": ID,
-                    "messages": [
-                        {"content": prompt, "role": "user"},
-                        {"content": response, "role": "assistant"}
-                    ],
-                    "source": source,
-                })
+                try: 
+                    prompt, response = self.generate_prompt_and_response_v2(subset_idiom_specs, linter_record=linter_rec)
+                    # except Exception as e: print(e); continue
+                    ID = f"{'-'.join(idiom_list)}_{blob_id}"
+                    source = "rull_linter/"+"-".join(idiom_list)
+                    CTR += 1
+                    data.append({
+                        "id": ID,
+                        "messages": [
+                            {"content": prompt, "role": "user"},
+                            {"content": response, "role": "assistant"}
+                        ],
+                        "source": source,
+                    })
+                except IndexError: pass
         else:
             indices = random.sample(len(self.linter_data), k=k)
             blob_ids = list(self.linter_data.keys())
             for i in indices:
                 blob_id = blob_ids[i]
                 linter_rec = self.linter_data[blob_id]
-                try: prompt, response = self.generate_prompt_and_response(subset_idiom_specs, linter_record=linter_rec)
+                try: prompt, response = self.generate_prompt_and_response_v2(subset_idiom_specs, linter_record=linter_rec)
                 except Exception as e: 
                     print(e)
                     continue
@@ -595,6 +619,28 @@ class MetaLinterDataset:
             Example = f"\n\nExample:\n{idiom_spec['example']}"
         else: Example = ""
         return f"# Idiom {idiom_spec['code']} ({idiom_spec['name']})\n\nDefinition: {idiom_spec['what-it-does']}\n\nRationale: {idiom_spec['why-is-this-bad']}"+Example
+
+    def generate_prompt_and_response_v2(self, idiom_specs: dict[str, dict], linter_record):
+        """Can take a subset of all the idiom specs"""
+        
+        idioms_to_be_covered = list(idiom_specs.keys())
+        LIST_OF_IDIOM_SPECS = "\n\n".join([getattr(self, f"idiom_spec_extractor_for_{self.linter_name}")(idiom_spec) for idiom_spec in idiom_specs.values()])
+        
+        # add line numbers to code file.
+        CODE_FILE = linter_record["code_file"]
+        CODE_FILE_WITH_LINENOS = add_line_no_to_stack_file(CODE_FILE)
+
+        # generate response.
+        response = generate_response_from_violations(
+            violations=linter_record['idioms_detected'], 
+            stack_file_lines=CODE_FILE_WITH_LINENOS.split("\n"), 
+            meta_task_idiom_codes=idioms_to_be_covered,
+            add_line_numbers=True
+        )
+
+        prompt = META_LINTING_PROMPT_V2.format(LIST_OF_IDIOM_SPECS=LIST_OF_IDIOM_SPECS, CODE_FILE=CODE_FILE_WITH_LINENOS)
+
+        return prompt, response
 
     def generate_prompt_and_response(self, idiom_specs: dict[str, dict], linter_record):
         """Can take a subset of all the idiom specs"""
@@ -684,11 +730,11 @@ class MetaLinterDataset:
             code_file = self.code_files[blob_id]['content']
             code_lines = code_file.split("\n")
             # if len(code_lines) > self.max_code_lines: continue
-            try: 
-                rec = convert_location_to_code_line(rec, code_lines=code_lines)
-            except IndexError:
-                # print(blob_id)
-                continue
+            # try: 
+            #     rec = convert_location_to_code_line(rec, code_lines=code_lines)
+            # except IndexError:
+            #     # print(blob_id)
+            #     continue
             # print(len(code_lines))
             idioms_detected = []
             for violation in rec["violations"]:

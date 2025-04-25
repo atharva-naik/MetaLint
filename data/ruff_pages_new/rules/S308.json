@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of calls to django.utils.safestring.mark_safe.",
+    "why-is-this-bad": "Cross-site scripting (XSS) vulnerabilities allow attackers to execute\narbitrary JavaScript. To guard against XSS attacks, Django templates\nassumes that data is unsafe and automatically escapes malicious strings\nbefore rending them.\n\n\ndjango.utils.safestring.mark_safe marks a string as safe for use in HTML\ntemplates, bypassing XSS protection. Its usage can be dangerous if the\ncontents of the string are dynamically generated, because it may allow\ncross-site scripting attacks if the string is not properly escaped.\n\n\nFor dynamically generated strings, consider utilizing\ndjango.utils.html.format_html.\n\n\nIn preview, this rule will also flag references to django.utils.safestring.mark_safe.",
+    "example": "from django.utils.safestring import mark_safe\n\n\ndef render_username(username):\n    return mark_safe(f\"<i>{username}</i>\")  # Dangerous if username is user-provided.\n\n\n\nUse instead:\n\n\nfrom django.utils.html import format_html\n\n\ndef render_username(username):\n    return django.utils.html.format_html(\"<i>{}</i>\", username)  # username is escaped.",
+    "example-split": {
+        "example-before": "from django.utils.safestring import mark_safe\n\n\ndef render_username(username):\n    return mark_safe(f\"<i>{username}</i>\")  # Dangerous if username is user-provided.\n\n",
+        "example-after": "\nfrom django.utils.html import format_html"
+    }
+}

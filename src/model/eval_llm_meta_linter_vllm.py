@@ -14,7 +14,8 @@ sys.path.append(module_path)
 from src.datautils import read_jsonl
 
 # vLLM server details
-VLLM_SERVER_URL = "http://0.0.0.0:8001/v1/chat/completions"
+PORT = 8002
+VLLM_SERVER_URL = f"http://0.0.0.0:{PORT}/v1/chat/completions"
 MAX_RETRIES = 5
 MAX_SEQ_LEN = 32768
 MAX_NEW_TOKENS = 2048

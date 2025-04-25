@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the presence of unused private type aliases.",
+    "why-is-this-bad": "A private type alias that is defined but not used is likely a\nmistake. It should either be used, made public, or removed to avoid\nconfusion.",
+    "example": "import typing\n\n_UnusedTypeAlias: typing.TypeAlias = int\n\n\n\nUse instead:\n\n\nimport typing\n\n_UsedTypeAlias: typing.TypeAlias = int\n\ndef func(arg: _UsedTypeAlias) -> _UsedTypeAlias: ...",
+    "example-split": {
+        "example-before": "import typing\n\n_UnusedTypeAlias: typing.TypeAlias = int\n\n",
+        "example-after": "\nimport typing"
+    }
+}

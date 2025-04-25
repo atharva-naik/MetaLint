@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for code that contains syntax errors.",
+    "why-is-this-bad": "Code with syntax errors cannot be executed. Such errors are likely a\nmistake.",
+    "example": "x =\n\n\n\nUse instead:\n\n\nx = 1",
+    "example-split": {
+        "example-before": "x =\n\n",
+        "example-after": "\nx = 1"
+    }
+}

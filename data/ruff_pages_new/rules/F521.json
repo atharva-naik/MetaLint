@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for str.format calls with invalid format strings.",
+    "why-is-this-bad": "Invalid format strings will raise a ValueError.",
+    "example": "\"{\".format(foo)\n\n\n\nUse instead:\n\n\n\"{}\".format(foo)",
+    "example-split": {
+        "example-before": "\"{\".format(foo)\n\n",
+        "example-after": "\n\"{}\".format(foo)"
+    }
+}

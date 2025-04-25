@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of deprecated NumPy functions.",
+    "why-is-this-bad": "When NumPy functions are deprecated, they are usually replaced with\nnewer, more efficient versions, or with functions that are more\nconsistent with the rest of the NumPy API.\n\n\nPrefer newer APIs over deprecated ones.",
+    "example": "import numpy as np\n\nnp.alltrue([True, False])\n\n\n\nUse instead:\n\n\nimport numpy as np\n\nnp.all([True, False])",
+    "example-split": {
+        "example-before": "import numpy as np\n\nnp.alltrue([True, False])\n\n",
+        "example-after": "\nimport numpy as np"
+    }
+}

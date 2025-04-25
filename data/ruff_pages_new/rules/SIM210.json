@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for if expressions that can be replaced with bool() calls.",
+    "why-is-this-bad": "if expressions that evaluate to True for a truthy condition an False\nfor a falsey condition can be replaced with bool() calls, which are more\nconcise and readable.",
+    "example": "True if a else False\n\n\n\nUse instead:\n\n\nbool(a)",
+    "example-split": {
+        "example-before": "True if a else False\n\n",
+        "example-after": "\nbool(a)"
+    }
+}

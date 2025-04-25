@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for assignment of self and cls in instance and class methods respectively.\n\n\nThis check also applies to __new__ even though this is technically\na static method.",
+    "why-is-this-bad": "The identifiers self and cls are conventional in Python for the first parameter of instance\nmethods and class methods, respectively. Assigning new values to these variables can be\nconfusing for others reading your code; using a different variable name can lead to clearer\ncode.",
+    "example": "class Version:\n    def add(self, other):\n        self = self + other\n        return self\n\n    @classmethod\n    def superclass(cls):\n        cls = cls.__mro__[-1]\n        return cls\n\n\n\nUse instead:\n\n\nclass Version:\n    def add(self, other):\n        new_version = self + other\n        return new_version\n\n    @classmethod\n    def superclass(cls):\n        supercls = cls.__mro__[-1]\n        return supercls",
+    "example-split": {
+        "example-before": "class Version:\n    def add(self, other):\n        self = self + other\n        return self\n\n    @classmethod\n    def superclass(cls):\n        cls = cls.__mro__[-1]\n        return cls\n\n",
+        "example-after": "\nclass Version:\n    def add(self, other):\n        new_version = self + other\n        return new_version"
+    }
+}

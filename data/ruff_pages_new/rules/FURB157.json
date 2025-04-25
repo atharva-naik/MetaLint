@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for unnecessary string literal or float casts in Decimal\nconstructors.",
+    "why-is-this-bad": "The Decimal constructor accepts a variety of arguments, including\nintegers, floats, and strings. However, it's not necessary to cast\ninteger literals to strings when passing them to the Decimal.\n\n\nSimilarly, Decimal accepts inf, -inf, and nan as string literals,\nso there's no need to wrap those values in a float call when passing\nthem to the Decimal constructor.\n\n\nPrefer the more concise form of argument passing for Decimal\nconstructors, as it's more readable and idiomatic.",
+    "example": "Decimal(\"0\")\nDecimal(float(\"Infinity\"))\n\n\n\nUse instead:\n\n\nDecimal(0)\nDecimal(\"Infinity\")",
+    "example-split": {
+        "example-before": "Decimal(\"0\")\nDecimal(float(\"Infinity\"))\n\n",
+        "example-after": "\nDecimal(0)\nDecimal(\"Infinity\")"
+    }
+}

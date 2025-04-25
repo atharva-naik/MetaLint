@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of ssl._create_unverified_context.",
+    "why-is-this-bad": "PEP 476 enabled certificate and hostname validation by default in Python\nstandard library HTTP clients. Previously, Python did not validate\ncertificates by default, which could allow an attacker to perform a \"man in\nthe middle\" attack by intercepting and modifying traffic between client and\nserver.\n\n\nTo support legacy environments, ssl._create_unverified_context reverts to\nthe previous behavior that does perform verification. Otherwise, use\nssl.create_default_context to create a secure context.\n\n\nIn preview, this rule will also flag references to ssl._create_unverified_context.",
+    "example": "import ssl\n\ncontext = ssl._create_unverified_context()\n\n\n\nUse instead:\n\n\nimport ssl\n\ncontext = ssl.create_default_context()",
+    "example-split": {
+        "example-before": "import ssl\n\ncontext = ssl._create_unverified_context()\n\n",
+        "example-after": "\nimport ssl"
+    }
+}

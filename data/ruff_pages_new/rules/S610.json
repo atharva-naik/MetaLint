@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of Django's extra function where one or more arguments\npassed are not literal expressions.",
+    "why-is-this-bad": "Django's extra function can be used to execute arbitrary SQL queries,\nwhich can in turn lead to SQL injection vulnerabilities.",
+    "example": "from django.contrib.auth.models import User\n\n# String interpolation creates a security loophole that could be used\n# for SQL injection:\nUser.objects.all().extra(select={\"test\": \"%secure\" % \"nos\"})\n\n\n\nUse instead:\n\n\nfrom django.contrib.auth.models import User\n\n# SQL injection is impossible if all arguments are literal expressions:\nUser.objects.all().extra(select={\"test\": \"secure\"})",
+    "example-split": {
+        "example-before": "from django.contrib.auth.models import User\n\n# String interpolation creates a security loophole that could be used\n# for SQL injection:\nUser.objects.all().extra(select={\"test\": \"%secure\" % \"nos\"})\n\n",
+        "example-after": "\nfrom django.contrib.auth.models import User"
+    }
+}

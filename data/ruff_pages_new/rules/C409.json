@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for tuple calls that take unnecessary list or tuple literals as\narguments. In preview, this also includes unnecessary list comprehensions\nwithin tuple calls.",
+    "why-is-this-bad": "It's unnecessary to use a list or tuple literal within a tuple() call,\nsince there is a literal syntax for these types.\n\n\nIf a list literal was passed, then it should be rewritten as a tuple\nliteral. Otherwise, if a tuple literal was passed, then the outer call\nto tuple() should be removed.\n\n\nIn preview, this rule also checks for list comprehensions within tuple()\ncalls. If a list comprehension is found, it should be rewritten as a\ngenerator expression.",
+    "example": "tuple([1, 2])\ntuple((1, 2))\ntuple([x for x in range(10)])\n\n\n\nUse instead:\n\n\n(1, 2)\n(1, 2)\ntuple(x for x in range(10))",
+    "fix-safety": "This rule's fix is marked as unsafe, as it may occasionally drop comments\nwhen rewriting the call. In most cases, though, comments will be preserved.",
+    "example-split": {
+        "example-before": "tuple([1, 2])\ntuple((1, 2))\ntuple([x for x in range(10)])\n\n",
+        "example-after": "\n(1, 2)\n(1, 2)\ntuple(x for x in range(10))"
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for datetime.fromisoformat() calls\nwhere the only argument is an inline replacement\nof Z with a zero offset timezone.",
+    "why-is-this-bad": "On Python 3.11 and later, datetime.fromisoformat() can handle most ISO 8601\nformats including ones affixed with Z, so such an operation is unnecessary.\n\n\nMore information on unsupported formats\ncan be found in the official documentation.",
+    "example": "from datetime import datetime\n\n\ndate = \"2025-01-01T00:00:00Z\"\n\ndatetime.fromisoformat(date.replace(\"Z\", \"+00:00\"))\ndatetime.fromisoformat(date[:-1] + \"-00\")\ndatetime.fromisoformat(date.strip(\"Z\", \"-0000\"))\ndatetime.fromisoformat(date.rstrip(\"Z\", \"-00:00\"))\n\n\n\nUse instead:\n\n\nfrom datetime import datetime\n\n\ndate = \"2025-01-01T00:00:00Z\"\n\ndatetime.fromisoformat(date)",
+    "fix-safety": "The fix is always marked as unsafe,\nas it might change the program's behaviour.\n\n\nFor example, working code might become non-working:\n\n\nd = \"Z2025-01-01T00:00:00Z\"  # Note the leading `Z`\n\ndatetime.fromisoformat(d.strip(\"Z\") + \"+00:00\")  # Fine\ndatetime.fromisoformat(d)  # Runtime error",
+    "example-split": {
+        "example-before": "from datetime import datetime\n\n\ndate = \"2025-01-01T00:00:00Z\"\n\ndatetime.fromisoformat(date.replace(\"Z\", \"+00:00\"))\ndatetime.fromisoformat(date[:-1] + \"-00\")\ndatetime.fromisoformat(date.strip(\"Z\", \"-0000\"))\ndatetime.fromisoformat(date.rstrip(\"Z\", \"-00:00\"))\n\n",
+        "example-after": "\nfrom datetime import datetime"
+    }
+}

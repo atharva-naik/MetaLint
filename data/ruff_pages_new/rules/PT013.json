@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for incorrect import of pytest.",
+    "why-is-this-bad": "For consistency, pytest should be imported as import pytest and its members should be\naccessed in the form of pytest.xxx.yyy for consistency",
+    "example": "import pytest as pt\nfrom pytest import fixture\n\n\n\nUse instead:\n\n\nimport pytest",
+    "example-split": {
+        "example-before": "import pytest as pt\nfrom pytest import fixture\n\n",
+        "example-after": "\nimport pytest"
+    }
+}

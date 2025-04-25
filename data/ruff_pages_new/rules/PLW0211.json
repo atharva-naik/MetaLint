@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for static methods that use self or cls as their first argument.\nThis rule also applies to __new__ methods, which are implicitly static.",
+    "why-is-this-bad": "PEP 8 recommends the use of self and cls as the first arguments for\ninstance methods and class methods, respectively. Naming the first argument\nof a static method as self or cls can be misleading, as static methods\ndo not receive an instance or class reference as their first argument.",
+    "example": "class Wolf:\n    @staticmethod\n    def eat(self):\n        pass\n\n\n\nUse instead:\n\n\nclass Wolf:\n    @staticmethod\n    def eat(sheep):\n        pass",
+    "example-split": {
+        "example-before": "class Wolf:\n    @staticmethod\n    def eat(self):\n        pass\n\n",
+        "example-after": "\nclass Wolf:\n    @staticmethod\n    def eat(sheep):\n        pass"
+    }
+}

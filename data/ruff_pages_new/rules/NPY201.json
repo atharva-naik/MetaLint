@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of NumPy functions and constants that were removed from\nthe main namespace in NumPy 2.0.",
+    "why-is-this-bad": "NumPy 2.0 includes an overhaul of NumPy's Python API, intended to remove\nredundant aliases and routines, and establish unambiguous mechanisms for\naccessing constants, dtypes, and functions.\n\n\nAs part of this overhaul, a variety of deprecated NumPy functions and\nconstants were removed from the main namespace.\n\n\nThe majority of these functions and constants can be automatically replaced\nby other members of the NumPy API or by equivalents from the Python\nstandard library. With the exception of renaming numpy.byte_bounds to\nnumpy.lib.array_utils.byte_bounds, all such replacements are backwards\ncompatible with earlier versions of NumPy.\n\n\nThis rule flags all uses of removed members, along with automatic fixes for\nany backwards-compatible replacements.",
+    "example": "import numpy as np\n\narr1 = [np.Infinity, np.NaN, np.nan, np.PINF, np.inf]\narr2 = [np.float_(1.5), np.float64(5.1)]\nnp.round_(arr2)\n\n\n\nUse instead:\n\n\nimport numpy as np\n\narr1 = [np.inf, np.nan, np.nan, np.inf, np.inf]\narr2 = [np.float64(1.5), np.float64(5.1)]\nnp.round(arr2)",
+    "example-split": {
+        "example-before": "import numpy as np\n\narr1 = [np.Infinity, np.NaN, np.nan, np.PINF, np.inf]\narr2 = [np.float_(1.5), np.float64(5.1)]\nnp.round_(arr2)\n\n",
+        "example-after": "\nimport numpy as np"
+    }
+}

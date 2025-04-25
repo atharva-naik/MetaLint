@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Check for type: ignore annotations that suppress all type warnings, as\nopposed to targeting specific type warnings.",
+    "why-is-this-bad": "Suppressing all warnings can hide issues in the code.\n\n\nBlanket type: ignore annotations are also more difficult to interpret and\nmaintain, as the annotation does not clarify which warnings are intended\nto be suppressed.",
+    "example": "from foo import secrets  # type: ignore\n\n\n\nUse instead:\n\n\nfrom foo import secrets  # type: ignore[attr-defined]",
+    "example-split": {
+        "example-before": "from foo import secrets  # type: ignore\n\n",
+        "example-after": "\nfrom foo import secrets  # type: ignore[attr-defined]"
+    }
+}

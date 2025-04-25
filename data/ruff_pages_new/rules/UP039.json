@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for class definitions that include unnecessary parentheses after\nthe class name.",
+    "why-is-this-bad": "If a class definition doesn't have any bases, the parentheses are\nunnecessary.",
+    "example": "class Foo():\n    ...\n\n\n\nUse instead:\n\n\nclass Foo:\n    ...",
+    "example-split": {
+        "example-before": "class Foo():\n    ...\n\n",
+        "example-after": "\nclass Foo:\n    ..."
+    }
+}

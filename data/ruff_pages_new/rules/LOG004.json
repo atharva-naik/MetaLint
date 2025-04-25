@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for .exception() logging calls outside of exception handlers.",
+    "why-is-this-bad": "The documentation states:\n\n\n\nThis function should only be called from an exception handler.\n\n\n\nCalling .exception() outside of an exception handler\nattaches None as exception information, leading to confusing messages:\n\n\n>>> logging.exception(\"example\")\nERROR:root:example\nNoneType: None",
+    "example": "import logging\n\nlogging.exception(\"Foobar\")\n\n\n\nUse instead:\n\n\nimport logging\n\nlogging.error(\"Foobar\")",
+    "fix-safety": "The fix, if available, will always be marked as unsafe, as it changes runtime behavior.",
+    "example-split": {
+        "example-before": "import logging\n\nlogging.exception(\"Foobar\")\n\n",
+        "example-after": "\nimport logging"
+    }
+}

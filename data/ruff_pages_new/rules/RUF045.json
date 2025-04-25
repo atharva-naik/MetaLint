@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for implicit class variables in dataclasses.\n\n\nVariables matching the lint.dummy-variable-rgx are excluded\nfrom this rule.",
+    "why-is-this-bad": "Class variables are shared between all instances of that class.\nIn dataclasses, fields with no annotations at all\nare implicitly considered class variables, and a TypeError is\nraised if a user attempts to initialize an instance of the class\nwith this field.\n\n\n@dataclass\nclass C:\n    a = 1\n    b: str = \"\"\n\nC(a = 42)  # TypeError: C.__init__() got an unexpected keyword argument 'a'",
+    "example": "@dataclass\nclass C:\n    a = 1\n\n\n\nUse instead:\n\n\nfrom typing import ClassVar\n\n\n@dataclass\nclass C:\n    a: ClassVar[int] = 1",
+    "example-split": {
+        "example-before": "@dataclass\nclass C:\n    a = 1\n\n",
+        "example-after": "\nfrom typing import ClassVar"
+    }
+}

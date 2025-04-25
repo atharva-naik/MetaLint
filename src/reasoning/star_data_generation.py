@@ -278,7 +278,10 @@ def generate_star_SFT_demonstrations(
     print(cache_path)
     if os.path.exists(cache_path):
         cache = {rec["id"]: rec for rec in read_jsonl(cache_path)}
-    else: cache = {}
+    else: 
+        print(f"creating cache: {cache_path}")
+        with open(cache_path, "w") as f: pass
+        cache = {}
 
     pbar = tqdm(
         enumerate(sft_data),
@@ -346,7 +349,7 @@ def generate_star_SFT_demonstrations(
                     LINTER_CORRECT_ANSWER=LINTER_CORRECT_ANSWER,
                 )},
             ]
-            model_response = get_gpt_response(messages=messages, model=model, max_tokens=2048)
+            model_response = get_gpt_response(messages=messages, model=model, max_tokens=4096)
             # print(model_response)
             # print(model_response)
             # print(ground_truth)
@@ -356,6 +359,8 @@ def generate_star_SFT_demonstrations(
                 failure_to_get_CoT += 1
                 print(f"SKIPPED DATA instance: {ii}")
                 pbar.set_description(f"CoTs skipped >= ({failure_to_get_CoT})")
+                print(model_response)
+                print(ground_truth)
                 continue
         # result = load_linter_results(response)
         # expected_response = rec["messages"][-1]["content"]
@@ -394,11 +399,11 @@ if __name__ == "__main__":
     
     ### SCAN FILE COT GENERATION
 
-    code_construct_cots = {rec["id"]: rec["response"] for rec in read_jsonl("data/ruff_meta_linting/cot_gen/gpt-4o-code_construct_v2-cot-gen-cache_start_0.jsonl")}
-    sft_train_data = json.load(open("./data/ruff_meta_linting/train_v4_new_format_with_lineno.json"))
+    code_construct_cots = {rec["id"]: rec["response"] for rec in read_jsonl("data/ruff_meta_linting/cot_gen/gpt-4o-code_construct_all_idioms-cot-gen-cache_start_0.jsonl")}
+    sft_train_data = json.load(open("./data/ruff_meta_linting/all_idioms/train.json"))
     # sft_train_data = intelligent_downsample(sft_train_data)
     # exit()
-    code_idiom_specs = load_ruff_idiom_specs("./data/ruff_pages")
+    code_idiom_specs = load_ruff_idiom_specs("./data/ruff_pages_new")
     stack_data = load_stack_dump("./data/STACK-V2", as_dict=True)
     
     try: start_point = int(sys.argv[1])
@@ -406,7 +411,7 @@ if __name__ == "__main__":
 
     generate_star_SFT_demonstrations(
         sft_data=sft_train_data, stack_data=stack_data, 
-        code_idiom_specs=code_idiom_specs, 
+        code_idiom_specs=code_idiom_specs, task="all_idioms_star",
+        model="gpt-4o-mini", start_point=start_point, 
         code_construct_cots=code_construct_cots,
-        task="star", model="gpt-4o-mini", start_point=0, 
     )

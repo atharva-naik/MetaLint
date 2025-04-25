@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Reports the following re and regex calls when\ntheir first arguments are not raw strings:\n\n\n\nFor regex and re: compile, findall, finditer,\n    fullmatch, match, search, split, sub, subn.\nregex-specific: splititer, subf, subfn, template.",
+    "why-is-this-bad": "Regular expressions should be written\nusing raw strings to avoid double escaping.",
+    "example": "re.compile(\"foo\\\\bar\")\n\n\n\nUse instead:\n\n\nre.compile(r\"foo\\bar\")",
+    "example-split": {
+        "example-before": "re.compile(\"foo\\\\bar\")\n\n",
+        "example-after": "\nre.compile(r\"foo\\bar\")"
+    }
+}

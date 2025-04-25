@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the presence of unused variables in unpacked assignments.",
+    "why-is-this-bad": "A variable that is defined but never used can confuse readers.\n\n\nIf a variable is intentionally defined-but-not-used, it should be\nprefixed with an underscore, or some other value that adheres to the\nlint.dummy-variable-rgx pattern.",
+    "example": "def get_pair():\n    return 1, 2\n\n\ndef foo():\n    x, y = get_pair()\n    return x\n\n\n\nUse instead:\n\n\ndef foo():\n    x, _ = get_pair()\n    return x",
+    "example-split": {
+        "example-before": "def get_pair():\n    return 1, 2\n\n\ndef foo():\n    x, y = get_pair()\n    return x\n\n",
+        "example-after": "\ndef foo():\n    x, _ = get_pair()\n    return x"
+    }
+}
