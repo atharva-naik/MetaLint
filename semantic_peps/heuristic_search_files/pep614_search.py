@@ -54,7 +54,6 @@ def process_jsonl_for_pep614_violations(input_dir: str, output_file: str):
                         except json.JSONDecodeError:
                             print(f"[warn] Skipping malformed line {line_num} in {filename}")
 
-# === Run the script ===
 if __name__ == "__main__":
     input_directory = "./STACK_v2"
     output_jsonl = "pep_614_darsh_violations.jsonl"
