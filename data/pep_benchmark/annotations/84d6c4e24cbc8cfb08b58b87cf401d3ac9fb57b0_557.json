@@ -5,7 +5,7 @@
       "start_lineno": 6,
       "end_lineno": 15,
       "pep": "557",
-      "line": "class Player:\n    def __init__(self):",
+      "line": "class Player:\n    def __init__(self):\n        self.name = \"\"\n        self.team = \"\"\n        self.th = 0\n        self.train_dept = False\n        self._8_9 = True\n        self._9_10 = True\n        self.count = 0\n        self.injury = False",
       "span": "Player",
       "fix": [
         {
@@ -19,8 +19,8 @@
       "start_lineno": 40,
       "end_lineno": 49,
       "pep": "557",
-      "line": "class Match:\n    def __init__(self):",
-      "span": "class definition",
+      "line": "class Match:\n    def __init__(self):\n        self.team = []\n        self.time = ()\n        self.place = \"\"\n        self.main_ref = []\n        self.assi_ref = []\n        self.wait_ref = []\n        self.video = []\n        self.carry = []",
+      "span": "Match",
       "fix": [
         {
           "before": "class Match",
