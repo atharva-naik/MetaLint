@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the presence of unused variables in function scopes.",
+    "why-is-this-bad": "A variable that is defined but not used is likely a mistake, and should\nbe removed to avoid confusion.\n\n\nIf a variable is intentionally defined-but-not-used, it should be\nprefixed with an underscore, or some other value that adheres to the\nlint.dummy-variable-rgx pattern.",
+    "example": "def foo():\n    x = 1\n    y = 2\n    return x\n\n\n\nUse instead:\n\n\ndef foo():\n    x = 1\n    return x",
+    "example-split": {
+        "example-before": "def foo():\n    x = 1\n    y = 2\n    return x\n\n",
+        "example-after": "\ndef foo():\n    x = 1\n    return x"
+    }
+}

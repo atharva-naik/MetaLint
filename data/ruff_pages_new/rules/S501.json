@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for HTTPS requests that disable SSL certificate checks.",
+    "why-is-this-bad": "If SSL certificates are not verified, an attacker could perform a \"man in\nthe middle\" attack by intercepting and modifying traffic between the client\nand server.",
+    "example": "import requests\n\nrequests.get(\"https://www.example.com\", verify=False)\n\n\n\nUse instead:\n\n\nimport requests\n\nrequests.get(\"https://www.example.com\")  # By default, `verify=True`.",
+    "example-split": {
+        "example-before": "import requests\n\nrequests.get(\"https://www.example.com\", verify=False)\n\n",
+        "example-after": "\nimport requests"
+    }
+}

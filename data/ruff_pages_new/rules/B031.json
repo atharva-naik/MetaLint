@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for multiple usage of the generator returned from\nitertools.groupby().",
+    "why-is-this-bad": "Using the generator more than once will do nothing on the second usage.\nIf that data is needed later, it should be stored as a list.",
+    "example": "import itertools\n\nfor name, group in itertools.groupby(data):\n    for _ in range(5):\n        do_something_with_the_group(group)\n\n\n\nUse instead:\n\n\nimport itertools\n\nfor name, group in itertools.groupby(data):\n    values = list(group)\n    for _ in range(5):\n        do_something_with_the_group(values)",
+    "example-split": {
+        "example-before": "import itertools\n\nfor name, group in itertools.groupby(data):\n    for _ in range(5):\n        do_something_with_the_group(group)\n\n",
+        "example-after": "\nimport itertools"
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks if PEP 613 explicit type aliases contain references to\nsymbols that are not available at runtime.",
+    "why-is-this-bad": "Referencing type-checking only symbols results in a NameError at runtime.",
+    "example": "from typing import TYPE_CHECKING, TypeAlias\n\nif TYPE_CHECKING:\n    from foo import Foo\nOptFoo: TypeAlias = Foo | None\n\n\n\nUse instead:\n\n\nfrom typing import TYPE_CHECKING, TypeAlias\n\nif TYPE_CHECKING:\n    from foo import Foo\nOptFoo: TypeAlias = \"Foo | None\"",
+    "fix-safety": "This rule's fix is currently always marked as unsafe, since runtime\ntyping libraries may try to access/resolve the type alias in a way\nthat we can't statically determine during analysis and relies on the\ntype alias not containing any forward references.",
+    "example-split": {
+        "example-before": "from typing import TYPE_CHECKING, TypeAlias\n\nif TYPE_CHECKING:\n    from foo import Foo\nOptFoo: TypeAlias = Foo | None\n\n",
+        "example-after": "\nfrom typing import TYPE_CHECKING, TypeAlias"
+    }
+}

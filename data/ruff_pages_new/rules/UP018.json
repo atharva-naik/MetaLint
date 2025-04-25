@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for unnecessary calls to str, bytes, int, float, and bool.",
+    "why-is-this-bad": "The mentioned constructors can be replaced with their respective literal\nforms, which are more readable and idiomatic.",
+    "example": "str(\"foo\")\n\n\n\nUse instead:\n\n\n\"foo\"",
+    "fix-safety": "The fix is marked as unsafe if it might remove comments.",
+    "example-split": {
+        "example-before": "str(\"foo\")\n\n",
+        "example-after": "\n\"foo\""
+    }
+}

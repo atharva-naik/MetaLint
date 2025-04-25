@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for methods decorated with @singledispatch.",
+    "why-is-this-bad": "The @singledispatch decorator is intended for use with functions, not methods.\n\n\nInstead, use the @singledispatchmethod decorator, or migrate the method to a\nstandalone function.",
+    "example": "from functools import singledispatch\n\n\nclass Class:\n    @singledispatch\n    def method(self, arg): ...\n\n\n\nUse instead:\n\n\nfrom functools import singledispatchmethod\n\n\nclass Class:\n    @singledispatchmethod\n    def method(self, arg): ...",
+    "fix-safety": "This rule's fix is marked as unsafe, as migrating from @singledispatch to\n@singledispatchmethod may change the behavior of the code.",
+    "example-split": {
+        "example-before": "from functools import singledispatch\n\n\nclass Class:\n    @singledispatch\n    def method(self, arg): ...\n\n",
+        "example-after": "\nfrom functools import singledispatchmethod"
+    }
+}

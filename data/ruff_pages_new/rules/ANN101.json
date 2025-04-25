@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks that instance method self arguments have type annotations.",
+    "why-is-this-bad": "Type annotations are a good way to document the types of function arguments. They also\nhelp catch bugs, when used alongside a type checker, by ensuring that the types of\nany provided arguments match expectation.\n\n\nNote that many type checkers will infer the type of self automatically, so this\nannotation is not strictly necessary.",
+    "example": "class Foo:\n    def bar(self): ...\n\n\n\nUse instead:\n\n\nclass Foo:\n    def bar(self: \"Foo\"): ...",
+    "example-split": {
+        "example-before": "class Foo:\n    def bar(self): ...\n\n",
+        "example-after": "\nclass Foo:\n    def bar(self: \"Foo\"): ..."
+    }
+}

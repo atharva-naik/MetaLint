@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of str.format to format logging messages.",
+    "why-is-this-bad": "The logging module provides a mechanism for passing additional values to\nbe logged using the extra keyword argument. This is more consistent, more\nefficient, and less error-prone than formatting the string directly.\n\n\nUsing str.format to format a logging message requires that Python eagerly\nformat the string, even if the logging statement is never executed (e.g.,\nif the log level is above the level of the logging statement), whereas\nusing the extra keyword argument defers formatting until required.\n\n\nAdditionally, the use of extra will ensure that the values are made\navailable to all handlers, which can then be configured to log the values\nin a consistent manner.\n\n\nAs an alternative to extra, passing values as arguments to the logging\nmethod can also be used to defer string formatting until required.",
+    "example": "import logging\n\nlogging.basicConfig(format=\"%(message)s\", level=logging.INFO)\n\nuser = \"Maria\"\n\nlogging.info(\"{} - Something happened\".format(user))\n\n\n\nUse instead:\n\n\nimport logging\n\nlogging.basicConfig(format=\"%(user_id)s - %(message)s\", level=logging.INFO)\n\nuser = \"Maria\"\n\nlogging.info(\"Something happened\", extra={\"user_id\": user})\n\n\n\nOr:\n\n\nimport logging\n\nlogging.basicConfig(format=\"%(message)s\", level=logging.INFO)\n\nuser = \"Maria\"\n\nlogging.info(\"%s - Something happened\", user)",
+    "example-split": {
+        "example-before": "import logging\n\nlogging.basicConfig(format=\"%(message)s\", level=logging.INFO)\n\nuser = \"Maria\"\n\nlogging.info(\"{} - Something happened\".format(user))\n\n",
+        "example-after": "\nimport logging"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for unnecessary dict comprehension when creating a dictionary from\nan iterable.",
+    "why-is-this-bad": "It's unnecessary to use a dict comprehension to build a dictionary from\nan iterable when the value is static.\n\n\nPrefer dict.fromkeys(iterable) over {value: None for value in iterable},\nas dict.fromkeys is more readable and efficient.",
+    "example": "{a: None for a in iterable}\n{a: 1 for a in iterable}\n\n\n\nUse instead:\n\n\ndict.fromkeys(iterable)\ndict.fromkeys(iterable, 1)",
+    "example-split": {
+        "example-before": "{a: None for a in iterable}\n{a: 1 for a in iterable}\n\n",
+        "example-after": "\ndict.fromkeys(iterable)\ndict.fromkeys(iterable, 1)"
+    }
+}

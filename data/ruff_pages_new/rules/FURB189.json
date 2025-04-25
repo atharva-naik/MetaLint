@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for subclasses of dict, list or str.",
+    "why-is-this-bad": "Built-in types don't consistently use their own dunder methods. For example,\ndict.__init__ and dict.update() bypass __setitem__, making inheritance unreliable.\n\n\nUse the UserDict, UserList, and UserString objects from the collections module\ninstead.",
+    "example": "class UppercaseDict(dict):\n    def __setitem__(self, key, value):\n        super().__setitem__(key.upper(), value)\n\n\nd = UppercaseDict({\"a\": 1, \"b\": 2})  # Bypasses __setitem__\nprint(d)  # {'a': 1, 'b': 2}\n\n\n\nUse instead:\n\n\nfrom collections import UserDict\n\n\nclass UppercaseDict(UserDict):\n    def __setitem__(self, key, value):\n        super().__setitem__(key.upper(), value)\n\n\nd = UppercaseDict({\"a\": 1, \"b\": 2})  # Uses __setitem__\nprint(d)  # {'A': 1, 'B': 2}",
+    "fix-safety": "This fix is marked as unsafe because isinstance() checks for dict,\nlist, and str types will fail when using the corresponding User class.\nIf you need to pass custom dict or list objects to code you don't\ncontrol, ignore this check. If you do control the code, consider using\nthe following type checks instead:\n\n\n\ndict -> collections.abc.MutableMapping\nlist -> collections.abc.MutableSequence\nstr -> No such conversion exists",
+    "example-split": {
+        "example-before": "class UppercaseDict(dict):\n    def __setitem__(self, key, value):\n        super().__setitem__(key.upper(), value)\n\n\nd = UppercaseDict({\"a\": 1, \"b\": 2})  # Bypasses __setitem__\nprint(d)  # {'a': 1, 'b': 2}\n\n",
+        "example-after": "\nfrom collections import UserDict"
+    }
+}

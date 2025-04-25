@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of open and read that can be replaced by pathlib\nmethods, like Path.read_text and Path.read_bytes.",
+    "why-is-this-bad": "When reading the entire contents of a file into a variable, it's simpler\nand more concise to use pathlib methods like Path.read_text and\nPath.read_bytes instead of open and read calls via with statements.",
+    "example": "with open(filename) as f:\n    contents = f.read()\n\n\n\nUse instead:\n\n\nfrom pathlib import Path\n\ncontents = Path(filename).read_text()",
+    "example-split": {
+        "example-before": "with open(filename) as f:\n    contents = f.read()\n\n",
+        "example-after": "\nfrom pathlib import Path"
+    }
+}

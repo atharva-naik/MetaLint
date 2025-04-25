@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for named assignment expressions (e.g., x := 0) in assert\nstatements.",
+    "why-is-this-bad": "Named assignment expressions (also known as \"walrus operators\") are used to\nassign a value to a variable as part of a larger expression.\n\n\nNamed assignments are syntactically valid in assert statements. However,\nwhen the Python interpreter is run under the -O flag, assert statements\nare not executed. In this case, the named assignment will also be ignored,\nwhich may result in unexpected behavior (e.g., undefined variable\naccesses).",
+    "example": "assert (x := 0) == 0\nprint(x)\n\n\n\nUse instead:\n\n\nx = 0\nassert x == 0\nprint(x)\n\n\n\nThe rule avoids flagging named expressions that define variables which are\nonly referenced from inside assert statements; the following will not\ntrigger the rule:\n\n\nassert (x := y**2) > 42, f\"Expected >42 but got {x}\"\n\n\n\nNor will this:\n\n\nassert (x := y**2) > 42\nassert x < 1_000_000",
+    "example-split": {
+        "example-before": "assert (x := 0) == 0\nprint(x)\n\n",
+        "example-after": "\nx = 0\nassert x == 0\nprint(x)"
+    }
+}

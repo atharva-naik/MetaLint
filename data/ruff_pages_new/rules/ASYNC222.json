@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks that async functions do not wait on processes with blocking methods.",
+    "why-is-this-bad": "Blocking an async function via a blocking call will block the entire\nevent loop, preventing it from executing other tasks while waiting for the\ncall to complete, negating the benefits of asynchronous programming.\n\n\nInstead of making a blocking call, use an equivalent asynchronous library\nor function, like trio.to_thread.run_sync()\nor anyio.to_thread.run_sync().",
+    "example": "async def foo():\n    os.waitpid(0)\n\n\n\nUse instead:\n\n\ndef wait_for_process():\n    os.waitpid(0)\n\n\nasync def foo():\n    await asyncio.loop.run_in_executor(None, wait_for_process)",
+    "example-split": {
+        "example-before": "async def foo():\n    os.waitpid(0)\n\n",
+        "example-after": "\ndef wait_for_process():\n    os.waitpid(0)"
+    }
+}

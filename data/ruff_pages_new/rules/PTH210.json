@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for pathlib.Path.with_suffix() calls where\nthe given suffix does not have a leading dot\nor the given suffix is a single dot \".\".",
+    "why-is-this-bad": "Path.with_suffix() will raise an error at runtime\nif the given suffix is not prefixed with a dot\nor it is a single dot \".\".",
+    "example": "path.with_suffix(\"py\")\n\n\n\nUse instead:\n\n\npath.with_suffix(\".py\")",
+    "fix-safety": "The fix for this rule adds a leading period to the string passed\nto the with_suffix() call. This fix is marked as unsafe, as it\nchanges runtime behaviour: the call would previously always have\nraised an exception, but no longer will.\n\n\nMoreover, it's impossible to determine if this is the correct fix\nfor a given situation (it's possible that the string was correct\nbut was being passed to the wrong method entirely, for example).\n\n\nNo fix is offered if the suffix \".\" is given, since the intent is unclear.",
+    "example-split": {
+        "example-before": "path.with_suffix(\"py\")\n\n",
+        "example-after": "\npath.with_suffix(\".py\")"
+    }
+}

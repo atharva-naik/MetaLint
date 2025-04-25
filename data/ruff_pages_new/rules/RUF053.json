@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for classes that have PEP 695\nwhile also inheriting from typing.Generic or typing_extensions.Generic.",
+    "why-is-this-bad": "Such classes cause errors at runtime:\n\n\nfrom typing import Generic, TypeVar\n\nU = TypeVar(\"U\")\n\n# TypeError: Cannot inherit from Generic[...] multiple times.\nclass C[T](Generic[U]): ...",
+    "example": "from typing import Generic, ParamSpec, TypeVar, TypeVarTuple\n\nU = TypeVar(\"U\")\nP = ParamSpec(\"P\")\nTs = TypeVarTuple(\"Ts\")\n\n\nclass C[T](Generic[U, P, *Ts]): ...\n\n\n\nUse instead:\n\n\nclass C[T, U, **P, *Ts]: ...",
+    "fix-safety": "As the fix changes runtime behaviour, it is always marked as unsafe.\nAdditionally, comments within the fix range will not be preserved.",
+    "example-split": {
+        "example-before": "from typing import Generic, ParamSpec, TypeVar, TypeVarTuple\n\nU = TypeVar(\"U\")\nP = ParamSpec(\"P\")\nTs = TypeVarTuple(\"Ts\")\n\n\nclass C[T](Generic[U, P, *Ts]): ...\n\n",
+        "example-after": "\nclass C[T, U, **P, *Ts]: ..."
+    }
+}

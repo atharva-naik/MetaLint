@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of Airflow functions and values that have been moved to its providers\nbut still have a compatibility layer (e.g., apache-airflow-providers-standard).",
+    "why-is-this-bad": "Airflow 3.0 moved various deprecated functions, members, and other\nvalues to its providers. Even though these symbols still work fine on Airflow 3.0,\nthey are expected to be removed in a future version. The user is suggested to install\nthe corresponding provider and replace the original usage with the one in the provider.",
+    "example": "from airflow.operators.python import PythonOperator\n\n\n\nUse instead:\n\n\nfrom airflow.providers.standard.operators.python import PythonOperator",
+    "example-split": {
+        "example-before": "from airflow.operators.python import PythonOperator\n\n",
+        "example-after": "\nfrom airflow.providers.standard.operators.python import PythonOperator"
+    }
+}

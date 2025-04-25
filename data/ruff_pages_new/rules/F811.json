@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for variable definitions that redefine (or \"shadow\") unused\nvariables.",
+    "why-is-this-bad": "Redefinitions of unused names are unnecessary and often indicative of a\nmistake.",
+    "example": "import foo\nimport bar\nimport foo  # Redefinition of unused `foo` from line 1\n\n\n\nUse instead:\n\n\nimport foo\nimport bar",
+    "example-split": {
+        "example-before": "import foo\nimport bar\nimport foo  # Redefinition of unused `foo` from line 1\n\n",
+        "example-after": "\nimport foo\nimport bar"
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for unnecessary dict, list, and set comprehension.",
+    "why-is-this-bad": "It's unnecessary to use a dict/list/set comprehension to build a data structure if the\nelements are unchanged. Wrap the iterable with dict(), list(), or set() instead.",
+    "example": "{a: b for a, b in iterable}\n[x for x in iterable]\n{x for x in iterable}\n\n\n\nUse instead:\n\n\ndict(iterable)\nlist(iterable)\nset(iterable)",
+    "fix-safety": "Due to the known problem with dictionary comprehensions, this fix is marked as unsafe.\n\n\nAdditionally, this fix may drop comments when rewriting the comprehension.",
+    "example-split": {
+        "example-before": "{a: b for a, b in iterable}\n[x for x in iterable]\n{x for x in iterable}\n\n",
+        "example-after": "\ndict(iterable)\nlist(iterable)\nset(iterable)"
+    }
+}

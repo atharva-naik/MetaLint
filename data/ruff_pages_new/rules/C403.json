@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for unnecessary list comprehensions.",
+    "why-is-this-bad": "It's unnecessary to use a list comprehension inside a call to set(),\nsince there is an equivalent comprehension for this type.",
+    "example": "set([f(x) for x in foo])\n\n\n\nUse instead:\n\n\n{f(x) for x in foo}",
+    "fix-safety": "This rule's fix is marked as unsafe, as it may occasionally drop comments\nwhen rewriting the call. In most cases, though, comments will be preserved.",
+    "example-split": {
+        "example-before": "set([f(x) for x in foo])\n\n",
+        "example-after": "\n{f(x) for x in foo}"
+    }
+}

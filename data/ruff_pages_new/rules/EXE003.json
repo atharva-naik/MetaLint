@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for a shebang directive in .py files that does not contain python,\npytest, or uv run.",
+    "why-is-this-bad": "In Python, a shebang (also known as a hashbang) is the first line of a\nscript, which specifies the command that should be used to run the\nscript.\n\n\nFor Python scripts, if the shebang does not include a command that explicitly\nor implicitly specifies an interpreter, then the file will be executed with\nthe default interpreter, which is likely a mistake.",
+    "example": "#!/usr/bin/env bash\n\n\n\nUse instead:\n\n\n#!/usr/bin/env python3",
+    "example-split": {
+        "example-before": "#!/usr/bin/env bash\n\n",
+        "example-after": "\n#!/usr/bin/env python3"
+    }
+}

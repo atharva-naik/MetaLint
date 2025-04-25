@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for incorrect usages of default_factory as a keyword argument when\ninitializing a defaultdict.",
+    "why-is-this-bad": "The defaultdict constructor accepts a callable as its first argument.\nFor example, it's common to initialize a defaultdict with int or list\nvia defaultdict(int) or defaultdict(list), to create a dictionary that\nreturns 0 or [] respectively when a key is missing.\n\n\nThe default factory must be provided as a positional argument, as all\nkeyword arguments to defaultdict are interpreted as initial entries in\nthe dictionary. For example, defaultdict(foo=1, bar=2) will create a\ndictionary with {\"foo\": 1, \"bar\": 2} as its initial entries.\n\n\nAs such, defaultdict(default_factory=list) will create a dictionary with\n{\"default_factory\": list} as its initial entry, instead of a dictionary\nthat returns [] when a key is missing. Specifying a default_factory\nkeyword argument is almost always a mistake, and one that type checkers\ncan't reliably detect.",
+    "example": "defaultdict(default_factory=int)\ndefaultdict(default_factory=list)\n\n\n\nUse instead:\n\n\ndefaultdict(int)\ndefaultdict(list)",
+    "fix-safety": "This rule's fix is marked as unsafe, as converting default_factory from a\nkeyword to a positional argument will change the behavior of the code, even\nif the keyword argument was used erroneously.",
+    "example-split": {
+        "example-before": "defaultdict(default_factory=int)\ndefaultdict(default_factory=list)\n\n",
+        "example-after": "\ndefaultdict(int)\ndefaultdict(list)"
+    }
+}

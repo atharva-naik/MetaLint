@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for \"FIXME\" comments.",
+    "why-is-this-bad": "\"FIXME\" comments are used to describe an issue that should be resolved\n(usually, a bug or unexpected behavior).\n\n\nConsider resolving the issue before deploying the code.\n\n\nNote that if you use \"FIXME\" comments as a form of documentation, this\nrule may not be appropriate for your project.",
+    "example": "def speed(distance, time):\n    return distance / time  # FIXME: Raises ZeroDivisionError for time = 0.",
+    "example-split": {
+        "example-before": "def speed(distance, time):\n    return distance / time  # FIXME: Raises ZeroDivisionError for time = 0.",
+        "example-after": "def speed(distance, time):\n    return distance / time  # FIXME: Raises ZeroDivisionError for time = 0."
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks that a TODO comment includes an author.",
+    "why-is-this-bad": "Including an author on a TODO provides future readers with context around\nthe issue. While the TODO author is not always considered responsible for\nfixing the issue, they are typically the individual with the most context.",
+    "example": "# TODO: should assign an author here\n\n\n\nUse instead\n\n\n# TODO(charlie): now an author is assigned",
+    "example-split": {
+        "example-before": "# TODO: should assign an author here\n\n\n\nUse instead\n\n\n# TODO(charlie): now an author is assigned",
+        "example-after": "# TODO: should assign an author here"
+    }
+}

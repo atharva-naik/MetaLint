@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for any pyproject.toml that does not conform to the schema from the relevant PEPs.",
+    "why-is-this-bad": "Your project may contain invalid metadata or configuration without you noticing",
+    "example": "[project]\nname = \"crab\"\nversion = \"1.0.0\"\nauthors = [\"Ferris the Crab <[email\u00a0protected]>\"]\n\n\n\nUse instead:\n\n\n[project]\nname = \"crab\"\nversion = \"1.0.0\"\nauthors = [\n  { name = \"Ferris the Crab\", email = \"[email\u00a0protected]\" }\n]",
+    "example-split": {
+        "example-before": "[project]\nname = \"crab\"\nversion = \"1.0.0\"\nauthors = [\"Ferris the Crab <[email\u00a0protected]>\"]\n\n",
+        "example-after": "\n[project]\nname = \"crab\"\nversion = \"1.0.0\"\nauthors = [\n  { name = \"Ferris the Crab\", email = \"[email\u00a0protected]\" }\n]"
+    }
+}

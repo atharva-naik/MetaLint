@@ -139,24 +139,9 @@ def generate_code_construct_for_meta_task_cot_prompts(sft_data, code_idiom_specs
     code_construct_cot_gen_prompts = defaultdict(lambda: set())
     for rec in tqdm(sft_data):
         # blob_id = rec["id"].split("_")[-1].strip()
-        idiom_codes_list = [code.strip() for code in rec["source"].split("/")[-1].split("-") if code not in ["ANN001", "ANN201"]]
+        idiom_codes_list = [code.strip() for code in rec["source"].split("/")[-1].split("-") if code not in ["E501", "Q000", "ANN001", "W191", "ANN201"]]
         
-        LIST_OF_IDIOM_SPECS = "\n\n".join([idiom_spec_extractor_for_ruff(code_idiom_specs[idiom_code]) for idiom_code in idiom_codes_list if idiom_code not in ["ANN001", "ANN201"]])
-
-        prompt = CODE_CONSTRUCT_COMPILATION_PROMPT.format(
-            LIST_OF_IDIOM_SPECS=LIST_OF_IDIOM_SPECS
-        )
-        code_construct_cot_gen_prompts[rec['source']].add(prompt)
-
-    return code_construct_cot_gen_prompts
-
-def generate_code_construct_for_meta_task_cot_prompts(sft_data, code_idiom_specs: dict) -> list[str]:
-    code_construct_cot_gen_prompts = defaultdict(lambda: set())
-    for rec in tqdm(sft_data):
-        # blob_id = rec["id"].split("_")[-1].strip()
-        idiom_codes_list = [code.strip() for code in rec["source"].split("/")[-1].split("-") if code not in ["ANN001", "ANN201"]]
-        
-        LIST_OF_IDIOM_SPECS = "\n\n".join([idiom_spec_extractor_for_ruff(code_idiom_specs[idiom_code]) for idiom_code in idiom_codes_list if idiom_code not in ["ANN001", "ANN201"]])
+        LIST_OF_IDIOM_SPECS = "\n\n".join([idiom_spec_extractor_for_ruff(code_idiom_specs[idiom_code]) for idiom_code in idiom_codes_list if idiom_code not in ["E501", "Q000", "ANN001", "W191", "ANN201"]])
 
         prompt = CODE_CONSTRUCT_COMPILATION_PROMPT.format(
             LIST_OF_IDIOM_SPECS=LIST_OF_IDIOM_SPECS
@@ -285,7 +270,7 @@ def generate_cots(prompts: list[str], task: str, model: str="gpt-4o-mini", start
             response = client.chat.completions.create(
                 model=model,
                 messages=[{"role": "user", "content": prompt}],
-                max_tokens=512
+                max_tokens=1024
             )
             response = response.choices[0].message.content
 
@@ -304,8 +289,8 @@ if __name__ == "__main__":
 
     ### CODE CONSTRUCT LIST COT GENERATION
 
-    # sft_train_data = json.load(open("./data/ruff_meta_linting/train_v4.json"))
-    # code_idiom_specs = load_ruff_idiom_specs("./data/ruff_pages")
+    # sft_train_data = json.load(open("./data/ruff_meta_linting/all_idioms/train.json"))
+    # code_idiom_specs = load_ruff_idiom_specs("./data/ruff_pages_new")
     
     # code_construct_cot_gen_prompts = generate_code_construct_for_meta_task_cot_prompts(sft_data=sft_train_data, code_idiom_specs=code_idiom_specs)
     # code_construct_cot_gen_data = []
@@ -315,24 +300,26 @@ if __name__ == "__main__":
 
     # with open("./data/ruff_meta_linting/cot_gen/code_construct_prompts_for_meta_tasks.json", "w") as f:
     #     json.dump(code_construct_cot_gen_data, f, indent=4)
-    # generate_cots(code_construct_cot_gen_data, task="code_construct_v2", model="gpt-4o")
+    # generate_cots(code_construct_cot_gen_data, task="code_construct_all_idioms", model="gpt-4o")
     
     ### SCAN FILE COT GENERATION
 
-    code_construct_cots = {rec["id"]: rec["response"] for rec in read_jsonl("data/ruff_meta_linting/cot_gen/gpt-4o-code_construct_v2-cot-gen-cache_start_0.jsonl")}
-    sft_train_data = json.load(open("./data/ruff_meta_linting/train_v4_new_format_with_lineno.json"))
-    sft_train_data = intelligent_downsample(sft_train_data)
-    # exit()
-    code_idiom_specs = load_ruff_idiom_specs("./data/ruff_pages")
+    code_construct_cots = {rec["id"]: rec["response"] for rec in read_jsonl("data/ruff_meta_linting/cot_gen/gpt-4o-code_construct_all_idioms-cot-gen-cache_start_0.jsonl")}
+    sft_train_data = json.load(open("./data/ruff_meta_linting/all_idioms/train.json"))
+    # sft_train_data = intelligent_downsample(sft_train_data)
+    code_idiom_specs = load_ruff_idiom_specs("./data/ruff_pages_new")
     stack_data = load_stack_dump("./data/STACK-V2", as_dict=True)
     
-    generate_idiom_det_and_loc_cot_prompts(sft_train_data, stack_data, code_idiom_specs, code_construct_cots, "./data/ruff_meta_linting/cot_gen/train_v4_cot_v4.jsonl")
-    prompts = read_jsonl("./data/ruff_meta_linting/cot_gen/train_v4_cot_v4.jsonl")
+    generate_idiom_det_and_loc_cot_prompts(
+        sft_train_data, stack_data, code_idiom_specs, code_construct_cots, 
+        "./data/ruff_meta_linting/cot_gen/train_all_idioms_cot.jsonl"
+    )
+    prompts = read_jsonl("./data/ruff_meta_linting/cot_gen/train_all_idioms_cot.jsonl")
 
-    estimate_gpt_cost([rec["prompt"] for rec in prompts], output_tokens=600, output_cost_per_million=0.15, input_cost_per_million=0.6)
-    # estimate_gpt_cost([rec["prompt"] for rec in prompts], output_tokens=600, output_cost_per_million=1.1, input_cost_per_million=4.4)
+    # estimate_gpt_cost([rec["prompt"] for rec in prompts], output_tokens=600, output_cost_per_million=0.15, input_cost_per_million=0.6)
+    # # estimate_gpt_cost([rec["prompt"] for rec in prompts], output_tokens=600, output_cost_per_million=1.1, input_cost_per_million=4.4)
 
     try: start_point = int(sys.argv[1])
     except IndexError: start_point = 0
-    # generate_cots(prompts, task="loc_and_det_cot_v3", model="o3-mini", start_point=start_point)
+    # # generate_cots(prompts, task="loc_and_det_cot_v3", model="o3-mini", start_point=start_point)
     generate_cots(prompts, task="loc_and_det_cot_v3", model="gpt-4o-mini", start_point=start_point)

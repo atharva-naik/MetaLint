@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of weak or broken cryptographic hash functions.",
+    "why-is-this-bad": "Weak or broken cryptographic hash functions may be susceptible to\ncollision attacks (where two different inputs produce the same hash) or\npre-image attacks (where an attacker can find an input that produces a\ngiven hash). This can lead to security vulnerabilities in applications\nthat rely on these hash functions.\n\n\nAvoid using weak or broken cryptographic hash functions in security\ncontexts. Instead, use a known secure hash function such as SHA-256.\n\n\nIn preview, this rule will also flag references to insecure hash functions.",
+    "example": "from cryptography.hazmat.primitives import hashes\n\ndigest = hashes.Hash(hashes.MD5())\ndigest.update(b\"Hello, world!\")\ndigest.finalize()\n\n\n\nUse instead:\n\n\nfrom cryptography.hazmat.primitives import hashes\n\ndigest = hashes.Hash(hashes.SHA256())\ndigest.update(b\"Hello, world!\")\ndigest.finalize()",
+    "example-split": {
+        "example-before": "from cryptography.hazmat.primitives import hashes\n\ndigest = hashes.Hash(hashes.MD5())\ndigest.update(b\"Hello, world!\")\ndigest.finalize()\n\n",
+        "example-after": "\nfrom cryptography.hazmat.primitives import hashes"
+    }
+}

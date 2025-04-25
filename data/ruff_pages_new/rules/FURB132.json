@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of set.remove that can be replaced with set.discard.",
+    "why-is-this-bad": "If an element should be removed from a set if it is present, it is more\nsuccinct and idiomatic to use discard.",
+    "example": "nums = {123, 456}\n\nif 123 in nums:\n    nums.remove(123)\n\n\n\nUse instead:\n\n\nnums = {123, 456}\n\nnums.discard(123)",
+    "example-split": {
+        "example-before": "nums = {123, 456}\n\nif 123 in nums:\n    nums.remove(123)\n\n",
+        "example-after": "\nnums = {123, 456}"
+    }
+}

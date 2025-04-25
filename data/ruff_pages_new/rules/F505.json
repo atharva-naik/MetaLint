@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for named placeholders in printf-style format strings that are not\npresent in the provided mapping.",
+    "why-is-this-bad": "Named placeholders that lack a corresponding value in the provided mapping\nwill raise a KeyError.",
+    "example": "\"%(greeting)s, %(name)s\" % {\"name\": \"world\"}\n\n\n\nUse instead:\n\n\n\"Hello, %(name)s\" % {\"name\": \"world\"}",
+    "example-split": {
+        "example-before": "\"%(greeting)s, %(name)s\" % {\"name\": \"world\"}\n\n",
+        "example-after": "\n\"Hello, %(name)s\" % {\"name\": \"world\"}"
+    }
+}

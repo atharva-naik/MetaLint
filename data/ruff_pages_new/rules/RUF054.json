@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for form feed characters preceded by either a space or a tab.",
+    "why-is-this-bad": "The language reference states:\n\n\n\nA formfeed character may be present at the start of the line;\nit will be ignored for the indentation calculations above.\nFormfeed characters occurring elsewhere in the leading whitespace\nhave an undefined effect (for instance, they may reset the space count to zero).",
+    "example": "if foo():\\n    \\fbar()\n\n\n\nUse instead:\n\n\nif foo():\\n    bar()",
+    "example-split": {
+        "example-before": "if foo():\\n    \\fbar()\n\n",
+        "example-after": "\nif foo():\\n    bar()"
+    }
+}

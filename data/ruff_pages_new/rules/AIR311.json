@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of deprecated Airflow functions and values that still have\na compatibility layer.",
+    "why-is-this-bad": "Airflow 3.0 removed various deprecated functions, members, and other\nvalues. Some have more modern replacements. Others are considered too niche\nand not worth to be maintained in Airflow.\nEven though these symbols still work fine on Airflow 3.0, they are expected to be removed in a future version.\nThe user is suggested to replace the original usage with the new ones.",
+    "example": "from airflow import Dataset\n\n\nDataset(uri=\"test://test/\")\n\n\n\nUse instead:\n\n\nfrom airflow.sdk import Asset\n\n\nAsset(uri=\"test://test/\")",
+    "example-split": {
+        "example-before": "from airflow import Dataset\n\n\nDataset(uri=\"test://test/\")\n\n",
+        "example-after": "\nfrom airflow.sdk import Asset"
+    }
+}

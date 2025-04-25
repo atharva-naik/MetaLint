@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for non-empty function stub bodies.",
+    "why-is-this-bad": "Stub files are never executed at runtime; they should be thought of as\n\"data files\" for type checkers or IDEs. Function bodies are redundant\nfor this purpose.",
+    "example": "def double(x: int) -> int:\n    return x * 2\n\n\n\nUse instead:\n\n\ndef double(x: int) -> int: ...",
+    "example-split": {
+        "example-before": "def double(x: int) -> int:\n    return x * 2\n\n",
+        "example-after": "\ndef double(x: int) -> int: ..."
+    }
+}

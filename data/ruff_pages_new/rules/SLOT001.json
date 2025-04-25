@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for subclasses of tuple that lack a __slots__ definition.",
+    "why-is-this-bad": "In Python, the __slots__ attribute allows you to explicitly define the\nattributes (instance variables) that a class can have. By default, Python\nuses a dictionary to store an object's attributes, which incurs some memory\noverhead. However, when __slots__ is defined, Python uses a more compact\ninternal structure to store the object's attributes, resulting in memory\nsavings.\n\n\nSubclasses of tuple inherit all the attributes and methods of the\nbuilt-in tuple class. Since tuples are typically immutable, they don't\nrequire additional attributes beyond what the tuple class provides.\nDefining __slots__ for subclasses of tuple prevents the creation of a\ndictionary for each instance, reducing memory consumption.",
+    "example": "class Foo(tuple):\n    pass\n\n\n\nUse instead:\n\n\nclass Foo(tuple):\n    __slots__ = ()",
+    "example-split": {
+        "example-before": "class Foo(tuple):\n    pass\n\n",
+        "example-after": "\nclass Foo(tuple):\n    __slots__ = ()"
+    }
+}

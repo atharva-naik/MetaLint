@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for code that updates a set with the contents of an iterable by\nusing a for loop to call .add() or .discard() on each element\nseparately.",
+    "why-is-this-bad": "When adding or removing a batch of elements to or from a set, it's more\nidiomatic to use a single method call rather than adding or removing\nelements one by one.",
+    "example": "s = set()\n\nfor x in (1, 2, 3):\n    s.add(x)\n\nfor x in (1, 2, 3):\n    s.discard(x)\n\n\n\nUse instead:\n\n\ns = set()\n\ns.update((1, 2, 3))\ns.difference_update((1, 2, 3))",
+    "fix-safety": "The fix will be marked as unsafe if applying the fix would delete any comments.\nOtherwise, it is marked as safe.",
+    "example-split": {
+        "example-before": "s = set()\n\nfor x in (1, 2, 3):\n    s.add(x)\n\nfor x in (1, 2, 3):\n    s.discard(x)\n\n",
+        "example-after": "\ns = set()"
+    }
+}

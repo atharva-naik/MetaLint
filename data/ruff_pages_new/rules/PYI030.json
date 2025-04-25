@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for the presence of multiple literal types in a union.",
+    "why-is-this-bad": "Literal[\"foo\", 42] has identical semantics to\nLiteral[\"foo\"] | Literal[42], but is clearer and more concise.",
+    "example": "from typing import Literal\n\nfield: Literal[1] | Literal[2] | str\n\n\n\nUse instead:\n\n\nfrom typing import Literal\n\nfield: Literal[1, 2] | str",
+    "fix-safety": "This fix is marked unsafe if it would delete any comments within the replacement range.\n\n\nAn example to illustrate where comments are preserved and where they are not:\n\n\nfrom typing import Literal\n\nfield: (\n    # deleted comment\n    Literal[\"a\", \"b\"]  # deleted comment\n    # deleted comment\n    | Literal[\"c\", \"d\"]  # preserved comment\n)",
+    "example-split": {
+        "example-before": "from typing import Literal\n\nfield: Literal[1] | Literal[2] | str\n\n",
+        "example-after": "\nfrom typing import Literal"
+    }
+}

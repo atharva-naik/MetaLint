@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for uses of assert expression, print(message).",
+    "why-is-this-bad": "If an assert x, y assertion fails, the Python interpreter raises an\nAssertionError, and the evaluated value of y is used as the contents of\nthat assertion error. The print function always returns None, however,\nso the evaluated value of a call to print will always be None.\n\n\nUsing a print call in this context will therefore output the message to\nstdout, before raising an empty AssertionError(None). Instead, remove\nthe print and pass the message directly as the second expression,\nallowing stderr to capture the message in a well-formatted context.",
+    "example": "assert False, print(\"This is a message\")\n\n\n\nUse instead:\n\n\nassert False, \"This is a message\"",
+    "fix-safety": "This rule's fix is marked as unsafe, as changing the second expression\nwill result in a different AssertionError message being raised, as well as\na change in stdout output.",
+    "example-split": {
+        "example-before": "assert False, print(\"This is a message\")\n\n",
+        "example-after": "\nassert False, \"This is a message\""
+    }
+}

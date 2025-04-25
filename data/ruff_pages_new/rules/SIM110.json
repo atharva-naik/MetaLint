@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for for loops that can be replaced with a builtin function, like\nany or all.",
+    "why-is-this-bad": "Using a builtin function is more concise and readable.",
+    "example": "for item in iterable:\n    if predicate(item):\n        return True\nreturn False\n\n\n\nUse instead:\n\n\nreturn any(predicate(item) for item in iterable)",
+    "example-split": {
+        "example-before": "for item in iterable:\n    if predicate(item):\n        return True\nreturn False\n\n",
+        "example-after": "\nreturn any(predicate(item) for item in iterable)"
+    }
+}

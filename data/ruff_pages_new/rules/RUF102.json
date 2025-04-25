@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for noqa codes that are invalid.",
+    "why-is-this-bad": "Invalid rule codes serve no purpose and may indicate outdated code suppressions.",
+    "example": "import os  # noqa: XYZ999\n\n\n\nUse instead:\n\n\nimport os\n\n\n\nOr if there are still valid codes needed:\n\n\nimport os  # noqa: E402",
+    "example-split": {
+        "example-before": "import os  # noqa: XYZ999\n\n",
+        "example-after": "\nimport os"
+    }
+}

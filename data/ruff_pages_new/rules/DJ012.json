@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the order of Model's inner classes, methods, and fields as per\nthe Django Style Guide.",
+    "why-is-this-bad": "The Django Style Guide specifies that the order of Model inner classes,\nattributes and methods should be as follows:\n\n\n\nAll database fields\nCustom manager attributes\nclass Meta\ndef __str__()\ndef save()\ndef get_absolute_url()\nAny custom methods",
+    "example": "from django.db import models\n\n\nclass StrBeforeFieldModel(models.Model):\n    class Meta:\n        verbose_name = \"test\"\n        verbose_name_plural = \"tests\"\n\n    def __str__(self):\n        return \"foobar\"\n\n    first_name = models.CharField(max_length=32)\n    last_name = models.CharField(max_length=40)\n\n\n\nUse instead:\n\n\nfrom django.db import models\n\n\nclass StrBeforeFieldModel(models.Model):\n    first_name = models.CharField(max_length=32)\n    last_name = models.CharField(max_length=40)\n\n    class Meta:\n        verbose_name = \"test\"\n        verbose_name_plural = \"tests\"\n\n    def __str__(self):\n        return \"foobar\"",
+    "example-split": {
+        "example-before": "from django.db import models\n\n\nclass StrBeforeFieldModel(models.Model):\n    class Meta:\n        verbose_name = \"test\"\n        verbose_name_plural = \"tests\"\n\n    def __str__(self):\n        return \"foobar\"\n\n    first_name = models.CharField(max_length=32)\n    last_name = models.CharField(max_length=40)\n\n",
+        "example-after": "\nfrom django.db import models"
+    }
+}

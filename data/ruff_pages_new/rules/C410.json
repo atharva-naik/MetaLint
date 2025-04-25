@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for list() calls that take unnecessary list or tuple literals as\narguments.",
+    "why-is-this-bad": "It's unnecessary to use a list or tuple literal within a list() call,\nsince there is a literal syntax for these types.\n\n\nIf a list literal is passed in, then the outer call to list() should be\nremoved. Otherwise, if a tuple literal is passed in, then it should be\nrewritten as a list literal.",
+    "example": "list([1, 2])\nlist((1, 2))\n\n\n\nUse instead:\n\n\n[1, 2]\n[1, 2]",
+    "fix-safety": "This rule's fix is marked as unsafe, as it may occasionally drop comments\nwhen rewriting the call. In most cases, though, comments will be preserved.",
+    "example-split": {
+        "example-before": "list([1, 2])\nlist((1, 2))\n\n",
+        "example-after": "\n[1, 2]\n[1, 2]"
+    }
+}

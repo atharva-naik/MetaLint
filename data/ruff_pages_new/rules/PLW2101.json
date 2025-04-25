@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for lock objects that are created and immediately discarded in\nwith statements.",
+    "why-is-this-bad": "Creating a lock (via threading.Lock or similar) in a with statement\nhas no effect, as locks are only relevant when shared between threads.\n\n\nInstead, assign the lock to a variable outside the with statement,\nand share that variable between threads.",
+    "example": "import threading\n\ncounter = 0\n\n\ndef increment():\n    global counter\n\n    with threading.Lock():\n        counter += 1\n\n\n\nUse instead:\n\n\nimport threading\n\ncounter = 0\nlock = threading.Lock()\n\n\ndef increment():\n    global counter\n\n    with lock:\n        counter += 1",
+    "example-split": {
+        "example-before": "import threading\n\ncounter = 0\n\n\ndef increment():\n    global counter\n\n    with threading.Lock():\n        counter += 1\n\n",
+        "example-after": "\nimport threading"
+    }
+}

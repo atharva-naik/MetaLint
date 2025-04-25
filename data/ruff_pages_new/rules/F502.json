@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for named placeholders in printf-style format strings without\nmapping-type values.",
+    "why-is-this-bad": "When using named placeholders in printf-style format strings, the values\nmust be a map type (such as a dictionary). Otherwise, the expression will\nraise a TypeError.",
+    "example": "\"%(greeting)s, %(name)s\" % (\"Hello\", \"World\")\n\n\n\nUse instead:\n\n\n\"%(greeting)s, %(name)s\" % {\"greeting\": \"Hello\", \"name\": \"World\"}\n\n\n\nOr:\n\n\n\"%s, %s\" % (\"Hello\", \"World\")",
+    "example-split": {
+        "example-before": "\"%(greeting)s, %(name)s\" % (\"Hello\", \"World\")\n\n",
+        "example-after": "\n\"%(greeting)s, %(name)s\" % {\"greeting\": \"Hello\", \"name\": \"World\"}"
+    }
+}

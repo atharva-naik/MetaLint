@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for for loops that can be replaced with yield from expressions.",
+    "why-is-this-bad": "If a for loop only contains a yield statement, it can be replaced with a\nyield from expression, which is more concise and idiomatic.",
+    "example": "for x in foo:\n    yield x\n\nglobal y\nfor y in foo:\n    yield y\n\n\n\nUse instead:\n\n\nyield from foo\n\nfor _element in foo:\n    y = _element\n    yield y",
+    "fix-safety": "This rule's fix is marked as unsafe, as converting a for loop to a yield from expression can change the behavior of the program in rare cases.\nFor example, if a generator is being sent values via send, then rewriting\nto a yield from could lead to an attribute error if the underlying\ngenerator does not implement the send method.\n\n\nAdditionally, if at least one target is global or nonlocal,\nno fix will be offered.\n\n\nIn most cases, however, the fix is safe, and such a modification should have\nno effect on the behavior of the program.",
+    "example-split": {
+        "example-before": "for x in foo:\n    yield x\n\nglobal y\nfor y in foo:\n    yield y\n\n",
+        "example-after": "\nyield from foo"
+    }
+}

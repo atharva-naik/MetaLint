@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for the use of the characters 'l', 'O', or 'I' as class names.",
+    "why-is-this-bad": "In some fonts, these characters are indistinguishable from the\nnumerals one and zero. When tempted to use 'l', use 'L' instead.",
+    "example": "class I(object): ...\n\n\n\nUse instead:\n\n\nclass Integer(object): ...",
+    "example-split": {
+        "example-before": "class I(object): ...\n\n",
+        "example-after": "\nclass Integer(object): ..."
+    }
+}

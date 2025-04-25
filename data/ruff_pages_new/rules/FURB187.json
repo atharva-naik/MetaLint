@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for list reversals that can be performed in-place in lieu of\ncreating a new list.",
+    "why-is-this-bad": "When reversing a list, it's more efficient to use the in-place method\n.reverse() instead of creating a new list, if the original list is\nno longer needed.",
+    "example": "l = [1, 2, 3]\nl = reversed(l)\n\nl = [1, 2, 3]\nl = list(reversed(l))\n\nl = [1, 2, 3]\nl = l[::-1]\n\n\n\nUse instead:\n\n\nl = [1, 2, 3]\nl.reverse()",
+    "fix-safety": "This rule's fix is marked as unsafe, as calling .reverse() on a list\nwill mutate the list in-place, unlike reversed, which creates a new list\nand leaves the original list unchanged.\n\n\nIf the list is referenced elsewhere, this could lead to unexpected\nbehavior.",
+    "example-split": {
+        "example-before": "l = [1, 2, 3]\nl = reversed(l)\n\nl = [1, 2, 3]\nl = list(reversed(l))\n\nl = [1, 2, 3]\nl = l[::-1]\n\n",
+        "example-after": "\nl = [1, 2, 3]\nl.reverse()"
+    }
+}

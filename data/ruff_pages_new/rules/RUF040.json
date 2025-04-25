@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for invalid use of literals in assert message arguments.",
+    "why-is-this-bad": "An assert message which is a non-string literal was likely intended\nto be used in a comparison assertion, rather than as a message.",
+    "example": "fruits = [\"apples\", \"plums\", \"pears\"]\nfruits.filter(lambda fruit: fruit.startwith(\"p\"))\nassert len(fruits), 2  # True unless the list is empty\n\n\n\nUse instead:\n\n\nfruits = [\"apples\", \"plums\", \"pears\"]\nfruits.filter(lambda fruit: fruit.startwith(\"p\"))\nassert len(fruits) == 2",
+    "example-split": {
+        "example-before": "fruits = [\"apples\", \"plums\", \"pears\"]\nfruits.filter(lambda fruit: fruit.startwith(\"p\"))\nassert len(fruits), 2  # True unless the list is empty\n\n",
+        "example-after": "\nfruits = [\"apples\", \"plums\", \"pears\"]\nfruits.filter(lambda fruit: fruit.startwith(\"p\"))\nassert len(fruits) == 2"
+    }
+}

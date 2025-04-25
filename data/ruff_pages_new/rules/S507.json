@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of policies disabling SSH verification in Paramiko.",
+    "why-is-this-bad": "By default, Paramiko checks the identity of the remote host when establishing\nan SSH connection. Disabling the verification might lead to the client\nconnecting to a malicious host, without the client knowing.",
+    "example": "from paramiko import client\n\nssh_client = client.SSHClient()\nssh_client.set_missing_host_key_policy(client.AutoAddPolicy)\n\n\n\nUse instead:\n\n\nfrom paramiko import client\n\nssh_client = client.SSHClient()\nssh_client.set_missing_host_key_policy(client.RejectPolicy)",
+    "example-split": {
+        "example-before": "from paramiko import client\n\nssh_client = client.SSHClient()\nssh_client.set_missing_host_key_policy(client.AutoAddPolicy)\n\n",
+        "example-after": "\nfrom paramiko import client"
+    }
+}

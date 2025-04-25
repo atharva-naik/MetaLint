@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for imports of the xmlrpc module.",
+    "why-is-this-bad": "XMLRPC is a particularly dangerous XML module, as it is also concerned with\ncommunicating data over a network. Use the defused.xmlrpc.monkey_patch()\nfunction to monkey-patch the xmlrpclib module and mitigate remote XML\nattacks.",
+    "example": "import xmlrpc",
+    "example-split": {
+        "example-before": "import xmlrpc",
+        "example-after": "import xmlrpc"
+    }
+}

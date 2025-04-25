@@ -93,6 +93,109 @@ def compute_f_score(p, r):
     if p + r == 0: return 0
     return 2*p*r/(p+r)
 
+# def compute_line_level_metric(data):
+#     p_line, r_line = defaultdict(lambda: []), defaultdict(lambda: [])
+
+#     for index,rec in tqdm(enumerate(data)):
+#         model_resp = load_linter_results(rec["model_response"])
+#         gt = load_linter_results(rec["ground_truth"])
+
+#         idiom_wise_pred_lines = defaultdict(lambda: set())
+#         idiom_wise_gt_lines = defaultdict(lambda: set())
+#         for i,model_violation in enumerate(model_resp):
+#             try: 
+#                 idiom_wise_pred_lines[model_violation['code']].add(int(model_violation['line'].split()[0].strip().removesuffix(":")))       
+#             except ValueError: pass # print(model_violation['line'])
+#             except KeyError: pass # print(model_violation.keys())
+#         for i,gt_violation in enumerate(gt):
+#             idiom_wise_gt_lines[gt_violation['code']].add(int(gt_violation['line'][:4].strip()))
+#         for idiom_code in idiom_wise_gt_lines.keys():
+#             overlap = len(idiom_wise_pred_lines[idiom_code].intersection(idiom_wise_gt_lines[idiom_code]))
+#             try: p_line_inst_idiom = overlap/len(idiom_wise_pred_lines[idiom_code])
+#             except ZeroDivisionError: p_line_inst_idiom = 0
+#             r_line_inst_idiom = overlap/len(idiom_wise_gt_lines[idiom_code])
+#             p_line[idiom_code].append(p_line_inst_idiom)
+#             r_line[idiom_code].append(r_line_inst_idiom)
+    
+#     # average of instances.
+#     for idiom_code in r_line.keys():
+#         p_line[idiom_code] = np.mean(p_line[idiom_code]).item()
+#         r_line[idiom_code] = np.mean(r_line[idiom_code]).item()
+#     p_line = dict(p_line)
+#     r_line = dict(r_line)
+
+#     # average over idioms
+#     p_line = np.mean(list(p_line.values())).item()
+#     r_line = np.mean(list(r_line.values())).item()
+#     f_line = compute_f_score(p_line, r_line)
+
+#     return {"P": p_line, "R": r_line, "F": f_line}
+
+def compute_line_level_metric(data):
+    p_line, r_line = [], []
+
+    for index,rec in tqdm(enumerate(data)):
+        model_resp = load_linter_results(rec["model_response"])
+        gt = load_linter_results(rec["ground_truth"])
+
+        idiom_wise_pred_lines = defaultdict(lambda: set())
+        idiom_wise_gt_lines = defaultdict(lambda: set())
+        for i,model_violation in enumerate(model_resp):
+            try: 
+                idiom_wise_pred_lines[model_violation['code']].add(int(model_violation['line'].split()[0].strip().removesuffix(":")))       
+            except ValueError: pass # print(model_violation['line'])
+            except KeyError: pass # print(model_violation.keys())
+        for i,gt_violation in enumerate(gt):
+            idiom_wise_gt_lines[gt_violation['code']].add(int(gt_violation['line'][:4].strip()))
+        for idiom_code in idiom_wise_gt_lines.keys():
+            overlap = len(idiom_wise_pred_lines[idiom_code].intersection(idiom_wise_gt_lines[idiom_code]))
+            try: p_line_inst_idiom = overlap/len(idiom_wise_pred_lines[idiom_code])
+            except ZeroDivisionError: p_line_inst_idiom = 0
+            r_line_inst_idiom = overlap/len(idiom_wise_gt_lines[idiom_code])
+            p_line.append(p_line_inst_idiom)
+            r_line.append(r_line_inst_idiom)
+
+    # average over instances and idioms
+    p_line = np.mean(p_line).item()
+    r_line = np.mean(r_line).item()
+    f_line = compute_f_score(p_line, r_line)
+
+    return {"P": p_line, "R": r_line, "F": f_line}
+
+# def compute_line_level_metric(data):
+#     p_line, r_line = [], []
+
+#     for index,rec in tqdm(enumerate(data)):
+#         model_resp = load_linter_results(rec["model_response"])
+#         gt = load_linter_results(rec["ground_truth"])
+#         pred_lines = set()
+#         gt_lines = set()
+#         for i,model_violation in enumerate(model_resp):
+#             try: 
+#                 lineno = int(model_violation['line'].split()[0].strip().removesuffix(":"))
+#                 code = model_violation['code']
+#                 pred_lines.add(f"{code}-{lineno}") 
+#             except ValueError: pass # print(model_violation['line'])
+#             except KeyError: pass # print(model_violation.keys())
+#         for i,gt_violation in enumerate(gt):
+#             lineno = int(gt_violation['line'][:4].strip())
+#             code = gt_violation['code']
+#             gt_lines.add(f"{code}-{lineno}")
+#         overlap = len(pred_lines.intersection(gt_lines))
+#         try: p_line_inst = overlap/len(pred_lines)
+#         except ZeroDivisionError: p_line_inst = 0
+#         try: r_line_inst = overlap/len(gt_lines)
+#         except ZeroDivisionError: r_line_inst = 0
+#         p_line.append(p_line_inst)
+#         r_line.append(r_line_inst)
+    
+#     # average over instances
+#     p_line = np.mean(p_line).item()
+#     r_line = np.mean(r_line).item()
+#     f_line = compute_f_score(p_line, r_line)
+
+#     return {"P": p_line, "R": r_line, "F": f_line}
+
 def compute_overall_metric(data, match_code: bool=True):
     p_line, r_line, p_span, r_span = [], [], [], []
 
@@ -224,9 +327,10 @@ if __name__ == "__main__":
     
     # test_preds = read_jsonl(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4.jsonl")
     # test_preds = read_jsonl(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_lineno.jsonl")
-    # test_preds = read_jsonl(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot.jsonl")
+    # test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot.jsonl")
     # test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot_v2_lite.jsonl")
-    test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot_v3_lite.jsonl")
+    # test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot_v3_lite.jsonl")
+    test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot_star.jsonl")
     # test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot.jsonl")
     # test_preds = read_jsonl(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_cot.jsonl")
     test_data = json.load(open("data/ruff_meta_linting/test_v4_new_format_with_lineno.json"))
@@ -240,16 +344,20 @@ if __name__ == "__main__":
     meta_task_instr_follow_rate = compute_meta_task_conf_mat(preds=test_preds, test_data=test_data)
     print(f"\x1b[34;1minstruction follow rate: {meta_task_instr_follow_rate:.4f}\x1b[0m")
 
-    print("\n\x1b[31;1mViolation Only (No Detection)\x1b[0m")
-    overall_det_loc_metric = compute_overall_metric(test_preds, match_code=False)
-    for k,v in overall_det_loc_metric["span"].items():
-        print(f"span: {k}={v:.4f}")
-    for k,v in overall_det_loc_metric["line"].items():
-        print(f"line: {k}={v:.4f}")
+    # print("\n\x1b[31;1mViolation Only (No Detection)\x1b[0m")
+    # overall_det_loc_metric = compute_overall_metric(test_preds, match_code=False)
+    # for k,v in overall_det_loc_metric["span"].items():
+    #     print(f"span: {k}={v:.4f}")
+    # for k,v in overall_det_loc_metric["line"].items():
+    #     print(f"line: {k}={v:.4f}")
 
     print("\n\x1b[32;1mOverall Metric (Detection+Violation)\x1b[0m")
     overall_det_loc_metric = compute_overall_metric(test_preds)
     for k,v in overall_det_loc_metric["span"].items():
         print(f"span: {k}={v:.4f}")
-    for k,v in overall_det_loc_metric["line"].items():
+
+    overall_det_loc_metric = compute_line_level_metric(test_preds)
+    for k,v in overall_det_loc_metric.items():
         print(f"line: {k}={v:.4f}")
+    # for k,v in overall_det_loc_metric["line"].items():
+    #     print(f"line: {k}={v:.4f}")

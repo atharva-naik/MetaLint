@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for member imports that should instead be accessed by importing the\nmodule.",
+    "why-is-this-bad": "Consistency is good. Use a common convention for imports to make your code\nmore readable and idiomatic.\n\n\nFor example, it's common to import pandas as pd, and then access\nmembers like Series via pd.Series, rather than importing Series\ndirectly.",
+    "example": "from pandas import Series\n\n\n\nUse instead:\n\n\nimport pandas as pd\n\npd.Series",
+    "example-split": {
+        "example-before": "from pandas import Series\n\n",
+        "example-after": "\nimport pandas as pd"
+    }
+}

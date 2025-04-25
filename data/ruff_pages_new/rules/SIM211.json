@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for if expressions that can be replaced by negating a given\ncondition.",
+    "why-is-this-bad": "if expressions that evaluate to False for a truthy condition and True\nfor a falsey condition can be replaced with not operators, which are more\nconcise and readable.",
+    "example": "False if a else True\n\n\n\nUse instead:\n\n\nnot a",
+    "example-split": {
+        "example-before": "False if a else True\n\n",
+        "example-after": "\nnot a"
+    }
+}

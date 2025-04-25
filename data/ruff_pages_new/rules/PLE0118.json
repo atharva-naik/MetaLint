@@ -1,0 +1,9 @@
+{
+    "what-it-does": "Checks for uses of names that are declared as global prior to the\nrelevant global declaration.",
+    "why-is-this-bad": "The global declaration applies to the entire scope. Using a name that's\ndeclared as global in a given scope prior to the relevant global\ndeclaration is a SyntaxError.",
+    "example": "counter = 1\n\n\ndef increment():\n    print(f\"Adding 1 to {counter}\")\n    global counter\n    counter += 1\n\n\n\nUse instead:\n\n\ncounter = 1\n\n\ndef increment():\n    global counter\n    print(f\"Adding 1 to {counter}\")\n    counter += 1",
+    "example-split": {
+        "example-before": "counter = 1\n\n\ndef increment():\n    print(f\"Adding 1 to {counter}\")\n    global counter\n    counter += 1\n\n",
+        "example-after": "\ncounter = 1"
+    }
+}

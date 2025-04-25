@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for assignments that can be replaced with augmented assignment\nstatements.",
+    "why-is-this-bad": "If the right-hand side of an assignment statement consists of a binary\noperation in which one operand is the same as the assignment target,\nit can be rewritten as an augmented assignment. For example, x = x + 1\ncan be rewritten as x += 1.\n\n\nWhen performing such an operation, an augmented assignment is more concise\nand idiomatic.",
+    "example": "x = x + 1\n\n\n\nUse instead:\n\n\nx += 1",
+    "fix-safety": "This rule's fix is marked as unsafe, as augmented assignments have\ndifferent semantics when the target is a mutable data type, like a list or\ndictionary.\n\n\nFor example, consider the following:\n\n\nfoo = [1]\nbar = foo\nfoo = foo + [2]\nassert (foo, bar) == ([1, 2], [1])\n\n\n\nIf the assignment is replaced with an augmented assignment, the update\noperation will apply to both foo and bar, as they refer to the same\nobject:\n\n\nfoo = [1]\nbar = foo\nfoo += [2]\nassert (foo, bar) == ([1, 2], [1, 2])",
+    "example-split": {
+        "example-before": "x = x + 1\n\n",
+        "example-after": "\nx += 1"
+    }
+}

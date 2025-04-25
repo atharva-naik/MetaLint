@@ -1,0 +1,10 @@
+{
+    "what-it-does": "Checks for TypedDict declarations that use functional syntax.",
+    "why-is-this-bad": "TypedDict types can be defined either through a functional syntax\n(Foo = TypedDict(...)) or a class syntax (class Foo(TypedDict): ...).\n\n\nThe class syntax is more readable and generally preferred over the\nfunctional syntax.\n\n\nNonetheless, there are some situations in which it is impossible to use\nthe class-based syntax. This rule will not apply to those cases. Namely,\nit is impossible to use the class-based syntax if any TypedDict fields are:\n\n\n\nNot valid python identifiers (for example, @x)\nPython keywords such as in\nPrivate names such as __id that would undergo name mangling at runtime\n    if the class-based syntax was used\nDunder names such as __int__ that can confuse type checkers if they're used\n    with the class-based syntax.",
+    "example": "from typing import TypedDict\n\nFoo = TypedDict(\"Foo\", {\"a\": int, \"b\": str})\n\n\n\nUse instead:\n\n\nfrom typing import TypedDict\n\n\nclass Foo(TypedDict):\n    a: int\n    b: str",
+    "fix-safety": "This rule's fix is marked as unsafe if there are any comments within the\nrange of the TypedDict definition, as these will be dropped by the\nautofix.",
+    "example-split": {
+        "example-before": "from typing import TypedDict\n\nFoo = TypedDict(\"Foo\", {\"a\": int, \"b\": str})\n\n",
+        "example-after": "\nfrom typing import TypedDict"
+    }
+}
