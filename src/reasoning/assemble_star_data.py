@@ -10,7 +10,7 @@ sys.path.append(module_path)
 
 from src.datautils import generate_cot_gen_prompts, load_ruff_idiom_specs, load_stack_dump, read_jsonl
 
-FINAL_IDIOMS_FOUND_TEMPLATE_FOR_NO_VIOLATIONS = """
+FINAL_IDIOMS_FOUND_TEMPLATE_FOR_NO_VIOLATIONS_5 = """
 
 ### Final Idiom Violations Found
 
@@ -31,6 +31,44 @@ NO VIOLATIONS FOUND
 NO VIOLATIONS FOUND
 
 **Idiom {I5} Violations:**
+
+NO VIOLATIONS FOUND
+"""
+
+FINAL_IDIOMS_FOUND_TEMPLATE_FOR_NO_VIOLATIONS_4 = """
+
+### Final Idiom Violations Found
+
+**Idiom {I1} Violations:**
+
+NO VIOLATIONS FOUND
+
+**Idiom {I2} Violations:**
+
+NO VIOLATIONS FOUND
+
+**Idiom {I3} Violations:**
+
+NO VIOLATIONS FOUND
+
+**Idiom {I4} Violations:**
+
+NO VIOLATIONS FOUND
+"""
+
+FINAL_IDIOMS_FOUND_TEMPLATE_FOR_NO_VIOLATIONS_3 = """
+
+### Final Idiom Violations Found
+
+**Idiom {I1} Violations:**
+
+NO VIOLATIONS FOUND
+
+**Idiom {I2} Violations:**
+
+NO VIOLATIONS FOUND
+
+**Idiom {I3} Violations:**
 
 NO VIOLATIONS FOUND
 """
@@ -57,15 +95,17 @@ def load_linter_results(text):
 # main
 if __name__ == "__main__":
     NO_VIOLATIONS_FOUND_COUNT = 0
-    dataset_version = "train_v4_new_format_with_lineno"
+    dataset_version = "all_idioms/train"
     train_data = json.load(open(f"./data/ruff_meta_linting/{dataset_version}.json"))
-    list_constructs = {rec["id"]: rec['response'] for rec in read_jsonl("data/ruff_meta_linting/cot_gen/gpt-4o-code_construct_v2-cot-gen-cache_start_0.jsonl")}
+    list_constructs = {rec["id"]: rec['response'] for rec in read_jsonl("data/ruff_meta_linting/cot_gen/gpt-4o-code_construct_all_idioms-cot-gen-cache_start_0.jsonl")}
     
-    start_points = [0,6815,8000,9938]
+    start_points = [0,8500]
+    # [0,6815,8000,9938]
     cot_data = []
     for start_point in start_points:
         start_point = "" if start_point is None else f"_start_{start_point}"
-        cot_data_path = f"data/ruff_meta_linting/cot_gen/gpt-4o-mini-star-cot-gen-cache{start_point}.jsonl"
+        # data/ruff_meta_linting/cot_gen/gpt-4o-mini-all_idioms_star-cot-gen-cache_start_0.jsonl
+        cot_data_path = f"data/ruff_meta_linting/cot_gen/gpt-4o-mini-all_idioms_star-cot-gen-cache{start_point}.jsonl"
         # print(cot_data_path)
         cot_data += read_jsonl(cot_data_path)
     print(len(cot_data))
@@ -95,13 +135,27 @@ if __name__ == "__main__":
                 if "**Idiom " not in idioms_found:
                     if idioms_found.split("\n")[0].strip().startswith("NO VIOLATIONS FOUND"):
                         # print(idioms_found)
-                        idioms_found = FINAL_IDIOMS_FOUND_TEMPLATE_FOR_NO_VIOLATIONS.format(
-                            I1=idiom_codes_list[0],
-                            I2=idiom_codes_list[1],
-                            I3=idiom_codes_list[2],
-                            I4=idiom_codes_list[3],
-                            I5=idiom_codes_list[4],
-                        )
+                        if len(idiom_codes_list) == 5:
+                            idioms_found = FINAL_IDIOMS_FOUND_TEMPLATE_FOR_NO_VIOLATIONS_5.format(
+                                I1=idiom_codes_list[0],
+                                I2=idiom_codes_list[1],
+                                I3=idiom_codes_list[2],
+                                I4=idiom_codes_list[3],
+                                I5=idiom_codes_list[4],
+                            )
+                        elif len(idiom_codes_list) == 4:
+                            idioms_found = FINAL_IDIOMS_FOUND_TEMPLATE_FOR_NO_VIOLATIONS_4.format(
+                                I1=idiom_codes_list[0],
+                                I2=idiom_codes_list[1],
+                                I3=idiom_codes_list[2],
+                                I4=idiom_codes_list[3],
+                            )
+                        elif len(idiom_codes_list) == 3:
+                            idioms_found = FINAL_IDIOMS_FOUND_TEMPLATE_FOR_NO_VIOLATIONS_3.format(
+                                I1=idiom_codes_list[0],
+                                I2=idiom_codes_list[1],
+                                I3=idiom_codes_list[2],
+                            )                           
                         # print(idioms_found)
                         scan_file_cot = before_final_idioms.strip("\n")+idioms_found
                         # print(scan_file_cot)
@@ -136,5 +190,6 @@ if __name__ == "__main__":
     print(f"NO VIOLATIONS FOUND: {(100*NO_VIOLATIONS_FOUND_COUNT/len(train_data_with_cot)):.2f}%")
     print(f"train_data original: {len(train_data)}")
     print(f"train_data with CoT: {len(train_data_with_cot)}")
+    print(f"data/ruff_meta_linting/{dataset_version}_subtask_cot_star.json")
     with open(f"data/ruff_meta_linting/{dataset_version}_subtask_cot_star.json", "w") as f:
         json.dump(train_data_with_cot, f, indent=4)
