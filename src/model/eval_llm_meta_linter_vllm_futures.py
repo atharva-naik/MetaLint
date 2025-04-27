@@ -18,13 +18,15 @@ VLLM_SERVER_URL = f"http://0.0.0.0:{PORT}/v1/chat/completions"
 MAX_RETRIES = 5
 MAX_SEQ_LEN = 32768
 MAX_NEW_TOKENS = 2048
-NUM_WORKERS = 8
+NUM_WORKERS = 12
 WRITE_EVERY_N = 20  # flush every N completed responses
 
 def get_args():
     parser = argparse.ArgumentParser(description="Run inference with different settings.")
     parser.add_argument("--lineno", action="store_true", help="Include line numbers in the code prompt during inference.")
     parser.add_argument("--model_name", type=str, required=True, help="which model is to be queried")
+    parser.add_argument("--test_file", type=str, help="path to the file containing test data",
+                        default="data/ruff_meta_linting/test_v4_new_format_with_lineno.json")
     parser.add_argument("--write_path", type=str, required=True, help="name of the file where predictions should be written")
     return parser.parse_args()
 
@@ -67,7 +69,7 @@ def main():
     model_name = args.model_name
     write_path = args.write_path
 
-    test_data = json.load(open("data/ruff_meta_linting/test_v4_new_format_with_lineno.json"))
+    test_data = json.load(open(args.test_file))
     skip_index_till = 0
 
     if not os.path.exists(write_path):
@@ -112,3 +114,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-all-idioms-subtask-cot-star/checkpoint-1500/ --write_path data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_1500_all_idioms_subtask_cot_star.jsonl  --test_file data/ruff_meta_linting/all_idioms/test.json                            
+
+    # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-all-idioms-subtask-cot-star/checkpoint-2000/ --write_path data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_2000_all_idioms_subtask_cot_star.jsonl  --test_file data/ruff_meta_linting/all_idioms/test.json
