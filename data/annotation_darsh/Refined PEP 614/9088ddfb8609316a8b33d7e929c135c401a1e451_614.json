@@ -1,0 +1,31 @@
+{
+    "blob_id": "9088ddfb8609316a8b33d7e929c135c401a1e451",
+    "violations": [
+      {
+        "start_lineno": 5,
+        "end_lineno": 5,
+        "pep": "614",
+        "line": "builder = bn.FlowBuilder('hello_world')",
+        "span": "builder = bn.FlowBuilder('hello_world')",
+        "fix": [
+          {
+            "before": "builder = bn.FlowBuilder('hello_world')",
+            "after": ""
+          }
+        ]
+      },
+      {
+        "start_lineno": 11,
+        "end_lineno": 11,
+        "pep": "614",
+        "line": "@builder",
+        "span": "@builder",
+        "fix": [
+          {
+            "before": "@builder",
+            "after": "@bn.FlowBuilder('hello_world')"
+          }
+        ]
+      }
+    ]
+  }

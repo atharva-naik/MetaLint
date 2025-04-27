@@ -1,0 +1,70 @@
+{
+    "blob_id": "2ed8aa9c40ab96cdadc63731a8759ece08591e60",
+    "violations": [
+      {
+        "start_lineno": 10,
+        "end_lineno": 11,
+        "pep": "614",
+        "line": "requires_numpy1_8 = pytest.mark.skipif(not hasattr(np.ufunc, 'at'),\nreason=\"requires numpy 1.8 or newer\")",
+        "span": "requires_numpy1_8 = pytest.mark.skipif(not hasattr(np.ufunc, 'at'),\nreason=\"requires numpy 1.8 or newer\")",
+        "fix": [
+          {
+            "before": "requires_numpy1_8 = pytest.mark.skipif(not hasattr(np.ufunc, 'at'),\nreason=\"requires numpy 1.8 or newer\")",
+            "after": ""
+          }
+        ]
+      },
+      {
+        "start_lineno": 30,
+        "end_lineno": 30,
+        "pep": "614",
+        "line": "@requires_numpy1_8",
+        "span": "@requires_numpy1_8",
+        "fix": [
+          {
+            "before": "@requires_numpy1_8",
+            "after": "@pytest.mark.skipif(not hasattr(np.ufunc, 'at'),\nreason=\"requires numpy 1.8 or newer\")"
+          }
+        ]
+      },
+      {
+        "start_lineno": 40,
+        "end_lineno": 40,
+        "pep": "614",
+        "line": "@requires_numpy1_8",
+        "span": "@requires_numpy1_8",
+        "fix": [
+          {
+            "before": "@requires_numpy1_8",
+            "after": "@pytest.mark.skipif(not hasattr(np.ufunc, 'at'),\nreason=\"requires numpy 1.8 or newer\")"
+          }
+        ]
+      },
+      {
+        "start_lineno": 51,
+        "end_lineno": 51,
+        "pep": "614",
+        "line": "@requires_numpy1_8",
+        "span": "@requires_numpy1_8",
+        "fix": [
+          {
+            "before": "@requires_numpy1_8",
+            "after": "@pytest.mark.skipif(not hasattr(np.ufunc, 'at'),\nreason=\"requires numpy 1.8 or newer\")"
+          }
+        ]
+      },
+      {
+        "start_lineno": 61,
+        "end_lineno": 61,
+        "pep": "614",
+        "line": "@requires_numpy1_8",
+        "span": "@requires_numpy1_8",
+        "fix": [
+          {
+            "before": "@requires_numpy1_8",
+            "after": "@pytest.mark.skipif(not hasattr(np.ufunc, 'at'),\nreason=\"requires numpy 1.8 or newer\")"
+          }
+        ]
+      }
+    ]
+  }

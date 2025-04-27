@@ -1,0 +1,31 @@
+{
+    "blob_id": "8503b6e02d9d7832faf289ad41014228b8fce7b4",
+    "violations": [
+      {
+        "start_lineno": 160,
+        "end_lineno": 160,
+        "pep": "593",
+        "line": "sources: ListOfPathsOrStrs",
+        "span": "ListOfPathsOrStrs",
+        "fix": [
+          {
+            "before": "ListOfPathsOrStrs",
+            "after": "Annotated[ListOfPathsOrStrs, \"regex=^([a-zA-Z0-9_/.-]+|[*?{}[]]+)$\", \"desc=List of file paths or glob patterns\"]"
+          }
+        ]
+      },
+      {
+        "start_lineno": 161,
+        "end_lineno": 161,
+        "pep": "593",
+        "line": "destination: PathOrStr = None,",
+        "span": "PathOrStr",
+        "fix": [
+          {
+            "before": "PathOrStr",
+            "after": "Annotated[PathOrStr, \"regex=^([a-zA-Z0-9_/.-]+|[*?{}[]]+)$\", \"desc=Destination path or glob pattern\"]"
+          }
+        ]
+      }
+    ]
+  }
