@@ -1,0 +1,31 @@
+{
+    "blob_id": "a5c70942c2643020d484c58e7cf180e4f5237c4e",
+    "violations": [
+      {
+        "start_lineno": 98,
+        "end_lineno": 98,
+        "pep": "593",
+        "line": "def list_documents(self, page_size: int = None) -> Generator[Any, Any, None]:",
+        "span": "page_size: int = None",
+        "fix": [
+          {
+            "before": "page_size: int = None",
+            "after": "page_size: Annotated[int, \"positive\"] = None"
+          }
+        ]
+      },
+      {
+        "start_lineno": 98,
+        "end_lineno": 98,
+        "pep": "593",
+        "line": "def list_documents(self, page_size: int = None) -> Generator[Any, Any, None]:",
+        "span": "Generator[Any, Any, None]",
+        "fix": [
+          {
+            "before": "Generator[Any, Any, None]",
+            "after": "Annotated[Generator[Any, Any, None], \"yields documents, possibly empty\"]"
+          }
+        ]
+      }
+    ]
+  }

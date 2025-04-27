@@ -1,0 +1,31 @@
+{
+    "blob_id": "6d1c38c962bce9fb96e01c990c0ca37799f8ecdf",
+    "violations": [
+      {
+        "start_lineno": 15,
+        "end_lineno": 16,
+        "pep": "614",
+        "line": "latest_param = pytest.mark.skipif(LooseVersion(param.__version__) < '1.10.0a4',\nreason=\"requires param>=1.10.0a4\")",
+        "span": "latest_param = pytest.mark.skipif(LooseVersion(param.__version__) < '1.10.0a4',\nreason=\"requires param>=1.10.0a4\")",
+        "fix": [
+          {
+            "before": "latest_param = pytest.mark.skipif(LooseVersion(param.__version__) < '1.10.0a4',\nreason=\"requires param>=1.10.0a4\")",
+            "after": ""
+          }
+        ]
+      },
+      {
+        "start_lineno": 98,
+        "end_lineno": 98,
+        "pep": "614",
+        "line": "@latest_param",
+        "span": "@latest_param",
+        "fix": [
+          {
+            "before": "@latest_param",
+            "after": "@pytest.mark.skipif(LooseVersion(param.__version__) < '1.10.0a4',\nreason=\"requires param>=1.10.0a4\")"
+          }
+        ]
+      }
+    ]
+  }
