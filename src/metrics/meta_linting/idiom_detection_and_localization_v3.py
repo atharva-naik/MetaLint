@@ -142,7 +142,8 @@ def compute_line_level_metric(data):
         idiom_wise_gt_lines = defaultdict(lambda: set())
         for i,model_violation in enumerate(model_resp):
             try: 
-                idiom_wise_pred_lines[model_violation['code']].add(int(model_violation['line'].split()[0].strip().removesuffix(":")))       
+                idiom_wise_pred_lines[model_violation['code']].add(int(model_violation['line'].split()[0].strip().removesuffix(":")))    
+            except AttributeError: pass   
             except ValueError: pass # print(model_violation['line'])
             except KeyError: pass # print(model_violation.keys())
         for i,gt_violation in enumerate(gt):
