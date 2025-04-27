@@ -1,0 +1,18 @@
+{
+    "blob_id": "71c04b80dcacbb8ded9593cd570f0a35bb752890",
+    "violations": [
+      {
+        "start_lineno": 263,
+        "end_lineno": 263,
+        "pep": "593",
+        "line": "def extra_state_attributes(self) -> dict[str, Any]:",
+        "span": "dict[str, Any]",
+        "fix": [
+          {
+            "before": "dict[str, Any]",
+            "after": "Annotated[dict[str, Any], {\"awair_index\": {\"type\": \"float\", \"range\": [0, 4], \"description\": \"Awair index score\"}}]"
+          }
+        ]
+      }
+    ]
+  }
