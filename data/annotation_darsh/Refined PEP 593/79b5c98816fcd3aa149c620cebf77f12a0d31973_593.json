@@ -1,0 +1,18 @@
+{
+    "blob_id": "79b5c98816fcd3aa149c620cebf77f12a0d31973",
+    "violations": [
+      {
+        "start_lineno": 4,
+        "end_lineno": 4,
+        "pep": "593",
+        "line": "def calculateMinimumHP(self, dungeon: List[List[int]]) -> int:",
+        "span": "-> int",
+        "fix": [
+          {
+            "before": "-> int",
+            "after": "-> Annotated[int, range=\">=1\"]"
+          }
+        ]
+      }
+    ]
+  }

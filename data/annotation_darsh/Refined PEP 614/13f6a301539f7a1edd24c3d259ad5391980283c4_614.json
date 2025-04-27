@@ -1,0 +1,57 @@
+{
+    "blob_id": "13f6a301539f7a1edd24c3d259ad5391980283c4",
+    "violations": [
+      {
+        "start_lineno": 20,
+        "end_lineno": 20,
+        "pep": "614",
+        "line": "timeout10 = pytest.mark.timeout(10, method='thread')",
+        "span": "timeout10 = pytest.mark.timeout(10, method='thread')",
+        "fix": [
+          {
+            "before": "timeout10 = pytest.mark.timeout(10, method='thread')",
+            "after": ""
+          }
+        ]
+      },
+      {
+        "start_lineno": 23,
+        "end_lineno": 23,
+        "pep": "614",
+        "line": "@timeout10",
+        "span": "@timeout10",
+        "fix": [
+          {
+            "before": "@timeout10",
+            "after": "@ppytest.mark.timeout(10, method='thread')"
+          }
+        ]
+      },
+      {
+        "start_lineno": 28,
+        "end_lineno": 28,
+        "pep": "614",
+        "line": "@timeout10",
+        "span": "@timeout10",
+        "fix": [
+          {
+            "before": "@timeout10",
+            "after": "@pytest.mark.timeout(10, method='thread')"
+          }
+        ]
+      },
+      {
+        "start_lineno": 33,
+        "end_lineno": 33,
+        "pep": "614",
+        "line": "@parameters",
+        "span": "@parameters",
+        "fix": [
+          {
+            "before": "@parameters",
+            "after": "@pytest.mark.timeout(10, method='thread')"
+          }
+        ]
+      }
+    ]
+  }

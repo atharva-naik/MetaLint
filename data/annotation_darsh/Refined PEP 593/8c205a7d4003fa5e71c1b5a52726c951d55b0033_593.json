@@ -1,0 +1,18 @@
+{
+    "blob_id": "8c205a7d4003fa5e71c1b5a52726c951d55b0033",
+    "violations": [
+      {
+        "start_lineno": 39,
+        "end_lineno": 39,
+        "pep": "593",
+        "line": "def rows(self) -> List[ghidra.graph.viewer.layout.Row]:",
+        "span": "List[ghidra.graph.viewer.layout.Row]",
+        "fix": [
+          {
+            "before": "List[ghidra.graph.viewer.layout.Row]",
+            "after": "List[Annotated[ghidra.graph.viewer.layout.Row, \"sorted(rows, key=index) where index=range(−inf, inf)\"]]"
+          }
+        ]
+      }
+    ]
+  }
