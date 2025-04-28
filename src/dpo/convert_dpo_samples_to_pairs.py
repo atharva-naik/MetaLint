@@ -21,7 +21,7 @@ if __name__ == "__main__":
         ID_suffix = 0
         for neg_resp, reward in rec["model_responses"]:
             # print(neg_resp)
-            prompt = train_data[rec["id"]]
+            prompt = train_data[rec["id"]]["messages"][0]["content"]
             # print(reward) 
             dpo_data.append({
                 "id": rec["id"]+f"{ID_suffix}",
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     print(dpo_data[0]['rejected'][0].keys())
     print(dpo_data[0]['rejected'][1].keys())
     print(dpo_data[0]['chosen'][0]['content'] == dpo_data[0]['rejected'][0]['content'] == dpo_data[0]['prompt'])
-    
+
     with open("data/ruff_meta_linting/dpo/qwen2.5_3b_instruct_transfer_v4_subtask_cot_star_SFT_step_2000/train.json", "w") as f:
         json.dump(dpo_train_data, f, indent=4)
     with open("data/ruff_meta_linting/dpo/qwen2.5_3b_instruct_transfer_v4_subtask_cot_star_SFT_step_2000/test.json", "w") as f:
