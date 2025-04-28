@@ -311,6 +311,7 @@ def compute_line_level_metric(data):
             except AttributeError: pass   
             except ValueError: pass # print(model_violation['line'])
             except KeyError: pass # print(model_violation.keys())
+            except IndexError: print("\x1b[31;1mline:", model_violation['line'], "\x1b[0m")
         for i,gt_violation in enumerate(gt):
             idiom_wise_gt_lines[gt_violation['code']].add(int(gt_violation['line'][:4].strip()))
         for idiom_code in idiom_wise_gt_lines.keys():

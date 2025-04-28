@@ -24,7 +24,6 @@ WRITE_EVERY_N = 20
 
 def get_args():
     parser = argparse.ArgumentParser(description="Run inference with different settings.")
-    parser.add_argument("--lineno", action="store_true", help="Include line numbers in the code prompt during inference.")
     parser.add_argument("--model_name", type=str, required=True, help="which model is to be queried")
     parser.add_argument("--write_path", type=str, required=True, help="name of the file where predictions should be written")
     parser.add_argument("--M", type=int, default=5, help="Number of samples per prompt")
@@ -75,7 +74,7 @@ def main():
 
     assert len(temperatures) == M, "Length of temperatures must match M"
 
-    test_data = json.load(open("data/ruff_meta_linting/train_v4_new_format_with_lineno_subtask_cot_star.json"))
+    train_data = json.load(open("data/ruff_meta_linting/train_v4_new_format_with_lineno_subtask_cot_star.json"))
     skip_index_till = 0
 
     if not os.path.exists(write_path):
@@ -86,7 +85,7 @@ def main():
         if skip_index_till > 0:
             print(f"Resuming from prompt index {skip_index_till}")
 
-    pending_data = test_data[skip_index_till:]
+    pending_data = train_data[skip_index_till:]
     results_buffer = {}
     next_write_index = skip_index_till
 
