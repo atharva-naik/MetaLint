@@ -1,0 +1,31 @@
+{
+    "blob_id": "1891b8efa206d3ac3a27653452945bb1c3676750",
+    "violations": [
+      {
+        "start_lineno": 15,
+        "end_lineno": 15,
+        "pep": "593",
+        "line": "def invert_images(self, image_directory: str, image_file_ending: str):",
+        "span": "image_directory: str",
+        "fix": [
+          {
+            "before": "image_directory: str",
+            "after": "image_directory: Annotated[str, regex='^(?!\\s*$).+']"
+          }
+        ]
+      },
+      {
+        "start_lineno": 15,
+        "end_lineno": 15,
+        "pep": "593",
+        "line": "def invert_images(self, image_directory: str, image_file_ending: str):",
+        "span": "image_file_ending: str",
+        "fix": [
+          {
+            "before": "image_file_ending: str",
+            "after": "image_file_ending: Annotated[str, regex='^\\*\\.[a-zA-Z0-9]+$']"
+          }
+        ]
+      }
+    ]
+  }

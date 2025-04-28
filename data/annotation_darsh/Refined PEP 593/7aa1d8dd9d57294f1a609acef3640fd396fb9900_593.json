@@ -1,0 +1,31 @@
+{
+    "blob_id": "7aa1d8dd9d57294f1a609acef3640fd396fb9900",
+    "violations": [
+      {
+        "start_lineno": 154,
+        "end_lineno": 154,
+        "pep": "593",
+        "line": "def _parse_hashtags(self, caption: str) -> List[str]:",
+        "span": "caption: str",
+        "fix": [
+          {
+            "before": "caption: str",
+            "after": "caption: Annotated[str, regex=r'#(\\w+)']"
+          }
+        ]
+      },
+      {
+        "start_lineno": 154,
+        "end_lineno": 154,
+        "pep": "593",
+        "line": "def _parse_hashtags(self, caption: str) -> List[str]:",
+        "span": "List[str]",
+        "fix": [
+          {
+            "before": "List[str]",
+            "after": "Annotated[List[Annotated[str, regex=r'#(\\w+)')]]"
+          }
+        ]
+      }
+    ]
+  }

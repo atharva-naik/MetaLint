@@ -1,0 +1,57 @@
+{
+    "blob_id": "b4ac39cb2ae3416400dad040fd16a6489b3b62d9",
+    "violations": [
+      {
+        "start_lineno": 16,
+        "end_lineno": 16,
+        "pep": "614",
+        "line": "py2_only = pytest.mark.skipif(six.PY3, reason=\"Python 2-only test.\")",
+        "span": "py2_only = pytest.mark.skipif(six.PY3, reason=\"Python 2-only test.\")",
+        "fix": [
+          {
+            "before": "py2_only = pytest.mark.skipif(six.PY3, reason=\"Python 2-only test.\")",
+            "after": ""
+          }
+        ]
+      },
+      {
+        "start_lineno": 17,
+        "end_lineno": 17,
+        "pep": "614",
+        "line": "py3_only = pytest.mark.skipif(six.PY2, reason=\"Python 3-only test.\")",
+        "span": "py3_only = pytest.mark.skipif(six.PY2, reason=\"Python 3-only test.\")",
+        "fix": [
+          {
+            "before": "py3_only = pytest.mark.skipif(six.PY2, reason=\"Python 3-only test.\")",
+            "after": ""
+          }
+        ]
+      },
+      {
+        "start_lineno": 21,
+        "end_lineno": 21,
+        "pep": "614",
+        "line": "@py2_only",
+        "span": "@py2_only",
+        "fix": [
+          {
+            "before": "@py2_only",
+            "after": "@pytest.mark.skipif(six.PY3, reason=\"Python 2-only test.\")"
+          }
+        ]
+      },
+      {
+        "start_lineno": 33,
+        "end_lineno": 33,
+        "pep": "614",
+        "line": "@py3_only",
+        "span": "@py3_only",
+        "fix": [
+          {
+            "before": "@py3_only",
+            "after": "@pytest.mark.skipif(six.PY2, reason=\"Python 3-only test.\")"
+          }
+        ]
+      }
+    ]
+  }
