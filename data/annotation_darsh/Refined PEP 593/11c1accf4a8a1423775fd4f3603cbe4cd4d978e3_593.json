@@ -1,0 +1,57 @@
+{
+    "blob_id": "11c1accf4a8a1423775fd4f3603cbe4cd4d978e3",
+    "violations": [
+      {
+        "start_lineno": 21,
+        "end_lineno": 21,
+        "pep": "593",
+        "line": "description: Optional[pulumi.Input[str]] = None,",
+        "span": "Optional[pulumi.Input[str]]",
+        "fix": [
+          {
+            "before": "Optional[pulumi.Input[str]]",
+            "after": "Optional[Annotated[pulumi.Input[str], \"max_length(256)\"]]"
+          }
+        ]
+      },
+      {
+        "start_lineno": 22,
+        "end_lineno": 22,
+        "pep": "593",
+        "line": "display_name: Optional[pulumi.Input[str]] = None,",
+        "span": "Optional[pulumi.Input[str]]",
+        "fix": [
+          {
+            "before": "Optional[pulumi.Input[str]]",
+            "after": "Optional[Annotated[pulumi.Input[str], \"max_length(100)\"]]"
+          }
+        ]
+      },
+      {
+        "start_lineno": 24,
+        "end_lineno": 24,
+        "pep": "593",
+        "line": "name: Optional[pulumi.Input[str]] = None,",
+        "span": "Optional[pulumi.Input[str]]",
+        "fix": [
+          {
+            "before": "Optional[pulumi.Input[str]]",
+            "after": "Optional[Annotated[pulumi.Input[str], \"unique_resource_name\"]]"
+          }
+        ]
+      },
+      {
+        "start_lineno": 26,
+        "end_lineno": 26,
+        "pep": "593",
+        "line": "trigger_id: Optional[pulumi.Input[str]] = None,",
+        "span": "Optional[pulumi.Input[str]]",
+        "fix": [
+          {
+            "before": "Optional[pulumi.Input[str]]",
+            "after": "Optional[Annotated[pulumi.Input[str], \"regex([a-zA-Z\\d-_]+), max_length(100)\"]]"
+          }
+        ]
+      }
+    ]
+  }

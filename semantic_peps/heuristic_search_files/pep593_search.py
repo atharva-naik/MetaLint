@@ -10,11 +10,10 @@ METADATA_PATTERNS = [
     (r"\b(?:must be|should be|has to be|is|are)?\s*(positive|negative|non-negative|non-zero)", "range"),
     (r"\b(?:minimum|min|at least)\s+\d+", "min"),
     (r"\b(?:maximum|max|at most)\s+\d+", "max"),
-    (r"\b(optional|may be none|null|can be none)", "nullable"),
+    (r"\b(may be none|can be none)", "nullable"),
     (r"\bchoices?:?\s*\[.*?\]", "enum"),
     (r"\blength\s+(\d+)\s+(to|-)\s+(\d+)", "length_range"),
     (r"\b(regex|pattern)\b", "regex"),
-    (r"\bexample\b.*", "example"),
     (r"\bunit\b:?\s*(seconds|kg|cm|ms)", "unit"),
     (r"\bdeprecated\b", "deprecated"),
 ]
@@ -106,7 +105,7 @@ def process_jsonl_for_pep593_avenues(input_dir: str, output_file: str):
                             print(f"Skipping malformed line {line_num} in {filename}")
 
 input_directory = "./STACK_v2"
-output_jsonl = "pep_593_darsh_violations.jsonl"
+output_jsonl = "pep_593_darsh_third_run_violations.jsonl"
 
 if __name__ == "__main__":
     process_jsonl_for_pep593_avenues(input_dir=input_directory, output_file=output_jsonl)
