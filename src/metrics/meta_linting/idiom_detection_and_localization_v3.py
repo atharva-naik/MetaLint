@@ -333,13 +333,14 @@ if __name__ == "__main__":
     # test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot_v3_lite.jsonl")
 
     # SFT and DPO **current transfer experiments**:
-    test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_dpo_preds_{steps}_transfer_v4_subtask_cot_star.jsonl")
+    test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_lineno.jsonl")
+    # test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_dpo_preds_{steps}_transfer_v4_subtask_cot_star.jsonl")
     # test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot_star.jsonl")
 
     # test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot.jsonl")
     # test_preds = read_jsonl(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_cot.jsonl")
     test_data = json.load(open("data/ruff_meta_linting/test_v4_new_format_with_lineno.json"))
-    
+
     # test_preds = read_jsonl(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}-v2-data.jsonl")
     # test_data = json.load(open("data/ruff_meta_linting/test_v2.json"))
     
