@@ -1,0 +1,57 @@
+{
+    "blob_id": "3de0a5c3d54f313829be65ec6165a05e74e4a3bf",
+    "violations": [
+      {
+        "start_lineno": 33,
+        "end_lineno": 33,
+        "pep": "614",
+        "line": "MEMOIZE = cache.get_memoization_decorator(group='token')",
+        "span": "MEMOIZE = cache.get_memoization_decorator(group='token')",
+        "fix": [
+          {
+            "before": "MEMOIZE = cache.get_memoization_decorator(group='token')",
+            "after": ""
+          }
+        ]
+      },
+      {
+        "start_lineno": 34,
+        "end_lineno": 35,
+        "pep": "614",
+        "line": "REVOCATION_MEMOIZE = cache.get_memoization_decorator(group='token',\nexpiration_group='revoke')",
+        "span": "REVOCATION_MEMOIZE = cache.get_memoization_decorator(group='token',\nexpiration_group='revoke')",
+        "fix": [
+          {
+            "before": "REVOCATION_MEMOIZE = cache.get_memoization_decorator(group='token',\nexpiration_group='revoke')",
+            "after": ""
+          }
+        ]
+      },
+      {
+        "start_lineno": 56,
+        "end_lineno": 56,
+        "pep": "614",
+        "line": "@MEMOIZE",
+        "span": "@MEMOIZE",
+        "fix": [
+          {
+            "before": "@MEMOIZE",
+            "after": "@cache.get_memoization_decorator(group='token')"
+          }
+        ]
+      },
+      {
+        "start_lineno": 89,
+        "end_lineno": 89,
+        "pep": "614",
+        "line": "@REVOCATION_MEMOIZE",
+        "span": "@REVOCATION_MEMOIZE",
+        "fix": [
+          {
+            "before": "@REVOCATION_MEMOIZE",
+            "after": "@cache.get_memoization_decorator(group='token',\nexpiration_group='revoke')"
+          }
+        ]
+      }
+    ]
+  }

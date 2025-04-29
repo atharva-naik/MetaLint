@@ -1,0 +1,18 @@
+{
+    "blob_id": "d70aed126581db9394bea152e044ad72f2a6b429",
+    "violations": [
+      {
+        "start_lineno": 761,
+        "end_lineno": 761,
+        "pep": "584",
+        "line": "d.update(c)",
+        "span": "d.update(c)",
+        "fix": [
+          {
+            "before": "d.update(c)",
+            "after": "d |= c"
+          }
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,18 @@
+{
+    "blob_id": "5a7d4deeae761ca764053e74d55920f8cd976121",
+    "violations": [
+      {
+        "start_lineno": 226,
+        "end_lineno": 227,
+        "pep": "616",
+        "line": "if full_name.endswith('.'):\n\tfull_name = full_name[:-1]",
+        "span": "if full_name.endswith('.'):\n\tfull_name = full_name[:-1]",
+        "fix": [
+          {
+            "before": "if full_name.endswith('.'):\n\tfull_name = full_name[:-1]",
+            "after": "full_name.removesuffix('.')"
+          }
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,44 @@
+{
+    "blob_id": "9f8972df704dcb99c707e8427f7fa0da95e460a6",
+    "violations": [
+      {
+        "start_lineno": 7,
+        "end_lineno": 7,
+        "pep": "614",
+        "line": "register = partial(register, server=hippa)",
+        "span": "register = partial(register, server=hippa)",
+        "fix": [
+          {
+            "before": "register = partial(register, server=hippa)",
+            "after": ""
+          }
+        ]
+      },
+      {
+        "start_lineno": 10,
+        "end_lineno": 10,
+        "pep": "614",
+        "line": "@register",
+        "span": "@register",
+        "fix": [
+          {
+            "before": "@register",
+            "after": "@partial(register, server=hippa)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 15,
+        "end_lineno": 15,
+        "pep": "614",
+        "line": "@register",
+        "span": "@register",
+        "fix": [
+          {
+            "before": "@register",
+            "after": "@partial(register, server=hippa)"
+          }
+        ]
+      }
+    ]
+  }

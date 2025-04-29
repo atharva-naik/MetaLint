@@ -1,0 +1,18 @@
+{
+    "blob_id": "0bf827293da3fc8539c8f11a34afb8bd8e960013",
+    "violations": [
+      {
+        "start_lineno": 58,
+        "end_lineno": 59,
+        "pep": "616",
+        "line": "if me.endswith('.pyc'):\n\tme = me[:-1]",
+        "span": "if me.endswith('.pyc'):\n\tme = me[:-1]",
+        "fix": [
+          {
+            "before": "if me.endswith('.pyc'):\n\tme = me[:-1]",
+            "after": "me.removesuffix('.pyc')"
+          }
+        ]
+      }
+    ]
+  }

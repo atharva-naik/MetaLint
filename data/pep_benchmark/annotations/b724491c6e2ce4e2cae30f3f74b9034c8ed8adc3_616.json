@@ -1,0 +1,18 @@
+{
+    "blob_id": "b724491c6e2ce4e2cae30f3f74b9034c8ed8adc3",
+    "violations": [
+      {
+        "start_lineno": 34,
+        "end_lineno": 35,
+        "pep": "616",
+        "line": "if s.endswith(\"Z\"):\n\ts = s[:-1]",
+        "span": "if s.endswith(\"Z\"):\n\ts = s[:-1]",
+        "fix": [
+          {
+            "before": "if s.endswith(\"Z\"):\n\ts = s[:-1]",
+            "after": "s.removesuffix(\"Z\")"
+          }
+        ]
+      }
+    ]
+  }

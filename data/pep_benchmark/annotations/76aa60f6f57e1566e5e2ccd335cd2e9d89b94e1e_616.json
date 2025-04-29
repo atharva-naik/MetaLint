@@ -1,0 +1,18 @@
+{
+    "blob_id": "76aa60f6f57e1566e5e2ccd335cd2e9d89b94e1e",
+    "violations": [
+      {
+        "start_lineno": 58,
+        "end_lineno": 59,
+        "pep": "616",
+        "line": "if mdir.endswith(\"/\"):\n\tmdir = mdir[:-1]",
+        "span": "if mdir.endswith(\"/\"):\n\tmdir = mdir[:-1]",
+        "fix": [
+          {
+            "before": "if mdir.endswith(\"/\"):\n\tmdir = mdir[:-1]",
+            "after": "mdir.removesuffix(\"/\")"
+          }
+        ]
+      }
+    ]
+  }
