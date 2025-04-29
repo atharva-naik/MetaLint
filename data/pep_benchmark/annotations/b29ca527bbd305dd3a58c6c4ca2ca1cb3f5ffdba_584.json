@@ -1,0 +1,18 @@
+{
+    "blob_id": "b29ca527bbd305dd3a58c6c4ca2ca1cb3f5ffdba",
+    "violations": [
+      {
+        "start_lineno": 81,
+        "end_lineno": 81,
+        "pep": "584",
+        "line": "header_parameters.update(custom_headers)",
+        "span": "header_parameters.update(custom_headers)",
+        "fix": [
+          {
+            "before": "header_parameters.update(custom_headers)",
+            "after": "header_parameters |= custom_headers"
+          }
+        ]
+      }
+    ]
+  }

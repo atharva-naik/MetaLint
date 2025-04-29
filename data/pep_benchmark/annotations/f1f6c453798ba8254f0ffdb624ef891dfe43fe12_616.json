@@ -1,0 +1,83 @@
+{
+    "blob_id": "f1f6c453798ba8254f0ffdb624ef891dfe43fe12",
+    "violations": [
+      {
+        "start_lineno": 29,
+        "end_lineno": 29,
+        "pep": "616",
+        "line": "if asset.startswith('0x'): asset = asset[2:]",
+        "span": "if asset.startswith('0x'): asset = asset[2:]",
+        "fix": [
+          {
+            "before": "if asset.startswith('0x'): asset = asset[2:]",
+            "after": "asset.removeprefix('0x')"
+          }
+        ]
+      },
+      {
+        "start_lineno": 257,
+        "end_lineno": 257,
+        "pep": "616",
+        "line": "if asset.startswith('0x'): asset = asset[2:]",
+        "span": "if asset.startswith('0x'): asset = asset[2:]",
+        "fix": [
+          {
+            "before": "if asset.startswith('0x'): asset = asset[2:]",
+            "after": "asset.removeprefix('0x')"
+          }
+        ]
+      },
+      {
+        "start_lineno": 296,
+        "end_lineno": 296,
+        "pep": "616",
+        "line": "if i.startswith('0x'): i = i[2:]",
+        "span": "if i.startswith('0x'): i = i[2:]",
+        "fix": [
+          {
+            "before": "if i.startswith('0x'): i = i[2:]",
+            "after": "i.removeprefix('0x')"
+          }
+        ]
+      },
+      {
+        "start_lineno": 350,
+        "end_lineno": 350,
+        "pep": "616",
+        "line": "if asset.startswith('0x'): asset = asset[2:]",
+        "span": "if asset.startswith('0x'): asset = asset[2:]",
+        "fix": [
+          {
+            "before": "if asset.startswith('0x'): asset = asset[2:]",
+            "after": "asset.removeprefix('0x')"
+          }
+        ]
+      },
+      {
+        "start_lineno": 440,
+        "end_lineno": 440,
+        "pep": "616",
+        "line": "if asset.startswith('0x'): asset = asset[2:]",
+        "span": "if asset.startswith('0x'): asset = asset[2:]",
+        "fix": [
+          {
+            "before": "if asset.startswith('0x'): asset = asset[2:]",
+            "after": "asset.removeprefix('0x')"
+          }
+        ]
+      },
+      {
+        "start_lineno": 496,
+        "end_lineno": 496,
+        "pep": "616",
+        "line": "if assetId.startswith('0x'): assetId = assetId[2:]",
+        "span": "if assetId.startswith('0x'): assetId = assetId[2:]",
+        "fix": [
+          {
+            "before": "if assetId.startswith('0x'): assetId = assetId[2:]",
+            "after": "assetId.removeprefix('0x')"
+          }
+        ]
+      }
+    ]
+  }

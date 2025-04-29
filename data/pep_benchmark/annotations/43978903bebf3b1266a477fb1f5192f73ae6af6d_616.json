@@ -1,0 +1,18 @@
+{
+    "blob_id": "43978903bebf3b1266a477fb1f5192f73ae6af6d",
+    "violations": [
+      {
+        "start_lineno": 20,
+        "end_lineno": 21,
+        "pep": "616",
+        "line": "if query.startswith(\"#\"):\n\tquery = query[1:]",
+        "span": "if query.startswith(\"#\"):\n\tquery = query[1:]",
+        "fix": [
+          {
+            "before": "if query.startswith(\"#\"):\n\tquery = query[1:]",
+            "after": "query.removeprefix(\"#\")"
+          }
+        ]
+      }
+    ]
+  }

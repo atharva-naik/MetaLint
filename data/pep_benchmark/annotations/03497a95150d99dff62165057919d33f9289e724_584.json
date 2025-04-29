@@ -1,0 +1,18 @@
+{
+    "blob_id": "03497a95150d99dff62165057919d33f9289e724",
+    "violations": [
+      {
+        "start_lineno": 147,
+        "end_lineno": 149,
+        "pep": "584",
+        "line": "for k, v in SETTINGS.SBATCH_OPTIONS_TEMPLATES[sbatch_options_template].items():\n\tif k not in slurm_config['sbatch_options']:\n\t\tslurm_config['sbatch_options'][k] = v",
+        "span": "for k, v in SETTINGS.SBATCH_OPTIONS_TEMPLATES[sbatch_options_template].items():\n\tif k not in slurm_config['sbatch_options']:\n\t\tslurm_config['sbatch_options'][k] = v",
+        "fix": [
+          {
+            "before": "for k, v in SETTINGS.SBATCH_OPTIONS_TEMPLATES[sbatch_options_template].items():\n\tif k not in slurm_config['sbatch_options']:\n\t\tslurm_config['sbatch_options'][k] = v",
+            "after": "slurm_config['sbatch_options'] |= SETTINGS.SBATCH_OPTIONS_TEMPLATES[sbatch_options_template]"
+          }
+        ]
+      }
+    ]
+  }

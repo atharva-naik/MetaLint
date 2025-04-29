@@ -1,0 +1,18 @@
+{
+    "blob_id": "7259a6daa5ad32d000e0e60e1142ebaeb71de9cd",
+    "violations": [
+      {
+        "start_lineno": 169,
+        "end_lineno": 169,
+        "pep": "593",
+        "line": ") -> ndarray:",
+        "span": "ndarray",
+        "fix": [
+          {
+            "before": "ndarray",
+            "after": "Annotated[ndarray, \"deprecated=true\", \"Use gdsfactory.path.Path.extrude() instead\"]"
+          }
+        ]
+      }
+    ]
+  }

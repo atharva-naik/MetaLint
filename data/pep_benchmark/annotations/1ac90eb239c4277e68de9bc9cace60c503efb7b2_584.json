@@ -1,0 +1,31 @@
+{
+    "blob_id": "1ac90eb239c4277e68de9bc9cace60c503efb7b2",
+    "violations": [
+      {
+        "start_lineno": 1467,
+        "end_lineno": 1467,
+        "pep": "584",
+        "line": "self.state_modifier_keys.update(state_modifier_keys or {})",
+        "span": "self.state_modifier_keys.update(state_modifier_keys or {})",
+        "fix": [
+          {
+            "before": "self.state_modifier_keys.update(state_modifier_keys or {})",
+            "after": "self.state_modifier_keys |= state_modifier_keys or {}"
+          }
+        ]
+      },
+      {
+        "start_lineno": 1917,
+        "end_lineno": 1917,
+        "pep": "584",
+        "line": "props.update(marker_props if marker_props is not None else {})",
+        "span": "props.update(marker_props if marker_props is not None else {})",
+        "fix": [
+          {
+            "before": "props.update(marker_props if marker_props is not None else {})",
+            "after": "props |= marker_props if marker_props is not None else {}"
+          }
+        ]
+      }
+    ]
+  }

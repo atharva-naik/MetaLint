@@ -1,0 +1,18 @@
+{
+    "blob_id": "233adb4ff781e507a481630760cb618e5e3ef4c3",
+    "violations": [
+      {
+        "start_lineno": 235,
+        "end_lineno": 235,
+        "pep": "593",
+        "line": "def __init__(__self__, resource_name: str, *args, **kwargs):",
+        "span": "resource_name: str",
+        "fix": [
+          {
+            "before": "resource_name: str",
+            "after": "resource_name: Annotated[str, regex='^(?!\\s*$).+']"
+          }
+        ]
+      }
+    ]
+  }
