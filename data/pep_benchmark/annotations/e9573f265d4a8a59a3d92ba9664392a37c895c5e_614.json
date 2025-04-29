@@ -1,0 +1,70 @@
+{
+    "blob_id": "e9573f265d4a8a59a3d92ba9664392a37c895c5e",
+    "violations": [
+      {
+        "start_lineno": 10,
+        "end_lineno": 12,
+        "pep": "614",
+        "line": "have_sigalrm = pytest.mark.skipif(\nnot hasattr(signal, \"SIGALRM\"), reason=\"OS does not have SIGALRM\"\n)",
+        "span": "have_sigalrm = pytest.mark.skipif(\nnot hasattr(signal, \"SIGALRM\"), reason=\"OS does not have SIGALRM\"\n)",
+        "fix": [
+          {
+            "before": "have_sigalrm = pytest.mark.skipif(\nnot hasattr(signal, \"SIGALRM\"), reason=\"OS does not have SIGALRM\"\n)",
+            "after": ""
+          }
+        ]
+      },
+      {
+        "start_lineno": 13,
+        "end_lineno": 15,
+        "pep": "614",
+        "line": "have_spawn = pytest.mark.skipif(\nnot hasattr(pexpect, \"spawn\"), reason=\"pexpect does not have spawn\"\n)",
+        "span": "have_spawn = pytest.mark.skipif(\nnot hasattr(pexpect, \"spawn\"), reason=\"pexpect does not have spawn\"\n)",
+        "fix": [
+          {
+            "before": "have_spawn = pytest.mark.skipif(\nnot hasattr(pexpect, \"spawn\"), reason=\"pexpect does not have spawn\"\n)",
+            "after": ""
+          }
+        ]
+      },
+      {
+        "start_lineno": 39,
+        "end_lineno": 39,
+        "pep": "614",
+        "line": "@have_sigalrm",
+        "span": "@have_sigalrm",
+        "fix": [
+          {
+            "before": "@have_sigalrm",
+            "after": "@pytest.mark.skipif(\nnot hasattr(signal, \"SIGALRM\"), reason=\"OS does not have SIGALRM\"\n)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 202,
+        "end_lineno": 202,
+        "pep": "614",
+        "line": "@have_sigalrm",
+        "span": "@have_sigalrm",
+        "fix": [
+          {
+            "before": "@have_sigalrm",
+            "after": "@pytest.mark.skipif(\nnot hasattr(signal, \"SIGALRM\"), reason=\"OS does not have SIGALRM\"\n)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 392,
+        "end_lineno": 392,
+        "pep": "614",
+        "line": "@have_spawn",
+        "span": "@have_spawn",
+        "fix": [
+          {
+            "before": "@have_spawn",
+            "after": "@pytest.mark.skipif(\nnot hasattr(pexpect, \"spawn\"), reason=\"pexpect does not have spawn\"\n)"
+          }
+        ]
+      }
+    ]
+  }

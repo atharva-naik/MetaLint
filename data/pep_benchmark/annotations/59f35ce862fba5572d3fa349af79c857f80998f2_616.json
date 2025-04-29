@@ -1,0 +1,20 @@
+{
+    "blob_id": "59f35ce862fba5572d3fa349af79c857f80998f2",
+    "violations": [
+      {
+        "start_lineno": 94,
+        "end_lineno": 95,
+        "pep": "616",
+        "line": "if sha1.startswith('origin/'):\n\tsha1 = sha1[7:]",
+        "span": "if sha1.startswith('origin/'):\n\tsha1 = sha1[7:]",
+        "fix": [
+          {
+            "before": "if sha1.startswith('origin/'):\n\tsha1 = sha1[7:]",
+            "after": "sha1.removeprefix('origin/')"
+          }
+        ]
+      }
+    ]
+  }
+
+

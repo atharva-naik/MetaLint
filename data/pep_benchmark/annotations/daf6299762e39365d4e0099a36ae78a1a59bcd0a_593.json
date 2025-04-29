@@ -1,0 +1,31 @@
+{
+    "blob_id": "daf6299762e39365d4e0099a36ae78a1a59bcd0a",
+    "violations": [
+      {
+        "start_lineno": 39,
+        "end_lineno": 39,
+        "pep": "593",
+        "line": "def wordPattern(self, pattern: str, str: str) -> bool:",
+        "span": "pattern: str",
+        "fix": [
+          {
+            "before": "pattern: str",
+            "after": "pattern: Annotated[str, \"regex=^[a-z]+$\", \"desc=Lowercase letters only (a-z)\"]"
+          }
+        ]
+      },
+      {
+        "start_lineno": 39,
+        "end_lineno": 39,
+        "pep": "593",
+        "line": "def wordPattern(self, pattern: str, str: str) -> bool:",
+        "span": "str: str",
+        "fix": [
+          {
+            "before": "str: str",
+            "after": "str: Annotated[str, \"regex=^[a-z]+( [a-z]+)*$\", \"desc=Lowercase words separated by spaces\"]"
+          }
+        ]
+      }
+    ]
+  }

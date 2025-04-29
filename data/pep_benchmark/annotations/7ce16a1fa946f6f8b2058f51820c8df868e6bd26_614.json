@@ -1,0 +1,31 @@
+{
+    "blob_id": "7ce16a1fa946f6f8b2058f51820c8df868e6bd26",
+    "violations": [
+      {
+        "start_lineno": 31,
+        "end_lineno": 31,
+        "pep": "614",
+        "line": "csrf_exempt_m = method_decorator(csrf_exempt)",
+        "span": "csrf_exempt_m = method_decorator(csrf_exempt)",
+        "fix": [
+          {
+            "before": "csrf_exempt_m = method_decorator(csrf_exempt)",
+            "after": ""
+          }
+        ]
+      },
+      {
+        "start_lineno": 89,
+        "end_lineno": 89,
+        "pep": "614",
+        "line": "@csrf_exempt_m",
+        "span": "@csrf_exempt_m",
+        "fix": [
+          {
+            "before": "@csrf_exempt_m",
+            "after": "@method_decorator(csrf_exempt)"
+          }
+        ]
+      }
+    ]
+  }
