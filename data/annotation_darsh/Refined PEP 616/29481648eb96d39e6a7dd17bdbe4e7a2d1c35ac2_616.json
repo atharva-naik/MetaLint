@@ -1,0 +1,18 @@
+{
+    "blob_id": "29481648eb96d39e6a7dd17bdbe4e7a2d1c35ac2",
+    "violations": [
+      {
+        "start_lineno": 114,
+        "end_lineno": 115,
+        "pep": "616",
+        "line": "if create_time.endswith('年'):\n\tcreate_time = create_time[:-1]",
+        "span": "if create_time.endswith('年'):\n\tcreate_time = create_time[:-1]",
+        "fix": [
+          {
+            "before": "if create_time.endswith('年'):\n\tcreate_time = create_time[:-1]",
+            "after": "create_time.removesuffix('年')"
+          }
+        ]
+      }
+    ]
+  }
