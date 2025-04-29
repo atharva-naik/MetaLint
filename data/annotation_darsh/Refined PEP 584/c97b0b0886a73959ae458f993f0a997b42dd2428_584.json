@@ -1,0 +1,18 @@
+{
+    "blob_id": "c97b0b0886a73959ae458f993f0a997b42dd2428",
+    "violations": [
+      {
+        "start_lineno": 81,
+        "end_lineno": 81,
+        "pep": "584",
+        "line": "ac.update(c.map(inc, work))",
+        "span": "ac.update(c.map(inc, work))",
+        "fix": [
+          {
+            "before": "ac.update(c.map(inc, work))",
+            "after": "ac |= c.map(inc, work)"
+          }
+        ]
+      }
+    ]
+  }

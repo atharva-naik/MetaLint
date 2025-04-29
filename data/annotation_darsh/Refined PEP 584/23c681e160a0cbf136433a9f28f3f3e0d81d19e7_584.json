@@ -1,0 +1,31 @@
+{
+    "blob_id": "23c681e160a0cbf136433a9f28f3f3e0d81d19e7",
+    "violations": [
+      {
+        "start_lineno": 107,
+        "end_lineno": 108,
+        "pep": "584",
+        "line": "for cls, count in Counter(true_labels_list).items():\n\ttrue_labels_dict[cls] += count",
+        "span": "for cls, count in Counter(true_labels_list).items():\n\ttrue_labels_dict[cls] += count",
+        "fix": [
+          {
+            "before": "for cls, count in Counter(true_labels_list).items():\n\ttrue_labels_dict[cls] += count",
+            "after": "true_labels_dict |= Counter(true_labels_list)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 204,
+        "end_lineno": 205,
+        "pep": "584",
+        "line": "for cls, count in Counter(true_labels_list).items():\n\ttrue_labels_dict[cls] += count",
+        "span": "for cls, count in Counter(true_labels_list).items():\n\ttrue_labels_dict[cls] += count",
+        "fix": [
+          {
+            "before": "for cls, count in Counter(true_labels_list).items():\n\ttrue_labels_dict[cls] += count",
+            "after": "true_labels_dict |= Counter(true_labels_list)"
+          }
+        ]
+      }
+    ]
+  }
