@@ -180,3 +180,4 @@ data/ruff_meta_linting/hardness_experiment
 data/ruff_meta_linting/cot_gen/*.jsonl
 
 semantic_peps/heuristic_search_files/STACK_V2/
+semantic_peps/darsh_violations_files
