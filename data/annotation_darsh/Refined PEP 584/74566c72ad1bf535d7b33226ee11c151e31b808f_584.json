@@ -1,0 +1,31 @@
+{
+    "blob_id": "74566c72ad1bf535d7b33226ee11c151e31b808f",
+    "violations": [
+      {
+        "start_lineno": 302,
+        "end_lineno": 302,
+        "pep": "584",
+        "line": "self.cached.update({key: copy.deepcopy(state_dict)})",
+        "span": "self.cached.update({key: copy.deepcopy(state_dict)})",
+        "fix": [
+          {
+            "before": "self.cached.update({key: copy.deepcopy(state_dict)})",
+            "after": "self.cached |= {key: copy.deepcopy(state_dict)}"
+          }
+        ]
+      },
+      {
+        "start_lineno": 305,
+        "end_lineno": 305,
+        "pep": "584",
+        "line": "self.cached.update({key: fn})",
+        "span": "self.cached.update({key: fn})",
+        "fix": [
+          {
+            "before": "self.cached.update({key: fn})",
+            "after": "self.cached |= {key: fn}"
+          }
+        ]
+      }
+    ]
+  }
