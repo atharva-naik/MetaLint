@@ -1,0 +1,18 @@
+{
+    "blob_id": "5b450a1b2b66c9b67d26496fb76f7af28ff62da1",
+    "violations": [
+      {
+        "start_lineno": 26,
+        "end_lineno": 27,
+        "pep": "616",
+        "line": "if num_str.startswith('+'):\n\tnum_str = num_str[1:]",
+        "span": "if num_str.startswith('+'):\n\tnum_str = num_str[1:]",
+        "fix": [
+          {
+            "before": "if num_str.startswith('+'):\n\tnum_str = num_str[1:]",
+            "after": "num_str.removeprefix('+')"
+          }
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,96 @@
+{
+    "blob_id": "7535defa22dff0766106cbd29c7abea90b76fd07",
+    "violations": [
+      {
+        "start_lineno": 357,
+        "end_lineno": 357,
+        "pep": "614",
+        "line": "_memoized_property = util.group_expirable_memoized_property([\"_columns\"])",
+        "span": "_memoized_property = util.group_expirable_memoized_property([\"_columns\"])",
+        "fix": [
+          {
+            "before": "_memoized_property = util.group_expirable_memoized_property([\"_columns\"])",
+            "after": ""
+          }
+        ]
+      },
+      {
+        "start_lineno": 671,
+        "end_lineno": 671,
+        "pep": "614",
+        "line": "@_memoized_property",
+        "span": "@_memoized_property",
+        "fix": [
+          {
+            "before": "@_memoized_property",
+            "after": "@util.group_expirable_memoized_property([\"_columns\"])"
+          }
+        ]
+      },
+      {
+        "start_lineno": 689,
+        "end_lineno": 689,
+        "pep": "614",
+        "line": "@_memoized_property",
+        "span": "@_memoized_property",
+        "fix": [
+          {
+            "before": "@_memoized_property",
+            "after": "@util.group_expirable_memoized_property([\"_columns\"])"
+          }
+        ]
+      },
+      {
+        "start_lineno": 698,
+        "end_lineno": 698,
+        "pep": "614",
+        "line": "@_memoized_property",
+        "span": "@_memoized_property",
+        "fix": [
+          {
+            "before": "@_memoized_property",
+            "after": "@util.group_expirable_memoized_property([\"_columns\"])"
+          }
+        ]
+      },
+      {
+        "start_lineno": 2938,
+        "end_lineno": 2938,
+        "pep": "614",
+        "line": "@_memoized_property",
+        "span": "@_memoized_property",
+        "fix": [
+          {
+            "before": "@_memoized_property",
+            "after": "@util.group_expirable_memoized_property([\"_columns\"])"
+          }
+        ]
+      },
+      {
+        "start_lineno": 2958,
+        "end_lineno": 2958,
+        "pep": "614",
+        "line": "@_memoized_property",
+        "span": "@_memoized_property",
+        "fix": [
+          {
+            "before": "@_memoized_property",
+            "after": "@util.group_expirable_memoized_property([\"_columns\"])"
+          }
+        ]
+      },
+      {
+        "start_lineno": 3432,
+        "end_lineno": 3432,
+        "pep": "614",
+        "line": "@_memoized_property",
+        "span": "@_memoized_property",
+        "fix": [
+          {
+            "before": "@_memoized_property",
+            "after": "@util.group_expirable_memoized_property([\"_columns\"])"
+          }
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,18 @@
+{
+    "blob_id": "035d6ecea6b4ccc576382efc05661c81a944fa2d",
+    "violations": [
+      {
+        "start_lineno": 280,
+        "end_lineno": 281,
+        "pep": "616",
+        "line": "if os_path.startswith(root):\n\tos_path = os_path[len(root):]",
+        "span": "if os_path.startswith(root):\n\tos_path = os_path[len(root):]",
+        "fix": [
+          {
+            "before": "if os_path.startswith(root):\n\tos_path = os_path[len(root):]",
+            "after": "os_path.removeprefix(root)"
+          }
+        ]
+      }
+    ]
+  }

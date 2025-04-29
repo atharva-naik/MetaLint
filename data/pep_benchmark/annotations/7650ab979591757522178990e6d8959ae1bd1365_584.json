@@ -1,0 +1,18 @@
+{
+    "blob_id": "7650ab979591757522178990e6d8959ae1bd1365",
+    "violations": [
+      {
+        "start_lineno": 168,
+        "end_lineno": 168,
+        "pep": "584",
+        "line": "DATABASES['default'].update(db_from_env)",
+        "span": "DATABASES['default'].update(db_from_env)",
+        "fix": [
+          {
+            "before": "DATABASES['default'].update(db_from_env)",
+            "after": "DATABASES['default'] |= db_from_env"
+          }
+        ]
+      }
+    ]
+  }

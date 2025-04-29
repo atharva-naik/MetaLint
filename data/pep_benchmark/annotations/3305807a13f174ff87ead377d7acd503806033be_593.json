@@ -1,0 +1,18 @@
+{
+    "blob_id": "3305807a13f174ff87ead377d7acd503806033be",
+    "violations": [
+      {
+        "start_lineno": 160,
+        "end_lineno": 160,
+        "pep": "593",
+        "line": "nfsv4: Optional[pulumi.Input[bool]] = None,",
+        "span": "nfsv4: Optional[pulumi.Input[bool]]",
+        "fix": [
+          {
+            "before": "nfsv4: Optional[pulumi.Input[bool]]",
+            "after": "nfsv4: Annotated[Optional[pulumi.Input[bool]], \"deprecated=true\", \"Will use the NFSv4.1 protocol, please use swagger version 2019-07-01 or later\"]"
+          }
+        ]
+      }
+    ]
+  }

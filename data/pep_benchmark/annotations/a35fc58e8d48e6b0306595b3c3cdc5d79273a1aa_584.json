@@ -1,0 +1,31 @@
+{
+    "blob_id": "a35fc58e8d48e6b0306595b3c3cdc5d79273a1aa",
+    "violations": [
+      {
+        "start_lineno": 319,
+        "end_lineno": 319,
+        "pep": "584",
+        "line": "self._consolidated_summary.update(history_dict)",
+        "span": "self._consolidated_summary.update(history_dict)",
+        "fix": [
+          {
+            "before": "self._consolidated_summary.update(history_dict)",
+            "after": "self._consolidated_summary |= history_dict"
+          }
+        ]
+      },
+      {
+        "start_lineno": 408,
+        "end_lineno": 408,
+        "pep": "584",
+        "line": "history_dict.update(update_history)",
+        "span": "history_dict.update(update_history)",
+        "fix": [
+          {
+            "before": "history_dict.update(update_history)",
+            "after": "history_dict |= update_history"
+          }
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,31 @@
+{
+    "blob_id": "272dc78fa2776b1b4ca51387a148e4151836292f",
+    "violations": [
+      {
+        "start_lineno": 29,
+        "end_lineno": 30,
+        "pep": "616",
+        "line": "if txt.startswith(\"<p>\"):\ntxt = txt[3:]",
+        "span": "if txt.startswith(\"<p>\"):\ntxt = txt[3:]",
+        "fix": [
+          {
+            "before": "if txt.startswith(\"<p>\"):\ntxt = txt[3:]",
+            "after": "txt.removeprefix(\"<p>\")"
+          }
+        ]
+      },
+      {
+        "start_lineno": 31,
+        "end_lineno": 32,
+        "pep": "616",
+        "line": "if txt.endswith(\"</p>\"):\ntxt = txt[:-4]",
+        "span": "if txt.endswith(\"</p>\"):\ntxt = txt[:-4]",
+        "fix": [
+          {
+            "before": "if txt.endswith(\"</p>\"):\ntxt = txt[:-4]",
+            "after": "txt.removesuffix(\"</p>\")"
+          }
+        ]
+      }
+    ]
+  }

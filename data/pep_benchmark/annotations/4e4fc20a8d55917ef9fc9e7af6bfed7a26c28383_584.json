@@ -1,0 +1,18 @@
+{
+    "blob_id": "4e4fc20a8d55917ef9fc9e7af6bfed7a26c28383",
+    "violations": [
+      {
+        "start_lineno": 40,
+        "end_lineno": 40,
+        "pep": "584",
+        "line": "m.update(bytes(now,encoding='utf-8'))",
+        "span": "m.update(bytes(now,encoding='utf-8'))",
+        "fix": [
+          {
+            "before": "m.update(bytes(now,encoding='utf-8'))",
+            "after": "m |= bytes(now, encoding='utf-8')"
+          }
+        ]
+      }
+    ]
+  }
