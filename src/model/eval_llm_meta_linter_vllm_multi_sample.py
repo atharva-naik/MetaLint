@@ -19,14 +19,15 @@ VLLM_SERVER_URL = f"http://0.0.0.0:{PORT}/v1/chat/completions"
 MAX_RETRIES = 5
 MAX_SEQ_LEN = 32768
 MAX_NEW_TOKENS = 2048
-NUM_WORKERS = 16
-WRITE_EVERY_N = 20
+NUM_WORKERS = 12
+WRITE_EVERY_N = 10
 
 def get_args():
     parser = argparse.ArgumentParser(description="Run inference with different settings.")
-    parser.add_argument("--model_name", type=str, required=True, help="which model is to be queried")
+    parser.add_argument("--model_name", type=str, required=True, help="which SFT model is to be queried")
     parser.add_argument("--write_path", type=str, required=True, help="name of the file where predictions should be written")
     parser.add_argument("--M", type=int, default=5, help="Number of samples per prompt")
+    parser.add_argument("--train_file", type=str, required=True, help='path to training data to be used for training')
     parser.add_argument("--temp", type=str, default='0,0.3,0.5,0.7,1', help="Comma-separated temperatures, one for each sample")
     return parser.parse_args()
 
@@ -35,7 +36,8 @@ def generate_response(prompt_index: int, sample_index: int, rec: dict, model_nam
     gt_response = rec['messages'][1]['content']
 
     if len(user_prompt) > MAX_SEQ_LEN - MAX_NEW_TOKENS:
-        user_prompt = user_prompt[:15000] + user_prompt[-15000:]
+        user_prompt = user_prompt[:10000] + user_prompt[-10000:]
+        print(len(user_prompt))
 
     messages = [{"role": "user", "content": user_prompt}]
     payload = {
@@ -74,7 +76,7 @@ def main():
 
     assert len(temperatures) == M, "Length of temperatures must match M"
 
-    train_data = json.load(open("data/ruff_meta_linting/train_v4_new_format_with_lineno_subtask_cot_star.json"))
+    train_data = json.load(open(args.train_file))
     skip_index_till = 0
 
     if not os.path.exists(write_path):
