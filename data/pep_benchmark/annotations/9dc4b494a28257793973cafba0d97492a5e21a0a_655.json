@@ -1,0 +1,18 @@
+{
+    "blob_id": "9dc4b494a28257793973cafba0d97492a5e21a0a",
+    "violations": [
+        {
+            "start_lineno": 6,
+            "end_lineno": 19,
+            "pep": "655",
+            "line": "class V1beta1VolumeError:\n    message: typing.Optional[str]\n    time: typing.Optional[datetime.datetime]\n    def __init__(\n        self,\n        *,\n        message: typing.Optional[str] = ...,\n        time: typing.Optional[datetime.datetime] = ...\n    ) -> None: ...\n    def to_dict(self) -> V1beta1VolumeErrorDict: ...\n\nclass V1beta1VolumeErrorDict(typing.TypedDict, total=False):\n    message: typing.Optional[str]\n    time: typing.Optional[datetime.datetime]",
+            "span": "import os, shutil",
+            "fix": [
+                {
+                    "before":"class V1beta1VolumeError:\n    message: typing.Optional[str]\n    time: typing.Optional[datetime.datetime]\n    def __init__(\n        self,\n        *,\n        message: typing.Optional[str] = ...,\n        time: typing.Optional[datetime.datetime] = ...\n    ) -> None: ...\n    def to_dict(self) -> V1beta1VolumeErrorDict: ...\n\nclass V1beta1VolumeErrorDict(typing.TypedDict, total=False):\n    message: typing.Optional[str]\n    time: typing.Optional[datetime.datetime]",
+                    "after": "class V1beta1VolumeError(typing.TypedDict):\n    message: typing.NotRequired[typing.Optional[str]]\n    time: typing.NotRequired[typing.Optional[datetime.datetime]]\n\n    def __init_(\n        self,\n        *,\n        message: typing.Optional[str] = None,\n        time: typing.Optional[datetime.datetime] = None\n    ) -> None:\n        self.message = message\n        self.time = time\n\n    def to_dict(self) -> \"V1beta1VolumeError\":\n        return {\n            'message': self.message,\n            'time': self.time\n        }"
+                }
+            ]
+        }
+    ]
+}

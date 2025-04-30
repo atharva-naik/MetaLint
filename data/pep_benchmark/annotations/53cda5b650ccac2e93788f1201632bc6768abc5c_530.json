@@ -1,0 +1,19 @@
+{
+    "blob_id": "53cda5b650ccac2e93788f1201632bc6768abc5c",
+    "violations": [
+        {
+            "start_lineno": 23,
+            "end_lineno": 31,
+            "pep": "530",
+            "line": "for c in text.lower():\n            if c not in string.ascii_lowercase:\n                continue\n            if c not in msg_cache:\n                async for msg in borg.iter_messages(None, search=c):\n                    if msg.raw_text.lower() == c and msg.media is None:\n                        msg_cache[c] = msg\n                        break\n            await borg.forward_messages(destination, msg_cache[c])",
+            "span": "for c in text.lower()",
+            "fix": [
+                {
+                    "before": "for c in text.lower():\n            if c not in string.ascii_lowercase:\n                continue\n            if c not in msg_cache:\n                async for msg in borg.iter_messages(None, search=c):\n                    if msg.raw_text.lower() == c and msg.media is None:\n                        msg_cache[c] = msg\n                        break\n            await borg.forward_messages(destination, msg_cache[c])",
+                    "after": "for c in (ch for ch in text.lower() if ch in string.ascii_lowercase):\n            if c not in msg_cache:\n                msg_cache[c] = next((\n                    msg async for msg in borg.iter_messages(None, search=c)\n                    if msg.raw_text.lower() == c and msg.media is None\n                ), None)\n            if msg_cache[c]:\n                await borg.forward_messages(destination, msg_cache[c])"
+                }
+               
+            ]
+        }
+    ]
+}

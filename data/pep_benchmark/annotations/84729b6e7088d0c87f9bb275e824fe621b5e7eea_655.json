@@ -1,0 +1,18 @@
+{
+    "blob_id": "84729b6e7088d0c87f9bb275e824fe621b5e7eea",
+    "violations": [
+        {
+            "start_lineno": 80,
+            "end_lineno": 92,
+            "pep": "655",
+            "line": "class ParsedMessageParams(TypedDict):\n    type: str\n    guid: str\n    initializer: Dict\n\nclass ParsedMessagePayload(TypedDict, total=False):\n    id: int\n    guid: str\n    method: str\n    params: ParsedMessageParams\n    result: Any\n    error: ErrorPayload",
+            "span": "ParsedMessageParams",
+            "fix": [
+                {
+                    "before": "class ParsedMessageParams(TypedDict):\n    type: str\n    guid: str\n    initializer: Dict\n\nclass ParsedMessagePayload(TypedDict, total=False):\n    id: int\n    guid: str\n    method: str\n    params: ParsedMessageParams\n    result: Any\n    error: ErrorPayload",
+                    "after": "class ParsedMessagePayload(TypedDict):\n    type: str\n    guid: str\n    initializer: Dict\n    id: NotRequired[int]\n    method: str\n    result: NotRequired[Any]\n    error: NotRequired[ErrorPayload]"
+                }
+            ]
+        }
+    ]
+}
