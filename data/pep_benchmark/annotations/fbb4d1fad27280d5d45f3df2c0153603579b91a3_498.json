@@ -1,0 +1,71 @@
+{
+    "blob_id": "fbb4d1fad27280d5d45f3df2c0153603579b91a3",
+    "violations": [
+      {
+        "start_lineno": 96,
+        "end_lineno": 96,
+        "pep": "498",
+        "line": "print(\"Plotting (%d/%d)\" % (i+1, len(figs)))",
+        "span": "\"Plotting (%d/%d)\" % (i+1, len(figs))",
+        "fix": [
+          {
+            "before": "\"Plotting (%d/%d)\" % (i+1, len(figs))",
+            "after": "f\"Plotting ({i+1}/{len(figs)})\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 136,
+        "end_lineno": 136,
+        "pep": "498",
+        "line": "print(\"Plotting (%d/%d)\" % (i+1, len(figs)))",
+        "span": "\"Plotting (%d/%d)\" % (i+1, len(figs))",
+        "fix": [
+          {
+            "before": "\"Plotting (%d/%d)\" % (i+1, len(figs))",
+            "after": "f\"Plotting ({i+1}/{len(figs)})\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 177,
+        "end_lineno": 177,
+        "pep": "498",
+        "line": "print(\"Plotting (%d/%d)\" % (i+1, len(figs)))",
+        "span": "\"Plotting (%d/%d)\" % (i+1, len(figs))",
+        "fix": [
+          {
+            "before": "\"Plotting (%d/%d)\" % (i+1, len(figs))",
+            "after": "f\"Plotting ({i+1}/{len(figs)})\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 200,
+        "end_lineno": 200,
+        "pep": "498",
+        "line": "print(\"Plotting (%d/%d)\" % (i+1, len(figs)))",
+        "span": "\"Plotting (%d/%d)\" % (i+1, len(figs))",
+        "fix": [
+          {
+            "before": "\"Plotting (%d/%d)\" % (i+1, len(figs))",
+            "after": "f\"Plotting ({i+1}/{len(figs)})\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 242,
+        "end_lineno": 242,
+        "pep": "498",
+        "line": "print(\"Plotting (%d/%d)\" % (i+1, len(figs)))",
+        "span": "\"Plotting (%d/%d)\" % (i+1, len(figs))",
+        "fix": [
+          {
+            "before": "\"Plotting (%d/%d)\" % (i+1, len(figs))",
+            "after": "f\"Plotting ({i+1}/{len(figs)})\""
+          }
+        ]
+      }
+    ]
+  }
+  

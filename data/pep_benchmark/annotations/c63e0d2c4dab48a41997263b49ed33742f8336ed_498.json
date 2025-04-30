@@ -1,0 +1,214 @@
+{
+    "blob_id": "c63e0d2c4dab48a41997263b49ed33742f8336ed",
+    "violations": [
+      {
+        "start_lineno": 10,
+        "end_lineno": 10,
+        "pep": "498",
+        "line": "print(\"Error while importing core modules, try adding {} to python path\".format(mainpath))",
+        "span": "\"Error while importing core modules, try adding {} to python path\".format(mainpath)",
+        "fix": [
+          {
+            "before": "\"Error while importing core modules, try adding {} to python path\".format(mainpath)",
+            "after": "f\"Error while importing core modules, try adding {mainpath} to python path\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 52,
+        "end_lineno": 52,
+        "pep": "498",
+        "line": "print(\"classifying with pos:neg = {}:{}\".format(poscnt, negcnt))",
+        "span": "\"classifying with pos:neg = {}:{}\".format(poscnt, negcnt)",
+        "fix": [
+          {
+            "before": "\"classifying with pos:neg = {}:{}\".format(poscnt, negcnt)",
+            "after": "f\"classifying with pos:neg = {poscnt}:{negcnt}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 93,
+        "end_lineno": 93,
+        "pep": "498",
+        "line": "print(\"classifying with pos:neg = {}:{}\".format(poscnt, negcnt))",
+        "span": "\"classifying with pos:neg = {}:{}\".format(poscnt, negcnt)",
+        "fix": [
+          {
+            "before": "\"classifying with pos:neg = {}:{}\".format(poscnt, negcnt)",
+            "after": "f\"classifying with pos:neg = {poscnt}:{negcnt}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 137,
+        "end_lineno": 137,
+        "pep": "498",
+        "line": "print(\"precision mean: {} std: {}\".format(np.mean(self.prec), np.std(self.prec)))",
+        "span": "\"precision mean: {} std: {}\".format(np.mean(self.prec), np.std(self.prec))",
+        "fix": [
+          {
+            "before": "\"precision mean: {} std: {}\".format(np.mean(self.prec), np.std(self.prec))",
+            "after": "f\"precision mean: {np.mean(self.prec)} std: {np.std(self.prec)}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 138,
+        "end_lineno": 138,
+        "pep": "498",
+        "line": "print(\"recall mean: {} std: {}\".format(np.mean(self.rec), np.std(self.rec)))",
+        "span": "\"recall mean: {} std: {}\".format(np.mean(self.rec), np.std(self.rec))",
+        "fix": [
+          {
+            "before": "\"recall mean: {} std: {}\".format(np.mean(self.rec), np.std(self.rec))",
+            "after": "f\"recall mean: {np.mean(self.rec)} std: {np.std(self.rec)}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 139,
+        "end_lineno": 139,
+        "pep": "498",
+        "line": "print(\"f1 mean: {} std: {}\".format(np.mean(self.f1), np.std(self.f1)))",
+        "span": "\"f1 mean: {} std: {}\".format(np.mean(self.f1), np.std(self.f1))",
+        "fix": [
+          {
+            "before": "\"f1 mean: {} std: {}\".format(np.mean(self.f1), np.std(self.f1))",
+            "after": "f\"f1 mean: {np.mean(self.f1)} std: {np.std(self.f1)}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 140,
+        "end_lineno": 140,
+        "pep": "498",
+        "line": "print(\"accuracy mean: {} std: {}\".format(np.mean(self.acc), np.std(self.acc)))",
+        "span": "\"accuracy mean: {} std: {}\".format(np.mean(self.acc), np.std(self.acc))",
+        "fix": [
+          {
+            "before": "\"accuracy mean: {} std: {}\".format(np.mean(self.acc), np.std(self.acc))",
+            "after": "f\"accuracy mean: {np.mean(self.acc)} std: {np.std(self.acc)}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 146,
+        "end_lineno": 146,
+        "pep": "498",
+        "line": "raise RuntimeError(\"No valid sample found in dataset {}\".format(ds.name))",
+        "span": "\"No valid sample found in dataset {}\".format(ds.name)",
+        "fix": [
+          {
+            "before": "\"No valid sample found in dataset {}\".format(ds.name)",
+            "after": "f\"No valid sample found in dataset {ds.name}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 171,
+        "end_lineno": 171,
+        "pep": "498",
+        "line": "print(\"feature shape {}\".format(feat.shape))",
+        "span": "\"feature shape {}\".format(feat.shape)",
+        "fix": [
+          {
+            "before": "\"feature shape {}\".format(feat.shape)",
+            "after": "f\"feature shape {feat.shape}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 182,
+        "end_lineno": 182,
+        "pep": "498",
+        "line": "print(\"feature shape {}\".format(feat.shape))",
+        "span": "\"feature shape {}\".format(feat.shape)",
+        "fix": [
+          {
+            "before": "\"feature shape {}\".format(feat.shape)",
+            "after": "f\"feature shape {feat.shape}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 244,
+        "end_lineno": 244,
+        "pep": "498",
+        "line": "print(\"Data loaded from cache file {}\".format(cacheprefix + '.cache'))",
+        "span": "\"Data loaded from cache file {}\".format(cacheprefix + '.cache')",
+        "fix": [
+          {
+            "before": "\"Data loaded from cache file {}\".format(cacheprefix + '.cache')",
+            "after": "f\"Data loaded from cache file {cacheprefix + '.cache'}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 247,
+        "end_lineno": 247,
+        "pep": "498",
+        "line": "print(\"Failed to load cache file {}: {}\".format(cacheprefix + '.cache', e.message))",
+        "span": "\"Failed to load cache file {}: {}\".format(cacheprefix + '.cache', e.message)",
+        "fix": [
+          {
+            "before": "\"Failed to load cache file {}: {}\".format(cacheprefix + '.cache', e.message)",
+            "after": "f\"Failed to load cache file {cacheprefix + '.cache'}: {e.message}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 250,
+        "end_lineno": 250,
+        "pep": "498",
+        "line": "print(\"updating cache for prefix {}\".format(cacheprefix))",
+        "span": "\"updating cache for prefix {}\".format(cacheprefix)",
+        "fix": [
+          {
+            "before": "\"updating cache for prefix {}\".format(cacheprefix)",
+            "after": "f\"updating cache for prefix {cacheprefix}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 254,
+        "end_lineno": 254,
+        "pep": "498",
+        "line": "print(\"cache file {} updated\".format(cacheprefix))",
+        "span": "\"cache file {} updated\".format(cacheprefix)",
+        "fix": [
+          {
+            "before": "\"cache file {} updated\".format(cacheprefix)",
+            "after": "f\"cache file {cacheprefix} updated\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 302,
+        "end_lineno": 302,
+        "pep": "498",
+        "line": "fn = \"{}/{}.out\".format(args.embdir, i - ds.localstep)",
+        "span": "\"{}/{}.out\".format(args.embdir, i - ds.localstep)",
+        "fix": [
+          {
+            "before": "\"{}/{}.out\".format(args.embdir, i - ds.localstep)",
+            "after": "f\"{args.embdir}/{i - ds.localstep}.out\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 305,
+        "end_lineno": 305,
+        "pep": "498",
+        "line": "print(\"embedding shape is {}\".format(emb[0].shape))",
+        "span": "\"embedding shape is {}\".format(emb[0].shape)",
+        "fix": [
+          {
+            "before": "\"embedding shape is {}\".format(emb[0].shape)",
+            "after": "f\"embedding shape is {emb[0].shape}\""
+          }
+        ]
+      }
+    ]
+  }
+  

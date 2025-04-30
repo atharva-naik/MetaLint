@@ -1,0 +1,32 @@
+{
+    "blob_id": "fbbbed2be338fd53e41b675441105e68de0eb01b",
+    "violations": [
+      {
+        "start_lineno": 25,
+        "end_lineno": 25,
+        "pep": "498",
+        "line": "print('SEGMENTING ' + img)",
+        "span": "'SEGMENTING ' + img",
+        "fix": [
+          {
+            "before": "'SEGMENTING ' + img",
+            "after": "f'SEGMENTING {img}'"
+          }
+        ]
+      },
+      {
+        "start_lineno": 32,
+        "end_lineno": 32,
+        "pep": "498",
+        "line": "mito_obj.pickle(output_dir = img_dir + '/pickles')",
+        "span": "img_dir + '/pickles'",
+        "fix": [
+          {
+            "before": "img_dir + '/pickles'",
+            "after": "f'{img_dir}/pickles'"
+          }
+        ]
+      }
+    ]
+  }
+  

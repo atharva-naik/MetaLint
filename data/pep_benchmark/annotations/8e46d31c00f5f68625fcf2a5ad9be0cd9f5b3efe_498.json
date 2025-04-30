@@ -1,0 +1,19 @@
+{
+    "blob_id": "8e46d31c00f5f68625fcf2a5ad9be0cd9f5b3efe",
+    "violations": [
+      {
+        "start_lineno": 46,
+        "end_lineno": 46,
+        "pep": "498",
+        "line": "'NastroAdmin get_form obj: %s p: %s s: %s' % (obj, obj.precedente, obj.seguente)",
+        "span": "'NastroAdmin get_form obj: %s p: %s s: %s' % (obj, obj.precedente, obj.seguente)",
+        "fix": [
+          {
+            "before": "'NastroAdmin get_form obj: %s p: %s s: %s' % (obj, obj.precedente, obj.seguente)",
+            "after": "f'NastroAdmin get_form obj: {obj} p: {obj.precedente} s: {obj.seguente}'"
+          }
+        ]
+      }
+    ]
+  }
+  

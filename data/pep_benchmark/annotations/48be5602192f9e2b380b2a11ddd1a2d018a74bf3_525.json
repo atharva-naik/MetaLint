@@ -1,0 +1,44 @@
+{
+    "blob_id": "48be5602192f9e2b380b2a11ddd1a2d018a74bf3",
+    "violations": [
+      {
+        "start_lineno": 167,
+        "end_lineno": 175,
+        "pep": "525",
+        "line": "def __aiter__(self):",
+        "span": "def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        row = await greenlet_spawn(self._onerow_getter, self)\n        if row is _NO_ROW:\n            raise StopAsyncIteration()\n        else:\n            return row",
+        "fix": [
+          {
+            "before": "def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        row = await greenlet_spawn(self._onerow_getter, self)\n        if row is _NO_ROW:\n            raise StopAsyncIteration()\n        else:\n            return row",
+            "after": "async def __aiter__(self):\n        while True:\n            row = await greenlet_spawn(self._onerow_getter, self)\n            if row is _NO_ROW:\n                return\n            yield row"
+          }
+        ]
+      },
+      {
+        "start_lineno": 466,
+        "end_lineno": 474,
+        "pep": "525",
+        "line": "def __aiter__(self):",
+        "span": "def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        row = await greenlet_spawn(self._onerow_getter, self)\n        if row is _NO_ROW:\n            raise StopAsyncIteration()\n        else:\n            return row",
+        "fix": [
+          {
+            "before": "def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        row = await greenlet_spawn(self._onerow_getter, self)\n        if row is _NO_ROW:\n            raise StopAsyncIteration()\n        else:\n            return row",
+            "after": "async def __aiter__(self):\n        while True:\n            row = await greenlet_spawn(self._onerow_getter, self)\n            if row is _NO_ROW:\n                return\n            yield row"
+          }
+        ]
+      },
+      {
+        "start_lineno": 631,
+        "end_lineno": 639,
+        "pep": "525",
+        "line": "def __aiter__(self):",
+        "span": "def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        row = await greenlet_spawn(self._onerow_getter, self)\n        if row is _NO_ROW:\n            raise StopAsyncIteration()\n        else:\n            return row",
+        "fix": [
+          {
+            "before": "def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        row = await greenlet_spawn(self._onerow_getter, self)\n        if row is _NO_ROW:\n            raise StopAsyncIteration()\n        else:\n            return row",
+            "after": "async def __aiter__(self):\n        while True:\n            row = await greenlet_spawn(self._onerow_getter, self)\n            if row is _NO_ROW:\n                return\n            yield row"
+          }
+        ]
+      }
+    ]
+  }

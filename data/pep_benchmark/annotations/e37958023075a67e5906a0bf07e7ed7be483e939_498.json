@@ -1,0 +1,136 @@
+{
+    "blob_id": "e37958023075a67e5906a0bf07e7ed7be483e939",
+    "violations": [
+      {
+        "start_lineno": 10,
+        "end_lineno": 10,
+        "pep": "498",
+        "line": "bdb = bayeslite.bayesdb_open('./%s' %(bdb_name))",
+        "span": "'./%s' %(bdb_name)",
+        "fix": [
+          {
+            "before": "'./%s' %(bdb_name)",
+            "after": "f'./{bdb_name}'"
+          }
+        ]
+      },
+      {
+        "start_lineno": 14,
+        "end_lineno": 14,
+        "pep": "498",
+        "line": "create_table_query = \"CREATE TABLE user_input FROM './tmp/%s'\" % (filename)",
+        "span": "\"CREATE TABLE user_input FROM './tmp/%s'\" % (filename)",
+        "fix": [
+          {
+            "before": "\"CREATE TABLE user_input FROM './tmp/%s'\" % (filename)",
+            "after": "f\"CREATE TABLE user_input FROM './tmp/{filename}'\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 20,
+        "end_lineno": 20,
+        "pep": "498",
+        "line": "num_rows_query = \"SELECT COUNT(*) FROM %s\" %(table)",
+        "span": "\"SELECT COUNT(*) FROM %s\" %(table)",
+        "fix": [
+          {
+            "before": "\"SELECT COUNT(*) FROM %s\" %(table)",
+            "after": "f\"SELECT COUNT(*) FROM {table}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 25,
+        "end_lineno": 25,
+        "pep": "498",
+        "line": "col_names_query = \"PRAGMA table_info(%s)\" %(table)",
+        "span": "\"PRAGMA table_info(%s)\" %(table)",
+        "fix": [
+          {
+            "before": "\"PRAGMA table_info(%s)\" %(table)",
+            "after": "f\"PRAGMA table_info({table})\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 31,
+        "end_lineno": 31,
+        "pep": "498",
+        "line": "insert_data_query = \"INSERT INTO %s (%s) SELECT %s FROM user_input\" %(table, col_names_list, col_names_list)",
+        "span": "\"INSERT INTO %s (%s) SELECT %s FROM user_input\" %(table, col_names_list, col_names_list)",
+        "fix": [
+          {
+            "before": "\"INSERT INTO %s (%s) SELECT %s FROM user_input\" %(table, col_names_list, col_names_list)",
+            "after": "f\"INSERT INTO {table} ({col_names_list}) SELECT {col_names_list} FROM user_input\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 35,
+        "end_lineno": 35,
+        "pep": "498",
+        "line": "pred_prob_query = \"ESTIMATE PREDICTIVE PROBABILITY OF %s GIVEN (*) AS pred_prob FROM %s WHERE %s._rowid_ >= %s\" %(column, population, table, str(int(num_rows) + start_row))",
+        "span": "\"ESTIMATE PREDICTIVE PROBABILITY OF %s GIVEN (*) AS pred_prob FROM %s WHERE %s._rowid_ >= %s\" %(column, population, table, str(int(num_rows) + start_row))",
+        "fix": [
+          {
+            "before": "\"ESTIMATE PREDICTIVE PROBABILITY OF %s GIVEN (*) AS pred_prob FROM %s WHERE %s._rowid_ >= %s\" %(column, population, table, str(int(num_rows) + start_row))",
+            "after": "f\"ESTIMATE PREDICTIVE PROBABILITY OF {column} GIVEN (*) AS pred_prob FROM {population} WHERE {table}._rowid_ >= {int(num_rows) + start_row}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 41,
+        "end_lineno": 41,
+        "pep": "498",
+        "line": "clear_new_rows_query = \"DELETE FROM %s WHERE _rowid_ > %d\" %(table, num_rows)",
+        "span": "\"DELETE FROM %s WHERE _rowid_ > %d\" %(table, num_rows)",
+        "fix": [
+          {
+            "before": "\"DELETE FROM %s WHERE _rowid_ > %d\" %(table, num_rows)",
+            "after": "f\"DELETE FROM {table} WHERE _rowid_ > {num_rows}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 45,
+        "end_lineno": 45,
+        "pep": "498",
+        "line": "data = csv.reader(open('./tmp/%s' %(filename)))",
+        "span": "'./tmp/%s' %(filename)",
+        "fix": [
+          {
+            "before": "'./tmp/%s' %(filename)",
+            "after": "f'./tmp/{filename}'"
+          }
+        ]
+      },
+      {
+        "start_lineno": 47,
+        "end_lineno": 47,
+        "pep": "498",
+        "line": "pred_prob_column = ['predictive probability of %s' %(column)] + pred_prob_list",
+        "span": "'predictive probability of %s' %(column)",
+        "fix": [
+          {
+            "before": "'predictive probability of %s' %(column)",
+            "after": "f'predictive probability of {column}'"
+          }
+        ]
+      },
+      {
+        "start_lineno": 52,
+        "end_lineno": 52,
+        "pep": "498",
+        "line": "writer = csv.writer(open('./tmp/%s_processed.csv' %(os.path.splitext(os.path.basename(filename))[0]), 'w'))",
+        "span": "'./tmp/%s_processed.csv' %(os.path.splitext(os.path.basename(filename))[0])",
+        "fix": [
+          {
+            "before": "'./tmp/%s_processed.csv' %(os.path.splitext(os.path.basename(filename))[0])",
+            "after": "f\"./tmp/{os.path.splitext(os.path.basename(filename))[0]}_processed.csv\""
+          }
+        ]
+      }
+    ]
+  }
+  

@@ -1,0 +1,18 @@
+{
+    "blob_id": "97143d462176557f73a3e6d521ea39ab15fb6dc2",
+    "violations": [
+      {
+        "start_lineno": 37,
+        "end_lineno": 37,
+        "pep": "567",
+        "line": "self.tdata = threading.local()",
+        "span": "threading.local()",
+        "fix": [
+          {
+            "before": "self.tdata = threading.local()",
+            "after": "import contextvars\nself.tdata = contextvars.ContextVar('amqp_channel_tdata', default=None)"
+          }
+        ]
+      }
+    ]
+  }

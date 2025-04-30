@@ -1,0 +1,31 @@
+{
+    "blob_id": "256740bb31c2e7d0da9b16eb60ea42ff89a4db7d",
+    "violations": [
+      {
+        "start_lineno": 21,
+        "end_lineno": 29,
+        "pep": "525",
+        "line": "    def __aiter__(self):",
+        "span": "    def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        if not (self._futures or self.results):\n            raise StopAsyncIteration()\n        while not self.results:\n            await self._wait_next()\n        return self.results.popleft()",
+        "fix": [
+          {
+            "before": "    def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        if not (self._futures or self.results):\n            raise StopAsyncIteration()\n        while not self.results:\n            await self._wait_next()\n        return self.results.popleft()",
+            "after": "    async def __aiter__(self):\n        while True:\n            if not (self._futures or self.results):\n                return\n            while not self.results:\n                await self._wait_next()\n            yield self.results.popleft()"
+          }
+        ]
+      },
+      {
+        "start_lineno": 57,
+        "end_lineno": 63,
+        "pep": "525",
+        "line": "            def __aiter__(_self):",
+        "span": "            def __aiter__(_self):\n                return _self\n\n            async def __anext__(_self):\n                if not hasattr(_self, 'waiter'):\n                    _self.waiter = mk_waiter(mk_map())\n                return await _self.waiter.__anext__()",
+        "fix": [
+          {
+            "before": "            def __aiter__(_self):\n                return _self\n\n            async def __anext__(_self):\n                if not hasattr(_self, 'waiter'):\n                    _self.waiter = mk_waiter(mk_map())\n                return await _self.waiter.__anext__()",
+            "after": "            async def __aiter__(_self):\n                waiter = mk_waiter(mk_map())\n                async for item in waiter:\n                    yield item"
+          }
+        ]
+      }
+    ]
+  }

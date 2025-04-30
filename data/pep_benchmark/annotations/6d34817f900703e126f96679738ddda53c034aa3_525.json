@@ -1,0 +1,18 @@
+{
+    "blob_id": "6d34817f900703e126f96679738ddda53c034aa3",
+    "violations": [
+      {
+        "start_lineno": 40,
+        "end_lineno": 44,
+        "pep": "525",
+        "line": "def __aiter__(self):",
+        "span": "def __aiter__(self):\n\treturn self\n\nasync def __anext__(self):\n\treturn await self.queue.get()",
+        "fix": [
+          {
+            "before": "def __aiter__(self):\n\treturn self\n\nasync def __anext__(self):\n\treturn await self.queue.get()",
+            "after": "async def __aiter__(self):\n\twhile True:\n\t\tyield await self.queue.get()"
+          }
+        ]
+      }
+    ]
+  }

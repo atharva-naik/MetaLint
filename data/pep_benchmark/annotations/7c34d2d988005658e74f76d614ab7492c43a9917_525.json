@@ -1,0 +1,18 @@
+{
+    "blob_id": "7c34d2d988005658e74f76d614ab7492c43a9917",
+    "violations": [
+      {
+        "start_lineno": 2060,
+        "end_lineno": 2085,
+        "pep": "525",
+        "line": "def __aiter__(self):",
+        "span": "def __aiter__(self):\n            return self\n\n        async def __anext__(self):\n            nexts = self.nexts\n            items = [\n                None,\n            ] * len(nexts)\n            got_stop = False\n\n            def handle(exc):\n                nonlocal got_stop\n                if isinstance(exc, StopAsyncIteration):\n                    got_stop = True\n                    return None\n                else:  # pragma: no cover\n                    return exc\n\n            with _core.MultiError.catch(handle):\n                async with _core.open_nursery() as nursery:\n                    for i, f in enumerate(nexts):\n                        nursery.start_soon(self._accumulate, f, items, i)\n\n            if got_stop:\n                raise StopAsyncIteration\n            return items",
+        "fix": [
+          {
+            "before": "def __aiter__(self):\n            return self\n\n        async def __anext__(self):\n            nexts = self.nexts\n            items = [\n                None,\n            ] * len(nexts)\n            got_stop = False\n\n            def handle(exc):\n                nonlocal got_stop\n                if isinstance(exc, StopAsyncIteration):\n                    got_stop = True\n                    return None\n                else:  # pragma: no cover\n                    return exc\n\n            with _core.MultiError.catch(handle):\n                async with _core.open_nursery() as nursery:\n                    for i, f in enumerate(nexts):\n                        nursery.start_soon(self._accumulate, f, items, i)\n\n            if got_stop:\n                raise StopAsyncIteration\n            return items",
+            "after": "async def __aiter__(self):\n            nexts = self.nexts\n            while True:\n                items = [None] * len(nexts)\n                got_stop = False\n\n                def handle(exc):\n                    nonlocal got_stop\n                    if isinstance(exc, StopAsyncIteration):\n                        got_stop = True\n                        return None\n                    else:  # pragma: no cover\n                        return exc\n\n                with _core.MultiError.catch(handle):\n                    async with _core.open_nursery() as nursery:\n                        for i, f in enumerate(nexts):\n                            nursery.start_soon(self._accumulate, f, items, i)\n\n                if got_stop:\n                    return\n                yield items"
+          }
+        ]
+      }
+    ]
+  }

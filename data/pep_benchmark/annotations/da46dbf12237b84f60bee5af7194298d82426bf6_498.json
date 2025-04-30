@@ -1,0 +1,66 @@
+{
+    "blob_id": "da46dbf12237b84f60bee5af7194298d82426bf6",
+    "violations": [
+      {
+        "lineno": 217,
+        "original": "\"%s-%s\" % (set_type, i)",
+        "fixed": "f\"{set_type}-{i}\""
+      },
+      {
+        "lineno": 259,
+        "original": "\"%s-%s\" % (set_type, i)",
+        "fixed": "f\"{set_type}-{i}\""
+      },
+      {
+        "lineno": 301,
+        "original": "\"%s-%s\" % (set_type, i)",
+        "fixed": "f\"{set_type}-{i}\""
+      },
+      {
+        "lineno": 648,
+        "original": "\"guid: %s\" % (example.guid)",
+        "fixed": "f\"guid: {example.guid}\""
+      },
+      {
+        "lineno": 649,
+        "original": "\"tokens: %s\" % \" \".join([tokenization.printable_text(x) for x in tokens])",
+        "fixed": "f\"tokens: {' '.join([tokenization.printable_text(x) for x in tokens])}\""
+      },
+      {
+        "lineno": 651,
+        "original": "\"input_ids: %s\" % \" \".join([str(x) for x in input_ids])",
+        "fixed": "f\"input_ids: {' '.join([str(x) for x in input_ids])}\""
+      },
+      {
+        "lineno": 652,
+        "original": "\"input_mask: %s\" % \" \".join([str(x) for x in input_mask])",
+        "fixed": "f\"input_mask: {' '.join([str(x) for x in input_mask])}\""
+      },
+      {
+        "lineno": 653,
+        "original": "\"segment_ids: %s\" % \" \".join([str(x) for x in segment_ids])",
+        "fixed": "f\"segment_ids: {' '.join([str(x) for x in segment_ids])}\""
+      },
+      {
+        "lineno": 654,
+        "original": "\"label: %s (id = %d)\" % (example.label, label_id)",
+        "fixed": "f\"label: {example.label} (id = {label_id})\""
+      },
+      {
+        "lineno": 673,
+        "original": "\"Writing example %d of %d\" % (ex_index, len(examples))",
+        "fixed": "f\"Writing example {ex_index} of {len(examples)}\""
+      },
+      {
+        "lineno": 839,
+        "original": "\"  name = %s, shape = %s\" % (name, features[name].shape)",
+        "fixed": "f\"  name = {name}, shape = {features[name].shape}\""
+      },
+      {
+        "lineno": 1047,
+        "original": "\"Writing example %d of %d\" % (ex_index, len(examples))",
+        "fixed": "f\"Writing example {ex_index} of {len(examples)}\""
+      }
+    ]
+  }
+  
