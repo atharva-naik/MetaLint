@@ -1,0 +1,31 @@
+{
+    "blob_id": "9a258488b92b6440180b0fddb989f04f6cded1bd",
+    "violations": [
+        {
+            "start_lineno": 16,
+            "end_lineno": 25,
+            "pep": "530",
+            "line": "        groups_in_db = []\n        async with self.db_engine.acquire() as conn:\n            async for row in conn.execute(\n                sa.select([groups])\n                .select_from(\n                    user_to_groups.join(groups, user_to_groups.c.gid == groups.c.gid),\n                )\n                .where(user_to_groups.c.uid == user_id)\n            ):\n                groups_in_db.append(GroupAtDB(**row))",
+            "span": "groups_in_db",
+            "fix": [
+                {
+                    "before": "        groups_in_db = []\n        async with self.db_engine.acquire() as conn:\n            async for row in conn.execute(\n                sa.select([groups])\n                .select_from(\n                    user_to_groups.join(groups, user_to_groups.c.gid == groups.c.gid),\n                )\n                .where(user_to_groups.c.uid == user_id)\n            ):\n                groups_in_db.append(GroupAtDB(**row))",
+                    "after": "groups_in_db = [GroupAtDB(**row) async for row in conn.execute(sa.select([groups]).select_from(user_to_groups.join(groups, user_to_groups.c.gid == groups.c.gid)).where(user_to_groups.c.uid == user_id))]"
+                }
+            ]
+        },
+        {
+            "start_lineno": 62,
+            "end_lineno": 71,
+            "pep": "530",
+            "line": "        service_owners = {}\n        async with self.db_engine.acquire() as conn:\n            async for row in conn.execute(\n                sa.select([users.c.primary_gid, users.c.email]).where(\n                    users.c.primary_gid.in_(gids)\n                )\n            ):\n                service_owners[row[users.c.primary_gid]] = (\n                    EmailStr(row[users.c.email]) if row[users.c.email] else None\n                )",
+            "span": "service_owners",
+            "fix": [
+                {
+                    "before": "        service_owners = {}\n        async with self.db_engine.acquire() as conn:\n            async for row in conn.execute(\n                sa.select([users.c.primary_gid, users.c.email]).where(\n                    users.c.primary_gid.in_(gids)\n                )\n            ):\n                service_owners[row[users.c.primary_gid]] = (\n                    EmailStr(row[users.c.email]) if row[users.c.email] else None\n                )",
+                    "after": "service_owners = {row[users.c.primary_gid]: EmailStr(row[users.c.email]) if row[users.c.email] else None async for row in conn.execute(sa.select([users.c.primary_gid, users.c.email]).where(users.c.primary_gid.in_(gids)))}"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "blob_id": "9f60b181434bd145dfc35bc3a6b1339281d97fb2",
+    "violations": [{
+            "start_lineno": 20,
+            "end_lineno": 40,
+            "pep": "530",
+            "line": "while True:\n        try:\n            data = await ws.recv()\n        except ConnectionClosed:\n            if ws in connections:\n                connections.remove(ws)\n            break\n\n        print('Received: ' + data)\n        data = json.loads(data)\n        data['author'] = unique_id\n        data = json.dumps(data)\n        print('Sending: ' + data)\n\n        for connection in connections.copy():\n            if connection != ws:\n                try:\n                    await connection.send(data)\n                except ConnectionClosed:\n                    if connection in connections:\n                        connections.remove(connection)",
+            "span": "while True",
+            "fix": [
+                {
+                    "before": "while True:\n        try:\n            data = await ws.recv()\n        except ConnectionClosed:\n            if ws in connections:\n                connections.remove(ws)\n            break\n\n        print('Received: ' + data)\n        data = json.loads(data)\n        data['author'] = unique_id\n        data = json.dumps(data)\n        print('Sending: ' + data)\n\n        for connection in connections.copy():\n            if connection != ws:\n                try:\n                    await connection.send(data)\n                except ConnectionClosed:\n                    if connection in connections:\n                        connections.remove(connection)",
+                    "after": "async def handle_connection_closed(connection):\n        if connection in connections:\n            connections.remove(connection)\n\n    async for data in ws:\n        try:\n            print(f'Received: {data}')\n            data = json.loads(data)\n            data['author'] = unique_id\n            data = json.dumps(data)\n            print(f'Sending: {data}')\n\n            for connection in list(connections):\n                if connection != ws:\n                    try:\n                        await connection.send(data)\n                    except ConnectionClosed:\n                        await handle_connection_closed(connection)\n\n        except ConnectionClosed:\n            await handle_connection_closed(ws)\n            break"
+                }
+               
+            ]
+        }
+]
+}

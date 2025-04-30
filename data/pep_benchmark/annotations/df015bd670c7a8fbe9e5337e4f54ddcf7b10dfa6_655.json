@@ -1,0 +1,44 @@
+{
+    "blob_id": "df015bd670c7a8fbe9e5337e4f54ddcf7b10dfa6",
+    "violations": [
+        {
+            "start_lineno": 53,
+            "end_lineno": 65,
+            "pep": "655",
+            "line": "class _AttachmentOptional(TypedDict, total=False):\n    height: Optional[int]\n    width: Optional[int]\n    content_type: str\n    spoiler: bool\n\nclass Attachment(_AttachmentOptional):\n    id: Snowflake\n    filename: str\n    size: int\n    url: str\n    proxy_url: str",
+            "span": "_AttachmentOptional",
+            "fix": [
+                {
+                    "before": "class _AttachmentOptional(TypedDict, total=False):\n    height: Optional[int]\n    width: Optional[int]\n    content_type: str\n    spoiler: bool\n\nclass Attachment(_AttachmentOptional):\n    id: Snowflake\n    filename: str\n    size: int\n    url: str\n    proxy_url: str",
+                    "after": "class Attachment(TypedDict):\n    id: Snowflake\n    filename: str\n    size: int\n    url: str\n    proxy_url: str\n\n    height: NotRequired[Optional[int]]\n    width: NotRequired[Optional[int]]\n    content_type: NotRequired[str]\n    spoiler: NotRequired[bool]"
+                }
+            ]
+        },
+        {
+            "start_lineno": 76,
+            "end_lineno": 84,
+            "pep": "655",
+            "line": "class _MessageApplicationOptional(TypedDict, total=False):\n    cover_image: str\n\n\nclass MessageApplication(_MessageApplicationOptional):\n    id: Snowflake\n    description: str\n    icon: Optional[str]\n    name: str",
+            "span": "_MessageApplicationOptional",
+            "fix": [
+                {
+                    "before": "class _MessageApplicationOptional(TypedDict, total=False):\n    cover_image: str\n\n\nclass MessageApplication(_MessageApplicationOptional):\n    id: Snowflake\n    description: str\n    icon: Optional[str]\n    name: str",
+                    "after": "class MessageApplication(TypedDict):\n    id: Snowflake\n    description: str\n    icon: Optional[str]\n    name: str\n    cover_image: NotRequired[str]"
+                }
+            ]
+        },
+        {
+            "start_lineno": 94,
+            "end_lineno": 129,
+            "pep": "655",
+            "line": "class Message(TypedDict):\n    id: Snowflake\n    channel_id: Snowflake\n    author: User\n    content: str\n    timestamp: str\n    edited_timestamp: Optional[str]\n    tts: bool\n    mention_everyone: bool\n    mentions: List[UserWithMember]\n    mention_roles: SnowflakeList\n    attachments: List[Attachment]\n    embeds: List[Embed]\n    pinned: bool\n    type: MessageType\n\n    guild_id: NotRequired[Snowflake]\n    member: NotRequired[Member]\n    mention_channels: NotRequired[List[ChannelMention]]\n    reactions: NotRequired[List[Reaction]]\n    nonce: NotRequired[Union[int, str]]\n    webhook_id: NotRequired[Snowflake]\n    activity: NotRequired[MessageActivity]\n    application: NotRequired[MessageApplication]\n    application_id: NotRequired[Snowflake]\n    message_reference: NotRequired[MessageReference]\n    flags: NotRequired[int]\n    sticker_items: NotRequired[List[StickerItem]]\n    referenced_message: NotRequired[Optional[\"Message\"]]\n    interaction: NotRequired[MessageInteraction]\n    components: NotRequired[List[Component]]",
+            "span": "Message",
+            "fix": [
+                {
+                    "before": "class Message(TypedDict):\n    id: Snowflake\n    channel_id: Snowflake\n    author: User\n    content: str\n    timestamp: str\n    edited_timestamp: Optional[str]\n    tts: bool\n    mention_everyone: bool\n    mentions: List[UserWithMember]\n    mention_roles: SnowflakeList\n    attachments: List[Attachment]\n    embeds: List[Embed]\n    pinned: bool\n    type: MessageType\n\n    guild_id: NotRequired[Snowflake]\n    member: NotRequired[Member]\n    mention_channels: NotRequired[List[ChannelMention]]\n    reactions: NotRequired[List[Reaction]]\n    nonce: NotRequired[Union[int, str]]\n    webhook_id: NotRequired[Snowflake]\n    activity: NotRequired[MessageActivity]\n    application: NotRequired[MessageApplication]\n    application_id: NotRequired[Snowflake]\n    message_reference: NotRequired[MessageReference]\n    flags: NotRequired[int]\n    sticker_items: NotRequired[List[StickerItem]]\n    referenced_message: NotRequired[Optional[\"Message\"]]\n    interaction: NotRequired[MessageInteraction]\n    components: NotRequired[List[Component]]",
+                    "after": "MessageType = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 18, 19, 20, 21]\n\nclass Message(TypedDict):\n    id: Snowflake\n    channel_id: Snowflake\n    author: User\n    content: str\n    timestamp: str\n    edited_timestamp: Optional[str]\n    tts: bool\n    mention_everyone: bool\n    mentions: List[UserWithMember]\n    mention_roles: SnowflakeList\n    attachments: List[Attachment]\n    embeds: List[Embed]\n    pinned: bool\n    type: MessageType\n\n    guild_id: NotRequired[Snowflake]\n    member: NotRequired[Member]\n    mention_channels: NotRequired[List[ChannelMention]]\n    reactions: NotRequired[List[Reaction]]\n    nonce: NotRequired[Union[int, str]]\n    webhook_id: NotRequired[Snowflake]\n    activity: NotRequired[MessageActivity]\n    application: NotRequired[MessageApplication]\n    application_id: NotRequired[Snowflake]\n    message_reference: NotRequired[MessageReference]\n    flags: NotRequired[int]\n    sticker_items: NotRequired[List[StickerItem]]\n    referenced_message: NotRequired[Optional[\"Message\"]]\n    interaction: NotRequired[MessageInteraction]\n    components: NotRequired[List[Component]]"
+                }
+            ]
+        }
+    ]
+}

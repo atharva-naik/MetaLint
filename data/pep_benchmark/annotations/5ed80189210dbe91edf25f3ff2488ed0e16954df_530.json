@@ -1,0 +1,19 @@
+{
+    "blob_id": "5ed80189210dbe91edf25f3ff2488ed0e16954df",
+    "violations": [
+        {
+            "start_lineno": 48,
+            "end_lineno": 55,
+            "pep": "530",
+            "line": "for i in ids:\n            try:\n                input_user = await self.resolve_peer(i)\n            except PeerIdInvalid:\n                continue\n            else:\n                if isinstance(input_user, raw.types.InputPeerUser):\n                    contacts.append(input_user)",
+            "span": "for i in ids",
+            "fix": [
+                {
+                    "before": "for i in ids:\n            try:\n                input_user = await self.resolve_peer(i)\n            except PeerIdInvalid:\n                continue\n            else:\n                if isinstance(input_user, raw.types.InputPeerUser):\n                    contacts.append(input_user)",
+                    "after": "contacts = [\n            input_user\n            for i in ids\n            if isinstance((input_user := await self.resolve_peer(i)), raw.types.InputPeerUser)\n        ]"
+                }
+               
+            ]
+        }
+    ]
+}

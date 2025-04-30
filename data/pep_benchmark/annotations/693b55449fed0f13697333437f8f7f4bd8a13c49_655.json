@@ -1,0 +1,18 @@
+{
+    "blob_id": "693b55449fed0f13697333437f8f7f4bd8a13c49",
+    "violations": [
+        {
+            "start_lineno": 23,
+            "end_lineno": 33,
+            "pep": "655",
+            "line": "class BaseConfirmationTokenDict(TypedDict):\n    code: str\n    action: ActionLiteralStr\n\nclass ConfirmationTokenDict(BaseConfirmationTokenDict):\n    # SEE packages/postgres-database/src/simcore_postgres_database/models/confirmations.py\n    user_id: int\n    created_at: datetime\n    # SEE handlers_confirmation.py::email_confirmation to determine what type is associated to each action\n    data: str | None",
+            "span": "import os, shutil",
+            "fix": [
+                {
+                    "before": "class BaseConfirmationTokenDict(TypedDict):\n    code: str\n    action: ActionLiteralStr\n\nclass ConfirmationTokenDict(BaseConfirmationTokenDict):\n    # SEE packages/postgres-database/src/simcore_postgres_database/models/confirmations.py\n    user_id: int\n    created_at: datetime\n    # SEE handlers_confirmation.py::email_confirmation to determine what type is associated to each action\n    data: str | None",
+                    "after": "class ConfirmationTokenDict(TypedDict):\n    code: str\n    action: str\n    user_id: int\n    created_at: datetime\n    data: Optional[str]"
+                }
+            ]
+        }
+    ]
+}
