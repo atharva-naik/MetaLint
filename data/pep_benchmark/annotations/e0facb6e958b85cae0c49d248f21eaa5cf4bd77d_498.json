@@ -1,0 +1,19 @@
+{
+    "blob_id": "e0facb6e958b85cae0c49d248f21eaa5cf4bd77d",
+    "violations": [
+      {
+        "start_lineno": 46,
+        "end_lineno": 46,
+        "pep": "498",
+        "line": "self.assertEqual('%s://%s' % (scheme, netloc), conn.API_BASE_URL)",
+        "span": "'%s://%s' % (scheme, netloc)",
+        "fix": [
+          {
+            "before": "'%s://%s' % (scheme, netloc)",
+            "after": "f'{scheme}://{netloc}'"
+          }
+        ]
+      }
+    ]
+  }
+  

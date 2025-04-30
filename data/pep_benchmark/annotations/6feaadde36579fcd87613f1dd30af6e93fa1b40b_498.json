@@ -1,0 +1,149 @@
+{
+    "blob_id": "6feaadde36579fcd87613f1dd30af6e93fa1b40b",
+    "violations": [
+      {
+        "start_lineno": 339,
+        "end_lineno": 339,
+        "pep": "498",
+        "line": "refPath = \"/by_key/%s\" % self.data[\"key\"]",
+        "span": "\"/by_key/%s\" % self.data[\"key\"]",
+        "fix": [
+          {
+            "before": "\"/by_key/%s\" % self.data[\"key\"]",
+            "after": "f\"/by_key/{self.data['key']}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 454,
+        "end_lineno": 454,
+        "pep": "498",
+        "line": "refPath = \"/by_key/%s/%s\" % (self.data[\"key\"], self.name)",
+        "span": "\"/by_key/%s/%s\" % (self.data[\"key\"], self.name)",
+        "fix": [
+          {
+            "before": "\"/by_key/%s/%s\" % (self.data[\"key\"], self.name)",
+            "after": "f\"/by_key/{self.data['key']}/{self.name}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 458,
+        "end_lineno": 458,
+        "pep": "498",
+        "line": "fileLinks = [ \"<a href='%s'>%s</a>\\n\" % (os.path.basename(f), f) for f in self.data[\"resPathList\"] ]",
+        "span": "\"<a href='%s'>%s</a>\\n\" % (os.path.basename(f), f)",
+        "fix": [
+          {
+            "before": "\"<a href='%s'>%s</a>\\n\" % (os.path.basename(f), f)",
+            "after": "f\"<a href='{os.path.basename(f)}'>{f}</a>\\n\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 495,
+        "end_lineno": 495,
+        "pep": "498",
+        "line": "\"Status: %s\" % self.data[\"status\"]",
+        "span": "\"Status: %s\" % self.data[\"status\"]",
+        "fix": [
+          {
+            "before": "\"Status: %s\" % self.data[\"status\"]",
+            "after": "f\"Status: {self.data['status']}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 496,
+        "end_lineno": 496,
+        "pep": "498",
+        "line": "\"Orga:   %8s\" % self.data[\"orga\"]",
+        "span": "\"Orga:   %8s\" % self.data[\"orga\"]",
+        "fix": [
+          {
+            "before": "\"Orga:   %8s\" % self.data[\"orga\"]",
+            "after": "f\"Orga:   {self.data['orga']:>8}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 497,
+        "end_lineno": 497,
+        "pep": "498",
+        "line": "\"Tags:   '%s'\" % \"', '\".join(self.data[\"tags\"])",
+        "span": "\"Tags:   '%s'\" % \"', '\".join(self.data[\"tags\"])",
+        "fix": [
+          {
+            "before": "\"Tags:   '%s'\" % \"', '\".join(self.data[\"tags\"])",
+            "after": "f\"Tags:   '{', '.join(self.data['tags'])}'\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 498,
+        "end_lineno": 498,
+        "pep": "498",
+        "line": "\"Key:    %s\" % self.data[\"key\"]",
+        "span": "\"Key:    %s\" % self.data[\"key\"]",
+        "fix": [
+          {
+            "before": "\"Key:    %s\" % self.data[\"key\"]",
+            "after": "f\"Key:    {self.data['key']}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 504,
+        "end_lineno": 504,
+        "pep": "498",
+        "line": "raise DAVError(HTTP_INTERNAL_ERROR, \"Invalid artifact '%s'\" % self.name)",
+        "span": "\"Invalid artifact '%s'\" % self.name",
+        "fix": [
+          {
+            "before": "\"Invalid artifact '%s'\" % self.name",
+            "after": "f\"Invalid artifact '{self.name}'\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 515,
+        "end_lineno": 515,
+        "pep": "498",
+        "line": "util.warn(\"VirtualResFile(%r) does not exist.\" % filePath)",
+        "span": "\"VirtualResFile(%r) does not exist.\" % filePath",
+        "fix": [
+          {
+            "before": "\"VirtualResFile(%r) does not exist.\" % filePath",
+            "after": "f\"VirtualResFile({filePath!r}) does not exist.\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 541,
+        "end_lineno": 541,
+        "pep": "498",
+        "line": "refPath = \"/by_key/%s/%s\" % (self.data[\"key\"], os.path.basename(self.filePath))",
+        "span": "\"/by_key/%s/%s\" % (self.data[\"key\"], os.path.basename(self.filePath))",
+        "fix": [
+          {
+            "before": "\"/by_key/%s/%s\" % (self.data[\"key\"], os.path.basename(self.filePath))",
+            "after": "f\"/by_key/{self.data['key']}/{os.path.basename(self.filePath)}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 573,
+        "end_lineno": 573,
+        "pep": "498",
+        "line": "_logger.info(\"getResourceInst('%s')\" % path)",
+        "span": "\"getResourceInst('%s')\" % path",
+        "fix": [
+          {
+            "before": "\"getResourceInst('%s')\" % path",
+            "after": "f\"getResourceInst('{path}')\""
+          }
+        ]
+      }
+    ]
+  }
+  

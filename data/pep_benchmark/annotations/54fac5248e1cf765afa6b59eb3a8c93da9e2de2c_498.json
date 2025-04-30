@@ -1,0 +1,45 @@
+{
+    "blob_id": "54fac5248e1cf765afa6b59eb3a8c93da9e2de2c",
+    "violations": [
+      {
+        "start_lineno": 53,
+        "end_lineno": 53,
+        "pep": "498",
+        "line": "(img.split(\".\"))[0] + '.json'",
+        "span": "(img.split(\".\"))[0] + '.json'",
+        "fix": [
+          {
+            "before": "(img.split(\".\"))[0] + '.json'",
+            "after": "f\"{img.split('.')[0]}.json\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 134,
+        "end_lineno": 134,
+        "pep": "498",
+        "line": "df.to_excel(save_path+save_name+\".xlsx\")",
+        "span": "save_path+save_name+\".xlsx\"",
+        "fix": [
+          {
+            "before": "save_path+save_name+\".xlsx\"",
+            "after": "f\"{save_path}{save_name}.xlsx\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 146,
+        "end_lineno": 146,
+        "pep": "498",
+        "line": "plt.savefig(save_path+pic_name+\".png\",dpi=1000)",
+        "span": "save_path+pic_name+\".png\"",
+        "fix": [
+          {
+            "before": "save_path+pic_name+\".png\"",
+            "after": "f\"{save_path}{pic_name}.png\""
+          }
+        ]
+      }
+    ]
+  }
+  

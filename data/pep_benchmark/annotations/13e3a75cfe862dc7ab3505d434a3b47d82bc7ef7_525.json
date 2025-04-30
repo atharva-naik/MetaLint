@@ -1,0 +1,31 @@
+{
+    "blob_id": "13e3a75cfe862dc7ab3505d434a3b47d82bc7ef7",
+    "violations": [
+      {
+        "start_lineno": 81,
+        "end_lineno": 97,
+        "pep": "525",
+        "line": "    def __aiter__(self):",
+        "span": "    def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        message_complete = False\n        while not message_complete:\n            if self.stream_reader.at_eof():\n                raise StopAsyncIteration\n            bytes_read = await self.stream_reader.readline()\n            if self.event_to_signal is not None:\n                self.event_to_signal.set()\n            self.internal_buffer += bytes_read.decode(\"utf-8\")\n            deserialization_result = deserialize_message(self.internal_buffer)\n            message_complete = deserialization_result.message_found\n\n        self.internal_buffer = str(self.internal_buffer[deserialization_result.read_chars:])\n        return deserialization_result.message_object",
+        "fix": [
+          {
+            "before": "    def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        message_complete = False\n        while not message_complete:\n            if self.stream_reader.at_eof():\n                raise StopAsyncIteration\n            bytes_read = await self.stream_reader.readline()\n            if self.event_to_signal is not None:\n                self.event_to_signal.set()\n            self.internal_buffer += bytes_read.decode(\"utf-8\")\n            deserialization_result = deserialize_message(self.internal_buffer)\n            message_complete = deserialization_result.message_found\n\n        self.internal_buffer = str(self.internal_buffer[deserialization_result.read_chars:])\n        return deserialization_result.message_object",
+            "after": "    async def __aiter__(self):\n        while True:\n            message_complete = False\n            while not message_complete:\n                if self.stream_reader.at_eof():\n                    return\n                bytes_read = await self.stream_reader.readline()\n                if self.event_to_signal is not None:\n                    self.event_to_signal.set()\n                self.internal_buffer += bytes_read.decode(\"utf-8\")\n                deserialization_result = deserialize_message(self.internal_buffer)\n                message_complete = deserialization_result.message_found\n\n            self.internal_buffer = str(self.internal_buffer[deserialization_result.read_chars:])\n            yield deserialization_result.message_object"
+          }
+        ]
+      },
+      {
+        "start_lineno": 145,
+        "end_lineno": 156,
+        "pep": "525",
+        "line": "    def __aiter__(self):",
+        "span": "    def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        if not self.messages and \\\n                (self.response_received or self.error_received):\n            raise StopAsyncIteration\n        if not self.messages:\n            self.message_event.clear()\n            await self.message_event.wait()\n        assert self.messages\n        return self.messages.pop(0)",
+        "fix": [
+          {
+            "before": "    def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        if not self.messages and \\\n                (self.response_received or self.error_received):\n            raise StopAsyncIteration\n        if not self.messages:\n            self.message_event.clear()\n            await self.message_event.wait()\n        assert self.messages\n        return self.messages.pop(0)",
+            "after": "    async def __aiter__(self):\n        while True:\n            if not self.messages and \\\n                    (self.response_received or self.error_received):\n                break\n            if not self.messages:\n                self.message_event.clear()\n                await self.message_event.wait()\n            assert self.messages\n            yield self.messages.pop(0)"
+          }
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,18 @@
+{
+    "blob_id": "c7e6cb586b944e4d29eacabd9120e2da556d7636",
+    "violations": [
+      {
+        "start_lineno": 18,
+        "end_lineno": 18,
+        "pep": "567",
+        "line": "    _current = threading.local()",
+        "span": "threading.local()",
+        "fix": [
+          {
+            "before": "    _current = threading.local()",
+            "after": "    import contextvars\n    _current_context = contextvars.ContextVar('endpoint_context', default=None)"
+          }
+        ]
+      }
+    ]
+  }

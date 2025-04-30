@@ -1,0 +1,58 @@
+{
+    "blob_id": "850827aa387c52550ccedcf9ebbb35b015110162",
+    "violations": [
+      {
+        "start_lineno": 39,
+        "end_lineno": 39,
+        "pep": "498",
+        "line": "print('Old size: %d' % len(train_df))",
+        "span": "'Old size: %d' % len(train_df)",
+        "fix": [
+          {
+            "before": "'Old size: %d' % len(train_df)",
+            "after": "f'Old size: {len(train_df)}'"
+          }
+        ]
+      },
+      {
+        "start_lineno": 45,
+        "end_lineno": 45,
+        "pep": "498",
+        "line": "print('New size: %d' % len(train_df))",
+        "span": "'New size: %d' % len(train_df)",
+        "fix": [
+          {
+            "before": "'New size: %d' % len(train_df)",
+            "after": "f'New size: {len(train_df)}'"
+          }
+        ]
+      },
+      {
+        "start_lineno": 56,
+        "end_lineno": 56,
+        "pep": "498",
+        "line": "print('Old size: %d' % len(train_df))",
+        "span": "'Old size: %d' % len(train_df)",
+        "fix": [
+          {
+            "before": "'Old size: %d' % len(train_df)",
+            "after": "f'Old size: {len(train_df)}'"
+          }
+        ]
+      },
+      {
+        "start_lineno": 58,
+        "end_lineno": 58,
+        "pep": "498",
+        "line": "print('New size: %d' % len(train_df))",
+        "span": "'New size: %d' % len(train_df)",
+        "fix": [
+          {
+            "before": "'New size: %d' % len(train_df)",
+            "after": "f'New size: {len(train_df)}'"
+          }
+        ]
+      }
+    ]
+  }
+  

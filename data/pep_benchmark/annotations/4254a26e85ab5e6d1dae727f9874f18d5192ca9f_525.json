@@ -1,0 +1,18 @@
+{
+    "blob_id": "4254a26e85ab5e6d1dae727f9874f18d5192ca9f",
+    "violations": [
+      {
+        "start_lineno": 100,
+        "end_lineno": 118,
+        "pep": "525",
+        "line": "    def __aiter__(self):",
+        "span": "    def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        if not self.connected:\n            raise StopAsyncIteration\n        if self.messages_buffer:\n            return self.messages_buffer.popleft()\n        msg = await self.ws.receive()\n        if msg.type == WSMsgType.TEXT:\n            data = msg.data\n            while data:\n                m_len = int(data[:6])\n                message = Message.from_text(data[6 : m_len + 6])\n                self.messages_buffer.append(message)\n                data = data[m_len + 6 :]\n            if self.messages_buffer:\n                return self.messages_buffer.popleft()",
+        "fix": [
+          {
+            "before": "    def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        if not self.connected:\n            raise StopAsyncIteration\n        if self.messages_buffer:\n            return self.messages_buffer.popleft()\n        msg = await self.ws.receive()\n        if msg.type == WSMsgType.TEXT:\n            data = msg.data\n            while data:\n                m_len = int(data[:6])\n                message = Message.from_text(data[6 : m_len + 6])\n                self.messages_buffer.append(message)\n                data = data[m_len + 6 :]\n            if self.messages_buffer:\n                return self.messages_buffer.popleft()",
+            "after": "    async def __aiter__(self):\n        while self.connected:\n            if self.messages_buffer:\n                yield self.messages_buffer.popleft()\n                continue\n                \n            msg = await self.ws.receive()\n            if msg.type == WSMsgType.TEXT:\n                data = msg.data\n                while data:\n                    m_len = int(data[:6])\n                    message = Message.from_text(data[6 : m_len + 6])\n                    self.messages_buffer.append(message)\n                    data = data[m_len + 6 :]\n                if self.messages_buffer:\n                    yield self.messages_buffer.popleft()"
+          }
+        ]
+      }
+    ]
+  }

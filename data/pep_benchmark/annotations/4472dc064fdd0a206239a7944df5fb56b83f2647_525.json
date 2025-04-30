@@ -1,0 +1,18 @@
+{
+    "blob_id": "4472dc064fdd0a206239a7944df5fb56b83f2647",
+    "violations": [
+      {
+        "start_lineno": 671,
+        "end_lineno": 673,
+        "pep": "525",
+        "line": "        def __aiter__(self): pass",
+        "span": "        def __aiter__(self): pass\n\n        async def __anext__(self): pass",
+        "fix": [
+          {
+            "before": "        def __aiter__(self): pass\n\n        async def __anext__(self): pass",
+            "after": "        def __aiter__(self):\n            return self._async_generator()\n            \n        async def _async_generator(self):\n            for item in self.items:\n                yield item"
+          }
+        ]
+      }
+    ]
+  }

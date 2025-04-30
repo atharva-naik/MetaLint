@@ -1,0 +1,18 @@
+{
+    "blob_id": "0d81834002fd01a9a7f7b6f40c896d093df0dbb6",
+    "violations": [
+      {
+        "start_lineno": 144,
+        "end_lineno": 151,
+        "pep": "525",
+        "line": "    def __aiter__(self):",
+        "span": "    def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        response = await self.next()\n        if response == []:\n            raise StopAsyncIteration()\n        return response",
+        "fix": [
+          {
+            "before": "    def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        response = await self.next()\n        if response == []:\n            raise StopAsyncIteration()\n        return response",
+            "after": "    async def __aiter__(self):\n        while True:\n            response = await self.next()\n            if response == []:\n                break\n            yield response"
+          }
+        ]
+      }
+    ]
+  }

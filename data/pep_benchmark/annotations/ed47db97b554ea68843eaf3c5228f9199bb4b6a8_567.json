@@ -1,0 +1,19 @@
+{
+    "blob_id": "ed47db97b554ea68843eaf3c5228f9199bb4b6a8",
+    "violations": [
+      {
+        "start_lineno": 11,
+        "end_lineno": 11,
+        "pep": "567",
+        "line": "class LocalStore(threading.local):",
+        "span": "threading.local",
+        "fix": [
+          {
+            "before": "class LocalStore(threading.local):",
+            "after": "import contextvars\n\nclass LocalStore:\n    def __init__(self, **d):\n        self._store = contextvars.ContextVar('localstore_dict', default={})\n        for k, v in d.items():\n            self._store.get()[k] = v"
+          }
+        ]
+      }
+    ]
+  }
+  

@@ -1,0 +1,18 @@
+{
+    "blob_id": "027e52891a24d858eaa6270145f9004b1f516cc6",
+    "violations": [
+      {
+        "start_lineno": 66,
+        "end_lineno": 66,
+        "pep": "567",
+        "line": "    self._thread_local = threading.local()",
+        "span": "threading.local()",
+        "fix": [
+          {
+            "before": "    self._thread_local = threading.local()",
+            "after": "    import contextvars\n    self._context = contextvars.ContextVar('oozie_thread_context', default=None)"
+          }
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,18 @@
+{
+    "blob_id": "f58f6c1f2d54c143b3cd04eee6c9a630ac363b14",
+    "violations": [
+      {
+        "start_lineno": 222,
+        "end_lineno": 222,
+        "pep": "567",
+        "line": "_local = threading.local()",
+        "span": "threading.local()",
+        "fix": [
+          {
+            "before": "_local = threading.local()",
+            "after": "import contextvars\n_local = contextvars.ContextVar('hub', default=None)"
+          }
+        ]
+      }
+    ]
+  }
