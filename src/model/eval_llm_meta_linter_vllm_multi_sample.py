@@ -12,6 +12,7 @@ sys.path.append(module_path)
 
 from src.datautils import read_jsonl
 from src.dpo.reward_model_newformat import evaluate_instance
+from src.metrics.meta_linting.idiom_detection_and_localization_v3 import load_linter_results
 
 # vLLM server details
 PORT = 8002
@@ -28,13 +29,14 @@ def get_args():
     parser.add_argument("--write_path", type=str, required=True, help="name of the file where predictions should be written")
     parser.add_argument("--M", type=int, default=5, help="Number of samples per prompt")
     parser.add_argument("--train_file", type=str, required=True, help='path to training data to be used for training')
+    parser.add_argument("--skip_no_violations", action="store_true", help="Comma-separated temperatures, one for each sample")
     parser.add_argument("--temp", type=str, default='0,0.3,0.5,0.7,1', help="Comma-separated temperatures, one for each sample")
     return parser.parse_args()
 
 def generate_response(prompt_index: int, sample_index: int, rec: dict, model_name: str, temperature: float):
     user_prompt = rec['messages'][0]['content']
     gt_response = rec['messages'][1]['content']
-
+    # print(len(user_prompt))
     if len(user_prompt) > MAX_SEQ_LEN - MAX_NEW_TOKENS:
         user_prompt = user_prompt[:10000] + user_prompt[-10000:]
         print(len(user_prompt))
@@ -57,6 +59,7 @@ def generate_response(prompt_index: int, sample_index: int, rec: dict, model_nam
             return (prompt_index, sample_index), {
                 "id": rec["id"],
                 "source": rec["source"],
+                # "prompt": rec["user_prompt"],
                 "sample_index": sample_index,
                 "model_response": model_response,
                 "ground_truth": gt_response,
@@ -77,6 +80,10 @@ def main():
     assert len(temperatures) == M, "Length of temperatures must match M"
 
     train_data = json.load(open(args.train_file))
+    print(f"read {len(train_data)} SFT training instances")
+    if args.skip_no_violations: # skip data with NO VIOLATIONs for idioms (hack to improve recall).
+        train_data = [rec for rec in train_data if len(load_linter_results(rec["messages"][1]["content"])) != 0]
+        print(f"{len(train_data)} SFT training instances with VIOLATIONS")
     skip_index_till = 0
 
     if not os.path.exists(write_path):
@@ -111,6 +118,7 @@ def main():
                 f_out.write(json.dumps({
                     "id": results_buffer[next_write_index][0]["id"],
                     "source": results_buffer[next_write_index][0]["source"],
+                    # "prompt": results_buffer[next_write_index][0]["prompt"],
                     "ground_truth": results_buffer[next_write_index][0]["ground_truth"],
                     "model_responses": [(
                         sample["model_response"], 
@@ -119,9 +127,9 @@ def main():
                             results_buffer[next_write_index][0]["ground_truth"]
                         )
                     ) for sample in results_buffer[next_write_index] if evaluate_instance(
-                        sample["model_response"], 
-                        results_buffer[next_write_index][0]["ground_truth"]
-                    ) < 0.999]
+                            sample["model_response"], 
+                            results_buffer[next_write_index][0]["ground_truth"]
+                        ) < 0.999]
                 }) + "\n")
                 del results_buffer[next_write_index]
                 next_write_index += 1
@@ -135,6 +143,7 @@ def main():
             f_out.write(json.dumps({
                 "id": results_buffer[next_write_index][0]["id"],
                 "source": results_buffer[next_write_index][0]["source"],
+                # "prompt": results_buffer[next_write_index][0]["prompt"],
                 "ground_truth": results_buffer[next_write_index][0]["ground_truth"],
                 "model_responses": [sample["model_response"] for sample in results_buffer[next_write_index]]
             }) + "\n")

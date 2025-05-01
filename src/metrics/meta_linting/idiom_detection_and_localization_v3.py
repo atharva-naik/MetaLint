@@ -33,13 +33,18 @@ NEAR_TRANSFER_TEST_IDIOM_GROUPS = list(NEAR_TRANSFER_IDIOM_GROUP_MAPPING.keys())
 NEAR_TRANSFER_TRAIN_IDIOM_GROUPS = ["F405","F501","F502","F601","F621","E402","E701","E721","E741","E743"]
 IDIOMS_NOT_SEEN_IN_TRAIN = ["ANN001", "ANN002", "ANN003", "ANN201", "ANN202", "ANN204", "ANN205", "ANN206"]+["ASYNC100", "ASYNC105", "ASYNC109", "ASYNC110", "ASYNC115", "ASYNC116", "ASYNC210", "ASYNC220", "ASYNC221", "ASYNC222", "ASYNC230", "ASYNC251"]+["S102", "S103", "S104", "S105", "S106", "S107", "S108", "S110", "S112", "S113", "S201", "S202", "S301", "S302", "S303"] # 3 far transfer: everything else. (FaT)
 FAULTY_RESULT_CTR = 0
+# TOOL_GROUPS = {
+#     "PyFlakes": ["F406", "F403", "F503", "F602", "F622"],
+#     "pycodestyle": ["E401", "E702", "E722", "E731", "E742"], 
+#     "Misc": ["ERA001", "C901", "I001", "I002", "BLE001"], # most frequent 'meta-linting' group in training data.
+#     "flake8-annotations": ["ANN001", "ANN002", "ANN003", "ANN201", "ANN202", "ANN204", "ANN205", "ANN206"],
+#     "flake8-async": ["ASYNC100", "ASYNC105", "ASYNC109", "ASYNC110", "ASYNC115", "ASYNC116", "ASYNC210", "ASYNC220", "ASYNC221", "ASYNC222", "ASYNC230", "ASYNC251"],
+#     "flake8-bandit": ["S102", "S103", "S104", "S105", "S106", "S107", "S108", "S110", "S112", "S113", "S201", "S202", "S301", "S302", "S303"],
+# }
 TOOL_GROUPS = {
-    "PyFlakes": ["F406", "F403", "F503", "F602", "F622"],
-    "pycodestyle": ["E401", "E702", "E722", "E731", "E742"], 
-    "Misc": ["ERA001", "C901", "I001", "I002", "BLE001"], # most frequent 'meta-linting' group in training data.
-    "flake8-annotations": ["ANN001", "ANN002", "ANN003", "ANN201", "ANN202", "ANN204", "ANN205", "ANN206"],
-    "flake8-async": ["ASYNC100", "ASYNC105", "ASYNC109", "ASYNC110", "ASYNC115", "ASYNC116", "ASYNC210", "ASYNC220", "ASYNC221", "ASYNC222", "ASYNC230", "ASYNC251"],
-    "flake8-bandit": ["S102", "S103", "S104", "S105", "S106", "S107", "S108", "S110", "S112", "S113", "S201", "S202", "S301", "S302", "S303"],
+    "Near Transfer": ["F406", "F403", "F503", "F602", "F622","E401", "E702", "E722", "E731", "E742"], 
+    "No Transfer": ["ERA001", "C901", "I001", "I002", "BLE001"], # most frequent 'meta-linting' group in training data.
+    "Far Transfer": ["ANN001", "ANN002", "ANN003", "ANN201", "ANN202", "ANN204", "ANN205", "ANN206","ASYNC100", "ASYNC105", "ASYNC109", "ASYNC110", "ASYNC115", "ASYNC116", "ASYNC210", "ASYNC220", "ASYNC221", "ASYNC222", "ASYNC230", "ASYNC251","S102", "S103", "S104", "S105", "S106", "S107", "S108", "S110", "S112", "S113", "S201", "S202", "S301", "S302", "S303"],
 }
 TOOL_TO_TOOL_GROUP = {}
 for tool_group_name, tools in TOOL_GROUPS.items():
@@ -323,22 +328,12 @@ def compute_aggregate_metrics(idiom_precisions, idiom_recalls):
 # main
 if __name__ == "__main__":
     steps = sys.argv[1]
-    # data = read_jsonl(f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}-idiom-hardness-no-packing.jsonl")
-    # test_preds = read_jsonl(f"./data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}-idiom-hardness-v3.jsonl")
-    
-    # test_preds = read_jsonl(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4.jsonl")
-    # test_preds = read_jsonl(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_lineno.jsonl")
-    # test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot.jsonl")
-    # test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot_v2_lite.jsonl")
-    # test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot_v3_lite.jsonl")
 
     # SFT and DPO **current transfer experiments**:
-    test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_lineno.jsonl")
-    # test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_dpo_preds_{steps}_transfer_v4_subtask_cot_star.jsonl")
+    # test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_lineno.jsonl")
+    test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_dpo_preds_{steps}_transfer_v4_subtask_cot_star.jsonl")
     # test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot_star.jsonl")
 
-    # test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_subtask_cot.jsonl")
-    # test_preds = read_jsonl(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}_transfer_v4_cot.jsonl")
     test_data = json.load(open("data/ruff_meta_linting/test_v4_new_format_with_lineno.json"))
 
     # test_preds = read_jsonl(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}-v2-data.jsonl")
