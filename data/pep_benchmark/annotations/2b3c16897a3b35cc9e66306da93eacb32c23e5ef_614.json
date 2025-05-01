@@ -1,0 +1,31 @@
+{
+    "blob_id": "2b3c16897a3b35cc9e66306da93eacb32c23e5ef",
+    "violations": [
+      {
+        "start_lineno": 16,
+        "end_lineno": 17,
+        "pep": "614",
+        "line": "trigger = Trigger('complete-word', '<alt>slash',\n'Eclipse like word completition', 'Text Operations')",
+        "span": "trigger = Trigger('complete-word', '<alt>slash',\n'Eclipse like word completition', 'Text Operations')",
+        "fix": [
+          {
+            "before": "trigger = Trigger('complete-word', '<alt>slash',\n'Eclipse like word completition', 'Text Operations')",
+            "after": ""
+          }
+        ]
+      },
+      {
+        "start_lineno": 99,
+        "end_lineno": 99,
+        "pep": "614",
+        "line": "@trigger",
+        "span": "@trigger",
+        "fix": [
+          {
+            "before": "@trigger",
+            "after": "@Trigger('complete-word', '<alt>slash',\n'Eclipse like word completition', 'Text Operations')"
+          }
+        ]
+      }
+    ]
+  }

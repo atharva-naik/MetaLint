@@ -1,0 +1,18 @@
+{
+    "blob_id": "d496d59c836446f81c61a2822643119a8ebad097",
+    "violations": [
+        {
+            "start_lineno": 32,
+            "end_lineno": 44,
+            "pep": "655",
+            "line": "class _RoleOptional(TypedDict, total=False): tags: RoleTags\nclass Role(_RoleOptional): id: Snowflake\nname: str\ncolor: int\nhoist: bool\nposition: int\npermissions: str\nmanaged: bool\nmentionable: bool",
+            "span": "_RoleOptional",
+            "fix": [
+                {
+                    "before": "class _RoleOptional(TypedDict, total=False): tags: RoleTags\nclass Role(_RoleOptional): id: Snowflake\nname: str\ncolor: int\nhoist: bool\nposition: int\npermissions: str\nmanaged: bool\nmentionable: bool",
+                    "after": "class Role(TypedDict): id: Snowflake\nname: str\ncolor: int\nhoist: bool\nposition: int\npermissions: str\nmanaged: bool\nmentionable: bool\ntags: NotRequired[RoleTags]"
+                }
+            ]
+        }
+    ]
+}

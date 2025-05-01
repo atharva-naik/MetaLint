@@ -1,0 +1,18 @@
+{
+    "blob_id": "d74fcb05f9f029d6ad582d79695f8433a2079244",
+    "violations": [
+      {
+        "start_lineno": 215,
+        "end_lineno": 216,
+        "pep": "616",
+        "line": "if module.endswith('.__init__'):\n\tmodule = module[:-9]",
+        "span": "if module.endswith('.__init__'):\n\tmodule = module[:-9]",
+        "fix": [
+          {
+            "before": "if module.endswith('.__init__'):\n\tmodule = module[:-9]",
+            "after": "module.removesuffix('.__init__')"
+          }
+        ]
+      }
+    ]
+  }

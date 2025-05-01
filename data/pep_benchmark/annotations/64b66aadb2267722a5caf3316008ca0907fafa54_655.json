@@ -1,0 +1,31 @@
+{
+    "blob_id": "64b66aadb2267722a5caf3316008ca0907fafa54",
+    "violations": [
+        {
+            "start_lineno": 39,
+            "end_lineno": 49,
+            "pep": "655",
+            "line": "class _ButtonComponentOptional(TypedDict, total=False):\n    custom_id: str\n    url: str\n    disabled: bool\n    emoji: PartialEmoji\n    label: str\n\nclass ButtonComponent(_ButtonComponentOptional):\n    type: Literal[2]\n    style: ButtonStyle",
+            "span": "_ButtonComponentOptional",
+            "fix": [
+                {
+                    "before":"class _ButtonComponentOptional(TypedDict, total=False):\n    custom_id: str\n    url: str\n    disabled: bool\n    emoji: PartialEmoji\n    label: str\n\nclass ButtonComponent(_ButtonComponentOptional):\n    type: Literal[2]\n    style: ButtonStyle",
+                    "after": "class ButtonComponent(TypedDict):\n    type: Literal[2]\n    style: ButtonStyle\n    custom_id: NotRequired[str]\n    url: NotRequired[str]\n    disabled: NotRequired[bool]\n    emoji: NotRequired[PartialEmoji]\n    label: NotRequired[str]"
+                }
+            ]
+        },
+        {
+            "start_lineno": 59,
+            "end_lineno": 67,
+            "pep": "655",
+            "line": "class _SelectOptionsOptional(TypedDict, total=False):\n    description: str\n    emoji: PartialEmoji\n\n\nclass SelectOption(_SelectOptionsOptional):\n    label: str\n    value: str\n    default: bool",
+            "span": "SelectOption",
+            "fix": [
+                {
+                    "before": "class _SelectOptionsOptional(TypedDict, total=False):\n    description: str\n    emoji: PartialEmoji\n\n\nclass SelectOption(_SelectOptionsOptional):\n    label: str\n    value: str\n    default: bool",
+                    "after": "class SelectOption(TypedDict):\n    label: str\n    value: str\n    default: bool\n    description: NotRequired[str]\n    emoji: NotRequired[PartialEmoji]"
+                }
+            ]
+        }
+    ]
+}

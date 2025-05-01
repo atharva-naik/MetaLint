@@ -1,0 +1,21 @@
+{
+    "blob_id": "2b19110914a02de6d4d0e861df33969b3d7063a9",
+    "violations": [
+        {
+            "start_lineno": 8,
+            "end_lineno": 8,
+            "pep": "530",
+            "line": "for _ in range(0,2):",
+            "span": "for _ in range(0,2)",
+            "fix": [
+                {
+                    "before": "for _ in range(0,2):",
+                    "after": "async for _ in range(0, 2):\n        sensor_values = await ds.async_sensor_values()"
+                }
+               
+            ]
+        }
+
+
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "blob_id": "c47cc28b688a552720f60c41971a5968df61557e",
+    "violations": [
+      {
+        "start_lineno": 18,
+        "end_lineno": 18,
+        "pep": "567",
+        "line": "\t_local = threading.local()",
+        "span": "threading.local()",
+        "fix": [
+          {
+            "before": "\t_local = threading.local()",
+            "after": "\timport contextvars\n\t_local = contextvars.ContextVar('consul_context', default=None)"
+          }
+        ]
+      }
+    ]
+  }

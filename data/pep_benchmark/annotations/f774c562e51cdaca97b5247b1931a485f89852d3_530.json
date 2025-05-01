@@ -1,0 +1,18 @@
+{
+    "blob_id": "f774c562e51cdaca97b5247b1931a485f89852d3",
+    "violations": [{
+            "start_lineno": 16,
+            "end_lineno": 18,
+            "pep": "530",
+            "line": "for handler in self.handlers:\n                if isinstance(handler, Handler):\n                    await handler.process(obj)",
+            "span": "for handler in self.handlers",
+            "fix": [
+                {
+                    "before": "for handler in self.handlers:\n                if isinstance(handler, Handler):\n                    await handler.process(obj)",
+                    "after": "await asyncio.gather(*(handler.process(obj) for handler in self.handlers if isinstance(handler, Handler)))"
+                }
+               
+            ]
+        }
+]
+}

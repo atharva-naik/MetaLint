@@ -1,0 +1,18 @@
+{
+    "blob_id": "f5a0e695f1a50cbc20de0463e14d5f362bb054ee",
+    "violations": [
+      {
+        "start_lineno": 114,
+        "end_lineno": 115,
+        "pep": "616",
+        "line": "if exc_name.startswith('king_phisher.third_party.'):\n\texc_name = exc_name[25:]",
+        "span": "if exc_name.startswith('king_phisher.third_party.'):\n\texc_name = exc_name[25:]",
+        "fix": [
+          {
+            "before": "if exc_name.startswith('king_phisher.third_party.'):\n\texc_name = exc_name[25:]",
+            "after": "exc_name.removeprefix('king_phisher.third_party.')"
+          }
+        ]
+      }
+    ]
+  }

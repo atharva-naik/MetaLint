@@ -1,0 +1,18 @@
+{
+    "blob_id": "31e4bc74fec32c2cfc89f9b14d2ab712773f7e42",
+    "violations": [
+      {
+        "start_lineno": 2431,
+        "end_lineno": 2453,
+        "pep": "525",
+        "line": "    def __aiter__(self) -> AnalysisResult:",
+        "span": "    def __aiter__(self) -> AnalysisResult:\n        return self\n\n    async def __anext__(self) -> InfoDict:\n        try:\n            return await self.get()\n        except AnalysisComplete:\n            raise StopAsyncIteration",
+        "fix": [
+          {
+            "before": "    def __aiter__(self) -> AnalysisResult:\n        return self\n\n    async def __anext__(self) -> InfoDict:\n        try:\n            return await self.get()\n        except AnalysisComplete:\n            raise StopAsyncIteration",
+            "after": "    async def __aiter__(self):\n        while True:\n            try:\n                yield await self.get()\n            except AnalysisComplete:\n                break"
+          }
+        ]
+      }
+    ]
+  }

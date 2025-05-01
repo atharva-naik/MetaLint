@@ -1,0 +1,18 @@
+{
+    "blob_id": "190d219199ef9bdadc90095b6dd5311302a03299",
+    "violations": [
+      {
+        "start_lineno": 1039,
+        "end_lineno": 1039,
+        "pep": "584",
+        "line": "infoDict.update(metadata)",
+        "span": "infoDict.update(metadata)",
+        "fix": [
+          {
+            "before": "infoDict.update(metadata)",
+            "after": "infoDict |= metadata"
+          }
+        ]
+      }
+    ]
+  }

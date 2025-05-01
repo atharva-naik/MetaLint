@@ -1,0 +1,18 @@
+{
+    "blob_id": "9f28695e4cb18be0b90833726824618b70cd9b67",
+    "violations": [
+      {
+        "start_lineno": 73,
+        "end_lineno": 73,
+        "pep": "567",
+        "line": "nfp_context_store = threading.local()",
+        "span": "threading.local()",
+        "fix": [
+          {
+            "before": "nfp_context_store = threading.local()",
+            "after": "import contextvars\nnfp_context_store = contextvars.ContextVar('nfp_context_store', default=None)"
+          }
+        ]
+      }
+    ]
+  }

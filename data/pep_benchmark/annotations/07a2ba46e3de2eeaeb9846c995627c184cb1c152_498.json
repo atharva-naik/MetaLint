@@ -1,0 +1,19 @@
+{
+    "blob_id": "07a2ba46e3de2eeaeb9846c995627c184cb1c152",
+    "violations": [
+      {
+        "start_lineno": 27,
+        "end_lineno": 27,
+        "pep": "498",
+        "line": "profile = url.split(server_stubs.REKALL_PROFILE_REPOSITORY_VERSION + \"/\")[1]",
+        "span": "server_stubs.REKALL_PROFILE_REPOSITORY_VERSION + \"/\"",
+        "fix": [
+          {
+            "before": "server_stubs.REKALL_PROFILE_REPOSITORY_VERSION + \"/\"",
+            "after": "f\"{server_stubs.REKALL_PROFILE_REPOSITORY_VERSION}/\""
+          }
+        ]
+      }
+    ]
+  }
+  

@@ -1,0 +1,136 @@
+{
+    "blob_id": "48a2aff67e55bb06ef196492b3d1cbe430d9a3d1",
+    "violations": [
+      {
+        "start_lineno": 49,
+        "end_lineno": 49,
+        "pep": "498",
+        "line": "\"{} = {}\\n\".format(val.name, int(val))",
+        "span": "\"{} = {}\\n\".format(val.name, int(val))",
+        "fix": [
+          {
+            "before": "\"{} = {}\\n\".format(val.name, int(val))",
+            "after": "f\"{val.name} = {int(val)}\\n\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 134,
+        "end_lineno": 134,
+        "pep": "498",
+        "line": "\"{}(\".format(f_wrapper.__name__)",
+        "span": "\"{}(\".format(f_wrapper.__name__)",
+        "fix": [
+          {
+            "before": "\"{}(\".format(f_wrapper.__name__)",
+            "after": "f\"{f_wrapper.__name__}(\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 136,
+        "end_lineno": 136,
+        "pep": "498",
+        "line": "\"{}, \".format(arg)",
+        "span": "\"{}, \".format(arg)",
+        "fix": [
+          {
+            "before": "\"{}, \".format(arg)",
+            "after": "f\"{arg}, \""
+          }
+        ]
+      },
+      {
+        "start_lineno": 138,
+        "end_lineno": 138,
+        "pep": "498",
+        "line": "\"{}={}, \".format(arg, repr(default))",
+        "span": "\"{}={}, \".format(arg, repr(default))",
+        "fix": [
+          {
+            "before": "\"{}={}, \".format(arg, repr(default))",
+            "after": "f\"{arg}={repr(default)}, \""
+          }
+        ]
+      },
+      {
+        "start_lineno": 148,
+        "end_lineno": 148,
+        "pep": "498",
+        "line": "\"*{}, \".format(varargs)",
+        "span": "\"*{}, \".format(varargs)",
+        "fix": [
+          {
+            "before": "\"*{}, \".format(varargs)",
+            "after": "f\"*{varargs}, \""
+          }
+        ]
+      },
+      {
+        "start_lineno": 150,
+        "end_lineno": 150,
+        "pep": "498",
+        "line": "\"{}={}, \".format(keyword, default)",
+        "span": "\"{}={}, \".format(keyword, default)",
+        "fix": [
+          {
+            "before": "\"{}={}, \".format(keyword, default)",
+            "after": "f\"{keyword}={default}, \""
+          }
+        ]
+      },
+      {
+        "start_lineno": 152,
+        "end_lineno": 152,
+        "pep": "498",
+        "line": "\"**{}, \".format(keywords)",
+        "span": "\"**{}, \".format(keywords)",
+        "fix": [
+          {
+            "before": "\"**{}, \".format(keywords)",
+            "after": "f\"**{keywords}, \""
+          }
+        ]
+      },
+      {
+        "start_lineno": 153,
+        "end_lineno": 153,
+        "pep": "498",
+        "line": "\"{})\".format(signature.rstrip(\", \"))",
+        "span": "\"{})\".format(signature.rstrip(\", \"))",
+        "fix": [
+          {
+            "before": "\"{})\".format(signature.rstrip(\", \"))",
+            "after": "f\"{signature.rstrip(\", \")})\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 159,
+        "end_lineno": 159,
+        "pep": "498",
+        "line": "\"{}(\".format(f_wrapper.__name__)",
+        "span": "\"{}(\".format(f_wrapper.__name__)",
+        "fix": [
+          {
+            "before": "\"{}(\".format(f_wrapper.__name__)",
+            "after": "f\"{f_wrapper.__name__}(\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 160,
+        "end_lineno": 160,
+        "pep": "498",
+        "line": "\"{}\\n{}\".format(signature, f_wrapper.__doc__)",
+        "span": "\"{}\\n{}\".format(signature, f_wrapper.__doc__)",
+        "fix": [
+          {
+            "before": "\"{}\\n{}\".format(signature, f_wrapper.__doc__)",
+            "after": "f\"{signature}\\n{f_wrapper.__doc__}\""
+          }
+        ]
+      }
+    ]
+  }
+  

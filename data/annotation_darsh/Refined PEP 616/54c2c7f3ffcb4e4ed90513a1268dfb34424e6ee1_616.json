@@ -1,0 +1,18 @@
+{
+    "blob_id": "54c2c7f3ffcb4e4ed90513a1268dfb34424e6ee1",
+    "violations": [
+      {
+        "start_lineno": 114,
+        "end_lineno": 115,
+        "pep": "616",
+        "line": "if chrom.startswith('chr'):\n\tchrom = chrom[3:]",
+        "span": "if chrom.startswith('chr'):\n\tchrom = chrom[3:]",
+        "fix": [
+          {
+            "before": "if chrom.startswith('chr'):\n\tchrom = chrom[3:]",
+            "after": "chrom.removeprefix('chr')"
+          }
+        ]
+      }
+    ]
+  }

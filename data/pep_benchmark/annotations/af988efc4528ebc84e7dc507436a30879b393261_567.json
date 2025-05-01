@@ -1,0 +1,19 @@
+{
+    "blob_id": "af988efc4528ebc84e7dc507436a30879b393261",
+    "violations": [
+      {
+        "start_lineno": 3,
+        "end_lineno": 3,
+        "pep": "567",
+        "line": "local_school = threading.local()",
+        "span": "threading.local()",
+        "fix": [
+          {
+            "before": "local_school = threading.local()",
+            "after": "import contextvars\nlocal_school = contextvars.ContextVar('local_school', default=None)"
+          }
+        ]
+      }
+    ]
+  }
+  

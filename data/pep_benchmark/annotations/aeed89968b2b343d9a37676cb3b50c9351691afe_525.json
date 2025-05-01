@@ -1,0 +1,18 @@
+{
+    "blob_id": "aeed89968b2b343d9a37676cb3b50c9351691afe",
+    "violations": [
+      {
+        "start_lineno": 315,
+        "end_lineno": 329,
+        "pep": "525",
+        "line": "def __aiter__(self):",
+        "span": "def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        if self._stop_request:\n            raise StopAsyncIteration\n\n        if self._started_at == 0:\n            # First run\n            self._started_at = time.monotonic()\n        else:\n            # Second or greater run -- delay before yielding\n            await asyncio.sleep(self._delay)\n\n        return _TryRunner(self)",
+        "fix": [
+          {
+            "before": "def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        if self._stop_request:\n            raise StopAsyncIteration\n\n        if self._started_at == 0:\n            # First run\n            self._started_at = time.monotonic()\n        else:\n            # Second or greater run -- delay before yielding\n            await asyncio.sleep(self._delay)\n\n        return _TryRunner(self)",
+            "after": "async def __aiter__(self):\n        # First run\n        self._started_at = time.monotonic()\n        while not self._stop_request:\n            yield _TryRunner(self)\n            \n            # Subsequent runs -- delay before yielding again\n            await asyncio.sleep(self._delay)"
+          }
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,31 @@
+{
+    "blob_id": "055237bb5f10dbc3a7803b958039f4f1c9d1f70c",
+    "violations": [
+      {
+        "start_lineno": 53,
+        "end_lineno": 53,
+        "pep": "593",
+        "line": "api_mtls_endpoint: str = None,",
+        "span": "api_mtls_endpoint: str",
+        "fix": [
+          {
+            "before": "api_mtls_endpoint: str",
+            "after": "api_mtls_endpoint: Annotated[Optional[str], \"deprecated\"]"
+          }
+        ]
+      },
+      {
+        "start_lineno": 54,
+        "end_lineno": 54,
+        "pep": "593",
+        "line": "client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,",
+        "span": "client_cert_source: Callable[[], Tuple[bytes, bytes]]",
+        "fix": [
+          {
+            "before": "client_cert_source: Callable[[], Tuple[bytes, bytes]]",
+            "after": "client_cert_source: Annotated[Optional[Callable[[], Tuple[bytes, bytes]]], \"deprecated\"]"
+          }
+        ]
+      }
+    ]
+  }

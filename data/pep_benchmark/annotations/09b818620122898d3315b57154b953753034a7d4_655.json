@@ -1,0 +1,18 @@
+{
+    "blob_id": "09b818620122898d3315b57154b953753034a7d4",
+    "violations": [
+        {
+            "start_lineno": 12,
+            "end_lineno": 23,
+            "pep": "655",
+            "line": "class _CheckResult(TypedDict, total=False):\n    result: \"CheckResult\"\n    suppress_comment: str\n    evaluated_keys: list[str]\n    results_configuration: Optional[dict]\n    check: BaseCheck\n\n\nclass _SkippedCheck(TypedDict, total=False):\n    bc_id: str | None\n    id: str\n    suppress_comment: str",
+            "span": "_CheckResult",
+            "fix": [
+                {
+                    "before": "class _CheckResult(TypedDict, total=False):\n    result: \"CheckResult\"\n    suppress_comment: str\n    evaluated_keys: list[str]\n    results_configuration: Optional[dict]\n    check: BaseCheck\n\n\nclass _SkippedCheck(TypedDict, total=False):\n    bc_id: str | None\n    id: str\n    suppress_comment: str",
+                    "after": "class CheckResultData(TypedDict):\n    id: NotRequired[str]\n    suppress_comment: NotRequired[str]\n    bc_id: NotRequired[str | None]\n    result: NotRequired[\"CheckResult\"]\n    evaluated_keys: NotRequired[list[str]]\n    results_configuration: NotRequired[dict]\n    check: NotRequired[\"BaseCheck\"]"
+                }
+            ]
+        }
+    ]
+}

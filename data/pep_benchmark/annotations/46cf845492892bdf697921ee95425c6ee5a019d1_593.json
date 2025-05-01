@@ -1,0 +1,18 @@
+{
+    "blob_id": "46cf845492892bdf697921ee95425c6ee5a019d1",
+    "violations": [
+      {
+        "start_lineno": 33,
+        "end_lineno": 33,
+        "pep": "593",
+        "line": "def execute_command(self, command_list: List[Text]):",
+        "span": "command_list: List[Text]",
+        "fix": [
+          {
+            "before": "command_list: List[Text]",
+            "after": "command_list: Annotated[List[Text], regex='^.+$']"
+          }
+        ]
+      }
+    ]
+  }

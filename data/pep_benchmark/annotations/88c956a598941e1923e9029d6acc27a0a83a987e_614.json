@@ -1,0 +1,70 @@
+{
+    "blob_id": "88c956a598941e1923e9029d6acc27a0a83a987e",
+    "violations": [
+      {
+        "start_lineno": 20,
+        "end_lineno": 20,
+        "pep": "614",
+        "line": "dns_cfg = pytest.mark.skipif(\"BRIDGEDNS\" not in locals(), reason=Reason)",
+        "span": "dns_cfg = pytest.mark.skipif(\"BRIDGEDNS\" not in locals(), reason=Reason)",
+        "fix": [
+          {
+            "before": "dns_cfg = pytest.mark.skipif(\"BRIDGEDNS\" not in locals(), reason=Reason)",
+            "after": ""
+          }
+        ]
+      },
+      {
+        "start_lineno": 30,
+        "end_lineno": 30,
+        "pep": "614",
+        "line": "@dtypes",
+        "span": "@dtypes",
+        "fix": [
+          {
+            "before": "@dtypes",
+            "after": "@pytest.mark.skipif(\"BRIDGEDNS\" not in locals(), reason=Reason)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 43,
+        "end_lineno": 43,
+        "pep": "614",
+        "line": "@dtypes",
+        "span": "@dtypes",
+        "fix": [
+          {
+            "before": "@dtypes",
+            "after": "@pytest.mark.skipif(\"BRIDGEDNS\" not in locals(), reason=Reason)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 50,
+        "end_lineno": 50,
+        "pep": "614",
+        "line": "@dtypes",
+        "span": "@dtypes",
+        "fix": [
+          {
+            "before": "@dtypes",
+            "after": "@pytest.mark.skipif(\"BRIDGEDNS\" not in locals(), reason=Reason)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 58,
+        "end_lineno": 58,
+        "pep": "614",
+        "line": "@dtypes",
+        "span": "@dtypes",
+        "fix": [
+          {
+            "before": "@dtypes",
+            "after": "@pytest.mark.skipif(\"BRIDGEDNS\" not in locals(), reason=Reason)"
+          }
+        ]
+      }        
+    ]
+  }

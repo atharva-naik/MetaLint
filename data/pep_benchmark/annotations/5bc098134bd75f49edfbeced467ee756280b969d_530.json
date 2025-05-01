@@ -1,0 +1,19 @@
+{
+    "blob_id": "5bc098134bd75f49edfbeced467ee756280b969d",
+    "violations": [
+        {
+            "start_lineno": 18,
+            "end_lineno": 21,
+            "pep": "530",
+            "line": "durations = []\n        for response in responses:\n            hours, minutes, seconds = (int(part) for part in (await self.__duration(response)).split(\":\", 2))\n            durations.append(60 * hours + minutes + round(seconds / 60.0))",
+            "span": "for response in responses",
+            "fix": [
+                {
+                    "before": "durations = []\n        for response in responses:\n            hours, minutes, seconds = (int(part) for part in (await self.__duration(response)).split(\":\", 2))\n            durations.append(60 * hours + minutes + round(seconds / 60.0))",
+                    "after": "durations = [\n            60 * hours + minutes + round(seconds / 60.0)\n            for response in responses\n            for hours, minutes, seconds in [\n                (int(part) for part in (await self.__duration(response)).split(\":\", 2))\n            ]\n        ]"
+                }
+               
+            ]
+        }
+    ]
+}

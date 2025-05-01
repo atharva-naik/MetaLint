@@ -1,0 +1,19 @@
+{
+    "blob_id": "a68f53cd1db7d11fa873f49b103edd158d281b2b",
+    "violations": [
+      {
+        "start_lineno": 291,
+        "end_lineno": 291,
+        "pep": "567",
+        "line": "class ThreadLocalIO(threading.local):",
+        "span": "threading.local",
+        "fix": [
+          {
+            "before": "class ThreadLocalIO(threading.local):",
+            "after": "import contextvars\n\nclass ThreadLocalIO:\n    wkt_r = contextvars.ContextVar('wkt_r', default=None)\n    wkt_w = contextvars.ContextVar('wkt_w', default=None)\n    wkb_r = contextvars.ContextVar('wkb_r', default=None)\n    wkb_w = contextvars.ContextVar('wkb_w', default=None)\n    ewkb_w = contextvars.ContextVar('ewkb_w', default=None)"
+          }
+        ]
+      }
+    ]
+  }
+  

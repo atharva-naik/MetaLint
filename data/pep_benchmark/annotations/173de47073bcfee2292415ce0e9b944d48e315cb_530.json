@@ -1,0 +1,33 @@
+{
+    "blob_id": "173de47073bcfee2292415ce0e9b944d48e315cb",
+    "violations": [
+        {
+            "start_lineno": 37,
+            "end_lineno": 42,
+            "pep": "530",
+            "line": "if self.dialogs:\n            for dialog in self.dialogs:\n                await self.channel_layer.group_add(f'dialog_{dialog}', self.channel_name)\n        if self._groups:\n            for group in self._groups:\n                await self.channel_layer.group_add(f'group_{group}', self.channel_name)",
+            "span": "for dialog in self.dialogs",
+            "fix": [
+                {
+                    "before": "if self.dialogs:\n            for dialog in self.dialogs:\n                await self.channel_layer.group_add(f'dialog_{dialog}', self.channel_name)\n        if self._groups:\n            for group in self._groups:\n                await self.channel_layer.group_add(f'group_{group}', self.channel_name)",
+                    "after": "if self.dialogs:\n    await asyncio.gather(\n        *[self.channel_layer.group_discard(f'dialog_{dialog}', self.channel_name) for dialog in self.dialogs]\n    )\n\nif self._groups:\n    await asyncio.gather(\n        *[self.channel_layer.group_discard(f'group_{group}', self.channel_name) for group in self._groups]\n    )"
+                }
+               
+            ]
+        },
+        {
+            "start_lineno": 46,
+            "end_lineno": 57,
+            "pep": "530",
+            "line": "if self.dialogs:\n            for dialog in self.dialogs:\n                await self.channel_layer.group_discard(\n                    f'dialog_{dialog}',\n                    self.channel_name\n                )\n        if self._groups:\n            for group in self._groups:\n                await self.channel_layer.group_discard(\n                    f'group_{group}',\n                    self.channel_name\n                )",
+            "span": "for dialog in self.dialogs",
+            "fix": [
+                {
+                    "before": "if self.dialogs:\n            for dialog in self.dialogs:\n                await self.channel_layer.group_discard(\n                    f'dialog_{dialog}',\n                    self.channel_name\n                )\n        if self._groups:\n            for group in self._groups:\n                await self.channel_layer.group_discard(\n                    f'group_{group}',\n                    self.channel_name\n                )",
+                    "after": "if self.dialogs:\n    await asyncio.gather(*[\n        self.channel_layer.group_discard(f'dialog_{dialog}', self.channel_name)\n        for dialog in self.dialogs\n    ])\n\nif self._groups:\n    await asyncio.gather(*[\n        self.channel_layer.group_discard(f'group_{group}', self.channel_name)\n        for group in self._groups\n    ])"
+                }
+               
+            ]
+        }
+    ]
+}
