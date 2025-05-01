@@ -5,6 +5,7 @@ import pathlib
 import argparse
 import requests
 from tqdm import tqdm
+from datasets import load_dataset
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 module_path = str(pathlib.Path(os.path.abspath(__file__)).parent.parent.parent)
@@ -80,7 +81,9 @@ def main():
 
     assert len(temperatures) == M, "Length of temperatures must match M"
 
-    train_data = json.load(open(args.train_file))
+    if os.path.exists(args.train_file): # use local train file.
+        train_data = json.load(open(args.train_file))
+    else: train_data = load_dataset(args.train_file)['train'] # load train split from datasets module.
     print(f"read {len(train_data)} SFT training instances")
     if args.skip_no_violations: # skip data with NO VIOLATIONs for idioms (hack to improve recall).
         train_data = [rec for rec in train_data if len(load_linter_results(rec["messages"][1]["content"])) != 0]
