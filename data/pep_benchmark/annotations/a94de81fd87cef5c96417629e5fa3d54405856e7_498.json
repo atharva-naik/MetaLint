@@ -1,0 +1,32 @@
+{
+    "blob_id": "a94de81fd87cef5c96417629e5fa3d54405856e7",
+    "violations": [
+      {
+        "start_lineno": 43,
+        "end_lineno": 43,
+        "pep": "498",
+        "line": "\"logs/{}_info.log\".format(file_name)",
+        "span": "\"logs/{}_info.log\".format(file_name)",
+        "fix": [
+          {
+            "before": "\"logs/{}_info.log\".format(file_name)",
+            "after": "f\"logs/{file_name}_info.log\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 54,
+        "end_lineno": 54,
+        "pep": "498",
+        "line": "\"logs/{}_error.log\".format(file_name)",
+        "span": "\"logs/{}_error.log\".format(file_name)",
+        "fix": [
+          {
+            "before": "\"logs/{}_error.log\".format(file_name)",
+            "after": "f\"logs/{file_name}_error.log\""
+          }
+        ]
+      }
+    ]
+  }
+  

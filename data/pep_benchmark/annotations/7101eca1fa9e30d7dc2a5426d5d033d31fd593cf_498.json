@@ -1,0 +1,19 @@
+{
+    "blob_id": "7101eca1fa9e30d7dc2a5426d5d033d31fd593cf",
+    "violations": [
+      {
+        "start_lineno": 11,
+        "end_lineno": 11,
+        "pep": "498",
+        "line": "paths.append(i[0]+'\\\\'+j)",
+        "span": "i[0]+'\\\\'+j",
+        "fix": [
+          {
+            "before": "i[0]+'\\\\'+j",
+            "after": "f\"{i[0]}\\\\\\{j}\""
+          }
+        ]
+      }
+    ]
+  }
+  

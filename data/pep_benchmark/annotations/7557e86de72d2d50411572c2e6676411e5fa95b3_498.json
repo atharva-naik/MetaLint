@@ -1,0 +1,84 @@
+{
+    "blob_id": "7557e86de72d2d50411572c2e6676411e5fa95b3",
+    "violations": [
+      {
+        "start_lineno": 44,
+        "end_lineno": 46,
+        "pep": "498",
+        "line": "'smoothing factor must be in (0, ' \\\n                                          '1]. it is {}'.format(smoothing_factor)",
+        "span": "'smoothing factor must be in (0, ' \\\n                                          '1]. it is {}'.format(smoothing_factor)",
+        "fix": [
+          {
+            "before": "'smoothing factor must be in (0, ' \\\n                                          '1]. it is {}'.format(smoothing_factor)",
+            "after": "f'smoothing factor must be in (0, 1]. it is {smoothing_factor}'"
+          }
+        ]
+      },
+      {
+        "start_lineno": 64,
+        "end_lineno": 66,
+        "pep": "498",
+        "line": "'smoothing factor must be in (0, ' \\\n                                          '1]. it is {}'.format(smoothing_factor)",
+        "span": "'smoothing factor must be in (0, ' \\\n                                          '1]. it is {}'.format(smoothing_factor)",
+        "fix": [
+          {
+            "before": "'smoothing factor must be in (0, ' \\\n                                          '1]. it is {}'.format(smoothing_factor)",
+            "after": "f'smoothing factor must be in (0, 1]. it is {smoothing_factor}'"
+          }
+        ]
+      },
+      {
+        "start_lineno": 68,
+        "end_lineno": 70,
+        "pep": "498",
+        "line": "'trend smoothing factor must ' \\\n                                                'be in (0, 1]. it is {}'.format(trend_smoothing_factor)",
+        "span": "'trend smoothing factor must ' \\\n                                                'be in (0, 1]. it is {}'.format(trend_smoothing_factor)",
+        "fix": [
+          {
+            "before": "'trend smoothing factor must ' \\\n                                                'be in (0, 1]. it is {}'.format(trend_smoothing_factor)",
+            "after": "f'trend smoothing factor must be in (0, 1]. it is {trend_smoothing_factor}'"
+          }
+        ]
+      },
+      {
+        "start_lineno": 102,
+        "end_lineno": 104,
+        "pep": "498",
+        "line": "'smoothing factor must be in (0, ' \\\n                                          '1]. it is {}'.format(smoothing_factor)",
+        "span": "'smoothing factor must be in (0, ' \\\n                                          '1]. it is {}'.format(smoothing_factor)",
+        "fix": [
+          {
+            "before": "'smoothing factor must be in (0, ' \\\n                                          '1]. it is {}'.format(smoothing_factor)",
+            "after": "f'smoothing factor must be in (0, 1]. it is {smoothing_factor}'"
+          }
+        ]
+      },
+      {
+        "start_lineno": 135,
+        "end_lineno": 137,
+        "pep": "498",
+        "line": "'smoothing factor must be in (0, ' \\\n                                          '1]. it is {}'.format(smoothing_factor)",
+        "span": "'smoothing factor must be in (0, ' \\\n                                          '1]. it is {}'.format(smoothing_factor)",
+        "fix": [
+          {
+            "before": "'smoothing factor must be in (0, ' \\\n                                          '1]. it is {}'.format(smoothing_factor)",
+            "after": "f'smoothing factor must be in (0, 1]. it is {smoothing_factor}'"
+          }
+        ]
+      },
+      {
+        "start_lineno": 139,
+        "end_lineno": 141,
+        "pep": "498",
+        "line": "'trend smoothing factor must ' \\\n                                                'be in (0, 1]. it is {}'.format(trend_smoothing_factor)",
+        "span": "'trend smoothing factor must ' \\\n                                                'be in (0, 1]. it is {}'.format(trend_smoothing_factor)",
+        "fix": [
+          {
+            "before": "'trend smoothing factor must ' \\\n                                                'be in (0, 1]. it is {}'.format(trend_smoothing_factor)",
+            "after": "f'trend smoothing factor must be in (0, 1]. it is {trend_smoothing_factor}'"
+          }
+        ]
+      }
+    ]
+  }
+  

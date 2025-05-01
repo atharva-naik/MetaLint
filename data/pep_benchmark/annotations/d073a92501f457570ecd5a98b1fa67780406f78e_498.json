@@ -1,0 +1,32 @@
+{
+    "blob_id": "d073a92501f457570ecd5a98b1fa67780406f78e",
+    "violations": [
+      {
+        "start_lineno": 130,
+        "end_lineno": 130,
+        "pep": "498",
+        "line": "'CtableFluffMapping_%s' % diff['doc_type']",
+        "span": "'CtableFluffMapping_%s' % diff['doc_type']",
+        "fix": [
+          {
+            "before": "'CtableFluffMapping_%s' % diff['doc_type']",
+            "after": "f\"CtableFluffMapping_{diff['doc_type']}\""
+          }
+        ]
+      },
+      {
+        "start_lineno": 161,
+        "end_lineno": 161,
+        "pep": "498",
+        "line": "'{0}_{1}'.format(calc_name, emitter_name)",
+        "span": "'{0}_{1}'.format(calc_name, emitter_name)",
+        "fix": [
+          {
+            "before": "'{0}_{1}'.format(calc_name, emitter_name)",
+            "after": "f\"{calc_name}_{emitter_name}\""
+          }
+        ]
+      }
+    ]
+  }
+  

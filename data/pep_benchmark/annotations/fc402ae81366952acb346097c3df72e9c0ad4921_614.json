@@ -1,0 +1,31 @@
+{
+    "blob_id": "fc402ae81366952acb346097c3df72e9c0ad4921",
+    "violations": [
+      {
+        "start_lineno": 78,
+        "end_lineno": 78,
+        "pep": "614",
+        "line": "skipIfNoTorchVision = unittest.skipIf(not HAS_TORCHVISION, \"no torchvision\")",
+        "span": "skipIfNoTorchVision = unittest.skipIf(not HAS_TORCHVISION, \"no torchvision\")",
+        "fix": [
+          {
+            "before": "skipIfNoTorchVision = unittest.skipIf(not HAS_TORCHVISION, \"no torchvision\")",
+            "after": ""
+          }
+        ]
+      },
+      {
+        "start_lineno": 2919,
+        "end_lineno": 2919,
+        "pep": "614",
+        "line": "@skipIfNoTorchVision",
+        "span": "@skipIfNoTorchVision",
+        "fix": [
+          {
+            "before": "@skipIfNoTorchVision",
+            "after": "@unittest.skipIf(not HAS_TORCHVISION, \"no torchvision\")"
+          }
+        ]
+      }
+    ]
+  }

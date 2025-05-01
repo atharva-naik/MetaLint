@@ -1,0 +1,18 @@
+{
+    "blob_id": "4e6b2efdf615fabd680d557fe1bcb0638a5ff36e",
+    "violations": [
+      {
+        "start_lineno": 27,
+        "end_lineno": 29,
+        "pep": "584",
+        "line": "for key_, value_ in keys.items():\n\tself.globalmap[key_] = str(value_)\n\tprint(key_ + \":\" + str(value_))",
+        "span": "for key_, value_ in keys.items():\n\tself.globalmap[key_] = str(value_)\n\tprint(key_ + \":\" + str(value_))",
+        "fix": [
+          {
+            "before": "for key_, value_ in keys.items():\n\tself.globalmap[key_] = str(value_)\n\tprint(key_ + \":\" + str(value_))",
+            "after": "self.globalmap |= keys\nfor key_, value_ in keys.items():\n\tprint(key_ + \":\" + str(value_))"
+          }
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,20 @@
+{
+    "blob_id": "b446ab5d559fa6a1a4d48c1b9ef9acb6933e0a9a",
+    "violations": [
+        {
+            "start_lineno": 14,
+            "end_lineno": 20,
+            "pep": "530",
+            "line": "delay_tasks = list()\n    for i in range(n):\n        delay = task_wait_random(max_delay)\n        delay_tasks += [delay]\n    rands = list()\n    for promises in as_completed(delay_tasks):\n        rands += [await promises]\n    return rands",
+            "span": "for i in range(n)",
+            "fix": [
+                {
+                    "before": "delay_tasks = list()\n    for i in range(n):\n        delay = task_wait_random(max_delay)\n        delay_tasks += [delay]\n    rands = list()\n    for promises in as_completed(delay_tasks):\n        rands += [await promises]\n    return rands",
+                    "after": "delay_tasks = [task_wait_random(max_delay) for _ in range(n)]  \nrands = await asyncio.gather(*delay_tasks)"
+                }
+               
+            ]
+        }
+
+    ]
+}

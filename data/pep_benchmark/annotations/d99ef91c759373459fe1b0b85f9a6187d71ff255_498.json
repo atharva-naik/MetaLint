@@ -1,0 +1,19 @@
+{
+    "blob_id": "d99ef91c759373459fe1b0b85f9a6187d71ff255",
+    "violations": [
+      {
+        "start_lineno": 25,
+        "end_lineno": 25,
+        "pep": "498",
+        "line": "options.add_argument('--proxy-server=%s' % proxy)",
+        "span": "'--proxy-server=%s' % proxy",
+        "fix": [
+          {
+            "before": "'--proxy-server=%s' % proxy",
+            "after": "f'--proxy-server={proxy}'"
+          }
+        ]
+      }
+    ]
+  }
+  

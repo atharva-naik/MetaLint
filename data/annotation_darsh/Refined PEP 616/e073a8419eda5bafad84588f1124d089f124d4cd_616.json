@@ -1,0 +1,31 @@
+{
+    "blob_id": "e073a8419eda5bafad84588f1124d089f124d4cd",
+    "violations": [
+      {
+        "start_lineno": 55,
+        "end_lineno": 56,
+        "pep": "616",
+        "line": "if row.startswith('|'):\n\trow = row[1:]",
+        "span": "if row.startswith('|'):\n\trow = row[1:]",
+        "fix": [
+          {
+            "before": "if row.startswith('|'):\n\trow = row[1:]",
+            "after": "row.removeprefix('|')"
+          }
+        ]
+      },
+      {
+        "start_lineno": 57,
+        "end_lineno": 58,
+        "pep": "616",
+        "line": "if row.endswith('|'):\n\trow = row[:-1]",
+        "span": "if row.endswith('|'):\n\trow = row[:-1]",
+        "fix": [
+          {
+            "before": "if row.endswith('|'):\n\trow = row[:-1]",
+            "after": "row.removesuffix('|')"
+          }
+        ]
+      }
+    ]
+  }

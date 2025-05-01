@@ -1,0 +1,44 @@
+{
+    "blob_id": "f00209d2c8adb18f187d9a07b18295d08eb5a998",
+    "violations": [
+      {
+        "start_lineno": 32,
+        "end_lineno": 43,
+        "pep": "614",
+        "line": "parameters = parameterized.named_parameters(\n{\n'testcase_name': 'batch2feat4act3',\n'batch_size': 2,\n'feature_dim': 4,\n'num_actions': 3\n}, {\n'testcase_name': 'batch1feat7act9',\n'batch_size': 1,\n'feature_dim': 7,\n'num_actions': 9\n})",
+        "span": "parameters = parameterized.named_parameters(\n{\n'testcase_name': 'batch2feat4act3',\n'batch_size': 2,\n'feature_dim': 4,\n'num_actions': 3\n}, {\n'testcase_name': 'batch1feat7act9',\n'batch_size': 1,\n'feature_dim': 7,\n'num_actions': 9\n})",
+        "fix": [
+          {
+            "before": "parameters = parameterized.named_parameters(\n{\n'testcase_name': 'batch2feat4act3',\n'batch_size': 2,\n'feature_dim': 4,\n'num_actions': 3\n}, {\n'testcase_name': 'batch1feat7act9',\n'batch_size': 1,\n'feature_dim': 7,\n'num_actions': 9\n})",
+            "after": ""
+          }
+        ]
+      },
+      {
+        "start_lineno": 49,
+        "end_lineno": 49,
+        "pep": "614",
+        "line": "@parameters",
+        "span": "@parameters",
+        "fix": [
+          {
+            "before": "@parameters",
+            "after": "@parameterized.named_parameters(\n{\n'testcase_name': 'batch2feat4act3',\n'batch_size': 2,\n'feature_dim': 4,\n'num_actions': 3\n}, {\n'testcase_name': 'batch1feat7act9',\n'batch_size': 1,\n'feature_dim': 7,\n'num_actions': 9\n})"
+          }
+        ]
+      },
+      {
+        "start_lineno": 63,
+        "end_lineno": 63,
+        "pep": "614",
+        "line": "@parameters",
+        "span": "@parameters",
+        "fix": [
+          {
+            "before": "@parameters",
+            "after": "@parameterized.named_parameters(\n{\n'testcase_name': 'batch2feat4act3',\n'batch_size': 2,\n'feature_dim': 4,\n'num_actions': 3\n}, {\n'testcase_name': 'batch1feat7act9',\n'batch_size': 1,\n'feature_dim': 7,\n'num_actions': 9\n})"
+          }
+        ]
+      }
+    ]
+  }

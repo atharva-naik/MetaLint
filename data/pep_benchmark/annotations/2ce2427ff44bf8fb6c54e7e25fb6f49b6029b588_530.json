@@ -1,0 +1,19 @@
+{
+    "blob_id": "2ce2427ff44bf8fb6c54e7e25fb6f49b6029b588",
+    "violations": [
+        {
+            "start_lineno": 11,
+            "end_lineno": 13,
+            "pep": "530",
+            "line": "for i in range(60):\n            msg = await jdbot.edit_message(msg, f'感谢您的赞助，消息自毁倒计时 {60 - i} 秒')\n            await asyncio.sleep(1)",
+            "span": "for i in range(60)",
+            "fix": [
+                {
+                    "before": "for i in range(60):\n            msg = await jdbot.edit_message(msg, f'感谢您的赞助，消息自毁倒计时 {60 - i} 秒')\n            await asyncio.sleep(1)",
+                    "after": "await asyncio.gather(\n            *[\n                jdbot.edit_message(msg, f'感谢您的赞助，消息自毁倒计时 {60 - i} 秒') \n                and asyncio.sleep(1)\n                for i in range(60)\n            ]\n        )"
+                }
+               
+            ]
+        }
+    ]
+}

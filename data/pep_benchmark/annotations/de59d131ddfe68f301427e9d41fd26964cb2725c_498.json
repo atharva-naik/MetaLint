@@ -1,0 +1,19 @@
+{
+    "blob_id": "de59d131ddfe68f301427e9d41fd26964cb2725c",
+    "violations": [
+      {
+        "start_lineno": 19,
+        "end_lineno": 19,
+        "pep": "498",
+        "line": "MONGO_URI = os.getenv('MONGO_URI') or 'mongodb://127.0.0.1:27017/%s' % MONGO_DB",
+        "span": "'mongodb://127.0.0.1:27017/%s' % MONGO_DB",
+        "fix": [
+          {
+            "before": "'mongodb://127.0.0.1:27017/%s' % MONGO_DB",
+            "after": "f\"mongodb://127.0.0.1:27017/{MONGO_DB}\""
+          }
+        ]
+      }
+    ]
+  }
+  

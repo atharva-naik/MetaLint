@@ -1,0 +1,18 @@
+{
+    "blob_id": "f6b1a51ee6611bfd553bac6868e00644b1f1e80f",
+    "violations": [
+      {
+        "start_lineno": 158,
+        "end_lineno": 159,
+        "pep": "584",
+        "line": "for step_key, deps in new_step_deps.items():\n\tself._pending[step_key] = deps",
+        "span": "for step_key, deps in new_step_deps.items():\n\tself._pending[step_key] = deps",
+        "fix": [
+          {
+            "before": "for step_key, deps in new_step_deps.items():\n\tself._pending[step_key] = deps",
+            "after": "self._pending |= new_step_deps"
+          }
+        ]
+      }
+    ]
+  }

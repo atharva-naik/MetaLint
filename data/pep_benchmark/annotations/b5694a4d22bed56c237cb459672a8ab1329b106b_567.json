@@ -1,0 +1,18 @@
+{
+  "blob_id": "b5694a4d22bed56c237cb459672a8ab1329b106b",
+  "violations": [
+    {
+      "start_lineno": 30,
+      "end_lineno": 30,
+      "pep": "567",
+      "line": "__local_ctx = threading.local()",
+      "span": "threading.local()",
+      "fix": [
+        {
+          "before": "__local_ctx = threading.local()",
+          "after": "import contextvars\n__local_ctx = contextvars.ContextVar('profiler_context', default=None)"
+        }
+      ]
+    }
+  ]
+}

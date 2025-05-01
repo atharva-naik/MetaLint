@@ -1,0 +1,19 @@
+{
+    "blob_id": "a0d286242434628034e7a9172933e3748de8fa83",
+    "violations": [
+      {
+        "start_lineno": 52,
+        "end_lineno": 52,
+        "pep": "567",
+        "line": "self._db_conn_cache = threading.local()",
+        "span": "threading.local()",
+        "fix": [
+          {
+            "before": "self._db_conn_cache = threading.local()",
+            "after": "import contextvars\nself._db_conn_cache = contextvars.ContextVar('db_conn_cache', default=None)"
+          }
+        ]
+      }
+    ]
+  }
+  

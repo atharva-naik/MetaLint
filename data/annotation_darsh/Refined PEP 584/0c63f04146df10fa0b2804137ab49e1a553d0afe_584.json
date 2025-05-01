@@ -1,0 +1,70 @@
+{
+    "blob_id": "0c63f04146df10fa0b2804137ab49e1a553d0afe",
+    "violations": [
+      {
+        "start_lineno": 51,
+        "end_lineno": 51,
+        "pep": "584",
+        "line": "ret.update({'comment': comt, 'result': None})",
+        "span": "ret.update({'comment': comt, 'result': None})",
+        "fix": [
+          {
+            "before": "ret.update({'comment': comt, 'result': None})",
+            "after": "ret |= {'comment': comt, 'result': None}"
+          }
+        ]
+      },
+      {
+        "start_lineno": 56,
+        "end_lineno": 56,
+        "pep": "584",
+        "line": "ret.update({'comment': comt, 'result': True})",
+        "span": "ret.update({'comment': comt, 'result': True})",
+        "fix": [
+          {
+            "before": "ret.update({'comment': comt, 'result': True})",
+            "after": "ret |= {'comment': comt, 'result': True}"
+          }
+        ]
+      },
+      {
+        "start_lineno": 79,
+        "end_lineno": 79,
+        "pep": "584",
+        "line": "ret.update({'comment': comt, 'result': None})",
+        "span": "ret.update({'comment': comt, 'result': None})",
+        "fix": [
+          {
+            "before": "ret.update({'comment': comt, 'result': None})",
+            "after": "ret |= {'comment': comt, 'result': None}"
+          }
+        ]
+      },
+      {
+        "start_lineno": 84,
+        "end_lineno": 84,
+        "pep": "584",
+        "line": "ret.update({'comment': comt, 'result': True,\n\t'changes': {name: 'Absent'}})",
+        "span": "ret.update({'comment': comt, 'result': True,\n\t'changes': {name: 'Absent'}})",
+        "fix": [
+          {
+            "before": "ret.update({'comment': comt, 'result': True,\n\t'changes': {name: 'Absent'}})",
+            "after": "ret |= {'comment': comt, 'result': True, 'changes': {name: 'Absent'}}"
+          }
+        ]
+      },
+      {
+        "start_lineno": 90,
+        "end_lineno": 90,
+        "pep": "584",
+        "line": "ret.update({'comment': comt, 'result': True, 'changes': {}})",
+        "span": "ret.update({'comment': comt, 'result': True, 'changes': {}})",
+        "fix": [
+          {
+            "before": "ret.update({'comment': comt, 'result': True, 'changes': {}})",
+            "after": "ret |= {'comment': comt, 'result': True, 'changes': {}}"
+          }
+        ]
+      }
+    ]
+  }

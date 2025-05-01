@@ -1,0 +1,20 @@
+{
+    "blob_id": "fc8307000d54186a91d7cfbc5197defb7037ce05",
+    "violations": [
+        {
+            "start_lineno": 12,
+            "end_lineno": 14,
+            "pep": "530",
+            "line": "for worker in self.workers:\n            # have the worker attack the enemy start position\n            await self.do(worker.attack(self.enemy_start_locations[0]))",
+            "span": "for worker in self.workers",
+            "fix": [
+                {
+                    "before": "for worker in self.workers:\n            # have the worker attack the enemy start position\n            await self.do(worker.attack(self.enemy_start_locations[0]))",
+                    "after": "await self.do([worker.attack(self.enemy_start_locations[0]) for worker in self.workers])"
+                }
+               
+            ]
+        }
+
+    ]
+}

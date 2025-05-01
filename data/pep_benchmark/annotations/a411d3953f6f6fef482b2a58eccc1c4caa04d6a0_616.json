@@ -1,0 +1,18 @@
+{
+    "blob_id": "a411d3953f6f6fef482b2a58eccc1c4caa04d6a0",
+    "violations": [
+      {
+        "start_lineno": 275,
+        "end_lineno": 276,
+        "pep": "616",
+        "line": "if dkimhdr.startswith('DKIM-Signature: '):\n\tdkimhdr = dkimhdr[16:]",
+        "span": "if dkimhdr.startswith('DKIM-Signature: '):\n\tdkimhdr = dkimhdr[16:]",
+        "fix": [
+          {
+            "before": "if dkimhdr.startswith('DKIM-Signature: '):\n\tdkimhdr = dkimhdr[16:]",
+            "after": "dkimhdr.removeprefix('DKIM-Signature: ')"
+          }
+        ]
+      }
+    ]
+  }

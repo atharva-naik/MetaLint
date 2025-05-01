@@ -1,0 +1,18 @@
+{
+    "blob_id": "89fab4fcabe6e2074fdd715ac2ce5c40451d9261",
+    "violations": [
+      {
+        "start_lineno": 3641,
+        "end_lineno": 3651,
+        "pep": "567",
+        "line": "class _DefaultStack(threading.local):",
+        "span": "threading.local",
+        "fix": [
+          {
+            "before": "class _DefaultStack(threading.local):\n  \"\"\"A thread-local stack of objects for providing implicit defaults.\"\"\"\n\n  def __init__(self):\n    super(_DefaultStack, self).__init__()\n    self._enforce_nesting = True\n    self.stack = []",
+            "after": "import contextvars\n\nclass _DefaultStack(object):\n  \"\"\"A context-local stack of objects for providing implicit defaults.\"\"\"\n\n  def __init__(self):\n    self._enforce_nesting = True\n    self._stack_var = contextvars.ContextVar('_stack', default=[])\n    \n  @property\n  def stack(self):\n    return self._stack_var.get()\n    \n  @stack.setter\n  def stack(self, value):\n    self._stack_var.set(value)"
+          }
+        ]
+      }
+    ]
+  }

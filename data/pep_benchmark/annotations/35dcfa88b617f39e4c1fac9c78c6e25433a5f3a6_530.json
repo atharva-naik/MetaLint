@@ -1,0 +1,18 @@
+{
+    "blob_id": "35dcfa88b617f39e4c1fac9c78c6e25433a5f3a6",
+    "violations": [{
+            "start_lineno": 69,
+            "end_lineno": 75,
+            "pep": "530",
+            "line": "for r in results['rows']:\n            key = r['key']\n            value = int(r[\"value\"])\n            previous_value = int(r[\"previous_value\"])\n            delta = value - previous_value\n            await self._insert_into_stats_history(key=key, value=delta, history_ts=current_time)\n            await self._update_previous_value(key=key, value=value)",
+            "span": "for r in results['rows']",
+            "fix": [
+                {
+                    "before": "for r in results['rows']:\n            key = r['key']\n            value = int(r[\"value\"])\n            previous_value = int(r[\"previous_value\"])\n            delta = value - previous_value\n            await self._insert_into_stats_history(key=key, value=delta, history_ts=current_time)\n            await self._update_previous_value(key=key, value=value)",
+                    "after": "await asyncio.gather(*(\n        self._process_row(r, current_time)\n        for r in results['rows']\n    ))\n\nasync def _process_row(self, row, current_time):\n    key = row['key']\n    value = int(row[\"value\"])\n    previous_value = int(row[\"previous_value\"])\n    delta = value - previous_value\n    await self._insert_into_stats_history(key=key, value=delta, history_ts=current_time)\n    await self._update_previous_value(key=key, value=value)"
+                }
+               
+            ]
+        }
+]
+}

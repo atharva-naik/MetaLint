@@ -1,0 +1,19 @@
+{
+    "blob_id": "914ec3514c8c8b70adda09891a4f445a0b940703",
+    "violations": [
+        {
+            "start_lineno": 6,
+            "end_lineno": 13,
+            "pep": "655",
+            "line": "class AdmissionregistrationV1beta1WebhookClientConfig:\n    ca_bundle: typing.Optional[str]\n    service: typing.Optional[\n        kubernetes.client.AdmissionregistrationV1beta1ServiceReference\n    ]\n    url: typing.Optional[str]\n    def __init_(\n        self,\n        *,\n        ca_bundle: typing.Optional[str] = ...,\n        service: typing.Optional[\n            kubernetes.client.AdmissionregistrationV1beta1ServiceReference\n        ] = ...,\n        url: typing.Optional[str] = ...\n    ) -> None: ...\n    def to_dict(self) -> AdmissionregistrationV1beta1WebhookClientConfigDict: ...\n\nclass AdmissionregistrationV1beta1WebhookClientConfigDict(\n    typing.TypedDict, total=False\n):\n    caBundle: typing.Optional[str]\n    service: typing.Optional[\n        kubernetes.client.AdmissionregistrationV1beta1ServiceReferenceDict\n    ]\n    url: typing.Optional[str]",
+            "span": "AdmissionregistrationV1beta1WebhookClientConfig",
+            "fix": [
+                {
+                    "before": "class AdmissionregistrationV1beta1WebhookClientConfig:\n    ca_bundle: typing.Optional[str]\n    service: typing.Optional[\n        kubernetes.client.AdmissionregistrationV1beta1ServiceReference\n    ]\n    url: typing.Optional[str]\n    def __init_(\n        self,\n        *,\n        ca_bundle: typing.Optional[str] = ...,\n        service: typing.Optional[\n            kubernetes.client.AdmissionregistrationV1beta1ServiceReference\n        ] = ...,\n        url: typing.Optional[str] = ...\n    ) -> None: ...\n    def to_dict(self) -> AdmissionregistrationV1beta1WebhookClientConfigDict: ...\n\nclass AdmissionregistrationV1beta1WebhookClientConfigDict(\n    typing.TypedDict, total=False\n):\n    caBundle: typing.Optional[str]\n    service: typing.Optional[\n        kubernetes.client.AdmissionregistrationV1beta1ServiceReferenceDict\n    ]\n    url: typing.Optional[str]",
+                    "after": "class AdmissionregistrationV1beta1WebhookClientConfig(typing.TypedDict):\n    ca_bundle: typing.NotRequired[typing.Optional[str]]\n    service: typing.NotRequired[typing.Optional[kubernetes.client.AdmissionregistrationV1beta1ServiceReference]]\n    url: typing.NotRequired[typing.Optional[str]]\n\n    def __init__(self, *, ca_bundle: typing.Optional[str] = None, service: typing.Optional[kubernetes.client.AdmissionregistrationV1beta1ServiceReference] = None, url: typing.Optional[str] = None) -> None:\n        self.ca_bundle = ca_bundle\n        self.service = service\n        self.url = url\n\n    def to_dict(self) -> \"AdmissionregistrationV1beta1WebhookClientConfig\":\n        return {\n            'caBundle': self.ca_bundle,\n            'service': self.service.to_dict() if self.service else None,\n            'url': self.url\n        }"
+                }
+            ]
+        }
+
+    ]
+}

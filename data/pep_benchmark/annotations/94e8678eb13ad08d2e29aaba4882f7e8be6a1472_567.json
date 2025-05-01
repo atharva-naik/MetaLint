@@ -1,0 +1,57 @@
+{
+    "blob_id": "94e8678eb13ad08d2e29aaba4882f7e8be6a1472",
+    "violations": [
+      {
+        "start_lineno": 1667,
+        "end_lineno": 1667,
+        "pep": "567",
+        "line": "    ls = threading.local()",
+        "span": "threading.local()",
+        "fix": [
+          {
+            "before": "    ls = threading.local()",
+            "after": "    import contextvars\n    ls = contextvars.ContextVar('local_property_context', default=None)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 2916,
+        "end_lineno": 2916,
+        "pep": "567",
+        "line": "    _local = threading.local()",
+        "span": "threading.local()",
+        "fix": [
+          {
+            "before": "    _local = threading.local()",
+            "after": "    import contextvars\n    _local = contextvars.ContextVar('request_context', default=None)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 3306,
+        "end_lineno": 3306,
+        "pep": "567",
+        "line": "    _thread_local = threading.local()",
+        "span": "threading.local()",
+        "fix": [
+          {
+            "before": "    _thread_local = threading.local()",
+            "after": "    import contextvars\n    _thread_local = contextvars.ContextVar('response_context', default=None)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 3736,
+        "end_lineno": 3736,
+        "pep": "567",
+        "line": "local = threading.local()",
+        "span": "threading.local()",
+        "fix": [
+          {
+            "before": "local = threading.local()",
+            "after": "import contextvars\nlocal = contextvars.ContextVar('bottle_local', default=None)"
+          }
+        ]
+      }
+    ]
+  }

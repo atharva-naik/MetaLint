@@ -1,0 +1,21 @@
+{
+    "blob_id": "4bc96ba104ab1c792c29cbdb001f21191e206552",
+    "violations": [
+        {
+            "start_lineno": 21,
+            "end_lineno": 40,
+            "pep": "530",
+            "line": "print(\"calling print1...\")\nfuture1 = print1()  # без await вернется объект future, а не результат функции print1\n\nprint(\"calling print2...\")\nfuture2 = print2()  # без await вернется объект future, а не результат функции print2\n\n# await print1()  # error: await можно использовать только внутри корутин\n# await print2()  # error: await можно использовать только внутри корутин\n\n# хотя print1 и print2 уже были вызваны,\n# в консоли не будет ни одного сообщения:\n# корутина не начинает работу, пока future не передан в loop,\n# поэтому даже несмотря на time.sleep(1)\n# после \"calling print1...\" и \"calling print2...\" будет сразу выведено \"awake!\"\ntime.sleep(1)\nprint(\"awake!\")\n\ntask = gather(future1, future2)  # gather превращает несколько объектов future в один\nloop.run_until_complete(task)  # print1 и print2 начнут работу только сейчас\nprint(\"done\")  # loop.run_until_complete не вернет управление программе, пока task не будет выполнен",
+            "span": "gather(future1, future2) ",
+            "fix": [
+                {
+                    "before": "print(\"calling print1...\")\nfuture1 = print1()  # без await вернется объект future, а не результат функции print1\n\nprint(\"calling print2...\")\nfuture2 = print2()  # без await вернется объект future, а не результат функции print2\n\n# await print1()  # error: await можно использовать только внутри корутин\n# await print2()  # error: await можно использовать только внутри корутин\n\n# хотя print1 и print2 уже были вызваны,\n# в консоли не будет ни одного сообщения:\n# корутина не начинает работу, пока future не передан в loop,\n# поэтому даже несмотря на time.sleep(1)\n# после \"calling print1...\" и \"calling print2...\" будет сразу выведено \"awake!\"\ntime.sleep(1)\nprint(\"awake!\")\n\ntask = gather(future1, future2)  # gather превращает несколько объектов future в один\nloop.run_until_complete(task)  # print1 и print2 начнут работу только сейчас\nprint(\"done\")  # loop.run_until_complete не вернет управление программе, пока task не будет выполнен",
+                    "after": "async def main():\n    print(\"calling print1...\")\n    future1 = print1()\n\n    print(\"calling print2...\")\n    future2 = print2()\n\n    await gather(*(await future for future in [future1, future2]))\n\n    print(\"done\")\n\nloop = get_event_loop()\nloop.run_until_complete(main())"
+                }
+               
+            ]
+        }
+
+
+    ]
+}

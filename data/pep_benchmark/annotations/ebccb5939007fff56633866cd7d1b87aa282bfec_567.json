@@ -1,0 +1,18 @@
+{
+    "blob_id": "ebccb5939007fff56633866cd7d1b87aa282bfec",
+    "violations": [
+      {
+        "start_lineno": 16,
+        "end_lineno": 31,
+        "pep": "567",
+        "line": "class ThreadLocalState(local):",
+        "span": "ThreadLocalState(local)",
+        "fix": [
+          {
+            "before": "class ThreadLocalState(local):\n\n    def __init__(self):\n        self.enabled = True\n\n    @property\n    def Wrapper(self):\n        if self.enabled:\n            return NormalCursorWrapper\n        return ExceptionCursorWrapper\n\n    def recording(self, v):\n        self.enabled = v\n\n\nstate = ThreadLocalState()\nrecording = state.recording  # export function",
+            "after": "from contextvars import ContextVar\n\nclass ContextState:\n    def __init__(self):\n        self.enabled = ContextVar('enabled', default=True)\n    \n    @property\n    def Wrapper(self):\n        if self.enabled.get():\n            return NormalCursorWrapper\n        return ExceptionCursorWrapper\n    \n    def recording(self, v):\n        self.enabled.set(v)\n\n\nstate = ContextState()\nrecording = state.recording  # export function"
+          }
+        ]
+      }
+    ]
+  }

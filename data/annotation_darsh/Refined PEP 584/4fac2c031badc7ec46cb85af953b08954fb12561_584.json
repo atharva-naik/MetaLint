@@ -1,0 +1,18 @@
+{
+    "blob_id": "4fac2c031badc7ec46cb85af953b08954fb12561",
+    "violations": [
+      {
+        "start_lineno": 51,
+        "end_lineno": 51,
+        "pep": "584",
+        "line": "ret.update(map_dict(attrs, IPRULE_ATTRS_MAP))",
+        "span": "ret.update(map_dict(attrs, IPRULE_ATTRS_MAP))",
+        "fix": [
+          {
+            "before": "ret.update(map_dict(attrs, IPRULE_ATTRS_MAP))",
+            "after": "ret |= map_dict(attrs, IPRULE_ATTRS_MAP)"
+          }
+        ]
+      }
+    ]
+  }

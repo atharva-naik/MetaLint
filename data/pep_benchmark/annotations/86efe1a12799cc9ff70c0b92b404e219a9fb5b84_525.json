@@ -1,0 +1,18 @@
+{
+    "blob_id": "86efe1a12799cc9ff70c0b92b404e219a9fb5b84",
+    "violations": [
+      {
+        "start_lineno": 8,
+        "end_lineno": 15,
+        "pep": "525",
+        "line": "def __aiter__(self):",
+        "span": "def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        try:\n            return next(self._iterator)\n        except StopIteration:\n            raise StopAsyncIteration",
+        "fix": [
+          {
+            "before": "def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        try:\n            return next(self._iterator)\n        except StopIteration:\n            raise StopAsyncIteration",
+            "after": "async def __aiter__(self):\n        for value in range(self._fr, self._to, self._step) if hasattr(self, '_to') else range(self._fr):\n            yield value"
+          }
+        ]
+      }
+    ]
+  }

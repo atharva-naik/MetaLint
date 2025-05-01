@@ -1,0 +1,200 @@
+{
+  "blob_id": "759152855d93570e7e1945ce8bfb7a0a4d84e729",
+  "violations": [
+    {
+      "start_lineno": 125,
+      "end_lineno": 125,
+      "pep": "498",
+      "line": "'W'+s",
+      "span": "'W'+s",
+      "fix": [
+        {
+          "before": "'W'+s",
+          "after": "f\"W{s}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 125,
+      "end_lineno": 125,
+      "pep": "498",
+      "line": "'b'+s",
+      "span": "'b'+s",
+      "fix": [
+        {
+          "before": "'b'+s",
+          "after": "f\"b{s}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 125,
+      "end_lineno": 125,
+      "pep": "498",
+      "line": "'gamma'+s",
+      "span": "'gamma'+s",
+      "fix": [
+        {
+          "before": "'gamma'+s",
+          "after": "f\"gamma{s}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 125,
+      "end_lineno": 125,
+      "pep": "498",
+      "line": "'beta'+s",
+      "span": "'beta'+s",
+      "fix": [
+        {
+          "before": "'beta'+s",
+          "after": "f\"beta{s}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 191,
+      "end_lineno": 191,
+      "pep": "498",
+      "line": "'W'+str(i+2)",
+      "span": "'W'+str(i+2)",
+      "fix": [
+        {
+          "before": "'W'+str(i+2)",
+          "after": "f\"W{i+2}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 192,
+      "end_lineno": 192,
+      "pep": "498",
+      "line": "'b'+str(i+2)",
+      "span": "'b'+str(i+2)",
+      "fix": [
+        {
+          "before": "'b'+str(i+2)",
+          "after": "f\"b{i+2}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 194,
+      "end_lineno": 194,
+      "pep": "498",
+      "line": "'gamma' + str(i+2)",
+      "span": "'gamma' + str(i+2)",
+      "fix": [
+        {
+          "before": "'gamma' + str(i+2)",
+          "after": "f\"gamma{i+2}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 195,
+      "end_lineno": 195,
+      "pep": "498",
+      "line": "'beta' + str(i+2)",
+      "span": "'beta' + str(i+2)",
+      "fix": [
+        {
+          "before": "'beta' + str(i+2)",
+          "after": "f\"beta{i+2}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 196,
+      "end_lineno": 196,
+      "pep": "498",
+      "line": "'W' + str(len(hidden_dims)+1)",
+      "span": "'W' + str(len(hidden_dims)+1)",
+      "fix": [
+        {
+          "before": "'W' + str(len(hidden_dims)+1)",
+          "after": "f\"W{len(hidden_dims)+1}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 197,
+      "end_lineno": 197,
+      "pep": "498",
+      "line": "'b' + str(len(hidden_dims)+1)",
+      "span": "'b' + str(len(hidden_dims)+1)",
+      "fix": [
+        {
+          "before": "'b' + str(len(hidden_dims)+1)",
+          "after": "f\"b{len(hidden_dims)+1}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 264,
+      "end_lineno": 264,
+      "pep": "498",
+      "line": "'W' + str(i+1)",
+      "span": "'W' + str(i+1)",
+      "fix": [
+        {
+          "before": "'W' + str(i+1)",
+          "after": "f\"W{i+1}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 264,
+      "end_lineno": 264,
+      "pep": "498",
+      "line": "'b' + str(i+1)",
+      "span": "'b' + str(i+1)",
+      "fix": [
+        {
+          "before": "'b' + str(i+1)",
+          "after": "f\"b{i+1}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 269,
+      "end_lineno": 269,
+      "pep": "498",
+      "line": "'W' + str(N_layers)",
+      "span": "'W' + str(N_layers)",
+      "fix": [
+        {
+          "before": "'W' + str(N_layers)",
+          "after": "f\"W{N_layers}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 269,
+      "end_lineno": 269,
+      "pep": "498",
+      "line": "'b' + str(N_layers)",
+      "span": "'b' + str(N_layers)",
+      "fix": [
+        {
+          "before": "'b' + str(N_layers)",
+          "after": "f\"b{N_layers}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 294,
+      "end_lineno": 294,
+      "pep": "498",
+      "line": "'W' + str(i)",
+      "span": "'W' + str(i)",
+      "fix": [
+        {
+          "before": "'W' + str(i)",
+          "after": "f\"W{i}\""
+        }
+      ]
+    }
+  ]
+}

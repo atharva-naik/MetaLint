@@ -1,0 +1,18 @@
+{
+    "blob_id": "5371def4c9a318093a1628fa6841d168af224c7e",
+    "violations": [
+      {
+        "start_lineno": 4188,
+        "end_lineno": 4216,
+        "pep": "525",
+        "line": "def __aiter__(self):",
+        "span": "def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        if not self.futures and self.queue.empty():\n            raise StopAsyncIteration\n        while self.queue.empty():\n            if not self.futures:\n                raise StopAsyncIteration\n            await self.condition.wait()\n\n        return self._get_and_raise()",
+        "fix": [
+          {
+            "before": "def __aiter__(self):\n        return self\n\n    async def __anext__(self):\n        if not self.futures and self.queue.empty():\n            raise StopAsyncIteration\n        while self.queue.empty():\n            if not self.futures:\n                raise StopAsyncIteration\n            await self.condition.wait()\n\n        return self._get_and_raise()",
+            "after": "async def __aiter__(self):\n        while True:\n            if not self.futures and self.queue.empty():\n                return\n            if not self.queue.empty():\n                yield self._get_and_raise()\n            else:\n                if not self.futures:\n                    return\n                await self.condition.wait()"
+          }
+        ]
+      }
+    ]
+  }

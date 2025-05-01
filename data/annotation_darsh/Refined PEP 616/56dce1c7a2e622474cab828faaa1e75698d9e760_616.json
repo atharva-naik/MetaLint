@@ -1,0 +1,18 @@
+{
+    "blob_id": "56dce1c7a2e622474cab828faaa1e75698d9e760",
+    "violations": [
+      {
+        "start_lineno": 74,
+        "end_lineno": 75,
+        "pep": "616",
+        "line": "if prompt.endswith(': \"\n'):\n\tprompt = prompt[:-1]",
+        "span": "if prompt.endswith(': \"\n'):\n\tprompt = prompt[:-1]",
+        "fix": [
+          {
+            "before": "if prompt.endswith(': \"\n'):\n\tprompt = prompt[:-1]",
+            "after": "prompt.removesuffix(': \"\n')"
+          }
+        ]
+      }
+    ]
+  }

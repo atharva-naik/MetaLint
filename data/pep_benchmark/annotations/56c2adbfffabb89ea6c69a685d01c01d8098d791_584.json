@@ -1,0 +1,18 @@
+{
+    "blob_id": "56c2adbfffabb89ea6c69a685d01c01d8098d791",
+    "violations": [
+      {
+        "start_lineno": 28,
+        "end_lineno": 29,
+        "pep": "584",
+        "line": "for k, v in hyperparam_vals.items():\n\tnew_env[k] = str(v)",
+        "span": "for k, v in hyperparam_vals.items():\n\tnew_env[k] = str(v)",
+        "fix": [
+          {
+            "before": "for k, v in hyperparam_vals.items():\n\tnew_env[k] = str(v)",
+            "after": "new_env |= hyperparam_vals"
+          }
+        ]
+      }
+    ]
+  }
