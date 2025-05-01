@@ -21,7 +21,7 @@ MAX_RETRIES = 5
 MAX_SEQ_LEN = 32768
 MAX_NEW_TOKENS = 2048
 NUM_WORKERS = 12
-WRITE_EVERY_N = 10
+WRITE_EVERY_N = 2
 
 def get_args():
     parser = argparse.ArgumentParser(description="Run inference with different settings.")
@@ -53,7 +53,7 @@ def generate_response(prompt_index: int, sample_index: int, rec: dict, model_nam
 
     for attempt in range(MAX_RETRIES):
         try:
-            response = requests.post(VLLM_SERVER_URL, json=payload)
+            response = requests.post(VLLM_SERVER_URL, json=payload, timeout=30)
             response.raise_for_status()
             model_response = response.json()["choices"][0]["message"]["content"]
             return (prompt_index, sample_index), {
@@ -69,6 +69,7 @@ def generate_response(prompt_index: int, sample_index: int, rec: dict, model_nam
             if attempt == MAX_RETRIES - 1:
                 raise RuntimeError(f"Failed after {MAX_RETRIES} retries on prompt {prompt_index} sample {sample_index}: {e}")
             continue
+
 
 def main():
     args = get_args()
@@ -126,10 +127,7 @@ def main():
                             sample["model_response"], 
                             results_buffer[next_write_index][0]["ground_truth"]
                         )
-                    ) for sample in results_buffer[next_write_index] if evaluate_instance(
-                            sample["model_response"], 
-                            results_buffer[next_write_index][0]["ground_truth"]
-                        ) < 0.999]
+                    ) for sample in results_buffer[next_write_index]]
                 }) + "\n")
                 del results_buffer[next_write_index]
                 next_write_index += 1
@@ -145,7 +143,13 @@ def main():
                 "source": results_buffer[next_write_index][0]["source"],
                 # "prompt": results_buffer[next_write_index][0]["prompt"],
                 "ground_truth": results_buffer[next_write_index][0]["ground_truth"],
-                "model_responses": [sample["model_response"] for sample in results_buffer[next_write_index]]
+                "model_responses": [(
+                        sample["model_response"], 
+                        evaluate_instance(
+                            sample["model_response"], 
+                            results_buffer[next_write_index][0]["ground_truth"]
+                        )
+                    ) for sample in results_buffer[next_write_index]]
             }) + "\n")
             next_write_index += 1
         f_out.flush()
