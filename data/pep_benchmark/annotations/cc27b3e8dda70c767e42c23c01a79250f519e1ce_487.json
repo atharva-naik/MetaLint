@@ -1,0 +1,19 @@
+{
+    "blob_id": "cc27b3e8dda70c767e42c23c01a79250f519e1ce",
+    "violations": [
+      {
+        "start_lineno": 18,
+        "end_lineno": 18,
+        "pep": "487",
+        "line": "class TagRule(metaclass=ABCMeta):",
+        "span": "class TagRule(metaclass=ABCMeta):",
+        "fix": [
+          {
+            "before": "class TagRule(metaclass=ABCMeta):",
+            "after": "class TagRule:\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)\n        # Optional: enforce 'applies' abstract method manually\n        if 'applies' not in cls.__dict__:\n            raise TypeError(f\"Can't instantiate class without 'applies' method: {cls.__name__}\")"
+          }
+        ]
+      }
+    ]
+  }
+  

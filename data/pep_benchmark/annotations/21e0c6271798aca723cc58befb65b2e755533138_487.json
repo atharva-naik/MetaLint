@@ -1,0 +1,71 @@
+{
+    "blob_id": "21e0c6271798aca723cc58befb65b2e755533138",
+    "violations": [
+      {
+        "start_lineno": 102,
+        "end_lineno": 102,
+        "pep": "487",
+        "line": "class FeatureMaker(object, metaclass=ABCMeta):",
+        "span": "class FeatureMaker(object, metaclass=ABCMeta):",
+        "fix": [
+          {
+            "before": "class FeatureMaker(object, metaclass=ABCMeta):",
+            "after": "class FeatureMaker(object):\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 208,
+        "end_lineno": 208,
+        "pep": "487",
+        "line": "class FitPredictOutput(object, metaclass=ABCMeta):",
+        "span": "class FitPredictOutput(object, metaclass=ABCMeta):",
+        "fix": [
+          {
+            "before": "class FitPredictOutput(object, metaclass=ABCMeta):",
+            "after": "class FitPredictOutput(object):\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 217,
+        "end_lineno": 217,
+        "pep": "487",
+        "line": "class HpChoices(object, metaclass=ABCMeta):",
+        "span": "class HpChoices(object, metaclass=ABCMeta):",
+        "fix": [
+          {
+            "before": "class HpChoices(object, metaclass=ABCMeta):",
+            "after": "class HpChoices(object):\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 226,
+        "end_lineno": 226,
+        "pep": "487",
+        "line": "class Model(object, metaclass=ABCMeta):",
+        "span": "class Model(object, metaclass=ABCMeta):",
+        "fix": [
+          {
+            "before": "class Model(object, metaclass=ABCMeta):",
+            "after": "class Model(object):\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 238,
+        "end_lineno": 238,
+        "pep": "487",
+        "line": "class ModelSpec(object, metaclass=ABCMeta):",
+        "span": "class ModelSpec(object, metaclass=ABCMeta):",
+        "fix": [
+          {
+            "before": "class ModelSpec(object, metaclass=ABCMeta):",
+            "after": "class ModelSpec(object):\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)"
+          }
+        ]
+      }
+    ]
+  }
+  

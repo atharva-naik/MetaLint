@@ -1,0 +1,19 @@
+{
+    "blob_id": "4126829465c1134e317f101098765c56fff682e6",
+    "violations": [
+      {
+        "start_lineno": 4,
+        "end_lineno": 4,
+        "pep": "526",
+        "line": "# type: (object, object) -> object",
+        "span": "# type: (object, object) -> object",
+        "fix": [
+          {
+            "before": "# type: (object, object) -> object",
+            "after": "def get_value(conf: object, key: object) -> object:"
+          }
+        ]
+      }
+    ]
+  }
+  

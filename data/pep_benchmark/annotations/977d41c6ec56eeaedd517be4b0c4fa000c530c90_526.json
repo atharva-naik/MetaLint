@@ -1,0 +1,19 @@
+{
+    "blob_id": "977d41c6ec56eeaedd517be4b0c4fa000c530c90",
+    "violations": [
+      {
+        "start_lineno": 41,
+        "end_lineno": 41,
+        "pep": "526",
+        "line": "_conn = None  # type: Optional[Resource]",
+        "span": "# type: Optional[Resource]",
+        "fix": [
+          {
+            "before": "_conn = None  # type: Optional[Resource]",
+            "after": "_conn: Optional[Resource] = None"
+          }
+        ]
+      }
+    ]
+  }
+  

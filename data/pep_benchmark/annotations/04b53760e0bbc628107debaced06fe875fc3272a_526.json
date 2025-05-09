@@ -1,0 +1,19 @@
+{
+    "blob_id": "04b53760e0bbc628107debaced06fe875fc3272a",
+    "violations": [
+      {
+        "start_lineno": 165,
+        "end_lineno": 165,
+        "pep": "526",
+        "line": "# type: (RedshiftAOVSpec) -> AOVSpec",
+        "span": "# type: (RedshiftAOVSpec) -> AOVSpec",
+        "fix": [
+          {
+            "before": "def _(v):\n    # type: (RedshiftAOVSpec) -> AOVSpec\n    return v",
+            "after": "def _(v: RedshiftAOVSpec) -> AOVSpec:\n    return v"
+          }
+        ]
+      }
+    ]
+  }
+  

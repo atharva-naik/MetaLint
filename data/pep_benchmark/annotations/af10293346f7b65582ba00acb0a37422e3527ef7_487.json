@@ -1,0 +1,19 @@
+{
+    "blob_id": "af10293346f7b65582ba00acb0a37422e3527ef7",
+    "violations": [
+      {
+        "start_lineno": 17,
+        "end_lineno": 77,
+        "pep": "487",
+        "line": "class MetaTable(type):",
+        "span": "class MetaTable(type):",
+        "fix": [
+          {
+            "before": "class MetaTable(type):\n\t\n\texistingClasses = []\n\n\tpossible_types = [String, Integer, Float, DateTime, Coordinate, Foreign]\n\n\tdef __init__(cls, name, bases, attrs):\n\t\tif attrs['__qualname__'] in cls.existingClasses:\n\t\t\traise AttributeError(\"existing class\")\n\t\tfor col, val in attrs.items():\n\t\t\tif val == \"Table\":\n\t\t\t\tbreak\t\t\t\n\t\t\tif col == \"pk\" or col == \"version\" or col == \"save\" or col ==\"delete\":\n\t\t\t\traise AttributeError (\"invalid column name - reserved\")\n\t\t\tcolSplit = list(col)\n\t\t\tif col.startswith(\"__\")==False and col.endswith(\"__\")==False:\n\t\t\t\tif colSplit[0] == \"_\" or colSplit[0].isdigit():\n\t\t\t\t\traise AttributeError (\"invalid column name\")\n\t\t\t\tif \"_\" in colSplit:\n\t\t\t\t\traise AttributeError(\"inv column name _\")\n\t\t\tif isinstance(val, Integer) or isinstance(val, String) or isinstance(val,Float) or isinstance(val,Foreign) or isinstance(val, DateTime) or isinstance(val, Coordinate):\n\t\t\t\tval.setname(col)\n\t\tcls.existingClasses.append(attrs['__qualname__'])\n\t\ttempAttributes = list(attrs)\t\n\t\ttemptemp = list()\n\t\tfor i in tempAttributes:\n\t\t\tif i[:2] != '__':\t\t\n\t\t\t\ttemptemp.append(i.replace(\"_\",\"\"))\n\t\t\t\t\n\t\tclasses[name] = temptemp\n\t\tclassnames.append(temptemp)\n\t\tpass",
+            "after": "class Table:\n\t\n\texistingClasses = []\n\tpossible_types = [String, Integer, Float, DateTime, Coordinate, Foreign]\n\n\tdef __init_subclass__(cls, **kwargs):\n\t\tsuper().__init_subclass__(**kwargs)\n\t\tif cls.__qualname__ in Table.existingClasses:\n\t\t\traise AttributeError(\"existing class\")\n\t\tfor col, val in cls.__dict__.items():\n\t\t\tif val == \"Table\":\n\t\t\t\tbreak\n\t\t\tif col in [\"pk\", \"version\", \"save\", \"delete\"]:\n\t\t\t\traise AttributeError(\"invalid column name - reserved\")\n\t\t\tif not col.startswith(\"__\") and not col.endswith(\"__\"):\n\t\t\t\tif col[0] == \"_\" or col[0].isdigit():\n\t\t\t\t\traise AttributeError(\"invalid column name\")\n\t\t\t\tif \"_\" in col:\n\t\t\t\t\traise AttributeError(\"inv column name _\")\n\t\t\tif isinstance(val, tuple(Table.possible_types)):\n\t\t\t\tval.setname(col)\n\t\tTable.existingClasses.append(cls.__qualname__)\n\t\ttemptemp = [i.replace(\"_\", \"\") for i in cls.__dict__ if not i.startswith(\"__\")]\n\t\tclasses[cls.__name__] = temptemp\n\t\tclassnames.append(temptemp)"
+          }
+        ]
+      }
+    ]
+  }
+  

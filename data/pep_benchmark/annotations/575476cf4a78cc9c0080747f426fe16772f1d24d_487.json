@@ -1,0 +1,32 @@
+{
+    "blob_id": "575476cf4a78cc9c0080747f426fe16772f1d24d",
+    "violations": [
+      {
+        "start_lineno": 251,
+        "end_lineno": 251,
+        "pep": "487",
+        "line": "class BetterModelForm(FieldsetMixin, LabelSuffixMixin, CSSClassMixin, forms.ModelForm, metaclass=BetterModelFormMetaclass):",
+        "span": "class BetterModelForm(FieldsetMixin, LabelSuffixMixin, CSSClassMixin, forms.ModelForm, metaclass=BetterModelFormMetaclass):",
+        "fix": [
+          {
+            "before": "class BetterModelForm(FieldsetMixin, LabelSuffixMixin, CSSClassMixin, forms.ModelForm, metaclass=BetterModelFormMetaclass):",
+            "after": "class BetterModelForm(FieldsetMixin, LabelSuffixMixin, CSSClassMixin, forms.ModelForm):\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)\n        base_fieldsets = get_fieldsets(cls.__bases__, cls.__dict__)\n        if base_fieldsets is not None:\n            FieldsetClass = get_fieldset_class(cls.__bases__, cls.__dict__)\n            base_fieldsets = FieldsetClass('__base_fieldset__', fields=base_fieldsets)\n            cls.base_fieldsets = base_fieldsets\n            Meta = cls.__dict__.get('Meta')\n            if Meta and Meta.__dict__.get('fields') is None and Meta.__dict__.get('exclude') is None:\n                Meta.fields = flatten_to_tuple(base_fieldsets)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 265,
+        "end_lineno": 265,
+        "pep": "487",
+        "line": "class BetterForm(FieldsetMixin, LabelSuffixMixin, CSSClassMixin, forms.forms.BaseForm, metaclass=BetterFormMetaClass):",
+        "span": "class BetterForm(FieldsetMixin, LabelSuffixMixin, CSSClassMixin, forms.forms.BaseForm, metaclass=BetterFormMetaClass):",
+        "fix": [
+          {
+            "before": "class BetterForm(FieldsetMixin, LabelSuffixMixin, CSSClassMixin, forms.forms.BaseForm, metaclass=BetterFormMetaClass):",
+            "after": "class BetterForm(FieldsetMixin, LabelSuffixMixin, CSSClassMixin, forms.forms.BaseForm):\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)\n        base_fieldsets = get_fieldsets(cls.__bases__, cls.__dict__)\n        if base_fieldsets is not None:\n            FieldsetClass = get_fieldset_class(cls.__bases__, cls.__dict__)\n            cls.base_fieldsets = FieldsetClass('__base_fieldset__', fields=base_fieldsets)"
+          }
+        ]
+      }
+    ]
+  }
+  

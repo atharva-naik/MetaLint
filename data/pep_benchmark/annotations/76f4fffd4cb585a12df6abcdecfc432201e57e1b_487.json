@@ -1,0 +1,32 @@
+{
+    "blob_id": "76f4fffd4cb585a12df6abcdecfc432201e57e1b",
+    "violations": [
+      {
+        "start_lineno": 60,
+        "end_lineno": 60,
+        "pep": "487",
+        "line": "class FirestoreClientMeta(type):",
+        "span": "class FirestoreClientMeta(type):",
+        "fix": [
+          {
+            "before": "class FirestoreClientMeta(type):",
+            "after": "class FirestoreClientMeta:\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 91,
+        "end_lineno": 91,
+        "pep": "487",
+        "line": "class FirestoreClient(metaclass=FirestoreClientMeta):",
+        "span": "class FirestoreClient(metaclass=FirestoreClientMeta):",
+        "fix": [
+          {
+            "before": "class FirestoreClient(metaclass=FirestoreClientMeta):",
+            "after": "class FirestoreClient:\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)"
+          }
+        ]
+      }
+    ]
+  }
+  

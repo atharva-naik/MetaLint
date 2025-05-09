@@ -1,0 +1,19 @@
+{
+    "blob_id": "91f8ed477f71ddd74615247d29b53d57f84e2c89",
+    "violations": [
+      {
+        "start_lineno": 33,
+        "end_lineno": 33,
+        "pep": "487",
+        "line": "class Meta(type):",
+        "span": "class Meta(type):",
+        "fix": [
+          {
+            "before": "class Meta(type):",
+            "after": "class Meta:\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)\n        cls._inst = weakref.WeakSet()"
+          }
+        ]
+      }
+    ]
+  }
+  

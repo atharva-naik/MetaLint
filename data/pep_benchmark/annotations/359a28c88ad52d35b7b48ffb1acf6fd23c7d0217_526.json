@@ -1,0 +1,58 @@
+{
+    "blob_id": "359a28c88ad52d35b7b48ffb1acf6fd23c7d0217",
+    "violations": [
+      {
+        "start_lineno": 122,
+        "end_lineno": 122,
+        "pep": "526",
+        "line": "_conn = None  # type: Optional[storage.Client]",
+        "span": "_conn = None  # type: Optional[storage.Client]",
+        "fix": [
+          {
+            "before": "_conn = None  # type: Optional[storage.Client]",
+            "after": "_conn: Optional[storage.Client] = None"
+          }
+        ]
+      },
+      {
+        "start_lineno": 1172,
+        "end_lineno": 1172,
+        "pep": "526",
+        "line": "to_copy_blobs = {source_names_index[a] for a in to_copy}  # type: Set[storage.Blob]",
+        "span": "to_copy_blobs = {source_names_index[a] for a in to_copy}  # type: Set[storage.Blob]",
+        "fix": [
+          {
+            "before": "to_copy_blobs = {source_names_index[a] for a in to_copy}  # type: Set[storage.Blob]",
+            "after": "to_copy_blobs: Set[storage.Blob] = {source_names_index[a] for a in to_copy}"
+          }
+        ]
+      },
+      {
+        "start_lineno": 1173,
+        "end_lineno": 1173,
+        "pep": "526",
+        "line": "to_delete_blobs = {destination_names_index[a] for a in to_delete}  # type: Set[storage.Blob]",
+        "span": "to_delete_blobs = {destination_names_index[a] for a in to_delete}  # type: Set[storage.Blob]",
+        "fix": [
+          {
+            "before": "to_delete_blobs = {destination_names_index[a] for a in to_delete}  # type: Set[storage.Blob]",
+            "after": "to_delete_blobs: Set[storage.Blob] = {destination_names_index[a] for a in to_delete}"
+          }
+        ]
+      },
+      {
+        "start_lineno": 1176,
+        "end_lineno": 1176,
+        "pep": "526",
+        "line": "to_rewrite_blobs = set()  # type: Set[storage.Blob]",
+        "span": "to_rewrite_blobs = set()  # type: Set[storage.Blob]",
+        "fix": [
+          {
+            "before": "to_rewrite_blobs = set()  # type: Set[storage.Blob]",
+            "after": "to_rewrite_blobs: Set[storage.Blob] = set()"
+          }
+        ]
+      }
+    ]
+  }
+  

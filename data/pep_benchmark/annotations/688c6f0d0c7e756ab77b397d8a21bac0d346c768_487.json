@@ -1,0 +1,19 @@
+{
+    "blob_id": "688c6f0d0c7e756ab77b397d8a21bac0d346c768",
+    "violations": [
+      {
+        "start_lineno": 7,
+        "end_lineno": 23,
+        "pep": "487",
+        "line": "class AnnotationMeta(type):",
+        "span": "class AnnotationMeta(type):",
+        "fix": [
+          {
+            "before": "class AnnotationMeta(type):\n    _cache = {}\n\n    def __new__(cls, name, parents, attrs):\n        new_type = type.__new__(cls, name, parents, attrs)\n        try:\n            cls._cache[name] = new_type\n        except AttributeError:\n            pass\n        return new_type\n\n    def _type_for_name(self, feature_type):\n        return self._cache[feature_type]\n\n    def from_dict(self, d):\n        name = d.pop('__class__')\n        impl = self._type_for_name(name)\n        return impl(**d)",
+            "after": "class AnnotationBase:\n    _cache = {}\n\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)\n        AnnotationBase._cache[cls.__name__] = cls\n\n    @classmethod\n    def _type_for_name(cls, feature_type):\n        return cls._cache[feature_type]\n\n    @classmethod\n    def from_dict(cls, d):\n        name = d.pop('__class__')\n        impl = cls._type_for_name(name)\n        return impl(**d)"
+          }
+        ]
+      }
+    ]
+  }
+  

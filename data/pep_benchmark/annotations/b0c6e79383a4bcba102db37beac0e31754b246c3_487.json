@@ -1,0 +1,19 @@
+{
+    "blob_id": "b0c6e79383a4bcba102db37beac0e31754b246c3",
+    "violations": [
+      {
+        "start_lineno": 10,
+        "end_lineno": 10,
+        "pep": "487",
+        "line": "class BlsKeyManager(metaclass=ABCMeta):",
+        "span": "class BlsKeyManager(metaclass=ABCMeta):",
+        "fix": [
+          {
+            "before": "class BlsKeyManager(metaclass=ABCMeta):",
+            "after": "class BlsKeyManager:\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)"
+          }
+        ]
+      }
+    ]
+  }
+  

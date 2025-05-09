@@ -1,0 +1,18 @@
+{
+  "blob_id": "caaa453007d1b589f7d8dbcbc1bca02f4a9b55ab",
+  "violations": [
+    {
+      "start_lineno": 353,
+      "end_lineno": 393,
+      "pep": "487",
+      "line": "class __metaclass__(type):",
+      "span": "class __metaclass__(type):",
+      "fix": [
+        {
+          "before": "class __metaclass__(type):\n        def __new__(cls, name, bases, attrs):\n            if not 'method' in attrs and 'argv' in attrs:\n                chosen = 'output'\n            else:\n                chosen = attrs.pop('method', False)\n\n            klass = type.__new__(cls, name, bases, attrs)\n            parent_method = getattr(klass, 'method', None)\n            klass.method = chosen\n\n            try:\n                ExternalTool\n            except NameError:\n                return klass\n\n            if parent_method is not None:\n                return klass\n\n            methods = ('output', 'input', 'open')\n\n            if chosen is not None:\n                assert not chosen or chosen in methods, \\\n                    '%s not a supported filter method' % chosen\n                for m in methods:\n                    if m != chosen:\n                        if not m in klass.__dict__:\n                            setattr(klass, m, None)\n\n            return klass",
+          "after": "class ExternalTool:\n    method = None\n\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)\n        if cls.method is None and hasattr(cls, 'argv') and cls.argv:\n            cls.method = 'output'\n\n        parent_method = getattr(super(cls, cls), 'method', None)\n        if parent_method is not None:\n            return\n\n        methods = ('output', 'input', 'open')\n        if cls.method:\n            if cls.method not in methods:\n                raise ValueError('%s is not a supported filter method' % cls.method)\n            for m in methods:\n                if m != cls.method and not hasattr(cls, m):\n                    setattr(cls, m, None)"
+        }
+      ]
+    }
+  ]
+}

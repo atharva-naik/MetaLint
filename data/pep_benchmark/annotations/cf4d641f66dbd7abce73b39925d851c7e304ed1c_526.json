@@ -1,0 +1,19 @@
+{
+    "blob_id": "cf4d641f66dbd7abce73b39925d851c7e304ed1c",
+    "violations": [
+      {
+        "start_lineno": 42,
+        "end_lineno": 42,
+        "pep": "526",
+        "line": "# type: (str, List[Any], Dict[Any, Any]) -> None",
+        "span": "# type: (str, List[Any], Dict[Any, Any]) -> None",
+        "fix": [
+          {
+            "before": "def do_work(self, name, args, kwargs):\n        # type: (str, List[Any], Dict[Any, Any]) -> None",
+            "after": "def do_work(self, name: str, args: List[Any], kwargs: Dict[Any, Any]) -> None:"
+          }
+        ]
+      }
+    ]
+  }
+  
