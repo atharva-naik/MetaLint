@@ -1,0 +1,32 @@
+{
+    "blob_id": "a97732065d4b8dd146e6d5d3489f35ad9dfc4707",
+    "violations": [
+      {
+        "start_lineno": 10,
+        "end_lineno": 10,
+        "pep": "526",
+        "line": "name = ...  # type: str",
+        "span": "name = ...  # type: str",
+        "fix": [
+          {
+            "before": "name = ...  # type: str",
+            "after": "name: str = ..."
+          }
+        ]
+      },
+      {
+        "start_lineno": 11,
+        "end_lineno": 11,
+        "pep": "526",
+        "line": "verbose_name = ...  # type: Any",
+        "span": "verbose_name = ...  # type: Any",
+        "fix": [
+          {
+            "before": "verbose_name = ...  # type: Any",
+            "after": "verbose_name: Any = ..."
+          }
+        ]
+      }
+    ]
+  }
+  

@@ -1,0 +1,19 @@
+{
+    "blob_id": "06a33c7117e20dfd6120eaf0f3d0b7dd4dea4890",
+    "violations": [
+      {
+        "start_lineno": 20,
+        "end_lineno": 20,
+        "pep": "487",
+        "line": "class Drawable(metaclass=ABCMeta):",
+        "span": "class Drawable(metaclass=ABCMeta):",
+        "fix": [
+          {
+            "before": "class Drawable(metaclass=ABCMeta):",
+            "after": "class Drawable:\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)"
+          }
+        ]
+      }
+    ]
+  }
+  

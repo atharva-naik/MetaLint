@@ -1,0 +1,19 @@
+{
+    "blob_id": "a1f5c30475148e584ad26cc88a8a538ff31162ca",
+    "violations": [
+      {
+        "start_lineno": 235,
+        "end_lineno": 235,
+        "pep": "526",
+        "line": "# type: (Tensor, float) -> Tensor",
+        "span": "# type: (Tensor, float) -> Tensor",
+        "fix": [
+          {
+            "before": "def variance_scaling_(tensor, gain=1.):\n    # type: (Tensor, float) -> Tensor",
+            "after": "def variance_scaling_(tensor: torch.Tensor, gain: float = 1.) -> torch.Tensor:"
+          }
+        ]
+      }
+    ]
+  }
+  

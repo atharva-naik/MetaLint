@@ -1,0 +1,19 @@
+{
+    "blob_id": "cf59855a0c8b930a2e81cfc33b1f5e9bce139c13",
+    "violations": [
+      {
+        "start_lineno": 24,
+        "end_lineno": 24,
+        "pep": "526",
+        "line": "_transport_registry = OrderedDict()  # type: Dict[str, Type[ChangeStatusServiceTransport]]",
+        "span": "_transport_registry = OrderedDict()  # type: Dict[str, Type[ChangeStatusServiceTransport]]",
+        "fix": [
+          {
+            "before": "_transport_registry = OrderedDict()  # type: Dict[str, Type[ChangeStatusServiceTransport]]",
+            "after": "_transport_registry: Dict[str, Type[ChangeStatusServiceTransport]] = OrderedDict()"
+          }
+        ]
+      }
+    ]
+  }
+  

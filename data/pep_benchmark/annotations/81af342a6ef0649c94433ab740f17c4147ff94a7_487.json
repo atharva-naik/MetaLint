@@ -1,0 +1,32 @@
+{
+    "blob_id": "81af342a6ef0649c94433ab740f17c4147ff94a7",
+    "violations": [
+      {
+        "start_lineno": 19,
+        "end_lineno": 19,
+        "pep": "487",
+        "line": "class Singleton(type):",
+        "span": "class Singleton(type):",
+        "fix": [
+          {
+            "before": "class Singleton(type):",
+            "after": "class Singleton:\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)\n        cls._instances = {}\n    def __call__(cls, *args, **kwargs):\n        if cls not in cls._instances:\n            cls._instances[cls] = super(cls, cls).__call__(*args, **kwargs)\n        return cls._instances[cls]"
+          }
+        ]
+      },
+      {
+        "start_lineno": 29,
+        "end_lineno": 29,
+        "pep": "487",
+        "line": "class PlanRecognizerFactory(metaclass=Singleton):",
+        "span": "class PlanRecognizerFactory(metaclass=Singleton):",
+        "fix": [
+          {
+            "before": "class PlanRecognizerFactory(metaclass=Singleton):",
+            "after": "class PlanRecognizerFactory:\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)"
+          }
+        ]
+      }
+    ]
+  }
+  

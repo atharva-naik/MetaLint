@@ -1,0 +1,175 @@
+{
+    "blob_id": "bf4b95cf41eaa7b43645f6eae429e23362756130",
+    "violations": [
+      {
+        "start_lineno": 135,
+        "end_lineno": 135,
+        "pep": "526",
+        "line": "self.language = raw.get('language', 'c')  # type: str",
+        "span": "self.language = raw.get('language', 'c')  # type: str",
+        "fix": [
+          {
+            "before": "self.language = raw.get('language', 'c')  # type: str",
+            "after": "self.language: str = raw.get('language', 'c')"
+          }
+        ]
+      },
+      {
+        "start_lineno": 137,
+        "end_lineno": 137,
+        "pep": "526",
+        "line": "version = raw.get('version', '')  # type: str",
+        "span": "version = raw.get('version', '')  # type: str",
+        "fix": [
+          {
+            "before": "version = raw.get('version', '')  # type: str",
+            "after": "version: str = raw.get('version', '')"
+          }
+        ]
+      },
+      {
+        "start_lineno": 139,
+        "end_lineno": 139,
+        "pep": "526",
+        "line": "self.version = version.split('.')  # type: T.List[str]",
+        "span": "self.version = version.split('.')  # type: T.List[str]",
+        "fix": [
+          {
+            "before": "self.version = version.split('.')  # type: T.List[str]",
+            "after": "self.version: T.List[str] = version.split('.')"
+          }
+        ]
+      },
+      {
+        "start_lineno": 257,
+        "end_lineno": 257,
+        "pep": "526",
+        "line": "self.installed_files = []  # type: T.List[InstalledFile]",
+        "span": "self.installed_files = []  # type: T.List[InstalledFile]",
+        "fix": [
+          {
+            "before": "self.installed_files = []  # type: T.List[InstalledFile]",
+            "after": "self.installed_files: T.List[InstalledFile] = []"
+          }
+        ]
+      },
+      {
+        "start_lineno": 258,
+        "end_lineno": 258,
+        "pep": "526",
+        "line": "self.do_not_set_opts = []  # type: T.List[str]",
+        "span": "self.do_not_set_opts = []  # type: T.List[str]",
+        "fix": [
+          {
+            "before": "self.do_not_set_opts = []  # type: T.List[str]",
+            "after": "self.do_not_set_opts: T.List[str] = []"
+          }
+        ]
+      },
+      {
+        "start_lineno": 259,
+        "end_lineno": 259,
+        "pep": "526",
+        "line": "self.stdout = [] # type: T.List[T.Dict[str, str]]",
+        "span": "self.stdout = [] # type: T.List[T.Dict[str, str]]",
+        "fix": [
+          {
+            "before": "self.stdout = [] # type: T.List[T.Dict[str, str]]",
+            "after": "self.stdout: T.List[T.Dict[str, str]] = []"
+          }
+        ]
+      },
+      {
+        "start_lineno": 372,
+        "end_lineno": 372,
+        "pep": "526",
+        "line": "expected_raw = []  # type: T.List[Path]",
+        "span": "expected_raw = []  # type: T.List[Path]",
+        "fix": [
+          {
+            "before": "expected_raw = []  # type: T.List[Path]",
+            "after": "expected_raw: T.List[Path] = []"
+          }
+        ]
+      },
+      {
+        "start_lineno": 638,
+        "end_lineno": 638,
+        "pep": "526",
+        "line": "gen_args = []  # type: T.List[str]",
+        "span": "gen_args = []  # type: T.List[str]",
+        "fix": [
+          {
+            "before": "gen_args = []  # type: T.List[str]",
+            "after": "gen_args: T.List[str] = []"
+          }
+        ]
+      },
+      {
+        "start_lineno": 793,
+        "end_lineno": 793,
+        "pep": "526",
+        "line": "env = {}  # type: T.Dict[str, str]",
+        "span": "env = {}  # type: T.Dict[str, str]",
+        "fix": [
+          {
+            "before": "env = {}  # type: T.Dict[str, str]",
+            "after": "env: T.Dict[str, str] = {}"
+          }
+        ]
+      },
+      {
+        "start_lineno": 803,
+        "end_lineno": 803,
+        "pep": "526",
+        "line": "installed = []  # type: T.List[InstalledFile]",
+        "span": "installed = []  # type: T.List[InstalledFile]",
+        "fix": [
+          {
+            "before": "installed = []  # type: T.List[InstalledFile]",
+            "after": "installed: T.List[InstalledFile] = []"
+          }
+        ]
+      },
+      {
+        "start_lineno": 813,
+        "end_lineno": 813,
+        "pep": "526",
+        "line": "do_not_set_opts = test_def.get('do_not_set_opts', [])  # type: T.List[str]",
+        "span": "do_not_set_opts = test_def.get('do_not_set_opts', [])  # type: T.List[str]",
+        "fix": [
+          {
+            "before": "do_not_set_opts = test_def.get('do_not_set_opts', [])  # type: T.List[str]",
+            "after": "do_not_set_opts: T.List[str] = test_def.get('do_not_set_opts', [])"
+          }
+        ]
+      },
+      {
+        "start_lineno": 837,
+        "end_lineno": 837,
+        "pep": "526",
+        "line": "opt_list = []  # type: T.List[T.List[T.Tuple[str, bool, bool]]]",
+        "span": "opt_list = []  # type: T.List[T.List[T.Tuple[str, bool, bool]]]",
+        "fix": [
+          {
+            "before": "opt_list = []  # type: T.List[T.List[T.Tuple[str, bool, bool]]]",
+            "after": "opt_list: T.List[T.List[T.Tuple[str, bool, bool]]] = []"
+          }
+        ]
+      },
+      {
+        "start_lineno": 842,
+        "end_lineno": 842,
+        "pep": "526",
+        "line": "tmp_opts = []  # type: T.List[T.Tuple[str, bool, bool]]",
+        "span": "tmp_opts = []  # type: T.List[T.Tuple[str, bool, bool]]",
+        "fix": [
+          {
+            "before": "tmp_opts = []  # type: T.List[T.Tuple[str, bool, bool]]",
+            "after": "tmp_opts: T.List[T.Tuple[str, bool, bool]] = []"
+          }
+        ]
+      }
+    ]
+  }
+  

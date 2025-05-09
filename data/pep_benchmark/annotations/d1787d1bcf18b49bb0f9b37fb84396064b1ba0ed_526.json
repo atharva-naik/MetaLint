@@ -1,0 +1,110 @@
+{
+    "blob_id": "d1787d1bcf18b49bb0f9b37fb84396064b1ba0ed",
+    "violations": [
+      {
+        "start_lineno": 22,
+        "end_lineno": 22,
+        "pep": "526",
+        "line": "all = []  # type: List[ClientConfig]",
+        "span": "all = []  # type: List[ClientConfig]",
+        "fix": [
+          {
+            "before": "all = []  # type: List[ClientConfig]",
+            "after": "all: List[ClientConfig] = []"
+          }
+        ]
+      },
+      {
+        "start_lineno": 71,
+        "end_lineno": 71,
+        "pep": "526",
+        "line": "views = list()  # type: List[ViewLike]",
+        "span": "views = list()  # type: List[ViewLike]",
+        "fix": [
+          {
+            "before": "views = list()  # type: List[ViewLike]",
+            "after": "views: List[ViewLike] = list()"
+          }
+        ]
+      },
+      {
+        "start_lineno": 116,
+        "end_lineno": 116,
+        "pep": "526",
+        "line": "self._document_states = dict()  # type: Dict[str, DocumentState]",
+        "span": "self._document_states = dict()  # type: Dict[str, DocumentState]",
+        "fix": [
+          {
+            "before": "self._document_states = dict()  # type: Dict[str, DocumentState]",
+            "after": "self._document_states: Dict[str, DocumentState] = dict()"
+          }
+        ]
+      },
+      {
+        "start_lineno": 117,
+        "end_lineno": 117,
+        "pep": "526",
+        "line": "self._pending_buffer_changes = dict()  # type: Dict[int, Dict]",
+        "span": "self._pending_buffer_changes = dict()  # type: Dict[int, Dict]",
+        "fix": [
+          {
+            "before": "self._pending_buffer_changes = dict()  # type: Dict[int, Dict]",
+            "after": "self._pending_buffer_changes: Dict[int, Dict] = dict()"
+          }
+        ]
+      },
+      {
+        "start_lineno": 118,
+        "end_lineno": 118,
+        "pep": "526",
+        "line": "self._sessions = dict()  # type: Dict[str, Session]",
+        "span": "self._sessions = dict()  # type: Dict[str, Session]",
+        "fix": [
+          {
+            "before": "self._sessions = dict()  # type: Dict[str, Session]",
+            "after": "self._sessions: Dict[str, Session] = dict()"
+          }
+        ]
+      },
+      {
+        "start_lineno": 148,
+        "end_lineno": 148,
+        "pep": "526",
+        "line": "sessions = []  # type: List[Session]",
+        "span": "sessions = []  # type: List[Session]",
+        "fix": [
+          {
+            "before": "sessions = []  # type: List[Session]",
+            "after": "sessions: List[Session] = []"
+          }
+        ]
+      },
+      {
+        "start_lineno": 307,
+        "end_lineno": 307,
+        "pep": "526",
+        "line": "self._sessions = dict()  # type: Dict[str, Session]",
+        "span": "self._sessions = dict()  # type: Dict[str, Session]",
+        "fix": [
+          {
+            "before": "self._sessions = dict()  # type: Dict[str, Session]",
+            "after": "self._sessions: Dict[str, Session] = dict()"
+          }
+        ]
+      },
+      {
+        "start_lineno": 492,
+        "end_lineno": 492,
+        "pep": "526",
+        "line": "self._windows = {}  # type: Dict[int, WindowManager]",
+        "span": "self._windows = {}  # type: Dict[int, WindowManager]",
+        "fix": [
+          {
+            "before": "self._windows = {}  # type: Dict[int, WindowManager]",
+            "after": "self._windows: Dict[int, WindowManager] = {}"
+          }
+        ]
+      }
+    ]
+  }
+  

@@ -1,0 +1,19 @@
+{
+    "blob_id": "09c1687a4b08cb721255bd2a93f7a2f982162518",
+    "violations": [
+      {
+        "start_lineno": 34,
+        "end_lineno": 34,
+        "pep": "526",
+        "line": "speech_recognition = self.require(StatisticsComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent",
+        "span": "# type: SpeechRecognitionComponent",
+        "fix": [
+          {
+            "before": "speech_recognition = self.require(StatisticsComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent",
+            "after": "speech_recognition: SpeechRecognitionComponent = self.require(StatisticsComponent, SpeechRecognitionComponent)"
+          }
+        ]
+      }
+    ]
+  }
+  

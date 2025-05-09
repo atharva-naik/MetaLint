@@ -1,0 +1,32 @@
+{
+    "blob_id": "5ba3d71f031f2528eb944ce455051ce4a21a7ba5",
+    "violations": [
+      {
+        "start_lineno": 35,
+        "end_lineno": 35,
+        "pep": "487",
+        "line": "class StructMeta(type):",
+        "span": "class StructMeta(type):",
+        "fix": [
+          {
+            "before": "class StructMeta(type):",
+            "after": "class StructMeta:\n    def __init_subclass__(cls, **kwds):\n        super().__init_subclass__(**kwds)\n        if not getattr(cls, 'no_struct_members', False):\n            cls.descriptor = StructDescriptor(cls.__annotations__)\n            for name, annot in cls.descriptor.annotations.items():\n                setattr(cls, name, annot.default)\n            cls.size = cls.descriptor.size"
+          }
+        ]
+      },
+      {
+        "start_lineno": 47,
+        "end_lineno": 47,
+        "pep": "487",
+        "line": "class Struct3(metaclass=StructMeta, no_struct_members=True):",
+        "span": "class Struct3(metaclass=StructMeta, no_struct_members=True):",
+        "fix": [
+          {
+            "before": "class Struct3(metaclass=StructMeta, no_struct_members=True):",
+            "after": "class Struct3:\n    def __init_subclass__(cls, **kwds):\n        super().__init_subclass__(**kwds)"
+          }
+        ]
+      }
+    ]
+  }
+  

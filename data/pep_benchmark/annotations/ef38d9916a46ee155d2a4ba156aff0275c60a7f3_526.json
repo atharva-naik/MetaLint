@@ -1,0 +1,58 @@
+{
+    "blob_id": "ef38d9916a46ee155d2a4ba156aff0275c60a7f3",
+    "violations": [
+      {
+        "start_lineno": 95,
+        "end_lineno": 95,
+        "pep": "526",
+        "line": "self._element = element  # type: WebElement",
+        "span": "self._element = element  # type: WebElement",
+        "fix": [
+          {
+            "before": "self._element = element  # type: WebElement",
+            "after": "self._element: WebElement = element"
+          }
+        ]
+      },
+      {
+        "start_lineno": 96,
+        "end_lineno": 96,
+        "pep": "526",
+        "line": "self._driver = driver  # type: EyesWebDriver",
+        "span": "self._driver = driver  # type: EyesWebDriver",
+        "fix": [
+          {
+            "before": "self._driver = driver  # type: EyesWebDriver",
+            "after": "self._driver: EyesWebDriver = driver"
+          }
+        ]
+      },
+      {
+        "start_lineno": 99,
+        "end_lineno": 99,
+        "pep": "526",
+        "line": "self.position_provider = None  # type: Optional[SeleniumPositionProvider]",
+        "span": "self.position_provider = None  # type: Optional[SeleniumPositionProvider]",
+        "fix": [
+          {
+            "before": "self.position_provider = None  # type: Optional[SeleniumPositionProvider]",
+            "after": "self.position_provider: Optional[SeleniumPositionProvider] = None"
+          }
+        ]
+      },
+      {
+        "start_lineno": 100,
+        "end_lineno": 100,
+        "pep": "526",
+        "line": "self._original_overflow = None  # type: Optional[Text]",
+        "span": "self._original_overflow = None  # type: Optional[Text]",
+        "fix": [
+          {
+            "before": "self._original_overflow = None  # type: Optional[Text]",
+            "after": "self._original_overflow: Optional[Text] = None"
+          }
+        ]
+      }
+    ]
+  }
+  

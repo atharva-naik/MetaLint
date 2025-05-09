@@ -1,0 +1,19 @@
+{
+    "blob_id": "387cf3cc31df4f34e10632cfa76d06e72246efa0",
+    "violations": [
+      {
+        "start_lineno": 70,
+        "end_lineno": 76,
+        "pep": "487",
+        "line": "class SignatureValidator(type):",
+        "span": "class SignatureValidator(type):",
+        "fix": [
+          {
+            "before": "class SignatureValidator(type):\n    def __new__(cls, name: str, parents: tuple, methods: dict) -> \"SignatureValidator\":\n        run = methods.get(\"run\", lambda: None)\n        _validate_run_signature(run)\n        return type.__new__(cls, name, parents, methods)",
+            "after": "class Task:\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)\n        run = cls.__dict__.get(\"run\", lambda: None)\n        _validate_run_signature(run)"
+          }
+        ]
+      }
+    ]
+  }
+  

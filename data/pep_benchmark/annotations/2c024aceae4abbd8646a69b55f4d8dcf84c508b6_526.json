@@ -1,0 +1,97 @@
+{
+    "blob_id": "2c024aceae4abbd8646a69b55f4d8dcf84c508b6",
+    "violations": [
+      {
+        "start_lineno": 20,
+        "end_lineno": 20,
+        "pep": "526",
+        "line": "# type: (str) -> None",
+        "span": "# type: (str) -> None",
+        "fix": [
+          {
+            "before": "# type: (str) -> None",
+            "after": "def load_from_numpy(self, file: str) -> None:"
+          }
+        ]
+      },
+      {
+        "start_lineno": 26,
+        "end_lineno": 26,
+        "pep": "526",
+        "line": "# type: (np.array) -> None",
+        "span": "# type: (np.array) -> None",
+        "fix": [
+          {
+            "before": "# type: (np.array) -> None",
+            "after": "def load_from_arr(self, arr: np.ndarray) -> None:"
+          }
+        ]
+      },
+      {
+        "start_lineno": 37,
+        "end_lineno": 37,
+        "pep": "526",
+        "line": "# type: (int, int) -> None",
+        "span": "# type: (int, int) -> None",
+        "fix": [
+          {
+            "before": "# type: (int, int) -> None",
+            "after": "def _add_edge(self, a: int, b: int) -> None:"
+          }
+        ]
+      },
+      {
+        "start_lineno": 43,
+        "end_lineno": 43,
+        "pep": "526",
+        "line": "# type: (int, int) -> bool",
+        "span": "# type: (int, int) -> bool",
+        "fix": [
+          {
+            "before": "# type: (int, int) -> bool",
+            "after": "def have_edge(self, u: int, v: int) -> bool:"
+          }
+        ]
+      },
+      {
+        "start_lineno": 55,
+        "end_lineno": 55,
+        "pep": "526",
+        "line": "# type: (int) -> list[int]",
+        "span": "# type: (int) -> list[int]",
+        "fix": [
+          {
+            "before": "# type: (int) -> list[int]",
+            "after": "def get_adjacent_vertexs(self, u: int) -> list[int]:"
+          }
+        ]
+      },
+      {
+        "start_lineno": 66,
+        "end_lineno": 66,
+        "pep": "526",
+        "line": "# type: (int, int) -> list[str]",
+        "span": "# type: (int, int) -> list[str]",
+        "fix": [
+          {
+            "before": "# type: (int, int) -> list[str]",
+            "after": "def node2vec_walk(self, u: int, t: int) -> list[str]:"
+          }
+        ]
+      },
+      {
+        "start_lineno": 92,
+        "end_lineno": 92,
+        "pep": "526",
+        "line": "# type: (int, int, int, int, int) -> Word2Vec",
+        "span": "# type: (int, int, int, int, int) -> Word2Vec",
+        "fix": [
+          {
+            "before": "# type: (int, int, int, int, int) -> Word2Vec",
+            "after": "def walk(self, w: int, d: int, gamma: int, t: int, workers: int) -> Word2Vec:"
+          }
+        ]
+      }
+    ]
+  }
+  

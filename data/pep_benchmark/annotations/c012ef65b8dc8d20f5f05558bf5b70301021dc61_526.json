@@ -1,0 +1,71 @@
+{
+    "blob_id": "c012ef65b8dc8d20f5f05558bf5b70301021dc61",
+    "violations": [
+      {
+        "start_lineno": 65,
+        "end_lineno": 65,
+        "pep": "526",
+        "line": "# type: T.Dict[str, T.List[dict]]",
+        "span": "# type: T.Dict[str, T.List[dict]]",
+        "fix": [
+          {
+            "before": "parsed_data = defaultdict(list) # type: T.Dict[str, T.List[dict]]",
+            "after": "parsed_data: T.Dict[str, T.List[dict]] = defaultdict(list)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 110,
+        "end_lineno": 110,
+        "pep": "526",
+        "line": "# type: T.List[T.Dict[str, T.Any]]",
+        "span": "# type: T.List[T.Dict[str, T.Any]]",
+        "fix": [
+          {
+            "before": "found_targets = []  # type: T.List[T.Dict[str, T.Any]]",
+            "after": "found_targets: T.List[T.Dict[str, T.Any]] = []"
+          }
+        ]
+      },
+      {
+        "start_lineno": 179,
+        "end_lineno": 179,
+        "pep": "526",
+        "line": "# type: str",
+        "span": "# type: str",
+        "fix": [
+          {
+            "before": "target_name = re.sub(r\"[\\%\\$\\@\\;\\.\\(\\)']\", '_', intro_target['id'])  # type: str",
+            "after": "target_name: str = re.sub(r\"[\\%\\$\\@\\;\\.\\(\\)']\", '_', intro_target['id'])"
+          }
+        ]
+      },
+      {
+        "start_lineno": 339,
+        "end_lineno": 339,
+        "pep": "526",
+        "line": "# type: T.List[str]",
+        "span": "# type: T.List[str]",
+        "fix": [
+          {
+            "before": "cmd = []    # type: T.List[str]",
+            "after": "cmd: T.List[str] = []"
+          }
+        ]
+      },
+      {
+        "start_lineno": 340,
+        "end_lineno": 340,
+        "pep": "526",
+        "line": "# type: T.Optional[T.Dict[str, str]]",
+        "span": "# type: T.Optional[T.Dict[str, str]]",
+        "fix": [
+          {
+            "before": "env = None  # type: T.Optional[T.Dict[str, str]]",
+            "after": "env: T.Optional[T.Dict[str, str]] = None"
+          }
+        ]
+      }
+    ]
+  }
+  

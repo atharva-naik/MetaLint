@@ -1,0 +1,19 @@
+{
+    "blob_id": "18e6318436dbf83474673ebfbd3c01d9e5df1458",
+    "violations": [
+      {
+        "start_lineno": 168,
+        "end_lineno": 168,
+        "pep": "526",
+        "line": "self._stubs = {}  # type: Dict[str, Callable]",
+        "span": "# type: Dict[str, Callable]",
+        "fix": [
+          {
+            "before": "self._stubs = {}  # type: Dict[str, Callable]",
+            "after": "self._stubs: Dict[str, Callable] = {}"
+          }
+        ]
+      }
+    ]
+  }
+  

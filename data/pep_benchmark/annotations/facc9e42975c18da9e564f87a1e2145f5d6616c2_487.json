@@ -1,0 +1,19 @@
+{
+    "blob_id": "facc9e42975c18da9e564f87a1e2145f5d6616c2",
+    "violations": [
+      {
+        "start_lineno": 14,
+        "end_lineno": 14,
+        "pep": "487",
+        "line": "class Operation(metaclass=ABCMeta):",
+        "span": "class Operation(metaclass=ABCMeta):",
+        "fix": [
+          {
+            "before": "class Operation(metaclass=ABCMeta):",
+            "after": "class Operation:\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)"
+          }
+        ]
+      }
+    ]
+  }
+  

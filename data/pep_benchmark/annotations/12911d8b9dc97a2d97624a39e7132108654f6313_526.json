@@ -1,0 +1,71 @@
+{
+    "blob_id": "12911d8b9dc97a2d97624a39e7132108654f6313",
+    "violations": [
+      {
+        "start_lineno": 62,
+        "end_lineno": 62,
+        "pep": "526",
+        "line": "cls = kwargs.pop('cls', None)  # type: ClsType[\"models.DiskPoolListResult\"]",
+        "span": "cls = kwargs.pop('cls', None)  # type: ClsType[\"models.DiskPoolListResult\"]",
+        "fix": [
+          {
+            "before": "cls = kwargs.pop('cls', None)  # type: ClsType[\"models.DiskPoolListResult\"]",
+            "after": "cls: ClsType[\"models.DiskPoolListResult\"] = kwargs.pop('cls', None)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 133,
+        "end_lineno": 133,
+        "pep": "526",
+        "line": "cls = kwargs.pop('cls', None)  # type: ClsType[\"models.DiskPoolListResult\"]",
+        "span": "cls = kwargs.pop('cls', None)  # type: ClsType[\"models.DiskPoolListResult\"]",
+        "fix": [
+          {
+            "before": "cls = kwargs.pop('cls', None)  # type: ClsType[\"models.DiskPoolListResult\"]",
+            "after": "cls: ClsType[\"models.DiskPoolListResult\"] = kwargs.pop('cls', None)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 198,
+        "end_lineno": 198,
+        "pep": "526",
+        "line": "cls = kwargs.pop('cls', None)  # type: ClsType[\"models.DiskPool\"]",
+        "span": "cls = kwargs.pop('cls', None)  # type: ClsType[\"models.DiskPool\"]",
+        "fix": [
+          {
+            "before": "cls = kwargs.pop('cls', None)  # type: ClsType[\"models.DiskPool\"]",
+            "after": "cls: ClsType[\"models.DiskPool\"] = kwargs.pop('cls', None)"
+          }
+        ]
+      },
+      {
+        "start_lineno": 217,
+        "end_lineno": 217,
+        "pep": "526",
+        "line": "query_parameters = {}  # type: Dict[str, Any]",
+        "span": "query_parameters = {}  # type: Dict[str, Any]",
+        "fix": [
+          {
+            "before": "query_parameters = {}  # type: Dict[str, Any]",
+            "after": "query_parameters: Dict[str, Any] = {}"
+          }
+        ]
+      },
+      {
+        "start_lineno": 221,
+        "end_lineno": 221,
+        "pep": "526",
+        "line": "header_parameters = {}  # type: Dict[str, Any]",
+        "span": "header_parameters = {}  # type: Dict[str, Any]",
+        "fix": [
+          {
+            "before": "header_parameters = {}  # type: Dict[str, Any]",
+            "after": "header_parameters: Dict[str, Any] = {}"
+          }
+        ]
+      }
+    ]
+  }
+  

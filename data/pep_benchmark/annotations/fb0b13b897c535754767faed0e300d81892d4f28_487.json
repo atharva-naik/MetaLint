@@ -1,0 +1,19 @@
+{
+    "blob_id": "fb0b13b897c535754767faed0e300d81892d4f28",
+    "violations": [
+      {
+        "start_lineno": 20,
+        "end_lineno": 20,
+        "pep": "487",
+        "line": "class EnergyPlusModel(metaclass=ABCMeta):",
+        "span": "class EnergyPlusModel(metaclass=ABCMeta):",
+        "fix": [
+          {
+            "before": "class EnergyPlusModel(metaclass=ABCMeta):",
+            "after": "class EnergyPlusModel:\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)\n        if not any('__abstractmethods__' in base.__dict__ for base in cls.__mro__):\n            raise TypeError(\"Can't instantiate abstract base class without ABCMeta\")"
+          }
+        ]
+      }
+    ]
+  }
+  
