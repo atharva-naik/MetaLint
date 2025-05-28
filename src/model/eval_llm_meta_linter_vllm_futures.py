@@ -119,3 +119,5 @@ if __name__ == "__main__":
     # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-all-idioms-subtask-cot-star/checkpoint-2000/ --write_path data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_2000_all_idioms_subtask_cot_star.jsonl  --test_file data/ruff_meta_linting/all_idioms/test.json
 
     # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name "alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-dpo-transfer-v4-subtask-cot-star/checkpoint-200/" --write_path data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_dpo_preds_200_transfer_v4_subtask_cot_star.jsonl --test_file data/ruff_meta_linting/test_v4_new_format_with_lineno.json   
+
+    # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-trasfer-v5-lineno/checkpoint-6000/ --write_path "data/meta_linting_preds_vllm/qwen3_4b_sft_preds_6000_transfer_v5_lineno.jsonl" --test_file "data/ruff_meta_linting/test_v5.json"

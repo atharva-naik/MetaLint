@@ -21,7 +21,7 @@ VLLM_SERVER_URL = f"http://0.0.0.0:{PORT}/v1/chat/completions"
 MAX_RETRIES = 5
 MAX_SEQ_LEN = 32768
 MAX_NEW_TOKENS = 2048
-NUM_WORKERS = 12
+NUM_WORKERS = 16
 WRITE_EVERY_N = 2
 
 def get_args():
@@ -31,6 +31,7 @@ def get_args():
     parser.add_argument("--M", type=int, default=5, help="Number of samples per prompt")
     parser.add_argument("--train_file", type=str, required=True, help='path to training data to be used for training')
     parser.add_argument("--skip_no_violations", action="store_true", help="Comma-separated temperatures, one for each sample")
+    parser.add_argument("--skip_index_offset", default=0, help="add an offset to the start index", type=int)
     parser.add_argument("--temp", type=str, default='0,0.3,0.5,0.7,1', help="Comma-separated temperatures, one for each sample")
     return parser.parse_args()
 
@@ -93,10 +94,15 @@ def main():
     if not os.path.exists(write_path):
         open(write_path, "w").close()
     else:
+        # existing_preds = read_jsonl(write_path)
+        # # automatic skip index + manual skip index offset added.
+        # skip_index_till = int(args.skip_index_offset)+len(existing_preds)
+        # print(f"Resuming from prompt index {skip_index_till}")
         existing_preds = read_jsonl(write_path)
-        skip_index_till = len(existing_preds)
-        if skip_index_till > 0:
-            print(f"Resuming from prompt index {skip_index_till}")
+        # Only count fully written prompts (those with M model_responses)
+        num_fully_written = sum(1 for rec in existing_preds if "model_responses")
+        skip_index_till = int(args.skip_index_offset) + num_fully_written
+        print(f"Resuming from prompt index {skip_index_till}")
 
     pending_data = train_data[skip_index_till:]
     results_buffer = {}
@@ -159,3 +165,9 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+    # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name "alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-subtask-cot-star/checkpoint-2000/" --write_path "data/dpo_self_samples/qwen2.5coder_3b_instruct_transfer_v4_subtask_cot_star_SFT_step_2000.jsonl" --train_file data/ruff_meta_linting/train_v4_new_format_with_lineno.json --skip_no_violations
+    
+    # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name "alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-subtask-cot-star/checkpoint-2000/" --write_path "data/dpo_self_samples/qwen2.5coder_3b_instruct_transfer_v4_subtask_cot_star_SFT_step_2000_from_25000.jsonl" --train_file data/ruff_meta_linting/train_v4_new_format_with_lineno.json --skip_no_violations --skip_index_offset 25000
+
+    # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name "alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-trasfer-v5-lineno/checkpoint-4000/" --write_path "data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000.jsonl" --train_file data/ruff_meta_linting/train_v5.json --skip_no_violations
