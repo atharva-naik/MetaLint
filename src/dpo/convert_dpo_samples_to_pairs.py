@@ -108,9 +108,12 @@ if __name__ == "__main__":
     print(f"reward range: [{np.min(rewards):.3f}, {np.max(rewards):.3f}]")
     print(f"reward gap ranges from: [{np.min(reward_gaps).item():.4f}, {np.max(reward_gaps).item():.4f}]")
 
+    os.makedirs(args.output_dir, exist_ok=True)
     with open(os.path.join(args.output_dir, "train.json"), "w") as f:
         print(f"{len(dpo_train_data)} DPO train instances")
         json.dump(dpo_train_data, f, indent=4)
     with open(os.path.join(args.output_dir, "test.json"), "w") as f:
         print(f"{len(dpo_test_data)} DPO test instances")
         json.dump(dpo_test_data, f, indent=4)
+
+    # python src/dpo/convert_dpo_samples_to_pairs.py --dpo_samples_path data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000.jsonl --sft_train_data_path data/ruff_meta_linting/train_v5.json --output_dir data/ruff_meta_linting/dpo/qwen3_4b_transfer_v5_lineno_SFT_step_4000/ --skip_no_violations
