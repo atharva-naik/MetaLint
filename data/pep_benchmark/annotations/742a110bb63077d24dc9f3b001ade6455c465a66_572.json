@@ -1,0 +1,31 @@
+{
+  "blob_id": "742a110bb63077d24dc9f3b001ade6455c465a66",
+  "violations": [
+    {
+      "start_lineno": 48,
+      "end_lineno": 49,
+      "pep": "572",
+      "line": "            match = re.search(r'http://provenance\\.jpl\\.nasa\\.gov/cdp#(.*?)/\\d{4}-\\d{2}-\\d{2}T\\d{2}_\\d{2}_\\d{2}.*?$', entity)\n            if match:",
+      "span": "match = re.search(r'http://provenance\\.jpl\\.nasa\\.gov/cdp#(.*?)/\\d{4}-\\d{2}-\\d{2}T\\d{2}_\\d{2}_\\d{2}.*?$', entity)",
+      "fix": [
+        {
+          "before": "            match = re.search(r'http://provenance\\.jpl\\.nasa\\.gov/cdp#(.*?)/\\d{4}-\\d{2}-\\d{2}T\\d{2}_\\d{2}_\\d{2}.*?$', entity)\n            if match:",
+          "after": "            if (match := re.search('http://provenance\\\\.jpl\\\\.nasa\\\\.gov/cdp#(.*?)/\\\\d{4}-\\\\d{2}-\\\\d{2}T\\\\d{2}_\\\\d{2}_\\\\d{2}.*?$', entity)):"
+        }
+      ]
+    },
+    {
+      "start_lineno": 66,
+      "end_lineno": 67,
+      "pep": "572",
+      "line": "            match = re.search(r'(.*?)(?:/\\d{4}-\\d{2}-\\d{2}T\\d{2}_\\d{2}_\\d{2}.*?)?$', loc)\n            if match:",
+      "span": "match = re.search(r'(.*?)(?:/\\d{4}-\\d{2}-\\d{2}T\\d{2}_\\d{2}_\\d{2}.*?)?$', loc)",
+      "fix": [
+        {
+          "before": "            match = re.search(r'(.*?)(?:/\\d{4}-\\d{2}-\\d{2}T\\d{2}_\\d{2}_\\d{2}.*?)?$', loc)\n            if match:",
+          "after": "            if (match := re.search('(.*?)(?:/\\\\d{4}-\\\\d{2}-\\\\d{2}T\\\\d{2}_\\\\d{2}_\\\\d{2}.*?)?$', loc)):"
+        }
+      ]
+    }
+  ]
+}

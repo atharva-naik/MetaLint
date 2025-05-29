@@ -1,0 +1,18 @@
+{
+  "blob_id": "c8d9b002d12d8875c9916bb4aebc75003313354f",
+  "violations": [
+    {
+      "start_lineno": 22,
+      "end_lineno": 24,
+      "pep": "572",
+      "line": "        m = re.match('<(.+)>\\s*<(.+)>\\s*[<\"](.+)[>\"]',line.strip())\n\n        if(m):",
+      "span": "m = re.match('<(.+)>\\s*<(.+)>\\s*[<\"](.+)[>\"]',line.strip())",
+      "fix": [
+        {
+          "before": "        m = re.match('<(.+)>\\s*<(.+)>\\s*[<\"](.+)[>\"]',line.strip())\n\n        if(m):",
+          "after": "        if (m := re.match('<(.+)>\\\\s*<(.+)>\\\\s*[<\"](.+)[>\"]', line.strip())):"
+        }
+      ]
+    }
+  ]
+}

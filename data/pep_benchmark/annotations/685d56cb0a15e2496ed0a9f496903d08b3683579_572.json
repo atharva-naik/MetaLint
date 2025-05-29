@@ -1,0 +1,18 @@
+{
+  "blob_id": "685d56cb0a15e2496ed0a9f496903d08b3683579",
+  "violations": [
+    {
+      "start_lineno": 27,
+      "end_lineno": 28,
+      "pep": "572",
+      "line": "            matched = pattern.match(name)\n            if matched:",
+      "span": "matched = pattern.match(name)",
+      "fix": [
+        {
+          "before": "            matched = pattern.match(name)\n            if matched:",
+          "after": "            if (matched := pattern.match(name)):"
+        }
+      ]
+    }
+  ]
+}

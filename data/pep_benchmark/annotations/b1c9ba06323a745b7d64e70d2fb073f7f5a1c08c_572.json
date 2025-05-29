@@ -1,0 +1,31 @@
+{
+  "blob_id": "b1c9ba06323a745b7d64e70d2fb073f7f5a1c08c",
+  "violations": [
+    {
+      "start_lineno": 48,
+      "end_lineno": 49,
+      "pep": "572",
+      "line": "    m = re.match(at_pattern, reply_msg)\n    if m:",
+      "span": "m = re.match(at_pattern, reply_msg)",
+      "fix": [
+        {
+          "before": "    m = re.match(at_pattern, reply_msg)\n    if m:",
+          "after": "    if (m := re.match(at_pattern, reply_msg)):"
+        }
+      ]
+    },
+    {
+      "start_lineno": 54,
+      "end_lineno": 55,
+      "pep": "572",
+      "line": "            username = member.user_name\n            if username == from_email:\n                continue",
+      "span": "username = member.user_name",
+      "fix": [
+        {
+          "before": "            username = member.user_name\n            if username == from_email:",
+          "after": "            if (username := member.user_name) == from_email:"
+        }
+      ]
+    }
+  ]
+}
