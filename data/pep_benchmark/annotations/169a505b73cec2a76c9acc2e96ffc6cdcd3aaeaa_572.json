@@ -1,0 +1,18 @@
+{
+  "blob_id": "169a505b73cec2a76c9acc2e96ffc6cdcd3aaeaa",
+  "violations": [
+    {
+      "start_lineno": 20,
+      "end_lineno": 21,
+      "pep": "572",
+      "line": "        match = _embed_re.search(res.text)\n        if match:",
+      "span": "match = _embed_re.search(res.text)",
+      "fix": [
+        {
+          "before": "        match = _embed_re.search(res.text)\n        if match:",
+          "after": "        if (match := _embed_re.search(res.text)):"
+        }
+      ]
+    }
+  ]
+}

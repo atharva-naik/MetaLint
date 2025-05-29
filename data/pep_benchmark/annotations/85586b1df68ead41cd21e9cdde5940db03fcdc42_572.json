@@ -1,0 +1,18 @@
+{
+  "blob_id": "85586b1df68ead41cd21e9cdde5940db03fcdc42",
+  "violations": [
+    {
+      "start_lineno": 8,
+      "end_lineno": 11,
+      "pep": "572",
+      "line": "    match = re.search(r\"^__version__ = ['\\\"]([^'\\\"]*)['\\\"]\",\n                      version_file.read(), re.MULTILINE)\n\nif match:",
+      "span": "match = re.search(r\"^__version__ = ['\\\"]([^'\\\"]*)['\\\"]\"",
+      "fix": [
+        {
+          "before": "    match = re.search(r\"^__version__ = ['\\\"]([^'\\\"]*)['\\\"]\",\n                      version_file.read(), re.MULTILINE)\n\nif match:",
+          "after": "if (match := re.search('^__version__ = [\\'\\\\\"]([^\\'\\\\\"]*)[\\'\\\\\"]', version_file.read(), re.MULTILINE)):"
+        }
+      ]
+    }
+  ]
+}

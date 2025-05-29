@@ -1,0 +1,18 @@
+{
+  "blob_id": "00d03cc2dd392561308b3019724e793ee7ea4fb1",
+  "violations": [
+    {
+      "start_lineno": 30,
+      "end_lineno": 32,
+      "pep": "572",
+      "line": "        value = int(value.replace(\"user\", \"\"))\n        if value > max_key:\n            max_key = value",
+      "span": "value = int(value.replace(\"user\", \"\"))",
+      "fix": [
+        {
+          "before": "        value = int(value.replace(\"user\", \"\"))\n        if value > max_key:\n            max_key = value",
+          "after": "        if (value := int(value.replace('user', ''))) > max_key:\n            max_key = value"
+        }
+      ]
+    }
+  ]
+}
