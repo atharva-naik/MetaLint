@@ -372,7 +372,7 @@ Now provide the violations per idiom for the given code file. Don't forget to in
 Violations per idiom:
 """
 
-def generate_response_from_violations(violations, stack_file_lines: list[str], meta_task_idiom_codes, include_message: bool=False, add_line_numbers: bool=False):
+def generate_response_from_violations(violations, stack_file_lines: list[str], meta_task_idiom_codes, include_message: bool=False, add_line_numbers: bool=False, use_span: bool=False):
     filt_violations = [violation for violation in violations if violation['code'] in meta_task_idiom_codes and violation['code'] not in ["ANN001", "ANN201"]]
     grouped_violations = {code: [] for code in meta_task_idiom_codes if code not in ["ANN001", "ANN201"]}
     # group violations by each idiom in the meta-task.
@@ -388,8 +388,15 @@ def generate_response_from_violations(violations, stack_file_lines: list[str], m
             response += f"**Idiom {code} Violations:**\n"
             for num, violation in enumerate(violations):
                 if include_message:
-                    det_dict = {"line": "", "span": "", "message": violation["message"], "fix": None}
-                else: det_dict = {"line": "", "span": "", "fix": None}
+                    if use_span:
+                        det_dict = {"line": "", "span": "", "message": violation["message"], "fix": None}
+                    else:
+                        det_dict = {"line": "", "message": violation["message"], "fix": None}
+                else: 
+                    if use_span:
+                        det_dict = {"line": "", "span": "", "fix": None}
+                    else:
+                        det_dict = {"line": "", "fix": None}
                 det_line = []
                 det_span = []
                 edits = []
@@ -411,7 +418,8 @@ def generate_response_from_violations(violations, stack_file_lines: list[str], m
                         span_line = line
                     det_span.append(span_line)
                 det_dict["line"] = "\n".join(det_line)
-                det_dict["span"] = "\n".join(det_span)
+                if use_span:
+                    det_dict["span"] = "\n".join(det_span)
                 if violation["fix"] is not None and violation['fix']["applicability"] == "safe":
                     for edit in violation["fix"]["edits"]:
                         before_span = []
