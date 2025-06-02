@@ -1,0 +1,18 @@
+{
+  "blob_id": "26fe406d0e6fbd876a20f051e198be53b3c2d5bd",
+  "violations": [
+    {
+      "start_lineno": 47,
+      "end_lineno": 48,
+      "pep": "572",
+      "line": "        match = regex.search(item)\n        if match:",
+      "span": " match = regex.search(item)",
+      "fix": [
+        {
+          "before": "        match = regex.search(item)\n        if match:",
+          "after": "        if (match := regex.search(item)):"
+        }
+      ]
+    }
+  ]
+}

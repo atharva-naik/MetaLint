@@ -1,0 +1,18 @@
+{
+  "blob_id": "82b163e0655d3a3d299eb6ece605cf2fcc3c9873",
+  "violations": [
+    {
+      "start_lineno": 27,
+      "end_lineno": 29,
+      "pep": "572",
+      "line": "        session_product_id = self.env['product.product'].search([('is_ssesion_product','=',True)], limit=1)\n    \n        if session_product_id:",
+      "span": "session_product_id = self.env['product.product'].search([('is_ssesion_product','=',True)], limit=1)",
+      "fix": [
+        {
+          "before": "        session_product_id = self.env['product.product'].search([('is_ssesion_product','=',True)], limit=1)\n    \n        if session_product_id:",
+          "after": "        if (session_product_id := self.env['product.product'].search([('is_ssesion_product', '=', True)], limit=1)):"
+        }
+      ]
+    }
+  ]
+}

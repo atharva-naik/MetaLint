@@ -1,0 +1,31 @@
+{
+  "blob_id": "70be6bdde22312fa017ea134d305036a28f96711",
+  "violations": [
+    {
+      "start_lineno": 88,
+      "end_lineno": 89,
+      "pep": "572",
+      "line": "            state_machine = self.search(name)\n            if state_machine:",
+      "span": " state_machine = self.search(name)",
+      "fix": [
+        {
+          "before": "            state_machine = self.search(name)\n            if state_machine:",
+          "after": "            if (state_machine := self.search(name)):"
+        }
+      ]
+    },
+    {
+      "start_lineno": 38,
+      "end_lineno": 40,
+      "pep": "572",
+      "line": "        state_machine_arn = self.get_state_machine_arn(name)\n        if state_machine_arn is None:\n            return None",
+      "span": "state_machine_arn = self.get_state_machine_arn(name)",
+      "fix": [
+        {
+          "before": "        state_machine_arn = self.get_state_machine_arn(name)\n        if state_machine_arn is None:",
+          "after": "        if (state_machine_arn := self.get_state_machine_arn(name)) is None:"
+        }
+      ]
+    }
+  ]
+}
