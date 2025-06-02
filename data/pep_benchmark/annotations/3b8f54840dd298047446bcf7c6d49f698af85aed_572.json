@@ -1,0 +1,31 @@
+{
+  "blob_id": "3b8f54840dd298047446bcf7c6d49f698af85aed",
+  "violations": [
+    {
+      "start_lineno": 28,
+      "end_lineno": 29,
+      "pep": "572",
+      "line": "                ret = re.compile(r\"(.+\\/$)\").match(line)\n                if ret:",
+      "span": "ret = re.compile(r\"(.+\\/$)\").match(line)",
+      "fix": [
+        {
+          "before": "                ret = re.compile(r\"(.+\\/$)\").match(line)\n                if ret:",
+          "after": "                if (ret := re.compile('(.+\\\\/$)').match(line)):"
+        }
+      ]
+    },
+    {
+      "start_lineno": 25,
+      "end_lineno": 26,
+      "pep": "572",
+      "line": "        df_output = CLIHelper().df()\n        if df_output:\n            for line in df_output:",
+      "span": "df_output = CLIHelper().df()",
+      "fix": [
+        {
+          "before": "        df_output = CLIHelper().df()\n        if df_output:",
+          "after": "        if (df_output := CLIHelper().df()):"
+        }
+      ]
+    }
+  ]
+}

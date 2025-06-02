@@ -1,0 +1,18 @@
+{
+  "blob_id": "5e69d51452e9bb700cf974fb0dace9824c2d1827",
+  "violations": [
+    {
+      "start_lineno": 25,
+      "end_lineno": 26,
+      "pep": "572",
+      "line": "    res = re.findall(\"tips\",url_path)\n    if res:",
+      "span": "res = re.findall(\"tips\",url_path)",
+      "fix": [
+        {
+          "before": "    res = re.findall(\"tips\",url_path)\n    if res:",
+          "after": "    if (res := re.findall('tips', url_path)):"
+        }
+      ]
+    }
+  ]
+}

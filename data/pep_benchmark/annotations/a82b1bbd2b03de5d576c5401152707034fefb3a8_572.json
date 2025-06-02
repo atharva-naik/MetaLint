@@ -1,0 +1,31 @@
+{
+  "blob_id": "a82b1bbd2b03de5d576c5401152707034fefb3a8",
+  "violations": [
+    {
+      "start_lineno": 34,
+      "end_lineno": 35,
+      "pep": "572",
+      "line": "            ruid = re.search(self.ruid_regexp, m.group(0))\n            if ruid:",
+      "span": "ruid = re.search(self.ruid_regexp, m.group(0))",
+      "fix": [
+        {
+          "before": "            ruid = re.search(self.ruid_regexp, m.group(0))\n            if ruid:",
+          "after": "            if (ruid := re.search(self.ruid_regexp, m.group(0))):"
+        }
+      ]
+    },
+    {
+      "start_lineno": 45,
+      "end_lineno": 46,
+      "pep": "572",
+      "line": "            obj = rc.lookupObject(uid)\n            if obj:",
+      "span": "obj = rc.lookupObject(uid)",
+      "fix": [
+        {
+          "before": "            obj = rc.lookupObject(uid)\n            if obj:",
+          "after": "            if (obj := rc.lookupObject(uid)):"
+        }
+      ]
+    }
+  ]
+}

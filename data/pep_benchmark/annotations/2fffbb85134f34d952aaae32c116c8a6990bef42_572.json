@@ -1,0 +1,18 @@
+{
+  "blob_id": "2fffbb85134f34d952aaae32c116c8a6990bef42",
+  "violations": [
+    {
+      "start_lineno": 12,
+      "end_lineno": 13,
+      "pep": "572",
+      "line": "lxx_l = lxx_f.readline()\nwhile lxx_l:",
+      "span": "lxx_l = lxx_f.readline()",
+      "fix": [
+        {
+          "before": "lxx_l = lxx_f.readline()\nwhile lxx_l:",
+          "after": "while (lxx_l := lxx_f.readline()):"
+        }
+      ]
+    }
+  ]
+}
