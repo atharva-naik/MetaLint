@@ -23,6 +23,7 @@ if __name__ == "__main__":
     parser.add_argument("--output_dir", type=str, help="Directory to save train/test splits.",
                         default="data/ruff_meta_linting/dpo/qwen2.5_3b_instruct_transfer_v4_subtask_cot_star_SFT_step_2000")
     parser.add_argument("--skip_no_violations", action="store_true", help="Skip samples without any violations.")
+    parser.add_argument("--skip_violations", action="store_true", help="Skip samples with violations.")
     parser.add_argument("--reward_gap", default=0.2, help="How much the chosen response should be better than the rejected response.")
     parser.add_argument("--train_split", type=float, default=0.9, help="Fraction of data to use for training. Default=0.9")
     parser.add_argument("--random_seed", type=int, default=42, help="Random seed for reproducibility.")
@@ -41,6 +42,7 @@ if __name__ == "__main__":
         # skip cases with no idiom violations 
         # (sanity test for seeing if no violation cases are responsbile for recall drop).
         if args.skip_no_violations and len(load_linter_results(rec["ground_truth"])) == 0: continue
+        elif args.skip_violations and len(load_linter_results(rec["ground_truth"])) != 0: continue
         for i in range(len(model_responses)):
             for j in range(i+1, len(model_responses)):
                 if model_responses[i][1] > args.reward_gap + model_responses[j][1]: # response i has better reward than j
@@ -116,4 +118,6 @@ if __name__ == "__main__":
         print(f"{len(dpo_test_data)} DPO test instances")
         json.dump(dpo_test_data, f, indent=4)
 
-    # python src/dpo/convert_dpo_samples_to_pairs.py --dpo_samples_path data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000.jsonl --sft_train_data_path data/ruff_meta_linting/train_v5.json --output_dir data/ruff_meta_linting/dpo/qwen3_4b_transfer_v5_lineno_SFT_step_4000/ --skip_no_violations
+    # python src/dpo/convert_dpo_samples_to_pairs.py --dpo_samples_path data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000_violations_only.jsonl --sft_train_data_path data/ruff_meta_linting/train_v5.json --output_dir data/ruff_meta_linting/dpo/qwen3_4b_transfer_v5_lineno_SFT_step_4000_violations_only/ --skip_no_violations
+
+    # python src/dpo/convert_dpo_samples_to_pairs.py --dpo_samples_path data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000_no_violations_only.jsonl --sft_train_data_path data/ruff_meta_linting/train_v5.json --output_dir data/ruff_meta_linting/dpo/qwen3_4b_transfer_v5_lineno_SFT_step_4000_no_violations_only/ --skip_violations

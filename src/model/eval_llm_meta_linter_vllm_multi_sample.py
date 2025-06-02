@@ -12,17 +12,8 @@ module_path = str(pathlib.Path(os.path.abspath(__file__)).parent.parent.parent)
 sys.path.append(module_path)
 
 from src.datautils import read_jsonl
-from src.dpo.reward_model_newformat import evaluate_instance
+from src.dpo.reward_model_newformat_no_span import evaluate_instance
 from src.metrics.meta_linting.idiom_detection_and_localization_v3 import load_linter_results
-
-# vLLM server details
-PORT = 8002
-VLLM_SERVER_URL = f"http://0.0.0.0:{PORT}/v1/chat/completions"
-MAX_RETRIES = 5
-MAX_SEQ_LEN = 32768
-MAX_NEW_TOKENS = 2048
-NUM_WORKERS = 16
-WRITE_EVERY_N = 2
 
 def get_args():
     parser = argparse.ArgumentParser(description="Run inference with different settings.")
@@ -30,10 +21,24 @@ def get_args():
     parser.add_argument("--write_path", type=str, required=True, help="name of the file where predictions should be written")
     parser.add_argument("--M", type=int, default=5, help="Number of samples per prompt")
     parser.add_argument("--train_file", type=str, required=True, help='path to training data to be used for training')
-    parser.add_argument("--skip_no_violations", action="store_true", help="Comma-separated temperatures, one for each sample")
+    parser.add_argument("--skip_no_violations", action="store_true", help="Skip cases with no violations")
+    parser.add_argument("--skip_violations", action="store_true", help="Skip cases with violations")
     parser.add_argument("--skip_index_offset", default=0, help="add an offset to the start index", type=int)
     parser.add_argument("--temp", type=str, default='0,0.3,0.5,0.7,1', help="Comma-separated temperatures, one for each sample")
+    parser.add_argument("--port", type=int, default=8002, help="Port where vLLM server is being served")
+    parser.add_argument("--num_workers", type=int, default=16, help="Number of parallel threads/workers to be used for querying vLLM.")
     return parser.parse_args()
+
+args = get_args()
+
+# vLLM server details
+PORT = args.port
+VLLM_SERVER_URL = f"http://0.0.0.0:{PORT}/v1/chat/completions"
+MAX_RETRIES = 5
+MAX_SEQ_LEN = 32768
+MAX_NEW_TOKENS = 2048
+NUM_WORKERS = args.num_workers
+WRITE_EVERY_N = 1
 
 def generate_response(prompt_index: int, sample_index: int, rec: dict, model_name: str, temperature: float):
     user_prompt = rec['messages'][0]['content']
@@ -73,8 +78,7 @@ def generate_response(prompt_index: int, sample_index: int, rec: dict, model_nam
             continue
 
 
-def main():
-    args = get_args()
+def main(args):
     model_name = args.model_name
     write_path = args.write_path
     M = args.M
@@ -89,6 +93,9 @@ def main():
     if args.skip_no_violations: # skip data with NO VIOLATIONs for idioms (hack to improve recall).
         train_data = [rec for rec in train_data if len(load_linter_results(rec["messages"][1]["content"])) != 0]
         print(f"{len(train_data)} SFT training instances with VIOLATIONS")
+    elif args.skip_violations: # skip data with VIOLATIONs for idioms (hack to improve precision).
+        train_data = [rec for rec in train_data if len(load_linter_results(rec["messages"][1]["content"])) == 0]
+        print(f"{len(train_data)} SFT training instances with NO VIOLATIONS")
     skip_index_till = 0
 
     if not os.path.exists(write_path):
@@ -164,10 +171,12 @@ def main():
         f_out.flush()
 
 if __name__ == "__main__":
-    main()
+    main(args)
 
     # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name "alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-subtask-cot-star/checkpoint-2000/" --write_path "data/dpo_self_samples/qwen2.5coder_3b_instruct_transfer_v4_subtask_cot_star_SFT_step_2000.jsonl" --train_file data/ruff_meta_linting/train_v4_new_format_with_lineno.json --skip_no_violations
     
     # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name "alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-subtask-cot-star/checkpoint-2000/" --write_path "data/dpo_self_samples/qwen2.5coder_3b_instruct_transfer_v4_subtask_cot_star_SFT_step_2000_from_25000.jsonl" --train_file data/ruff_meta_linting/train_v4_new_format_with_lineno.json --skip_no_violations --skip_index_offset 25000
 
-    # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name "alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-trasfer-v5-lineno/checkpoint-4000/" --write_path "data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000.jsonl" --train_file data/ruff_meta_linting/train_v5.json --skip_no_violations
+    # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name "alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-trasfer-v5-lineno/checkpoint-4000/" --write_path "data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000_violations_only.jsonl" --train_file data/ruff_meta_linting/train_v5.json --skip_no_violations
+    # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name "alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-trasfer-v5-lineno/checkpoint-4000/" --write_path "data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000_no_violations_only.jsonl" --train_file data/ruff_meta_linting/train_v5.json --skip_violations
+    # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name "alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-trasfer-v5-lineno/checkpoint-4000/" --write_path "data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000.jsonl" --train_file data/ruff_meta_linting/train_v5.json

@@ -98,8 +98,8 @@ def compute_f_score(p, r):
     if p + r == 0: return 0
     return 2*p*r/(p+r)
 
-# def compute_line_level_metric(data):
-#     p_line, r_line = defaultdict(lambda: []), defaultdict(lambda: [])
+# def line_level_overlap(data):
+#     p_line, r_line = [], []
 
 #     for index,rec in tqdm(enumerate(data)):
 #         model_resp = load_linter_results(rec["model_response"])
@@ -109,9 +109,12 @@ def compute_f_score(p, r):
 #         idiom_wise_gt_lines = defaultdict(lambda: set())
 #         for i,model_violation in enumerate(model_resp):
 #             try: 
-#                 idiom_wise_pred_lines[model_violation['code']].add(int(model_violation['line'].split()[0].strip().removesuffix(":")))       
+#                 idiom_wise_pred_lines[model_violation['code']].add(int(model_violation['line'].split()[0].strip().removesuffix(":")))    
+#             except AttributeError: pass   
 #             except ValueError: pass # print(model_violation['line'])
 #             except KeyError: pass # print(model_violation.keys())
+#             except IndexError: pass
+#                 # print(model_violation['line'])
 #         for i,gt_violation in enumerate(gt):
 #             idiom_wise_gt_lines[gt_violation['code']].add(int(gt_violation['line'][:4].strip()))
 #         for idiom_code in idiom_wise_gt_lines.keys():
@@ -119,40 +122,48 @@ def compute_f_score(p, r):
 #             try: p_line_inst_idiom = overlap/len(idiom_wise_pred_lines[idiom_code])
 #             except ZeroDivisionError: p_line_inst_idiom = 0
 #             r_line_inst_idiom = overlap/len(idiom_wise_gt_lines[idiom_code])
-#             p_line[idiom_code].append(p_line_inst_idiom)
-#             r_line[idiom_code].append(r_line_inst_idiom)
-    
-#     # average of instances.
-#     for idiom_code in r_line.keys():
-#         p_line[idiom_code] = np.mean(p_line[idiom_code]).item()
-#         r_line[idiom_code] = np.mean(r_line[idiom_code]).item()
-#     p_line = dict(p_line)
-#     r_line = dict(r_line)
+#             p_line.append(p_line_inst_idiom)
+#             r_line.append(r_line_inst_idiom)
 
-#     # average over idioms
-#     p_line = np.mean(list(p_line.values())).item()
-#     r_line = np.mean(list(r_line.values())).item()
+#     # average over instances and idioms
+#     print(p_line)
+#     p_line = np.mean(p_line).item()
+#     r_line = np.mean(r_line).item()
 #     f_line = compute_f_score(p_line, r_line)
 
 #     return {"P": p_line, "R": r_line, "F": f_line}
 
-def compute_line_level_metric(data):
+def line_level_overlap(data):
+    def extract_line_nos(violation: dict):
+        line_nos = set()
+        try:
+            for l in violation['line'].split("\n"):
+                try: 
+                    line_nos.add(int(l.split()[0].strip().removesuffix(":")))
+                except AttributeError: pass   
+                except ValueError: pass # print(model_violation['line'])
+                except KeyError: pass # print(model_violation.keys())
+                except IndexError: pass
+        except AttributeError: pass   
+        except ValueError: pass # print(model_violation['line'])
+        except KeyError: pass # print(model_violation.keys())
+        except IndexError: pass
+
+        return line_nos
+
     p_line, r_line = [], []
 
-    for index,rec in tqdm(enumerate(data)):
+    for index,rec in enumerate(data):
         model_resp = load_linter_results(rec["model_response"])
         gt = load_linter_results(rec["ground_truth"])
-
         idiom_wise_pred_lines = defaultdict(lambda: set())
         idiom_wise_gt_lines = defaultdict(lambda: set())
         for i,model_violation in enumerate(model_resp):
-            try: 
-                idiom_wise_pred_lines[model_violation['code']].add(int(model_violation['line'].split()[0].strip().removesuffix(":")))    
-            except AttributeError: pass   
-            except ValueError: pass # print(model_violation['line'])
-            except KeyError: pass # print(model_violation.keys())
+            idiom_wise_pred_lines[model_violation['code']] = idiom_wise_pred_lines[model_violation['code']].union(extract_line_nos(model_violation))
         for i,gt_violation in enumerate(gt):
-            idiom_wise_gt_lines[gt_violation['code']].add(int(gt_violation['line'][:4].strip()))
+            idiom_wise_gt_lines[gt_violation['code']] = idiom_wise_gt_lines[gt_violation['code']].union(extract_line_nos(gt_violation))
+        # print(idiom_wise_gt_lines)
+        # print(idiom_wise_pred_lines)
         for idiom_code in idiom_wise_gt_lines.keys():
             overlap = len(idiom_wise_pred_lines[idiom_code].intersection(idiom_wise_gt_lines[idiom_code]))
             try: p_line_inst_idiom = overlap/len(idiom_wise_pred_lines[idiom_code])
@@ -162,86 +173,12 @@ def compute_line_level_metric(data):
             r_line.append(r_line_inst_idiom)
 
     # average over instances and idioms
+    # print(p_line)
     p_line = np.mean(p_line).item()
     r_line = np.mean(r_line).item()
     f_line = compute_f_score(p_line, r_line)
 
     return {"P": p_line, "R": r_line, "F": f_line}
-
-# def compute_line_level_metric(data):
-#     p_line, r_line = [], []
-
-#     for index,rec in tqdm(enumerate(data)):
-#         model_resp = load_linter_results(rec["model_response"])
-#         gt = load_linter_results(rec["ground_truth"])
-#         pred_lines = set()
-#         gt_lines = set()
-#         for i,model_violation in enumerate(model_resp):
-#             try: 
-#                 lineno = int(model_violation['line'].split()[0].strip().removesuffix(":"))
-#                 code = model_violation['code']
-#                 pred_lines.add(f"{code}-{lineno}") 
-#             except ValueError: pass # print(model_violation['line'])
-#             except KeyError: pass # print(model_violation.keys())
-#         for i,gt_violation in enumerate(gt):
-#             lineno = int(gt_violation['line'][:4].strip())
-#             code = gt_violation['code']
-#             gt_lines.add(f"{code}-{lineno}")
-#         overlap = len(pred_lines.intersection(gt_lines))
-#         try: p_line_inst = overlap/len(pred_lines)
-#         except ZeroDivisionError: p_line_inst = 0
-#         try: r_line_inst = overlap/len(gt_lines)
-#         except ZeroDivisionError: r_line_inst = 0
-#         p_line.append(p_line_inst)
-#         r_line.append(r_line_inst)
-    
-#     # average over instances
-#     p_line = np.mean(p_line).item()
-#     r_line = np.mean(r_line).item()
-#     f_line = compute_f_score(p_line, r_line)
-
-#     return {"P": p_line, "R": r_line, "F": f_line}
-
-def compute_overall_metric(data, match_code: bool=True):
-    p_line, r_line = [], []
-
-    for index,rec in tqdm(enumerate(data)):
-        model_resp = load_linter_results(rec["model_response"])
-        gt = load_linter_results(rec["ground_truth"])
-
-        # edge cases.
-        if len(model_resp) == 0 and len(gt) == 0: 
-            # we skip cases where both are "NO VIOLATION" for the metric (but not for the reward).
-            # the reason we skip these for the metric is because they tend to overinflate the scores, since "NO VIOLATION" is pretty common.
-            continue
-        elif len(model_resp) == 0 or len(gt) == 0: 
-            p_line.append(0)
-            r_line.append(0)
-            continue
-
-        line_scores = np.zeros((len(model_resp), len(gt)))
-        for i,model_violation in enumerate(model_resp):
-            for j,gt_violation in enumerate(gt):
-                if match_code:
-                    line_scores[i][j] = int(model_violation["code"] == gt_violation["code"] and model_violation.get("line","") == gt_violation["line"])
-                    # except KeyError as e:
-                    #     print(e)
-                    #     print(model_violation)
-                    #     exit()
-                else:
-                    line_scores[i][j] = int(model_violation.get("line","") == gt_violation["line"])
-                    # except KeyError as e:
-                    #     print(e)
-                    #     print(model_violation)
-                    #     exit()
-        p_line.append((line_scores.sum(1)>=1).sum().item()/len(model_resp))
-        r_line.append((line_scores.sum(0)>=1).sum().item()/len(gt))
-    
-    p_line = np.mean(p_line).item()
-    r_line = np.mean(r_line).item()
-    f_line = compute_f_score(p_line, r_line)
-
-    return {"line": {"P": p_line, "R": r_line, "F": f_line}}
 
 def compute_meta_task_conf_mat(preds, test_data):
     meta_task_instr_follow_rate = len(preds)
@@ -315,23 +252,35 @@ def compute_aggregate_metrics(idiom_precisions, idiom_recalls):
 
 # main
 if __name__ == "__main__":
-    steps = sys.argv[1]
+    path = sys.argv[1]
 
     # SFT and DPO **current transfer experiments**:
-    test_preds = read_jsonl(f"data/meta_linting_preds_vllm/qwen3_4b_sft_preds_{steps}_transfer_v5_lineno.jsonl")
+    # f"data/meta_linting_preds_vllm/qwen3_4b_dpo_preds_{steps}_transfer_v5_lineno.jsonl"
+    # f"data/meta_linting_preds_vllm/qwen3_4b_sft_preds_{steps}_transfer_v5_lineno.jsonl"
+
+    # CoT SFT and DPO **current transfer experiments**:
+
+    test_preds = read_jsonl(path)
+    # NOTE: remove cases with blank ground truth (""). These were corresponding to idioms ANN001, ANN201 etc. that were excluded from the ruff data generation but somehow forgot to remove them in transfer data generation.
+    test_preds = [rec for rec in test_preds if rec["ground_truth"] != ""]
 
     test_data = json.load(open("data/ruff_meta_linting/test_v5.json"))
+    # NOTE: remove cases with blank ground truth (""). These were corresponding to idioms ANN001, ANN201 etc. that were excluded from the ruff data generation but somehow forgot to remove them in transfer data generation.
+    test_data = [rec for rec in test_data if rec["messages"][1]['content'] != ""]
+
+    assert len(test_data) == len(test_preds)
 
     # test_preds = read_jsonl(f"data/meta_linting_preds/qwen2.5coder_3b_instruct_sft_preds_{steps}-v2-data.jsonl")
     # test_data = json.load(open("data/ruff_meta_linting/test_v2.json"))
     
     # compute_idiom_wise_freq_in_train(train_data=json.load(open(f"./data/ruff_meta_linting/hardness_experiment/train.json")))
     idiom_precisions, idiom_recalls = compute_idiom_wise_pr(test_preds)
+
     compute_aggregate_metrics(idiom_precisions, idiom_recalls)
     meta_task_instr_follow_rate = compute_meta_task_conf_mat(preds=test_preds, test_data=test_data)
     print(f"\x1b[34;1minstruction follow rate: {meta_task_instr_follow_rate:.4f}\x1b[0m")
 
-    overall_det_loc_metric = compute_line_level_metric(test_preds)
+    overall_det_loc_metric = line_level_overlap(test_preds)
     for k,v in overall_det_loc_metric.items():
         print(f"line: {k}={v:.4f}")
     # for k,v in overall_det_loc_metric["line"].items():
