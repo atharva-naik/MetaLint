@@ -15,6 +15,41 @@ from src.datautils import read_jsonl
 from src.dpo.reward_model_newformat_no_span import evaluate_instance
 from src.metrics.meta_linting.idiom_detection_and_localization_v3 import load_linter_results
 
+SAMPLE_OUTPUT_FORMAT_VIOLATIONS = """### Final Idiom Violations Found
+
+**Idiom XYZ Violations:**
+
+{"line": " 12 \\t\\t#event = forms.ModelChoiceField(queryset=Inquiry.objects.filter(owner=kwargs.pop('user')))", "fix": null}
+{"line": "  1 from django import forms\\n  2 from django.forms.models import inlineformset_factory\\n  3 from .models import Request\\n  4 from inquiry.models import *", "fix": [{"before": "from django import forms\\nfrom django.forms.models import inlineformset_factory\\nfrom .models import Request\\nfrom inquiry.models import *\\n\\n\\n\\n", "after": "from django import forms\\nfrom django.forms.models import inlineformset_factory\\nfrom inquiry.models import *\\n\\nfrom .models import Request\\n\\n\\n"}]}
+"""
+
+SAMPLE_OUTPUT_FORMAT_NO_VIOLATIONS = """### Final Idiom Violations Found
+
+**Idiom XYZ Violations:**
+
+NO VIOLATIONS FOUND
+"""
+
+def add_output_instr_to_prompt(input_prompt: str):
+    assert input_prompt.strip("\n").endswith("Violations per idiom:")
+    input_prompt = input_prompt.strip("\n").removesuffix("Violations per idiom:")
+    input_prompt += f"""
+# OUTPUT FORMAT
+    
+I want you to generate your output under a section called "### Final Idiom Violations Found".
+
+Structure you response for a given idiom XYZ as follows for cases with violations:
+
+{SAMPLE_OUTPUT_FORMAT_VIOLATIONS}
+
+and as follows for cases with violations:
+
+{SAMPLE_OUTPUT_FORMAT_NO_VIOLATIONS}
+
+Violations per idiom:"""
+    
+    return input_prompt
+
 def get_args():
     parser = argparse.ArgumentParser(description="Run inference with different settings.")
     parser.add_argument("--model_name", type=str, required=True, help="which SFT model is to be queried")
@@ -25,6 +60,8 @@ def get_args():
     parser.add_argument("--skip_violations", action="store_true", help="Skip cases with violations")
     parser.add_argument("--skip_index_offset", default=0, help="add an offset to the start index", type=int)
     parser.add_argument("--temp", type=str, default='0,0.3,0.5,0.7,1', help="Comma-separated temperatures, one for each sample")
+    parser.add_argument("--untrained_mode", action="store_true", help="used when inferencing untrained model to obtain proper output format.")
+    parser.add_argument("--no_think", action="store_true", help="Disable chain-of-thought reasoning globally.")
     parser.add_argument("--port", type=int, default=8002, help="Port where vLLM server is being served")
     parser.add_argument("--num_workers", type=int, default=16, help="Number of parallel threads/workers to be used for querying vLLM.")
     return parser.parse_args()
@@ -34,7 +71,7 @@ args = get_args()
 # vLLM server details
 PORT = args.port
 VLLM_SERVER_URL = f"http://0.0.0.0:{PORT}/v1/chat/completions"
-MAX_RETRIES = 5
+MAX_RETRIES = 10
 MAX_SEQ_LEN = 32768
 MAX_NEW_TOKENS = 2048
 NUM_WORKERS = args.num_workers
@@ -88,7 +125,13 @@ def main(args):
 
     if os.path.exists(args.train_file): # use local train file.
         train_data = json.load(open(args.train_file))
-    else: train_data = load_dataset(args.train_file)['train'] # load train split from datasets module.
+    else: train_data = load_dataset(args.train_file)['train'] 
+    
+    if args.untrained_mode:
+        for i in range(len(train_data)):
+            train_data[i]['messages'][0]['content'] = add_output_instr_to_prompt(train_data[i]['messages'][0]['content'])
+
+    # load train split from datasets module.
     print(f"read {len(train_data)} SFT training instances")
     if args.skip_no_violations: # skip data with NO VIOLATIONs for idioms (hack to improve recall).
         train_data = [rec for rec in train_data if len(load_linter_results(rec["messages"][1]["content"])) != 0]
@@ -180,3 +223,5 @@ if __name__ == "__main__":
     # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name "alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-trasfer-v5-lineno/checkpoint-4000/" --write_path "data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000_violations_only.jsonl" --train_file data/ruff_meta_linting/train_v5.json --skip_no_violations
     # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name "alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-trasfer-v5-lineno/checkpoint-4000/" --write_path "data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000_no_violations_only.jsonl" --train_file data/ruff_meta_linting/train_v5.json --skip_violations
     # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name "alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-trasfer-v5-lineno/checkpoint-4000/" --write_path "data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000.jsonl" --train_file data/ruff_meta_linting/train_v5.json
+
+    # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name Qwen/Qwen3-4B --write_path "data/dpo_self_samples/qwen3_4b_think_mode_untrained.jsonl" --train_file data/ruff_meta_linting/train_v5.json --untrained_mode

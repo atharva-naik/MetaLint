@@ -141,8 +141,7 @@ MAX_RETRIES = 5
 MAX_SEQ_LEN = 32768
 MAX_NEW_TOKENS = 2048
 NUM_WORKERS = args.num_workers
-WRITE_EVERY_N = 1  # flush every N completed responses
-PATIENCE_LIMIT = 5
+PATIENCE_LIMIT = 2
 
 def load_linter_results(text):
     results = []
@@ -163,7 +162,8 @@ def load_linter_results(text):
                 # print(f"{e}: {line}")
     return results
 
-def generate_response(index: int, rec: dict, model_name: str):
+def generate_response(rec: dict, model_name: str) -> dict:
+    record_id = rec["id"]
     user_prompt = rec['messages'][0]['content']
     gt_response = rec['messages'][1]['content']
 
@@ -194,7 +194,7 @@ def generate_response(index: int, rec: dict, model_name: str):
             
             while reward != 1 and IMPATIENCE < PATIENCE_LIMIT:
                 IMPATIENCE += 1
-                # print(f"failed attempt {IMPATIENCE}/{PATIENCE_LIMIT} for {index}")
+                # print(f"failed attempt {IMPATIENCE}/{PATIENCE_LIMIT} for {record_id}")
                 messages = [{"role": "user", "content": user_prompt}]
                 payload = {
                     "model": model_name,
@@ -213,7 +213,7 @@ def generate_response(index: int, rec: dict, model_name: str):
             if IMPATIENCE == PATIENCE_LIMIT:
                 rationalized = True
                 corrected_model_response = [model_response]
-                print(f"\x1b[31;1mfailed to get correct answer for {index}! Moving on to rationalization\x1b[0m")
+                # print(f"\x1b[31;1mfailed to get correct answer for {record_id}! Moving on to rationalization\x1b[0m")
                 REASONER_INCORRECT_ANSWER = load_linter_results(model_response)
                 LINTER_CORRECT_ANSWER = gt_response
                 
@@ -243,7 +243,7 @@ def generate_response(index: int, rec: dict, model_name: str):
 
                 while reward != 1 and IMPATIENCE < PATIENCE_LIMIT:
                     IMPATIENCE += 1
-                    # print(f"failed attempt {IMPATIENCE}/{PATIENCE_LIMIT} for {index}")
+                    # print(f"failed attempt {IMPATIENCE}/{PATIENCE_LIMIT} for {record_id}")
                     REASONER_INCORRECT_ANSWER = load_linter_results(model_response)
                     LINTER_CORRECT_ANSWER = gt_response
                     messages = [
@@ -270,14 +270,14 @@ def generate_response(index: int, rec: dict, model_name: str):
 
                 if reward == 1: 
                     corrected_model_response.append(model_response)
-                    print(f"\x1b[32;1mRationalization worked for {index}!\x1b[0m")
+                    # print(f"\x1b[32;1mRationalization worked for {record_id}!\x1b[0m")
                 else: 
                     corrected_model_response.append(gt_response) # just add model response without CoT as it is.
                     STaR_failed = True
-                    print(f"\x1b[31;1mRationalization failed for {index}!\x1b[0m")
+                    # print(f"\x1b[31;1mRationalization failed for {record_id}!\x1b[0m")
             else: corrected_model_response = [model_response]
 
-            return index, {
+            return {
                 "id": rec["id"],
                 "source": rec["source"],
                 "model_response": corrected_model_response,
@@ -289,7 +289,7 @@ def generate_response(index: int, rec: dict, model_name: str):
             }
         except Exception as e:
             if attempt == MAX_RETRIES - 1:
-                raise RuntimeError(f"Failed after {MAX_RETRIES} retries on index {index}: {e}")
+                raise RuntimeError(f"Failed after {MAX_RETRIES} retries on record_id {record_id}: {e}")
             continue
 
 def main(args):
@@ -298,48 +298,36 @@ def main(args):
     train_data = json.load(open(args.train_file))
     for i in range(len(train_data)):
         train_data[i]['messages'][0]['content'] = add_cot_gen_instr_to_prompt(train_data[i]['messages'][0]['content'])
-    print(train_data[i]['messages'][0]['content'])
-    skip_index_till = 0
+    # print(train_data[i]['messages'][0]['content'])
 
     if not os.path.exists(write_path):
         open(write_path, "w").close()
+        existing_preds = []
     else:
         existing_preds = read_jsonl(write_path)
-        skip_index_till = len(existing_preds)
-        if skip_index_till > 0:
-            print(f"Resuming from index {skip_index_till}")
 
-    pending_data = train_data[skip_index_till:]
-    results_buffer = {}
-    next_write_index = skip_index_till
+    # Build a set of all IDs already written
+    existing_ids = {pred["id"] for pred in existing_preds}
+
+    # Filter out any records whose ID is already in the output file
+    pending_data = [rec for rec in train_data if rec["id"] not in existing_ids]
+    if existing_ids:
+        print(f"Skipping {len(existing_ids)} records already present, querying {len(pending_data)} new records")
 
     with ThreadPoolExecutor(max_workers=NUM_WORKERS) as executor, open(write_path, "a") as f_out:
+        # Submit only the record itself; map each Future to its rec["id"]
         futures = {
-            executor.submit(generate_response, i + skip_index_till, rec, model_name): i + skip_index_till
-            for i, rec in enumerate(pending_data)
+            executor.submit(generate_response, rec, model_name): rec["id"]
+            for rec in pending_data
         }
 
         for future in tqdm(as_completed(futures), total=len(futures)):
-            index, result = future.result()
-            results_buffer[index] = result
+            record_id = futures[future]
+            result = future.result()
+            # Write out immediately, no need to buffer by index
+            f_out.write(json.dumps(result) + "\n")
+            f_out.flush()
 
-            # Check if we can write contiguous results starting from next_write_index
-            written_count = 0
-            while next_write_index in results_buffer:
-                f_out.write(json.dumps(results_buffer[next_write_index]) + "\n")
-                del results_buffer[next_write_index]
-                next_write_index += 1
-                written_count += 1
-
-            # Optional: flush every N writes
-            if written_count >= WRITE_EVERY_N:
-                f_out.flush()
-
-        # Final flush for any remaining buffered results
-        while next_write_index in results_buffer:
-            f_out.write(json.dumps(results_buffer[next_write_index]) + "\n")
-            next_write_index += 1
-        f_out.flush()
 
 if __name__ == "__main__":
     main(args)
