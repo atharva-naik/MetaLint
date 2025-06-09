@@ -6,6 +6,7 @@ import os
 import sys
 import json
 import pathlib
+import argparse
 import numpy as np
 from tqdm import tqdm
 from fuzzywuzzy import fuzz
@@ -16,45 +17,59 @@ module_path = str(pathlib.Path(os.path.abspath(__file__)).parent.parent.parent.p
 sys.path.append(module_path)
 
 from src.datautils import read_jsonl
-IDIOMS_SEEN_IN_TRAIN = ["ERA001", "C901", "I001", "I002", "BLE001"] # 1 no transfer or common between train and test (NoT)
-IDIOMS_FROM_GROUP_SEEN_IN_TRAIN = ["F406", "F403", "F503", "F602", "F622", "E401", "E702", "E722", "E731", "E742"] # 2 near transfer (NeT)
-NEAR_TRANSFER_IDIOM_GROUP_MAPPING = {
-    "F406": ["F405"], # test: train
-    "F403": ['F405'],
-    "F503": ["F501","F502"],
-    "F602": ["F601"],
-    "F622": ["F621"],
-    "E401": ["E402"],
-    "E702": ["E701"],
-    "E722": ["E721"],
-    "E742": ["E741", "E743"],
-}
-NEAR_TRANSFER_TEST_IDIOM_GROUPS = list(NEAR_TRANSFER_IDIOM_GROUP_MAPPING.keys())
-NEAR_TRANSFER_TRAIN_IDIOM_GROUPS = ["F405","F501","F502","F601","F621","E402","E701","E721","E741","E743"]
-IDIOMS_NOT_SEEN_IN_TRAIN = ["ANN001", "ANN002", "ANN003", "ANN201", "ANN202", "ANN204", "ANN205", "ANN206"]+["ASYNC100", "ASYNC105", "ASYNC109", "ASYNC110", "ASYNC115", "ASYNC116", "ASYNC210", "ASYNC220", "ASYNC221", "ASYNC222", "ASYNC230", "ASYNC251"]+["S102", "S103", "S104", "S105", "S106", "S107", "S108", "S110", "S112", "S113", "S201", "S202", "S301", "S302", "S303"] # 3 far transfer: everything else. (FaT)
-FAULTY_RESULT_CTR = 0
-# TOOL_GROUPS = {
-#     "PyFlakes": ["F406", "F403", "F503", "F602", "F622"],
-#     "pycodestyle": ["E401", "E702", "E722", "E731", "E742"], 
-#     "Misc": ["ERA001", "C901", "I001", "I002", "BLE001"], # most frequent 'meta-linting' group in training data.
-#     "flake8-annotations": ["ANN001", "ANN002", "ANN003", "ANN201", "ANN202", "ANN204", "ANN205", "ANN206"],
-#     "flake8-async": ["ASYNC100", "ASYNC105", "ASYNC109", "ASYNC110", "ASYNC115", "ASYNC116", "ASYNC210", "ASYNC220", "ASYNC221", "ASYNC222", "ASYNC230", "ASYNC251"],
-#     "flake8-bandit": ["S102", "S103", "S104", "S105", "S106", "S107", "S108", "S110", "S112", "S113", "S201", "S202", "S301", "S302", "S303"],
-# }
-TOOL_GROUPS = {
-    "Near Transfer": ["F406", "F403", "F503", "F602", "F622","E401", "E702", "E722", "E731", "E742"], 
-    "No Transfer": ["ERA001", "C901", "I001", "I002", "BLE001"], # most frequent 'meta-linting' group in training data.
-    "Far Transfer": ["ANN001", "ANN002", "ANN003", "ANN201", "ANN202", "ANN204", "ANN205", "ANN206","ASYNC100", "ASYNC105", "ASYNC109", "ASYNC110", "ASYNC115", "ASYNC116", "ASYNC210", "ASYNC220", "ASYNC221", "ASYNC222", "ASYNC230", "ASYNC251","S102", "S103", "S104", "S105", "S106", "S107", "S108", "S110", "S112", "S113", "S201", "S202", "S301", "S302", "S303"],
-}
-TOOL_TO_TOOL_GROUP = {}
-for tool_group_name, tools in TOOL_GROUPS.items():
-    for tool in tools:
-        TOOL_TO_TOOL_GROUP[tool] = tool_group_name
-TEST_SET_IDIOMS = []
-for tools in TOOL_GROUPS.values():
-    TEST_SET_IDIOMS.extend(tools)
-# print(TEST_SET_IDIOMS)
-IDIOMS_ABSENT_FROM_TEST_SET = set()
+
+
+def get_args():
+    parser = argparse.ArgumentParser(description="Evaluate prediction files.")
+    parser.add_argument("-p", "--preds_path", type=str, required=True, help="path to prediction file.")
+    parser.add_argument("-tf", "--test_file", type=str, default="data/ruff_meta_linting/test_v5.json", help='path to test data/file to be used for testing.')
+    parser.add_argument("-pep", "--pep", action="store_true", help='switch to PEP benchmark evaluation mode.')
+    return parser.parse_args()
+
+args = get_args()
+
+if args.pep:
+    TEST_SET_IDIOMS = ['506', '557', '655', '634', '614', '616', '584', '593', '567', '530', '525', '498', '487', '526', '572']
+else:
+    IDIOMS_SEEN_IN_TRAIN = ["ERA001", "C901", "I001", "I002", "BLE001"] # 1 no transfer or common between train and test (NoT)
+    IDIOMS_FROM_GROUP_SEEN_IN_TRAIN = ["F406", "F403", "F503", "F602", "F622", "E401", "E702", "E722", "E731", "E742"] # 2 near transfer (NeT)
+    NEAR_TRANSFER_IDIOM_GROUP_MAPPING = {
+        "F406": ["F405"], # test: train
+        "F403": ['F405'],
+        "F503": ["F501","F502"],
+        "F602": ["F601"],
+        "F622": ["F621"],
+        "E401": ["E402"],
+        "E702": ["E701"],
+        "E722": ["E721"],
+        "E742": ["E741", "E743"],
+    }
+    NEAR_TRANSFER_TEST_IDIOM_GROUPS = list(NEAR_TRANSFER_IDIOM_GROUP_MAPPING.keys())
+    NEAR_TRANSFER_TRAIN_IDIOM_GROUPS = ["F405","F501","F502","F601","F621","E402","E701","E721","E741","E743"]
+    IDIOMS_NOT_SEEN_IN_TRAIN = ["ANN001", "ANN002", "ANN003", "ANN201", "ANN202", "ANN204", "ANN205", "ANN206"]+["ASYNC100", "ASYNC105", "ASYNC109", "ASYNC110", "ASYNC115", "ASYNC116", "ASYNC210", "ASYNC220", "ASYNC221", "ASYNC222", "ASYNC230", "ASYNC251"]+["S102", "S103", "S104", "S105", "S106", "S107", "S108", "S110", "S112", "S113", "S201", "S202", "S301", "S302", "S303"] # 3 far transfer: everything else. (FaT)
+    FAULTY_RESULT_CTR = 0
+    # TOOL_GROUPS = {
+    #     "PyFlakes": ["F406", "F403", "F503", "F602", "F622"],
+    #     "pycodestyle": ["E401", "E702", "E722", "E731", "E742"], 
+    #     "Misc": ["ERA001", "C901", "I001", "I002", "BLE001"], # most frequent 'meta-linting' group in training data.
+    #     "flake8-annotations": ["ANN001", "ANN002", "ANN003", "ANN201", "ANN202", "ANN204", "ANN205", "ANN206"],
+    #     "flake8-async": ["ASYNC100", "ASYNC105", "ASYNC109", "ASYNC110", "ASYNC115", "ASYNC116", "ASYNC210", "ASYNC220", "ASYNC221", "ASYNC222", "ASYNC230", "ASYNC251"],
+    #     "flake8-bandit": ["S102", "S103", "S104", "S105", "S106", "S107", "S108", "S110", "S112", "S113", "S201", "S202", "S301", "S302", "S303"],
+    # }
+    TOOL_GROUPS = {
+        "Near Transfer": ["F406", "F403", "F503", "F602", "F622","E401", "E702", "E722", "E731", "E742"], 
+        "No Transfer": ["ERA001", "C901", "I001", "I002", "BLE001"], # most frequent 'meta-linting' group in training data.
+        "Far Transfer": ["ANN001", "ANN002", "ANN003", "ANN201", "ANN202", "ANN204", "ANN205", "ANN206","ASYNC100", "ASYNC105", "ASYNC109", "ASYNC110", "ASYNC115", "ASYNC116", "ASYNC210", "ASYNC220", "ASYNC221", "ASYNC222", "ASYNC230", "ASYNC251","S102", "S103", "S104", "S105", "S106", "S107", "S108", "S110", "S112", "S113", "S201", "S202", "S301", "S302", "S303"],
+    }
+    TOOL_TO_TOOL_GROUP = {}
+    for tool_group_name, tools in TOOL_GROUPS.items():
+        for tool in tools:
+            TOOL_TO_TOOL_GROUP[tool] = tool_group_name
+    TEST_SET_IDIOMS = []
+    for tools in TOOL_GROUPS.values():
+        TEST_SET_IDIOMS.extend(tools)
+    # print(TEST_SET_IDIOMS)
+    IDIOMS_ABSENT_FROM_TEST_SET = set()
 
 IDIOMS_FOUND_HEADER = "## Idiom Violations Found"
 def load_linter_results(text):
@@ -158,16 +173,20 @@ def line_level_overlap(data):
         gt = load_linter_results(rec["ground_truth"])
         idiom_wise_pred_lines = defaultdict(lambda: set())
         idiom_wise_gt_lines = defaultdict(lambda: set())
+        
         for i,model_violation in enumerate(model_resp):
             idiom_wise_pred_lines[model_violation['code']] = idiom_wise_pred_lines[model_violation['code']].union(extract_line_nos(model_violation))
+
         for i,gt_violation in enumerate(gt):
             idiom_wise_gt_lines[gt_violation['code']] = idiom_wise_gt_lines[gt_violation['code']].union(extract_line_nos(gt_violation))
+
         # print(idiom_wise_gt_lines)
         # print(idiom_wise_pred_lines)
         for idiom_code in idiom_wise_gt_lines.keys():
             overlap = len(idiom_wise_pred_lines[idiom_code].intersection(idiom_wise_gt_lines[idiom_code]))
             try: p_line_inst_idiom = overlap/len(idiom_wise_pred_lines[idiom_code])
             except ZeroDivisionError: p_line_inst_idiom = 0
+            
             r_line_inst_idiom = overlap/len(idiom_wise_gt_lines[idiom_code])
             p_line.append(p_line_inst_idiom)
             r_line.append(r_line_inst_idiom)
@@ -252,7 +271,7 @@ def compute_aggregate_metrics(idiom_precisions, idiom_recalls):
 
 # main
 if __name__ == "__main__":
-    path = sys.argv[1]
+    # path = sys.argv[1]
 
     # SFT and DPO **current transfer experiments**:
     # f"data/meta_linting_preds_vllm/qwen3_4b_dpo_preds_{steps}_transfer_v5_lineno.jsonl"
@@ -260,11 +279,11 @@ if __name__ == "__main__":
 
     # CoT SFT and DPO **current transfer experiments**:
 
-    test_preds = read_jsonl(path)
+    test_preds = read_jsonl(args.preds_path)
     # NOTE: remove cases with blank ground truth (""). These were corresponding to idioms ANN001, ANN201 etc. that were excluded from the ruff data generation but somehow forgot to remove them in transfer data generation.
     test_preds = [rec for rec in test_preds if rec["ground_truth"] != ""]
 
-    test_data = json.load(open("data/ruff_meta_linting/test_v5.json"))
+    test_data = json.load(open(args.test_file))
     # NOTE: remove cases with blank ground truth (""). These were corresponding to idioms ANN001, ANN201 etc. that were excluded from the ruff data generation but somehow forgot to remove them in transfer data generation.
     test_data = [rec for rec in test_data if rec["messages"][1]['content'] != ""]
 
@@ -274,14 +293,31 @@ if __name__ == "__main__":
     # test_data = json.load(open("data/ruff_meta_linting/test_v2.json"))
     
     # compute_idiom_wise_freq_in_train(train_data=json.load(open(f"./data/ruff_meta_linting/hardness_experiment/train.json")))
-    idiom_precisions, idiom_recalls = compute_idiom_wise_pr(test_preds)
 
-    compute_aggregate_metrics(idiom_precisions, idiom_recalls)
-    meta_task_instr_follow_rate = compute_meta_task_conf_mat(preds=test_preds, test_data=test_data)
-    print(f"\x1b[34;1minstruction follow rate: {meta_task_instr_follow_rate:.4f}\x1b[0m")
+    if args.pep: 
+        idiom_precisions, idiom_recalls = compute_idiom_wise_pr(test_preds)
+        print("Overall Detection Metrics:")
+        P = np.mean([v for k,v in idiom_precisions.items()]) # this is the only change from our prior evaluation code.
+        R = np.mean([v for k,v in idiom_recalls.items()])
+        F = compute_f_score(P, R)
+        print(f"P: {P:.4f} R: {R:.4f} F: {F:.4f}") 
 
-    overall_det_loc_metric = line_level_overlap(test_preds)
-    for k,v in overall_det_loc_metric.items():
-        print(f"line: {k}={v:.4f}")
+        # print(idiom_precisions, idiom_recalls)
+        # compute_aggregate_metrics(idiom_precisions, idiom_recalls)
+        # meta_task_instr_follow_rate = compute_meta_task_conf_mat(preds=test_preds, test_data=test_data)
+        # print(f"\x1b[34;1minstruction follow rate: {meta_task_instr_follow_rate:.4f}\x1b[0m")
+        overall_det_loc_metric = line_level_overlap(test_preds)
+        for k,v in overall_det_loc_metric.items():
+            print(f"line: {k}={v:.4f}")
+    else:            
+        idiom_precisions, idiom_recalls = compute_idiom_wise_pr(test_preds)
+
+        compute_aggregate_metrics(idiom_precisions, idiom_recalls)
+        meta_task_instr_follow_rate = compute_meta_task_conf_mat(preds=test_preds, test_data=test_data)
+        print(f"\x1b[34;1minstruction follow rate: {meta_task_instr_follow_rate:.4f}\x1b[0m")
+
+        overall_det_loc_metric = line_level_overlap(test_preds)
+        for k,v in overall_det_loc_metric.items():
+            print(f"line: {k}={v:.4f}")
     # for k,v in overall_det_loc_metric["line"].items():
     #     print(f"line: {k}={v:.4f}")

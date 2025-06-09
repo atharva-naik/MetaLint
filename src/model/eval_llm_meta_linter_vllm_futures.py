@@ -12,15 +12,6 @@ sys.path.append(module_path)
 
 from src.datautils import read_jsonl
 
-# vLLM server details
-PORT = 8002
-VLLM_SERVER_URL = f"http://0.0.0.0:{PORT}/v1/chat/completions"
-MAX_RETRIES = 5
-MAX_SEQ_LEN = 32768
-MAX_NEW_TOKENS = 2048
-NUM_WORKERS = 12
-WRITE_EVERY_N = 20  # flush every N completed responses
-
 SAMPLE_OUTPUT_FORMAT_VIOLATIONS = """### Final Idiom Violations Found
 
 **Idiom XYZ Violations:**
@@ -65,8 +56,20 @@ def get_args():
     parser.add_argument("--write_path", type=str, required=True, help="name of the file where predictions should be written")
     parser.add_argument("--untrained_mode", action="store_true", help="used when inferencing untrained model to obtain proper output format.")
     parser.add_argument("--no_think", action="store_true", help="Disable chain-of-thought reasoning globally.")
+    parser.add_argument("--port", type=int, default=8002, help="Port where vLLM server is being served")
+    parser.add_argument("--num_workers", type=int, default=12, help="Number of parallel threads/workers to be used for querying vLLM.")
 
     return parser.parse_args()
+
+args = get_args()
+# vLLM server details
+PORT = args.port
+VLLM_SERVER_URL = f"http://0.0.0.0:{PORT}/v1/chat/completions"
+MAX_RETRIES = 5
+MAX_SEQ_LEN = 32768
+MAX_NEW_TOKENS = 2048
+NUM_WORKERS = args.num_workers
+WRITE_EVERY_N = 20  # flush every N completed responses
 
 def generate_response(index: int, rec: dict, model_name: str, no_think: bool):
     user_prompt = rec['messages'][0]['content']
@@ -105,8 +108,7 @@ def generate_response(index: int, rec: dict, model_name: str, no_think: bool):
                 raise RuntimeError(f"Failed after {MAX_RETRIES} retries on index {index}: {e}")
             continue
 
-def main():
-    args = get_args()
+def main(args):
     model_name = args.model_name
     write_path = args.write_path
 
@@ -157,7 +159,7 @@ def main():
         f_out.flush()
 
 if __name__ == "__main__":
-    main()
+    main(args)
     # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-all-idioms-subtask-cot-star/checkpoint-1500/ --write_path data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_1500_all_idioms_subtask_cot_star.jsonl  --test_file data/ruff_meta_linting/all_idioms/test.json                            
 
     # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-all-idioms-subtask-cot-star/checkpoint-2000/ --write_path data/meta_linting_preds_vllm/qwen2.5coder_3b_instruct_sft_preds_2000_all_idioms_subtask_cot_star.jsonl  --test_file data/ruff_meta_linting/all_idioms/test.json
@@ -169,3 +171,9 @@ if __name__ == "__main__":
     # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name Qwen/Qwen3-4B --write_path "data/meta_linting_preds_vllm/qwen3_4b_untrained_preds_transfer_v5_lineno.jsonl" --test_file "data/ruff_meta_linting/test_v5.json" --untrained_mode
 
     # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name Qwen/Qwen3-4B --write_path "data/meta_linting_preds_vllm/qwen3_4b_untrained_no_think_preds_transfer_v5_lineno.jsonl" --test_file "data/ruff_meta_linting/test_v5.json" --untrained_mode --no_think
+
+    # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name alignment-handbook/model_checkpoints/qwen3-4b-dpo-transfer-v5-lineno-run2_no_violations_0.2/checkpoint-600/ --write_path "data/meta_linting_preds_vllm/qwen3_4b_dpo_run2_no_violations_0.2_preds_600_transfer_v5_lineno.jsonl" --test_file "data/ruff_meta_linting/test_v5.json"
+
+    # PEP benchmark evals
+
+    # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name Qwen/Qwen3-4B --write_path "data/pep_benchmark_preds/qwen3_4b_untrained_no_think_preds.jsonl" --test_file "data/pep_benchmark/test_pep.json" --untrained_mode --no_think

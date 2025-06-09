@@ -120,4 +120,8 @@ if __name__ == "__main__":
 
     # python src/dpo/convert_dpo_samples_to_pairs.py --dpo_samples_path data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000_violations_only.jsonl --sft_train_data_path data/ruff_meta_linting/train_v5.json --output_dir data/ruff_meta_linting/dpo/qwen3_4b_transfer_v5_lineno_SFT_step_4000_violations_only/ --skip_no_violations
 
-    # python src/dpo/convert_dpo_samples_to_pairs.py --dpo_samples_path data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000_no_violations_only.jsonl --sft_train_data_path data/ruff_meta_linting/train_v5.json --output_dir data/ruff_meta_linting/dpo/qwen3_4b_transfer_v5_lineno_SFT_step_4000_no_violations_only/ --skip_violations
+    # python src/dpo/convert_dpo_samples_to_pairs.py --dpo_samples_path data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000_no_violations_only.jsonl --sft_train_data_path data/ruff_meta_linting/train_v5.json --output_dir data/ruff_meta_linting/dpo/qwen3_4b_transfer_v5_lineno_SFT_step_4000_run2_no_violations_only/ --skip_violations
+
+    # python src/dpo/convert_dpo_samples_to_pairs.py --dpo_samples_path data/dpo_self_samples/qwen3_4b_think_mode_untrained.jsonl --sft_train_data_path data/ruff_meta_linting/train_v5.json --output_dir data/ruff_meta_linting/dpo/qwen3_4b_think_mode_untrained_violations_only/ --skip_no_violations
+
+    # python src/dpo/convert_dpo_samples_to_pairs.py --dpo_samples_path data/dpo_self_samples/qwen3_4b_think_mode_untrained.jsonl --sft_train_data_path data/ruff_meta_linting/train_v5.json --output_dir data/ruff_meta_linting/dpo/qwen3_4b_think_mode_untrained_no_violations_only/ --skip_violations
