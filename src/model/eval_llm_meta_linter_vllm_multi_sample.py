@@ -63,7 +63,7 @@ def get_args():
     parser.add_argument("--untrained_mode", action="store_true", help="used when inferencing untrained model to obtain proper output format.")
     parser.add_argument("--no_think", action="store_true", help="Disable chain-of-thought reasoning globally.")
     parser.add_argument("--port", type=int, default=8002, help="Port where vLLM server is being served")
-    parser.add_argument("--num_workers", type=int, default=16, help="Number of parallel threads/workers to be used for querying vLLM.")
+    parser.add_argument("--num_workers", type=int, default=12, help="Number of parallel threads/workers to be used for querying vLLM.")
     return parser.parse_args()
 
 args = get_args()
@@ -225,3 +225,7 @@ if __name__ == "__main__":
     # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name "alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-trasfer-v5-lineno/checkpoint-4000/" --write_path "data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000.jsonl" --train_file data/ruff_meta_linting/train_v5.json
 
     # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name Qwen/Qwen3-4B --write_path "data/dpo_self_samples/qwen3_4b_think_mode_untrained.jsonl" --train_file data/ruff_meta_linting/train_v5.json --untrained_mode
+
+    # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name Qwen/Qwen3-4B --write_path "data/dpo_self_samples/qwen3_4b_think_mode_untrained_run2.jsonl" --train_file data/ruff_meta_linting/train_v5.json --untrained_mode
+
+    # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-think-transfer-v5-lineno/checkpoint-6000/ --write_path "data/dpo_self_samples/qwen3_4b_think_transfer_v5_lineno_SFT_step_6000.jsonl" --train_file data/ruff_meta_linting/train_v5.json

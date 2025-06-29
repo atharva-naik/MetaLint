@@ -1,0 +1,1 @@
+python -m vllm.entrypoints.openai.api_server --model "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B" --tokenizer "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B" --dtype auto --port 8002 --max-model-len 32768 --gpu-memory-utilization 0.95

@@ -1,0 +1,1 @@
+python -m vllm.entrypoints.openai.api_server --model "Qwen/Qwen3-32B" --tokenizer "Qwen/Qwen3-32B" --dtype auto --port 8002 --max-model-len 32768 --gpu-memory-utilization 0.95

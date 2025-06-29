@@ -30,6 +30,7 @@ args = get_args()
 
 if args.pep:
     TEST_SET_IDIOMS = ['506', '557', '655', '634', '614', '616', '584', '593', '567', '530', '525', '498', '487', '526', '572']
+    IDIOMS_ABSENT_FROM_TEST_SET = set()
 else:
     IDIOMS_SEEN_IN_TRAIN = ["ERA001", "C901", "I001", "I002", "BLE001"] # 1 no transfer or common between train and test (NoT)
     IDIOMS_FROM_GROUP_SEEN_IN_TRAIN = ["F406", "F403", "F503", "F602", "F622", "E401", "E702", "E722", "E731", "E742"] # 2 near transfer (NeT)
@@ -297,6 +298,8 @@ if __name__ == "__main__":
     if args.pep: 
         idiom_precisions, idiom_recalls = compute_idiom_wise_pr(test_preds)
         print("Overall Detection Metrics:")
+        print(idiom_precisions)
+        print(idiom_recalls)
         P = np.mean([v for k,v in idiom_precisions.items()]) # this is the only change from our prior evaluation code.
         R = np.mean([v for k,v in idiom_recalls.items()])
         F = compute_f_score(P, R)

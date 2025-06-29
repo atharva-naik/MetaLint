@@ -13,6 +13,18 @@ sys.path.append(module_path)
 from src.datautils import read_jsonl
 from src.metrics.meta_linting.idiom_detection_and_localization_v3 import load_linter_results
 
+def is_valid_response(response: str, think_mode: bool):
+    """
+    Check if response is valid:
+    1. CoT terminated 
+    2. Final prediction markdown found
+    3. **Idiom ... Violations:** section is present
+    """
+    if not think_mode: 
+        return True # assume that SFT checkpoint with proper output format was used.
+    else:
+        return "</think>" in response and "### Final Idiom Violations Found" in response and "**Idiom " in response and "Violations:**" in response
+
 # main
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process DPO samples into train/test sets.")
@@ -23,6 +35,7 @@ if __name__ == "__main__":
     parser.add_argument("--output_dir", type=str, help="Directory to save train/test splits.",
                         default="data/ruff_meta_linting/dpo/qwen2.5_3b_instruct_transfer_v4_subtask_cot_star_SFT_step_2000")
     parser.add_argument("--skip_no_violations", action="store_true", help="Skip samples without any violations.")
+    parser.add_argument("--think_mode", action="store_true", help="enforces proper formatting for data that includes CoTs.")
     parser.add_argument("--skip_violations", action="store_true", help="Skip samples with violations.")
     parser.add_argument("--reward_gap", default=0.2, help="How much the chosen response should be better than the rejected response.")
     parser.add_argument("--train_split", type=float, default=0.9, help="Fraction of data to use for training. Default=0.9")
@@ -45,7 +58,8 @@ if __name__ == "__main__":
         elif args.skip_violations and len(load_linter_results(rec["ground_truth"])) != 0: continue
         for i in range(len(model_responses)):
             for j in range(i+1, len(model_responses)):
-                if model_responses[i][1] > args.reward_gap + model_responses[j][1]: # response i has better reward than j
+                if model_responses[i][1] > args.reward_gap + model_responses[j][1] and is_valid_response(model_responses[i][0], think_mode=args.think_mode) and is_valid_response(model_responses[j][0], think_mode=args.think_mode): # response i has better reward than j
+                    # print(model_responses[i][0])
                     dpo_data.append({
                         "id": rec["id"]+f"{i}>{j}",
                         "sft_id": rec["id"],
@@ -111,11 +125,12 @@ if __name__ == "__main__":
     print(f"reward gap ranges from: [{np.min(reward_gaps).item():.4f}, {np.max(reward_gaps).item():.4f}]")
 
     os.makedirs(args.output_dir, exist_ok=True)
+    print(f"{len(dpo_train_data)} DPO train instances")
+    print(f"{len(dpo_test_data)} DPO test instances")
+
     with open(os.path.join(args.output_dir, "train.json"), "w") as f:
-        print(f"{len(dpo_train_data)} DPO train instances")
         json.dump(dpo_train_data, f, indent=4)
     with open(os.path.join(args.output_dir, "test.json"), "w") as f:
-        print(f"{len(dpo_test_data)} DPO test instances")
         json.dump(dpo_test_data, f, indent=4)
 
     # python src/dpo/convert_dpo_samples_to_pairs.py --dpo_samples_path data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000_violations_only.jsonl --sft_train_data_path data/ruff_meta_linting/train_v5.json --output_dir data/ruff_meta_linting/dpo/qwen3_4b_transfer_v5_lineno_SFT_step_4000_violations_only/ --skip_no_violations
@@ -125,3 +140,8 @@ if __name__ == "__main__":
     # python src/dpo/convert_dpo_samples_to_pairs.py --dpo_samples_path data/dpo_self_samples/qwen3_4b_think_mode_untrained.jsonl --sft_train_data_path data/ruff_meta_linting/train_v5.json --output_dir data/ruff_meta_linting/dpo/qwen3_4b_think_mode_untrained_violations_only/ --skip_no_violations
 
     # python src/dpo/convert_dpo_samples_to_pairs.py --dpo_samples_path data/dpo_self_samples/qwen3_4b_think_mode_untrained.jsonl --sft_train_data_path data/ruff_meta_linting/train_v5.json --output_dir data/ruff_meta_linting/dpo/qwen3_4b_think_mode_untrained_no_violations_only/ --skip_violations
+
+    # python src/dpo/convert_dpo_samples_to_pairs.py --dpo_samples_path data/dpo_self_samples/qwen3_4b_think_transfer_v5_lineno_SFT_step_6000.jsonl --sft_train_data_path data/ruff_meta_linting/train_v5.json --output_dir data/ruff_meta_linting/dpo/qwen3_4b_think_transfer_v5_lineno_SFT_step_6000_violations_only/ --skip_no_violations
+
+    # python src/dpo/convert_dpo_samples_to_pairs.py --dpo_samples_path data/dpo_self_samples/qwen3_4b_think_transfer_v5_lineno_SFT_step_6000.jsonl --sft_train_data_path data/ruff_meta_linting/train_v5.json --output_dir data/ruff_meta_linting/dpo/qwen3_4b_think_transfer_v5_lineno_SFT_step_6000_no_violations_only/ --skip_violations
+

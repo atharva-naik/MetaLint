@@ -67,7 +67,7 @@ PORT = args.port
 VLLM_SERVER_URL = f"http://0.0.0.0:{PORT}/v1/chat/completions"
 MAX_RETRIES = 5
 MAX_SEQ_LEN = 32768
-MAX_NEW_TOKENS = 2048
+MAX_NEW_TOKENS = 8192
 NUM_WORKERS = args.num_workers
 WRITE_EVERY_N = 20  # flush every N completed responses
 
@@ -174,6 +174,12 @@ if __name__ == "__main__":
 
     # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name alignment-handbook/model_checkpoints/qwen3-4b-dpo-transfer-v5-lineno-run2_no_violations_0.2/checkpoint-600/ --write_path "data/meta_linting_preds_vllm/qwen3_4b_dpo_run2_no_violations_0.2_preds_600_transfer_v5_lineno.jsonl" --test_file "data/ruff_meta_linting/test_v5.json"
 
+    # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-think-transfer-v5-lineno/checkpoint-2000/ --write_path "data/meta_linting_preds_vllm/qwen3_4b_think_sft_preds_2000_transfer_v5_lineno.jsonl" --test_file "data/ruff_meta_linting/test_v5.json"
+
+    # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name alignment-handbook/model_checkpoints/qwen3-4b-dpo-think-transfer-v5-run3_no_violations_0.05/checkpoint-200/ --write_path "data/meta_linting_preds_vllm/qwen3_4b_think_dpo_run3_no_violations_0.05_preds_200_transfer_v5_lineno.jsonl" --test_file "data/ruff_meta_linting/test_v5.json"
+
     # PEP benchmark evals
 
     # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name Qwen/Qwen3-4B --write_path "data/pep_benchmark_preds/qwen3_4b_untrained_no_think_preds.jsonl" --test_file "data/pep_benchmark/test_pep.json" --untrained_mode --no_think
+
+    # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-think-transfer-v5-lineno/checkpoint-6000/ --write_path "data/pep_benchmark_preds/qwen3_4b_think_sft_preds_6000_transfer_v5.jsonl" --test_file "data/pep_benchmark/test_pep.json"
