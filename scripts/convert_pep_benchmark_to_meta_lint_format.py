@@ -3,6 +3,8 @@
 import os
 import json
 import pandas as pd
+from tqdm import tqdm
+from collections import Counter
 
 META_LINTING_PROMPT_V2 = """Look at the following list of code idiom specifications with definitions and examples:
 {LIST_OF_IDIOM_SPECS}
@@ -66,23 +68,39 @@ def generate_input_prompt(code: str, pep_spec: dict):
         CODE_FILE=add_line_no_to_code_file(code),
     )
 
+SKIP_PEPS = ["249"]
+
 # main
 if __name__ == "__main__":
     annot_folder = "data/pep_benchmark/annotations"
     source_folder = "data/pep_benchmark/code_files"
     pep_test_data = []
+    
+    blob_id_to_code = {fname.split("_")[0].strip(): open(os.path.join(source_folder, fname)).read() for fname in os.listdir(source_folder) if fname.endswith('.py')}
+
+    # print(len(blob_id_to_code))
+
     for filename in os.listdir(annot_folder):
         filepath = os.path.join(annot_folder, filename)
         filestem,_ = os.path.splitext(filename)
         try: 
+            BLOB_ID = filestem.split("_")[0].strip()
+            # print(BLOB_ID)
+            # exit()
             annot = json.load(open(filepath))
             code_filepath = os.path.join(source_folder, filestem+".py")
-            source_code = open(code_filepath).read()
+            try: source_code = blob_id_to_code[BLOB_ID]
+            except KeyError as e: 
+                print("Line 91:", BLOB_ID) 
             ID = filestem
             PEP = str(int(filestem.split('_')[1].strip()))
-            pep_spec = all_pep_idiom_specs[PEP]
+            if PEP in SKIP_PEPS: continue
+            try: pep_spec = all_pep_idiom_specs[PEP]
+            except KeyError as e:
+                print("Line 96:", e, filepath)
             pep_test_data.append({
                 "id": ID,
+                "pep": PEP,
                 "code": source_code,
                 "messages": [
                     {"content": generate_input_prompt(code=source_code, pep_spec=pep_spec), "role": "user"},
@@ -90,10 +108,16 @@ if __name__ == "__main__":
                 ],
                 "source": f"pep_benchmark/PEP{PEP}"
             })
-        except json.JSONDecodeError: print(filepath)
-        except KeyError: print(filepath); exit()
+        except json.JSONDecodeError as e: 
+            print("Line 107:", e, filepath)
+        except KeyError as e:
+            # print(e) 
+            print("Line 110:", e, filepath)
+            # ; exit()
         # print(annot)
-    with open("data/pep_benchmark/test_pep.json", "w") as f:
+    print(len(pep_test_data))
+    print(Counter([rec['pep'] for rec in pep_test_data]).most_common())
+    with open("data/pep_benchmark/test_pep_v2.json", "w") as f:
         json.dump(pep_test_data, f, indent=4)
     # print(pep_test_data[0]['messages'][0]['content'])
     # print(pep_test_data[0]['messages'][1]['content'])
