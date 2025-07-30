@@ -46,6 +46,10 @@ def add_line_no_to_code_file(code_file: str):
 def generate_label(annot: dict, code, pep_code: str):
     code_with_linenos_lines = add_line_no_to_code_file(code).split("\n")
     violations = []
+    if len(annot["violations"]) == 0:
+        return f"""**Idiom {pep_code} Violations:**
+    
+NO VIOLATIONS FOUND"""
     for rec in annot['violations']:
         line = "\n".join(code_with_linenos_lines[rec['start_lineno']-1:rec['end_lineno']])
         assert line.strip() != "", annot['blob_id']+f"_{pep_code}"

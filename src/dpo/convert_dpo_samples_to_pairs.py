@@ -145,3 +145,6 @@ if __name__ == "__main__":
 
     # python src/dpo/convert_dpo_samples_to_pairs.py --dpo_samples_path data/dpo_self_samples/qwen3_4b_think_transfer_v5_lineno_SFT_step_6000.jsonl --sft_train_data_path data/ruff_meta_linting/train_v5.json --output_dir data/ruff_meta_linting/dpo/qwen3_4b_think_transfer_v5_lineno_SFT_step_6000_no_violations_only/ --skip_violations
 
+    # python src/dpo/convert_dpo_samples_to_pairs.py --dpo_samples_path "data/dpo_self_samples/llama3.2_3b_instruct_transfer_v5_lineno_SFT_step_6626.jsonl" --sft_train_data_path data/ruff_meta_linting/train_v5.json --output_dir data/ruff_meta_linting/dpo/llama3.2_3b_instruct_transfer_v5_lineno_SFT_step_6626_no_violations_only/ --skip_violations
+
+    # python src/dpo/convert_dpo_samples_to_pairs.py --dpo_samples_path "data/dpo_self_samples/llama3.2_3b_instruct_transfer_v5_lineno_SFT_step_6626.jsonl" --sft_train_data_path data/ruff_meta_linting/train_v5.json --output_dir data/ruff_meta_linting/dpo/llama3.2_3b_instruct_transfer_v5_lineno_SFT_step_6626_violations_only/ --skip_no_violations
