@@ -216,16 +216,10 @@ def main(args):
 if __name__ == "__main__":
     main(args)
 
-    # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name "alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-subtask-cot-star/checkpoint-2000/" --write_path "data/dpo_self_samples/qwen2.5coder_3b_instruct_transfer_v4_subtask_cot_star_SFT_step_2000.jsonl" --train_file data/ruff_meta_linting/train_v4_new_format_with_lineno.json --skip_no_violations
-    
-    # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name "alignment-handbook/model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-subtask-cot-star/checkpoint-2000/" --write_path "data/dpo_self_samples/qwen2.5coder_3b_instruct_transfer_v4_subtask_cot_star_SFT_step_2000_from_25000.jsonl" --train_file data/ruff_meta_linting/train_v4_new_format_with_lineno.json --skip_no_violations --skip_index_offset 25000
-
-    # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name "alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-trasfer-v5-lineno/checkpoint-4000/" --write_path "data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000_violations_only.jsonl" --train_file data/ruff_meta_linting/train_v5.json --skip_no_violations
-    # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name "alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-trasfer-v5-lineno/checkpoint-4000/" --write_path "data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000_no_violations_only.jsonl" --train_file data/ruff_meta_linting/train_v5.json --skip_violations
-    # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name "alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-trasfer-v5-lineno/checkpoint-4000/" --write_path "data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000.jsonl" --train_file data/ruff_meta_linting/train_v5.json
-
     # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name Qwen/Qwen3-4B --write_path "data/dpo_self_samples/qwen3_4b_think_mode_untrained.jsonl" --train_file data/ruff_meta_linting/train_v5.json --untrained_mode
 
     # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name Qwen/Qwen3-4B --write_path "data/dpo_self_samples/qwen3_4b_think_mode_untrained_run2.jsonl" --train_file data/ruff_meta_linting/train_v5.json --untrained_mode
 
     # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-think-transfer-v5-lineno/checkpoint-6000/ --write_path "data/dpo_self_samples/qwen3_4b_think_transfer_v5_lineno_SFT_step_6000.jsonl" --train_file data/ruff_meta_linting/train_v5.json
+
+    # python src/model/eval_llm_meta_linter_vllm_multi_sample.py --model_name alignment-handbook/model_checkpoints/llama3.2-3b-instruct-sft-transfer-v5-lineno/checkpoint-6626/ --write_path "data/dpo_self_samples/llama3.2_3b_instruct_transfer_v5_lineno_SFT_step_6626.jsonl" --train_file data/ruff_meta_linting/train_v5.json
