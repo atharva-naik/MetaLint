@@ -69,7 +69,7 @@ MAX_RETRIES = 5
 MAX_SEQ_LEN = 32768
 MAX_NEW_TOKENS = 8192
 NUM_WORKERS = args.num_workers
-WRITE_EVERY_N = 20  # flush every N completed responses
+WRITE_EVERY_N = 1  # flush every N completed responses
 
 def generate_response(index: int, rec: dict, model_name: str, no_think: bool):
     user_prompt = rec['messages'][0]['content']
@@ -177,6 +177,8 @@ if __name__ == "__main__":
     # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-think-transfer-v5-lineno/checkpoint-2000/ --write_path "data/meta_linting_preds_vllm/qwen3_4b_think_sft_preds_2000_transfer_v5_lineno.jsonl" --test_file "data/ruff_meta_linting/test_v5.json"
 
     # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name alignment-handbook/model_checkpoints/qwen3-4b-dpo-think-transfer-v5-run3_no_violations_0.05/checkpoint-200/ --write_path "data/meta_linting_preds_vllm/qwen3_4b_think_dpo_run3_no_violations_0.05_preds_200_transfer_v5_lineno.jsonl" --test_file "data/ruff_meta_linting/test_v5.json"
+
+    # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name alignment-handbook/model_checkpoints/llama3.2-3b-instruct-dpo-transfer-v5-lineno-no_violations_0.02/checkpoint-200/ --write_path "data/meta_linting_preds_vllm/llama3.2_3b_instruct_dpo_no_violations_0.02_preds_200_transfer_v5_lineno.jsonl" --test_file "data/ruff_meta_linting/test_v5.json"
 
     # PEP benchmark evals
 
