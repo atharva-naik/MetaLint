@@ -20,6 +20,7 @@ from src.datautils import read_jsonl
 
 IDIOMS_FOUND_HEADER = "## Idiom Violations Found"
 def load_linter_results(text, pep: bool=False):
+    if not isinstance(text, str): return [] # responses were null sometimes for gpt-oss-20b.
     results = []
     idiom_code = None
     for line in text.split("\n"):
@@ -134,6 +135,8 @@ def line_level_overlap(data, pep: bool=False):
 
         # print(idiom_wise_gt_lines)
         # print(idiom_wise_pred_lines)
+
+        # you will only enter this loop if at least one violation is present.
         for idiom_code in idiom_wise_gt_lines.keys():
             overlap = len(idiom_wise_pred_lines[idiom_code].intersection(idiom_wise_gt_lines[idiom_code]))
             try: p_line_inst_idiom = overlap/len(idiom_wise_pred_lines[idiom_code])

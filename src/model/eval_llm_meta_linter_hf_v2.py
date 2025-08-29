@@ -1,15 +1,12 @@
 import os
 import sys
 import json
-import openai
+import torch
 import pathlib
 import argparse
 import requests
 from tqdm import tqdm
-from dotenv import load_dotenv
-from concurrent.futures import ThreadPoolExecutor, as_completed
-
-load_dotenv()
+from transformers import pipeline
 
 module_path = str(pathlib.Path(os.path.abspath(__file__)).parent.parent.parent)
 sys.path.append(module_path)
@@ -66,13 +63,13 @@ def get_args():
     return parser.parse_args()
 
 args = get_args()
-MAX_RETRIES = 5
 MAX_SEQ_LEN = 32768
 MAX_NEW_TOKENS = 8192
 NUM_WORKERS = args.num_workers
 WRITE_EVERY_N = 1  # flush every N completed responses
 
-def generate_response(client, index: int, rec: dict, model_name: str, no_think: bool):
+
+def generate_response(pipe, rec: dict, model_name: str):
     user_prompt = rec['messages'][0]['content']
     gt_response = rec['messages'][1]['content']
 
@@ -80,49 +77,33 @@ def generate_response(client, index: int, rec: dict, model_name: str, no_think: 
         user_prompt = user_prompt[:15000] + user_prompt[-15000:]
 
     messages = [{"role": "user", "content": user_prompt}]
-    # payload = {
-    #     "model": model_name,
-    #     "messages": messages,
-    #     "max_tokens": MAX_NEW_TOKENS,
-    #     "temperature": 0.7,
-    #     "top_p": 0.95,
-    #     "seed": 42
-    # }
-    # if no_think:
-    #     payload["chat_template_kwargs"] = {"enable_thinking": False}
+    payload = {
+        "model": model_name,
+        "messages": messages,
+        "max_tokens": MAX_NEW_TOKENS,
+        "temperature": 0.7,
+        "top_p": 0.95,
+        "seed": 42
+    }
+    outputs = pipe(
+        messages,
+        max_new_tokens=MAX_NEW_TOKENS,
+        temperature=0.7,
+        top_p=0.95,
+        do_sample=True,
+        seed=42,
+    )
+    model_response = outputs[0]["generated_text"][-1]
 
-    for attempt in range(MAX_RETRIES):
-        try:
-            if model_name in ["o3-mini", "o4-mini", "gpt-5"]:
-                response = client.chat.completions.create(
-                    model=model_name,
-                    messages=messages,
-                    max_completion_tokens=3000
-                )
-            else:
-                response = client.chat.completions.create(
-                    model=model_name,
-                    messages=messages,
-                    max_tokens=1024
-                )
-            model_response = response.choices[0].message.content
-
-            return index, {
-                "id": rec["id"],
-                "source": rec["source"],
-                "model_response": model_response,
-                "ground_truth": gt_response,
-                "error": False,
-            }
-        except Exception as e:
-            if attempt == MAX_RETRIES - 1:
-                raise RuntimeError(f"Failed after {MAX_RETRIES} retries on index {index}: {e}")
-            continue
+    return {
+        "id": rec["id"],
+        "source": rec["source"],
+        "model_response": model_response,
+        "ground_truth": gt_response,
+        "error": False,
+    }
 
 def main(args):
-    openai.api_key = os.environ["ORACLE_PROJECT_COT_API_KEY"]
-    client = openai.OpenAI(api_key=os.environ["ORACLE_PROJECT_COT_API_KEY"])
-
     model_name = args.model_name
     write_path = args.write_path
 
@@ -131,6 +112,7 @@ def main(args):
         for i in range(len(test_data)):
             test_data[i]['messages'][0]['content'] = add_output_instr_to_prompt(test_data[i]['messages'][0]['content'])
     skip_index_till = 0
+
 
     if not os.path.exists(write_path):
         open(write_path, "w").close()
@@ -144,37 +126,19 @@ def main(args):
     results_buffer = {}
     next_write_index = skip_index_till
 
-    with ThreadPoolExecutor(max_workers=NUM_WORKERS) as executor, open(write_path, "a") as f_out:
-        futures = {
-            executor.submit(generate_response, client, i + skip_index_till, rec, model_name, args.no_think): i + skip_index_till
-            for i, rec in enumerate(pending_data)
-        }
+    pipe = pipeline(
+        "text-generation",
+        model=model_name,
+        torch_dtype="auto",
+        device_map="auto",
+    )
 
-        for future in tqdm(as_completed(futures), total=len(futures)):
-            index, result = future.result()
-            results_buffer[index] = result
-
-            # Check if we can write contiguous results starting from next_write_index
-            written_count = 0
-            while next_write_index in results_buffer:
-                f_out.write(json.dumps(results_buffer[next_write_index]) + "\n")
-                del results_buffer[next_write_index]
-                next_write_index += 1
-                written_count += 1
-
-            # Optional: flush every N writes
-            if written_count >= WRITE_EVERY_N:
-                f_out.flush()
-
-        # Final flush for any remaining buffered results
-        while next_write_index in results_buffer:
-            f_out.write(json.dumps(results_buffer[next_write_index]) + "\n")
-            next_write_index += 1
-        f_out.flush()
+    with open(write_path, "a") as f_out:
+        for i, rec in tqdm(enumerate(pending_data), total=len(pending_data)):
+            result = generate_response(model, rec, model_name)
+            f_out.write(json.dumps(result) + "\n")
 
 if __name__ == "__main__":
     main(args)
 
-    # PEP benchmark evals
-
-    # python src/model/eval_llm_meta_linter_api.py --model_name gpt-5 --write_path "data/pep_benchmark_preds_v2/gpt_5_untrained_preds.jsonl" --test_file "data/pep_benchmark/test_pep_v2.json" --untrained_mode
+    # python src/model/eval_llm_meta_linter_hf_v2.py --model_name openai/gpt-oss-120b --write_path "data/pep_benchmark_preds_v2/gpt_oss_120b_untrained.jsonl" --test_file "data/pep_benchmark/test_pep_v2.json" --untrained_mode

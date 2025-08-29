@@ -9,7 +9,11 @@ pairs_to_compare = {
         ("Qwen3-4B MetaLint (SFT)", "Qwen3-4B MetaLint w CoT (RS-SFT)"),
         ("Qwen3-4B MetaLint (SFT+RS-DPO)", "Qwen3-4B MetaLint w CoT (RS-SFT+RS-DPO)")
     ],
-    "Comparing MetaLint Models against Untrained Variants": [
+    "Comparing MetaLint Models against Untrained Variants (1/2)": [
+        ("Llama3.2-3B-Instruct", "Llama3.2-3B-Instruct MetaLint (SFT)"),
+        ("Llama3.2-3B-Instruct", "Llama3.2-3B-Instruct MetaLint (SFT+RS-DPO)"),
+    ],
+    "Comparing MetaLint Models against Untrained Variants (2/2)": [
         ("Qwen3-4B", "Qwen3-4B MetaLint (SFT)"),
         ("Qwen3-4B", "Qwen3-4B MetaLint (SFT+RS-DPO)"),
         ("Qwen3-4B w CoT", "Qwen3-4B MetaLint w CoT (RS-SFT)"),
@@ -89,6 +93,10 @@ file_paths = {
     "o3-mini": "statistical_testing/o3_mini_st.json", 
     "o4-mini": "statistical_testing/o4_mini_st.json",
     
+    "Llama3.2-3B-Instruct": "statistical_testing/llama3.2_3b_instruct_untrained_st.json",
+    "Llama3.2-3B-Instruct MetaLint (SFT)": "statistical_testing/llama3.2_3b_instruct_sft_6626_st.json",
+    "Llama3.2-3B-Instruct MetaLint (SFT+RS-DPO)": "statistical_testing/llama3.2_3b_instruct_dpo_no_violations_0.01_724_st.json",
+
     "Qwen2.5-3B-Instruct": "statistical_testing/qwen2.5_3b_instruct_untrained_st.json",
     "Qwen2.5-7B-Instruct": "statistical_testing/qwen2.5_7b_instruct_untrained_st.json",
     "Qwen2.5-14B-Instruct": "statistical_testing/qwen2.5_14b_instruct_untrained_st.json",
@@ -108,7 +116,6 @@ file_paths = {
     "Qwen3-8B w CoT": "statistical_testing/qwen3_8b_untrained_think_st.json",
     "Qwen3-14B w CoT": "statistical_testing/qwen3_14b_untrained_think_st.json",
     "Qwen3-32B w CoT": "statistical_testing/qwen3_32b_untrained_think_st.json",
-
 
     "Qwen3-4B MetaLint (SFT)": "statistical_testing/qwen3_4b_sft_preds_4000_transfer_v5_st.json",
     "Qwen3-4B MetaLint w CoT (RS-SFT)": "statistical_testing/qwen3_4b_think_sft_preds_6000_transfer_v5_st.json",

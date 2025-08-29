@@ -185,3 +185,5 @@ if __name__ == "__main__":
     # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name Qwen/Qwen3-4B --write_path "data/pep_benchmark_preds/qwen3_4b_untrained_no_think_preds.jsonl" --test_file "data/pep_benchmark/test_pep.json" --untrained_mode --no_think
 
     # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-think-transfer-v5-lineno/checkpoint-6000/ --write_path "data/pep_benchmark_preds/qwen3_4b_think_sft_preds_6000_transfer_v5.jsonl" --test_file "data/pep_benchmark/test_pep.json"
+
+    # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name openai/gpt-oss-120b --write_path "data/pep_benchmark_preds_v2/gpt_oss_120b_untrained.jsonl" --test_file "data/pep_benchmark/test_pep_v2.json" --untrained_mode
