@@ -29,6 +29,7 @@ def load_linter_results(text, pep: bool=False):
         elif line.startswith("**Idiom") and line.endswith("Violations:**"):
             if pep: # less harsh checking for PEP benchmark.
                 idiom_code = line.removeprefix("**Idiom").strip().split()[0].strip()
+                # print(idiom_code)
             # more harsh checking for Ruff meta-linting dataset.
             else: idiom_code = line.removesuffix("Violations:**").removeprefix("**Idiom").strip()
             # exit()

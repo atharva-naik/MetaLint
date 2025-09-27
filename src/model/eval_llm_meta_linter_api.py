@@ -93,11 +93,18 @@ def generate_response(client, index: int, rec: dict, model_name: str, no_think: 
 
     for attempt in range(MAX_RETRIES):
         try:
-            if model_name in ["o3-mini", "o4-mini", "gpt-5"]:
+            if model_name in ["o3-mini", "o4-mini"]:
                 response = client.chat.completions.create(
                     model=model_name,
                     messages=messages,
                     max_completion_tokens=3000
+                )
+            elif model_name in ["gpt-5", "gpt-5-2025-08-07"]:
+                response = client.chat.completions.create(
+                    model=model_name,
+                    messages=messages,
+                    reasoning_effort="high",
+                    max_completion_tokens=8192,
                 )
             else:
                 response = client.chat.completions.create(
