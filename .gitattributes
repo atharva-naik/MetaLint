@@ -1,0 +1,10 @@
+data/dpo_self_samples/llama3.2_3b_instruct_transfer_v5_lineno_SFT_step_6626.jsonl filter=lfs diff=lfs merge=lfs -text
+data/dpo_self_samples/qwen2.5coder_3b_instruct_transfer_v4_subtask_cot_star_SFT_step_2000_from_25000.jsonl filter=lfs diff=lfs merge=lfs -text
+data/dpo_self_samples/qwen3_4b_think_mode_untrained.jsonl filter=lfs diff=lfs merge=lfs -text
+data/dpo_self_samples/qwen3_4b_think_transfer_v5_lineno_SFT_step_6000.jsonl filter=lfs diff=lfs merge=lfs -text
+data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000_no_violations_only.jsonl filter=lfs diff=lfs merge=lfs -text
+data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000_run2.jsonl filter=lfs diff=lfs merge=lfs -text
+data/dpo_self_samples/qwen3_4b_transfer_v5_lineno_SFT_step_4000_violations_only.jsonl filter=lfs diff=lfs merge=lfs -text
+data/pep_benchmark_preds_v2/gpt_5_high_reasoning_effort_untrained_preds.jsonl filter=lfs diff=lfs merge=lfs -text
+data/ruff_meta_linting/all_idioms/ filter=lfs diff=lfs merge=lfs -text
+data/ruff_meta_linting/dpo/ filter=lfs diff=lfs merge=lfs -text
