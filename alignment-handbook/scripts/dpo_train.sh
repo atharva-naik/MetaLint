@@ -1,0 +1,1 @@
+ACCELERATE_LOG_LEVEL=info accelerate launch --main_process_port 29500 --config_file recipes/accelerate_configs/deepspeed_zero3.yaml scripts/run_dpo.py recipes/qwen3-4b-instruct/transfer_learning_dpo_cot_full.yaml

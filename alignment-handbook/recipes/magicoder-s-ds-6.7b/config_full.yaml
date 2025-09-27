@@ -1,0 +1,47 @@
+# Model arguments
+model_name_or_path: ise-uiuc/Magicoder-S-DS-6.7B
+model_revision: main
+tokenizer_name_or_path: ise-uiuc/Magicoder-S-DS-6.7B # Custom tokenizer with <|im_start|> and <|im_end|> tokens
+torch_dtype: bfloat16
+attn_implementation: flash_attention_2
+
+# Data training arguments
+dataset_mixer:
+  teledia-cmu/ruff-meta-linting-v1-5-idiom-subsets: 1.0
+dataset_splits:
+- train
+- test
+preprocessing_num_workers: 12
+
+# SFT trainer config
+bf16: true
+dataset_kwargs:
+  add_special_tokens: false  # We already wrap <bos> and <eos> in the chat template
+  append_concat_token: false # No need to add <eos> across samples
+do_eval: true
+eval_strategy: steps
+eval_steps: 2000
+gradient_accumulation_steps: 4
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: false
+hub_model_id: null
+hub_strategy: end
+learning_rate: 2.0e-05
+log_level: info
+logging_steps: 5
+logging_strategy: steps
+lr_scheduler_type: cosine
+max_seq_length: 3000
+max_steps: -1
+num_train_epochs: 2
+output_dir: model_checkpoints/magicoder-s-ds-6.7b-sft
+overwrite_output_dir: true
+per_device_eval_batch_size: 2
+per_device_train_batch_size: 2
+push_to_hub: false
+remove_unused_columns: true
+save_strategy: "steps"
+save_steps: 2000
+seed: 42
+warmup_ratio: 0.1
