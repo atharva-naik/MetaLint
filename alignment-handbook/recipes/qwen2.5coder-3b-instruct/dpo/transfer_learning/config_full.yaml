@@ -1,0 +1,40 @@
+# Model arguments
+model_name_or_path: model_checkpoints/qwen2.5coder-3b-instruct-sft-trasfer-v4-subtask-cot-star/checkpoint-2000/
+torch_dtype: null
+
+# Data training arguments
+# For definitions, see: src/h4/training/config.py
+dataset_mixer:
+  teledia-cmu/ruff-meta-linting-dpo-qwen2.5_3b_instruct_transfer_v4_subtask_cot_star_SFT_step_2000: 1.0
+dataset_splits:
+- train
+- test
+preprocessing_num_workers: 12
+
+# DPOTrainer arguments
+bf16: true
+beta: 0.1
+do_eval: true
+eval_strategy: steps
+eval_steps: 100
+gradient_accumulation_steps: 4
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: False
+hub_model_id: null
+learning_rate: 5.0e-7
+log_level: info
+logging_steps: 10
+lr_scheduler_type: cosine
+max_length: 3500
+# max_prompt_length: 1024
+num_train_epochs: 1
+optim: adamw_torch
+output_dir: model_checkpoints/qwen2.5coder-3b-instruct-dpo-transfer-v4-subtask-cot-star
+per_device_train_batch_size: 2
+per_device_eval_batch_size: 2
+push_to_hub: false
+save_strategy: "steps"
+save_steps: 200
+seed: 42
+warmup_ratio: 0.1
