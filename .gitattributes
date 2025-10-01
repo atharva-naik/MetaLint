@@ -25,3 +25,5 @@ data/ruff_meta_linting filter=lfs diff=lfs merge=lfs -text
 data/ruff_meta_linting/cot_gen/* filter=lfs diff=lfs merge=lfs -text
 data/ruff_meta_linting/hardness_experiment/ filter=lfs diff=lfs merge=lfs -text
 data/ruff_meta_linting/* filter=lfs diff=lfs merge=lfs -text
+data/ruff_results/* filter=lfs diff=lfs merge=lfs -text
+data/STACK-V2/* filter=lfs diff=lfs merge=lfs -text
