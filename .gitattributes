@@ -23,3 +23,4 @@ data/ruff_meta_linting/dpo/qwen3_4b_transfer_v5_lineno_SFT_step_4000_run2_violat
 data/ruff_meta_linting/dpo/qwen3_4b_transfer_v5_lineno_SFT_step_4000_violations_only/train.json filter=lfs diff=lfs merge=lfs -text
 data/ruff_meta_linting filter=lfs diff=lfs merge=lfs -text
 data/ruff_meta_linting/cot_gen/* filter=lfs diff=lfs merge=lfs -text
+data/ruff_meta_linting/hardness_experiment/ filter=lfs diff=lfs merge=lfs -text
