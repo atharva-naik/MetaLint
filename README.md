@@ -1,8 +1,7 @@
-# OracleProject
-Code for Collaboration/Project with Oracle
+# MetaLint
+Code for Non-Idiomatic Python & Java Code Detection with LLMs (work done with Oracle Labs East)
 
 ## Training & Evaluation Workflow
-
 
 ### SFT training
 First train SFT (alignment-handbook):
