@@ -18,6 +18,13 @@ sys.path.append(module_path)
 
 from src.datautils import read_jsonl
 
+def get_args():
+    parser = argparse.ArgumentParser(description="Evaluate prediction files.")
+    parser.add_argument("-p", "--preds_path", type=str, required=True, help="path to prediction file.")
+    parser.add_argument("-tf", "--test_file", type=str, default="data/ruff_meta_linting/test_v5.json", help='path to test data/file to be used for testing.')
+    parser.add_argument("-pep", "--pep", action="store_true", help='switch to PEP benchmark evaluation mode.')
+    return parser.parse_args()
+
 IDIOMS_FOUND_HEADER = "## Idiom Violations Found"
 def load_linter_results(text, pep: bool=False):
     if not isinstance(text, str): return [] # responses were null sometimes for gpt-oss-20b.
@@ -229,13 +236,6 @@ def compute_aggregate_metrics(idiom_precisions, idiom_recalls):
         R = np.mean([v for k,v in idiom_recalls.items() if k not in IDIOMS_ABSENT_FROM_TEST_SET and k in tool_group_tools])
         F = compute_f_score(P, R)
         print(f"{tool_group_name} P: {P:.4f} R: {R:.4f} F: {F:.4f}")
-
-def get_args():
-    parser = argparse.ArgumentParser(description="Evaluate prediction files.")
-    parser.add_argument("-p", "--preds_path", type=str, required=True, help="path to prediction file.")
-    parser.add_argument("-tf", "--test_file", type=str, default="data/ruff_meta_linting/test_v5.json", help='path to test data/file to be used for testing.')
-    parser.add_argument("-pep", "--pep", action="store_true", help='switch to PEP benchmark evaluation mode.')
-    return parser.parse_args()
 
 # main
 if __name__ == "__main__":

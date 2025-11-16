@@ -165,3 +165,5 @@ access_tokens.json
 access_tokens2.json
 .DS_Store
 .ruff_cache
+
+logs
