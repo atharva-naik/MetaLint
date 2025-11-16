@@ -1,4 +1,6 @@
 # MetaLint
+[Preprint](https://arxiv.org/abs/2507.11687) | [Webpage](https://atharva-naik.github.io/) (Coming Soon)
+
 Code for Non-Idiomatic Python & Java Code Detection with LLMs (work done with Oracle Labs East)
 
 ## Training & Evaluation Workflow
@@ -61,3 +63,15 @@ cd alignment-handbook
 
 ACCELERATE_LOG_LEVEL=info accelerate launch --config_file recipes/accelerate_configs/deepspeed_zero3.yaml scripts/run_dpo.py /path/to/dpo/config.yaml
 ``` 
+
+## Citation
+
+If you find our work useful, please cite us as follows:
+```
+@article{naik2025metalint,
+  title={MetaLint: Generalizable Idiomatic Code Quality Analysis through Instruction-Following and Easy-to-Hard Generalization},
+  author={Naik, Atharva and Baghel, Lawanya and Govindarajan, Dhakshin and Agrawal, Darsh and Fried, Daniel and Rose, Carolyn},
+  journal={arXiv preprint arXiv:2507.11687},
+  year={2025}
+}
+```
