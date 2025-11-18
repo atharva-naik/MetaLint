@@ -1,0 +1,18 @@
+{
+  "blob_id": "749d2da9e0b4617b65698b5f238865d2a416d394",
+  "violations": [
+    {
+      "start_lineno": 56,
+      "end_lineno": 58,
+      "pep": "572",
+      "line": "    version_match = re.search(r\"\"\"^__version__\\s*=\\s*(['\"])(.+)\\1\"\"\",\n                              version_file, re.M)\n    if version_match:",
+      "span": "version_match = re.search(r\"\"\"^__version__\\s*=\\s*(['\"])(.+)\\1\"\"\"",
+      "fix": [
+        {
+          "before": "    version_match = re.search(r\"\"\"^__version__\\s*=\\s*(['\"])(.+)\\1\"\"\",\n                              version_file, re.M)\n    if version_match:",
+          "after": "    if (version_match := re.search('^__version__\\\\s*=\\\\s*([\\'\"])(.+)\\\\1', version_file, re.M)):"
+        }
+      ]
+    }
+  ]
+}

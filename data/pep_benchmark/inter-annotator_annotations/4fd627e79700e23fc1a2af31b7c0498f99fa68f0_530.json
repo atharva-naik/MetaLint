@@ -1,0 +1,19 @@
+{
+    "blob_id": "4fd627e79700e23fc1a2af31b7c0498f99fa68f0",
+    "violations": [
+        {
+            "start_lineno": 14,
+            "end_lineno": 15,
+            "pep": "530",
+            "line": "for k in sessions.values():\n                await k.send_text(msg)",
+            "span": "for k in sessions.values()",
+            "fix": [
+                {
+                    "before": "for k in sessions.values():\n                await k.send_text(msg)",
+                    "after": "            await asyncio.gather(*(k.send_text(msg) async for k in sessions.values()))"
+                }
+               
+            ]
+        }
+    ]
+}

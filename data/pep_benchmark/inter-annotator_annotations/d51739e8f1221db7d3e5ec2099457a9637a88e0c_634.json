@@ -1,0 +1,18 @@
+{
+    "blob_id": "d51739e8f1221db7d3e5ec2099457a9637a88e0c",
+    "violations": [
+        {
+            "start_lineno": 16,
+            "end_lineno": 25,
+            "pep": "634",
+            "line": "if randomtala == 1:\n    brandari = \"Veistu hvað sagði sólpallurinn sagði við hinn sólpallinn? Ég vildi að við værum svlair!\"\nelif randomtala == 2:\n    brandari = \"Einu sinni var pabbi að þvo bílinn með syni sínum svo stoppa þeir í smá og sonurinn spyr \\\"pabbi, getum við notað svampa?\\\"\"\nelif randomtala == 3:\n    brandari = \"Gúrkur eru góðar fyrir minnið. Vinur minn fékk eina upp í rassin og man vel eftir því.\"\nelif randomtala == 4:\n    brandari = \"Hefur þú heyrt um minka búið sem minnkaði og minnkaði þar til það var búið?\"\nelif randomtala == 5:\n    brandari = \"Afhverju sérðu aldrei fíla fela sig í trjám? Því þeir eru að fela sig...\"",
+            "span": "if randomtala == 1",
+            "fix": [
+                {
+                    "before":"if randomtala == 1:\n    brandari = \"Veistu hvað sagði sólpallurinn sagði við hinn sólpallinn? Ég vildi að við værum svlair!\"\nelif randomtala == 2:\n    brandari = \"Einu sinni var pabbi að þvo bílinn með syni sínum svo stoppa þeir í smá og sonurinn spyr \\\"pabbi, getum við notað svampa?\\\"\"\nelif randomtala == 3:\n    brandari = \"Gúrkur eru góðar fyrir minnið. Vinur minn fékk eina upp í rassin og man vel eftir því.\"\nelif randomtala == 4:\n    brandari = \"Hefur þú heyrt um minka búið sem minnkaði og minnkaði þar til það var búið?\"\nelif randomtala == 5:\n    brandari = \"Afhverju sérðu aldrei fíla fela sig í trjám? Því þeir eru að fela sig...\"",
+                    "after": "match randomtala: case 1: brandari = \"Veistu hvað sagði sólpallurinn sagði við hinn sólpallinn? Ég vildi að við værum svlair!\" case 2: brandari = \"Einu sinni var pabbi að þvo bílinn með syni sínum svo stoppa þeir í smá og sonurinn spyr \\\"pabbi, getum við notað svampa?\\\"\" case 3: brandari = \"Gúrkur eru góðar fyrir minnið. Vinur minn fékk eina upp í rassin og man vel eftir því.\" case 4: brandari = \"Hefur þú heyrt um minka búið sem minnkaði og minnkaði þar til það var búið?\" case 5: brandari = \"Afhverju sérðu aldrei fíla fela sig í trjám? Því þeir eru að fela sig...\""
+                }
+            ]
+        }
+    ]
+}

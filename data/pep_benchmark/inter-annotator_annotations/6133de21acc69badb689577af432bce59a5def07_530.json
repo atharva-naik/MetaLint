@@ -1,0 +1,18 @@
+{
+    "blob_id": "6133de21acc69badb689577af432bce59a5def07",
+    "violations": [
+        {
+            "start_lineno": 74,
+            "end_lineno": 76,
+            "pep": "530",
+            "line": "    users = []\n    async for row in database.iterate(query):\n        users.append(build_model_from_row(row, BottifyUserModel))",
+            "span": "users",
+            "fix": [
+                {
+                    "before": "    users = []\n    async for row in database.iterate(query):\n        users.append(build_model_from_row(row, BottifyUserModel))",
+                    "after": "users = [build_model_from_row(row, BottifyUserModel) async for row in database.iterate(query)]"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "blob_id": "2a9cba0dca58595cb2435c827767c2d2a540b0e9",
+    "violations": [
+        {
+            "start_lineno": 54,
+            "end_lineno": 63,
+            "pep": "655",
+            "line": "class _DTypeDictBase(TypedDict):\n    names: Sequence[str]\n    formats: Sequence[_DTypeLikeNested]\n\nclass _DTypeDict(_DTypeDictBase, total=False):\n    offsets: Sequence[int]\n    titles: Sequence[Any]  # Only `str` elements are usable as indexing aliases, but all objects are legal\n    itemsize: int\n    aligned: bool",
+            "span": "_DTypeDictBase, _DTypeDict",
+            "fix": [
+                {
+                    "before": "class _DTypeDictBase(TypedDict):\n    names: Sequence[str]\n    formats: Sequence[_DTypeLikeNested]\n\nclass _DTypeDict(_DTypeDictBase, total=False):\n    offsets: Sequence[int]\n    titles: Sequence[Any]  # Only `str` elements are usable as indexing aliases, but all objects are legal\n    itemsize: int\n    aligned: bool",
+                    "after": "class _DTypeDict(TypedDict):\n    names: Sequence[str]\n    formats: Sequence[_DTypeLikeNested]\n    offsets: NotRequired[Sequence[int]]\n    titles: NotRequired[Sequence[Any]]\n    itemsize: NotRequired[int]\n    aligned: NotRequired[bool]\n"
+                }
+            ]
+        }
+    ]
+}

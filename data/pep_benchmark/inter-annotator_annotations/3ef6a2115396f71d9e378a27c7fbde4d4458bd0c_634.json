@@ -1,0 +1,18 @@
+{
+    "blob_id": "3ef6a2115396f71d9e378a27c7fbde4d4458bd0c",
+    "violations": [
+        {
+            "start_lineno": 59,
+            "end_lineno": 66,
+            "pep": "634",
+            "line": "if detectorName == 'SilentDetector':\n    myDetector = SilentTestDetector()\nelif detectorName == 'AlertingDetector':\n    myDetector = AlertingTestDetector(priority)\nelif detectorName == 'HaltingDetector':\n    myDetector = HaltingTestDetector()\nelif detectorName == 'RaiseErrorDetector':\n    myDetector = RaiseErrorTestDetector()",
+            "span": "if detectorName == 'SilentDetector",
+            "fix": [
+                {
+                    "before": "if detectorName == 'SilentDetector':\n    myDetector = SilentTestDetector()\nelif detectorName == 'AlertingDetector':\n    myDetector = AlertingTestDetector(priority)\nelif detectorName == 'HaltingDetector':\n    myDetector = HaltingTestDetector()\nelif detectorName == 'RaiseErrorDetector':\n    myDetector = RaiseErrorTestDetector()",
+                    "after": "match detectorName:\n    case 'SilentDetector':\n        myDetector = SilentTestDetector()\n    case 'AlertingDetector':\n        myDetector = AlertingTestDetector(priority)\n    case 'HaltingDetector':\n        myDetector = HaltingTestDetector()\n    case 'RaiseErrorDetector':\n        myDetector = RaiseErrorTestDetector()"
+                }
+            ]
+        }
+    ]
+}

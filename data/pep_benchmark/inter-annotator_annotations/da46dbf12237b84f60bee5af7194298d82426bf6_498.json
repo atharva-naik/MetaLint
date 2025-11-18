@@ -1,0 +1,161 @@
+{
+  "blob_id": "da46dbf12237b84f60bee5af7194298d82426bf6",
+  "violations": [
+    {
+      "start_lineno": 217,
+      "end_lineno": 217,
+      "pep": "498",
+      "line": "\"%s-%s\" % (set_type, i)",
+      "span": "\"%s-%s\" % (set_type, i)",
+      "fix": [
+        {
+          "before": "\"%s-%s\" % (set_type, i)",
+          "after": "f\"{set_type}-{i}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 259,
+      "end_lineno": 259,
+      "pep": "498",
+      "line": "\"%s-%s\" % (set_type, i)",
+      "span": "\"%s-%s\" % (set_type, i)",
+      "fix": [
+        {
+          "before": "\"%s-%s\" % (set_type, i)",
+          "after": "f\"{set_type}-{i}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 301,
+      "end_lineno": 301,
+      "pep": "498",
+      "line": "\"%s-%s\" % (set_type, i)",
+      "span": "\"%s-%s\" % (set_type, i)",
+      "fix": [
+        {
+          "before": "\"%s-%s\" % (set_type, i)",
+          "after": "f\"{set_type}-{i}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 648,
+      "end_lineno": 648,
+      "pep": "498",
+      "line": "\"guid: %s\" % (example.guid)",
+      "span": "\"guid: %s\" % (example.guid)",
+      "fix": [
+        {
+          "before": "\"guid: %s\" % (example.guid)",
+          "after": "f\"guid: {example.guid}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 649,
+      "end_lineno": 649,
+      "pep": "498",
+      "line": "\"tokens: %s\" % \" \".join([tokenization.printable_text(x) for x in tokens])",
+      "span": "\"tokens: %s\" % \" \".join([tokenization.printable_text(x) for x in tokens])",
+      "fix": [
+        {
+          "before": "\"tokens: %s\" % \" \".join([tokenization.printable_text(x) for x in tokens])",
+          "after": "f\"tokens: {' '.join([tokenization.printable_text(x) for x in tokens])}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 651,
+      "end_lineno": 651,
+      "pep": "498",
+      "line": "\"input_ids: %s\" % \" \".join([str(x) for x in input_ids])",
+      "span": "\"input_ids: %s\" % \" \".join([str(x) for x in input_ids])",
+      "fix": [
+        {
+          "before": "\"input_ids: %s\" % \" \".join([str(x) for x in input_ids])",
+          "after": "f\"input_ids: {' '.join([str(x) for x in input_ids])}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 652,
+      "end_lineno": 652,
+      "pep": "498",
+      "line": "\"input_mask: %s\" % \" \".join([str(x) for x in input_mask])",
+      "span": "\"input_mask: %s\" % \" \".join([str(x) for x in input_mask])",
+      "fix": [
+        {
+          "before": "\"input_mask: %s\" % \" \".join([str(x) for x in input_mask])",
+          "after": "f\"input_mask: {' '.join([str(x) for x in input_mask])}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 653,
+      "end_lineno": 653,
+      "pep": "498",
+      "line": "\"segment_ids: %s\" % \" \".join([str(x) for x in segment_ids])",
+      "span": "\"segment_ids: %s\" % \" \".join([str(x) for x in segment_ids])",
+      "fix": [
+        {
+          "before": "\"segment_ids: %s\" % \" \".join([str(x) for x in segment_ids])",
+          "after": "f\"segment_ids: {' '.join([str(x) for x in segment_ids])}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 654,
+      "end_lineno": 654,
+      "pep": "498",
+      "line": "\"label: %s (id = %d)\" % (example.label, label_id)",
+      "span": "\"label: %s (id = %d)\" % (example.label, label_id)",
+      "fix": [
+        {
+          "before": "\"label: %s (id = %d)\" % (example.label, label_id)",
+          "after": "f\"label: {example.label} (id = {label_id})\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 673,
+      "end_lineno": 673,
+      "pep": "498",
+      "line": "\"Writing example %d of %d\" % (ex_index, len(examples))",
+      "span": "\"Writing example %d of %d\" % (ex_index, len(examples))",
+      "fix": [
+        {
+          "before": "\"Writing example %d of %d\" % (ex_index, len(examples))",
+          "after": "f\"Writing example {ex_index} of {len(examples)}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 839,
+      "end_lineno": 839,
+      "pep": "498",
+      "line": "\"  name = %s, shape = %s\" % (name, features[name].shape)",
+      "span": "\"  name = %s, shape = %s\" % (name, features[name].shape)",
+      "fix": [
+        {
+          "before": "\"  name = %s, shape = %s\" % (name, features[name].shape)",
+          "after": "f\"  name = {name}, shape = {features[name].shape}\""
+        }
+      ]
+    },
+    {
+      "start_lineno": 1047,
+      "end_lineno": 1047,
+      "pep": "498",
+      "line": "\"Writing example %d of %d\" % (ex_index, len(examples))",
+      "span": "\"Writing example %d of %d\" % (ex_index, len(examples))",
+      "fix": [
+        {
+          "before": "\"Writing example %d of %d\" % (ex_index, len(examples))",
+          "after": "f\"Writing example {ex_index} of {len(examples)}\""
+        }
+      ]
+    }
+  ]
+}

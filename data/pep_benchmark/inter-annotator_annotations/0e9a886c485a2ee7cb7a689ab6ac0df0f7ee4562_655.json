@@ -1,0 +1,44 @@
+{
+    "blob_id": "0e9a886c485a2ee7cb7a689ab6ac0df0f7ee4562",
+    "violations": [
+        {
+            "start_lineno": 20,
+            "end_lineno": 29,
+            "pep": "655",
+            "line": "class _TResultBase(types.TypedDict, total=False):\n    \"\"\"TResult base class for keys that might not be present.\"\"\"\n\n    reason: str\n\n\nclass TResult(_TResultBase, total=True):\n    \"\"\"Record the result of validation.\"\"\"\n\n    valid: bool",
+            "span": "_TResultBase",
+            "fix": [
+                {
+                    "before": "class _TResultBase(types.TypedDict, total=False):\n    \"\"\"TResult base class for keys that might not be present.\"\"\"\n\n    reason: str\n\n\nclass TResult(_TResultBase, total=True):\n    \"\"\"Record the result of validation.\"\"\"\n\n    valid: bool",
+                    "after": "class TResult(types.TypedDict):\n    \"\"\"Record the result of validation.\"\"\"\n    \n    reason: NotRequired[str]\n    valid: bool"
+                }
+            ]
+        },
+        {
+            "start_lineno": 50,
+            "end_lineno": 59,
+            "pep": "655",
+            "line": "class _TModelBase(types.TypedDict, total=False):\n    \"\"\"TModel base class for keys that might not be present.\"\"\"\n    \n    properties: TProperties\n\n\nclass TModel(_TModelBase, total=True):\n    \"\"\"Record validation result of a model.\"\"\"\n\n    result: TResult",
+            "span": "_TModelBase",
+            "fix": [
+                {
+                    "before": "class _TModelBase(types.TypedDict, total=False):\n    \"\"\"TModel base class for keys that might not be present.\"\"\"\n    \n    properties: TProperties\n\n\nclass TModel(_TModelBase, total=True):\n    \"\"\"Record validation result of a model.\"\"\"\n\n    result: TResult",
+                    "after": "class TModel(types.TypedDict):\n    \"\"\"Record validation result of a model.\"\"\"\n\n    properties: NotRequired[TProperties]\n    result: TResult"
+                }
+            ]
+        },
+        {
+            "start_lineno": 65,
+            "end_lineno": 74,
+            "pep": "655",
+            "line": "class _TSpecBase(types.TypedDict, total=False):\n    \"\"\"TSpec base class for keys that might not be presents.\"\"\"\n\n    models: TModels\n\n\nclass TSpec(_TSpecBase, total=True):\n    \"\"\"Record validation result for a specification.\"\"\"\n\n    result: TResult",
+            "span": "_TSpecBase",
+            "fix": [
+                {
+                    "before": "class _TSpecBase(types.TypedDict, total=False):\n    \"\"\"TSpec base class for keys that might not be presents.\"\"\"\n\n    models: TModels\n\n\nclass TSpec(_TSpecBase, total=True):\n    \"\"\"Record validation result for a specification.\"\"\"\n\n    result: TResult",
+                    "after": "class TSpec(types.TypedDict):\n    \"\"\"Record validation result for a specification.\"\"\"\n\n    models: NotRequired[TModels]\n    result: TResult"
+                }
+            ]
+        }
+    ]
+}

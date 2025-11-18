@@ -1,0 +1,25 @@
+{
+    "blob_id": "ae57ca3ec61c32f4def59f3d41a5a8963ab92a16",
+    "violations": [
+      {
+        "start_lineno": 38,
+        "end_lineno": 38,
+        "pep": "614"
+      },
+      {
+        "start_lineno": 44,
+        "end_lineno": 44,
+        "pep": "614"
+      },
+      {
+        "start_lineno": 162,
+        "end_lineno": 162,
+        "pep": "614"
+      },
+      {
+        "start_lineno": 248,
+        "end_lineno": 248,
+        "pep": "614"
+      }      
+    ]
+  }

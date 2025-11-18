@@ -1,0 +1,18 @@
+{
+  "blob_id": "6404bddcd569ebc0e10bb0339eff51cb0fd35044",
+  "violations": [
+    {
+      "start_lineno": 25,
+      "end_lineno": 26,
+      "pep": "572",
+      "line": "                    m = re.search('\".*\" 拍了拍我', content)\n                    if m:  ",
+      "span": "m = re.search('\".*\" 拍了拍我', content)",
+      "fix": [
+        {
+          "before": "                    m = re.search('\".*\" 拍了拍我', content)\n                    if m: ",
+          "after": "                    if (m := re.search('\".*\" 拍了拍我', content)):"
+        }
+      ]
+    }
+  ]
+}

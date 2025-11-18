@@ -1,0 +1,18 @@
+{
+  "blob_id": "1a72146493719a1acbc8d20ce436fcc91c7a4e44",
+  "violations": [
+    {
+      "start_lineno": 4,
+      "end_lineno": 5,
+      "pep": "557",
+      "line": "class Player():\n    def __init__(self, name, current_room, items, awake=True):",
+      "span": "Player",
+      "fix": [
+        {
+          "before": "class Player():\n def __init__(self, name, current_room, items, awake=True):\n self.name = name\n self.current_room = current_room\n self.items = items\n self.awake = awake",
+          "after": "from dataclasses import dataclass, field\nfrom typing import List\n\n@dataclass\nclass Player:\n    name: str\n    current_room: str\n    items: List[str] = field(default_factory=list)\n    awake: bool = True"
+        }
+      ]
+    }
+  ]
+}

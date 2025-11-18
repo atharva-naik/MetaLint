@@ -1,0 +1,18 @@
+{
+  "blob_id": "16d42264f14e0df27c1fd16e5ca5faa78c9249da",
+  "violations": [
+    {
+      "start_lineno": 1,
+      "end_lineno": 5,
+      "pep": "557",
+      "line": "class Player:\n    minAge = 18\n    maxAge = 50\n\n    def __init__(self,name,age):",
+      "span": "Player",
+      "fix": [
+        {
+          "before": "class Player:\n    minAge = 18\n    maxAge = 50\n\n    def __init__(self,name,age):",
+          "after": "@dataclass\n class Player:\n name: str\n age: int\n minAge: ClassVar[int] = 18\n maxAge: ClassVar[int] = 50"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+    "blob_id": "1b0893cba4fe2e7fba672064506ea54c2252585a",
+    "violations": [
+      {
+        "start_lineno": 26,
+        "end_lineno": 26,
+        "pep": "584",
+        "line": "passport.update({f:v})",
+        "span": "passport.update({f:v})",
+        "fix": [
+          {
+            "before": "passport.update({f:v})",
+            "after": "passport |= {f: v}"
+          }
+        ]
+      }
+    ]
+  }

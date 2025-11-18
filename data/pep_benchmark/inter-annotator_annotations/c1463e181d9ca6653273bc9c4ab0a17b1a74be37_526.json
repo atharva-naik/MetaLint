@@ -1,0 +1,97 @@
+{
+    "blob_id": "c1463e181d9ca6653273bc9c4ab0a17b1a74be37",
+    "violations": [
+      {
+        "start_lineno": 522,
+        "end_lineno": 522,
+        "pep": "526",
+        "line": "# type: list",
+        "span": "# type: list",
+        "fix": [
+          {
+            "before": "raw_list = []  # type: list",
+            "after": "raw_list: list = []"
+          }
+        ]
+      },
+      {
+        "start_lineno": 884,
+        "end_lineno": 884,
+        "pep": "526",
+        "line": "# type: list",
+        "span": "# type: list",
+        "fix": [
+          {
+            "before": "incidents = []  # type: list",
+            "after": "incidents: list = []"
+          }
+        ]
+      },
+      {
+        "start_lineno": 1387,
+        "end_lineno": 1387,
+        "pep": "526",
+        "line": "# type: Dict[str, str]",
+        "span": "# type: Dict[str, str]",
+        "fix": [
+          {
+            "before": "result = {}  # type: Dict[str, str]",
+            "after": "result: Dict[str, str] = {}"
+          }
+        ]
+      },
+      {
+        "start_lineno": 1585,
+        "end_lineno": 1588,
+        "pep": "526",
+        "line": "# type: Dict[str,Any]",
+        "span": "# type: Dict[str,Any]",
+        "fix": [
+          {
+            "before": "kwargs_normalsearch = {\n        \"earliest_time\": time_str,\n        \"exec_mode\": \"blocking\"  # A blocking search runs synchronously, and returns a job when it's finished.\n    }  # type: Dict[str,Any]",
+            "after": "kwargs_normalsearch: Dict[str, Any] = {\n        \"earliest_time\": time_str,\n        \"exec_mode\": \"blocking\"  # A blocking search runs synchronously, and returns a job when it's finished.\n    }"
+          }
+        ]
+      },
+      {
+        "start_lineno": 1701,
+        "end_lineno": 1701,
+        "pep": "526",
+        "line": "# type: List[Dict[str,Any]]",
+        "span": "# type: List[Dict[str,Any]]",
+        "fix": [
+          {
+            "before": "total_parsed_results = []  # type: List[Dict[str,Any]]",
+            "after": "total_parsed_results: List[Dict[str, Any]] = []"
+          }
+        ]
+      },
+      {
+        "start_lineno": 1702,
+        "end_lineno": 1702,
+        "pep": "526",
+        "line": "# type: List[Dict[str,Any]]",
+        "span": "# type: List[Dict[str,Any]]",
+        "fix": [
+          {
+            "before": "dbot_scores = []  # type: List[Dict[str,Any]]",
+            "after": "dbot_scores: List[Dict[str, Any]] = []"
+          }
+        ]
+      },
+      {
+        "start_lineno": 279,
+        "end_lineno": 279,
+        "pep": "526",
+        "line": "# type: Dict[str,Any]",
+        "span": "# type: Dict[str,Any]",
+        "fix": [
+          {
+            "before": "incident = {}  # type: Dict[str,Any]",
+            "after": "incident: Dict[str, Any] = {}"
+          }
+        ]
+      }
+    ]
+  }
+  

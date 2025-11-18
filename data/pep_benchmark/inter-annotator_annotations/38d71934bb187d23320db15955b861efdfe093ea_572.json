@@ -1,0 +1,18 @@
+{
+  "blob_id": "38d71934bb187d23320db15955b861efdfe093ea",
+  "violations": [
+    {
+      "start_lineno": 34,
+      "end_lineno": 35,
+      "pep": "572",
+      "line": "            m = re.match(r'^\\s+def\\s+([a-zA-Z0-9_]+)\\(', r[1])\n            if m:",
+      "span": "m = re.match(r'^\\s+def\\s+([a-zA-Z0-9_]+)\\(', r[1])",
+      "fix": [
+        {
+          "before": "            m = re.match(r'^\\s+def\\s+([a-zA-Z0-9_]+)\\(', r[1])\n            if m:",
+          "after": "            if (m := re.match('^\\\\s+def\\\\s+([a-zA-Z0-9_]+)\\\\(', r[1])):"
+        }
+      ]
+    }
+  ]
+}

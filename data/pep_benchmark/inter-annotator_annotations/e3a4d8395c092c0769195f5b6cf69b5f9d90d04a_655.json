@@ -1,0 +1,18 @@
+{
+    "blob_id": "e3a4d8395c092c0769195f5b6cf69b5f9d90d04a",
+    "violations": [
+        {
+            "start_lineno": 43,
+            "end_lineno": 57,
+            "pep": "655",
+            "line": "class StatisticDataBase(TypedDict):\n    \"\"\"Mandatory fields for statistic data class.\"\"\"\n\n    start: datetime\n\nclass StatisticData(StatisticDataBase, total=False):\n    \"\"\"Statistic data class.\"\"\"\n\n    mean: float\n    min: float\n    max: float\n    last_reset: datetime | None\n    state: float\n    sum: float",
+            "span": "StatisticDataBase, StatisticData",
+            "fix": [
+                {
+                    "before": "class StatisticDataBase(TypedDict):\n    \"\"\"Mandatory fields for statistic data class.\"\"\"\n\n    start: datetime\n\nclass StatisticData(StatisticDataBase, total=False):\n    \"\"\"Statistic data class.\"\"\"\n\n    mean: float\n    min: float\n    max: float\n    last_reset: datetime | None\n    state: float\n    sum: float",
+                    "after": "class StatisticData(TypedDict):\n    start: datetime\n    mean: NotRequired[float]\n    min: NotRequired[float]\n    max: NotRequired[float]\n    last_reset: NotRequired[datetime | None]\n    state: NotRequired[float]\n    sum: NotRequired[float]\n"
+                }
+            ]
+        }
+    ]
+}

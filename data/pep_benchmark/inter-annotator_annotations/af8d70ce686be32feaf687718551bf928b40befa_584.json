@@ -1,0 +1,18 @@
+{
+    "blob_id": "af8d70ce686be32feaf687718551bf928b40befa",
+    "violations": [
+      {
+        "start_lineno": 54,
+        "end_lineno": 55,
+        "pep": "584",
+        "line": "for tag, value in variable_dict.items():\n\tself.log_info[tag] = value",
+        "span": "for tag, value in variable_dict.items():\n\tself.log_info[tag] = value",
+        "fix": [
+          {
+            "before": "for tag, value in variable_dict.items():\n\tself.log_info[tag] = value",
+            "after": "self.log_info |= variable_dict"
+          }
+        ]
+      }
+    ]
+  }

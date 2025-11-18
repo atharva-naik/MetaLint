@@ -1,0 +1,18 @@
+{
+    "blob_id": "055237bb5f10dbc3a7803b958039f4f1c9d1f70c",
+    "violations": [
+      {
+        "start_lineno": 53,
+        "end_lineno": 53,
+        "pep": "593",
+        "line": "api_mtls_endpoint: str = None,",
+        "span": "api_mtls_endpoint: str",
+        "fix": [
+          {
+            "before": "api_mtls_endpoint: str",
+            "after": "api_mtls_endpoint: Annotated[Optional[str], \"deprecated\"]"
+          }
+        ]
+      }
+    ]
+  }

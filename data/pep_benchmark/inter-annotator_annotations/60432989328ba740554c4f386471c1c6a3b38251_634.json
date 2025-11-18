@@ -1,0 +1,18 @@
+{
+    "blob_id": "60432989328ba740554c4f386471c1c6a3b38251",
+    "violations": [
+        {
+            "start_lineno": 13,
+            "end_lineno": 24,
+            "pep": "634",
+            "line": "if self.expression:\n    value = self.expression.visit(context)\nif context[\"type\"] == \"program\":\n    table.insertVariable(self.name, value, self.specifier)\n    return table.getVariable(self.name)\nelif context[\"type\"] == \"struct\":\n    table.insertStructMember(context[\"name\"], self.name, value, self.specifier)\n    return value\nelif context[\"type\"] == \"routine\":\n    pass\nelif context[\"type\"] == \"object\":\n    pass",
+            "span": "if self.expression",
+            "fix": [
+                {
+                    "before": "if self.expression:\n    value = self.expression.visit(context)\nif context[\"type\"] == \"program\":\n    table.insertVariable(self.name, value, self.specifier)\n    return table.getVariable(self.name)\nelif context[\"type\"] == \"struct\":\n    table.insertStructMember(context[\"name\"], self.name, value, self.specifier)\n    return value\nelif context[\"type\"] == \"routine\":\n    pass\nelif context[\"type\"] == \"object\":\n    pass",
+                    "after": "if self.expression:\n    value = self.expression.visit(context)\nmatch context[\"type\"]:\n    case \"program\":\n        table.insertVariable(self.name, value, self.specifier)\n        return table.getVariable(self.name)\n    case \"struct\":\n        table.insertStructMember(context[\"name\"], self.name, value, self.specifier)\n        return value\n    case \"routine\":\n        pass\n    case \"object\":\n        pass"
+                }
+            ]
+        }
+    ]
+}

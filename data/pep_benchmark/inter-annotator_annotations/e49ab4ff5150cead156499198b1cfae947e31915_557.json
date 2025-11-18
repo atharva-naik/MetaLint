@@ -1,0 +1,19 @@
+{
+  "blob_id": "e49ab4ff5150cead156499198b1cfae947e31915",
+  "violations": [
+    {
+      "start_lineno": 4,
+      "end_lineno": 11,
+      "pep": "557",
+      "line": "class LCDResponseError(IOError):\n    \"\"\"Triggered when response from LCD is not 2xx status code\"\"\"\n\n    def __init__(self, message, response):\n        self.message = message\n        self.response = response\n\n    def __str__(self):",
+      "span": "LCDResponseError",
+      "fix": [
+        {
+          "before": "class LCDResponseError(IOError):\n    \"\"\"Triggered when response from LCD is not 2xx status code\"\"\"\n\n    def __init__(self, message, response):\n        self.message = message\n        self.response = response\n\n    def __str__(self):",
+
+          "after": "from dataclasses import dataclass\n\n@dataclass\nclass LCDResponseError(IOError):\n    message: str\n    response: Any\n\n    def __str__(self):\n        message = \"\"\n        if self.message:\n            message = \" - \" + self.message\n        return f\"Status {self.response.status}{message}\""
+        }
+      ]
+    }
+  ]
+}

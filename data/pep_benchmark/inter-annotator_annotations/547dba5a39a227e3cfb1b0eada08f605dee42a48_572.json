@@ -1,0 +1,18 @@
+{
+  "blob_id": "547dba5a39a227e3cfb1b0eada08f605dee42a48",
+  "violations": [
+    {
+      "start_lineno": 41,
+      "end_lineno": 42,
+      "pep": "572",
+      "line": "        m = final_sent.findall(to_text[i])\n        if m:",
+      "span": "m = final_sent.findall(to_text[i])",
+      "fix": [
+        {
+          "before": "        m = final_sent.findall(to_text[i])\n        if m:",
+          "after": "        if (m := final_sent.findall(to_text[i])):"
+        }
+      ]
+    }
+  ]
+}

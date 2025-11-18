@@ -1,0 +1,18 @@
+{
+    "blob_id": "b1646692715479ef070ad3519cbfe1f18f97d93b",
+    "violations": [
+        {
+            "start_lineno": 24,
+            "end_lineno": 44,
+            "pep": "634",
+            "line": "if comp_val == \"rock\":\\n    if player_choice == \"rock\":\\n        output = \"tied\"\\n    elif player_choice == \"paper\":\\n        output = \"win\"\\n    elif player_choice == \"scissors\":\\n        output = \"lose\"\\nelif comp_val == \"paper\":\\n    if player_choice == \"rock\":\\n        output = \"lose\"\\n    elif player_choice == \"paper\":\\n        output = \"tied\"\\n    elif player_choice == \"scissors\":\\n        output = \"win\"\\nelif comp_val == \"scissors\":\\n    if player_choice == \"rock\":\\n        output = \"lost\"\\n    elif player_choice == \"paper\":\\n        output = \"win\"\\n    elif player_choice == \"scissors\":\\n        output = \"tied\"",
+            "span": "if comp_val == \"rock\"",
+            "fix": [
+                {
+                    "before": "if comp_val == \"rock\":\\n    if player_choice == \"rock\":\\n        output = \"tied\"\\n    elif player_choice == \"paper\":\\n        output = \"win\"\\n    elif player_choice == \"scissors\":\\n        output = \"lose\"\\nelif comp_val == \"paper\":\\n    if player_choice == \"rock\":\\n        output = \"lose\"\\n    elif player_choice == \"paper\":\\n        output = \"tied\"\\n    elif player_choice == \"scissors\":\\n        output = \"win\"\\nelif comp_val == \"scissors\":\\n    if player_choice == \"rock\":\\n        output = \"lost\"\\n    elif player_choice == \"paper\":\\n        output = \"win\"\\n    elif player_choice == \"scissors\":\\n        output = \"tied\"",
+                    "after": "match (comp_val, player_choice):\\n    case (\"rock\", \"rock\"):\\n        output = \"tied\"\\n    case (\"rock\", \"paper\"):\\n        output = \"win\"\\n    case (\"rock\", \"scissors\"):\\n        output = \"lose\"\\n    case (\"paper\", \"rock\"):\\n        output = \"lose\"\\n    case (\"paper\", \"paper\"):\\n        output = \"tied\"\\n    case (\"paper\", \"scissors\"):\\n        output = \"win\"\\n    case (\"scissors\", \"rock\"):\\n        output = \"lost\"\\n    case (\"scissors\", \"paper\"):\\n        output = \"win\"\\n    case (\"scissors\", \"scissors\"):\\n        output = \"tied\""
+                }
+            ]
+        }
+    ]
+}

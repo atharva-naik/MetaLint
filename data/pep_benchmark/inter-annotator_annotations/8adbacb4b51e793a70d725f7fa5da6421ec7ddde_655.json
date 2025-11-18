@@ -1,0 +1,19 @@
+{
+    "blob_id": "8adbacb4b51e793a70d725f7fa5da6421ec7ddde",
+    "violations": [
+        {
+            "start_lineno": 19,
+            "end_lineno": 26,
+            "pep": "655",
+            "line": "class GoogleOAuth2AuthorizeParams(TypedDict, total=False):\n    access_type: Literal[\"online\", \"offline\"]\n    include_granted_scopes: bool\n    login_hint: str\n    prompt: Literal[\"none\", \"consent\", \"select_account\"]\n\n\nclass GoogleOAuth2(BaseOAuth2[GoogleOAuth2AuthorizeParams]):",
+            "span": "GoogleOAuth2AuthorizeParams",
+            "fix": [
+                {
+                    "before": "class GoogleOAuth2AuthorizeParams(TypedDict, total=False):\n    access_type: Literal[\"online\", \"offline\"]\n    include_granted_scopes: bool\n    login_hint: str\n    prompt: Literal[\"none\", \"consent\", \"select_account\"]\n\n\nclass GoogleOAuth2(BaseOAuth2[GoogleOAuth2AuthorizeParams]):",
+                    "after": "class GoogleOAuth2(BaseOAuth2):\n    access_type: NotRequired[Literal[\"online\", \"offline\"]]\n    include_granted_scopes: NotRequired[bool]\n    login_hint: NotRequired[str]\n    prompt: NotRequired[Literal[\"none\", \"consent\", \"select_account\"]]"
+                }
+            ]
+        }
+
+    ]
+}

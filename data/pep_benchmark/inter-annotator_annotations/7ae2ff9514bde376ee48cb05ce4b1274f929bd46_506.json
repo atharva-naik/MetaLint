@@ -1,0 +1,57 @@
+{
+  "blob_id": "7ae2ff9514bde376ee48cb05ce4b1274f929bd46",
+  "violations": [
+    {
+      "start_lineno": 44,
+      "end_lineno": 44,
+      "pep": "506",
+      "line": "choice = random.random()",
+      "span": "random.random",
+      "fix": [
+        {
+          "before": "random.random",
+          "after": "secrets.secrets"
+        }
+      ]
+    },
+    {
+      "start_lineno": 41,
+      "end_lineno": 41,
+      "pep": "506",
+      "line": "return '[MASK]' if random.random()<PROB_MASK_NON_KEYWORDS else word",
+      "span": "random.random",
+      "fix": [
+        {
+          "before": "random.random",
+          "after": "secrets.secrets"
+        }
+      ]
+    },
+    {
+      "start_lineno": 48,
+      "end_lineno": 48,
+      "pep": "506",
+      "line": "return random.sample(self.vocab, 1)[0]",
+      "span": "random.sample",
+      "fix": [
+        {
+          "before": "random.sample",
+          "after": "secrets.sample"
+        }
+      ]
+    },
+    {
+      "start_lineno": 11,
+      "end_lineno": 52,
+      "pep": "557",
+      "line": "class MaskCorpus():\n\n    def __init__(self,\n                 corpus,\n                 idx,\n                 keep_tags,\n                 keep_words):\n\n        self.keep_tags=keep_tags\n        self.keep_words=keep_words\n        self.corpus=corpus\n        self.idx=idx\n        self.tagger=self._default_tagger()\n        self.vocab=self.build_vocab(corpus)\n\n    def build_vocab(self, corpus):\n        vocab = Counter()\n        for sentence in corpus:\n            vocab += Counter(sentence.split())\n        return list(vocab)\n\n    def _default_tagger(self):\n        try:\n            import spacy_udpipe\n        except ImportError:\n            raise('You are missing pos tagger, try `pip install spacy_udpipe`')\n        spacy_udpipe.download('en')\n        return spacy_udpipe.load('en')\n\n    def _mask_non_keywords(self, word):\n        return '[MASK]' if random.random()<PROB_MASK_NON_KEYWORDS else word\n\n    def _mask_keywords(self, word):\n        choice = random.random()\n        if choice < PROB_KEEP_KEYWORDS:\n            return word\n        elif PROB_KEEP_KEYWORDS<=choice and choice<PROB_REPLACE_KEYWORDS+PROB_KEEP_KEYWORDS:\n            return random.sample(self.vocab, 1)[0]\n        else:\n            return '[MASK]'\n\n    def generate_corpus(self):",
+      "span": "MaskCorpus",
+      "fix": [
+        {
+          "before": "class MaskCorpus",
+          "after": "@dataclass\nclass MaskCorpus"
+        }
+      ]
+    }
+  ]
+}

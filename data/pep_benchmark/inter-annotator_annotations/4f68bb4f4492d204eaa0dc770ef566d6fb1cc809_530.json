@@ -1,0 +1,19 @@
+{
+    "blob_id": "4f68bb4f4492d204eaa0dc770ef566d6fb1cc809",
+    "violations": [{
+            "start_lineno": 41,
+            "end_lineno": 48,
+            "pep": "530",
+            "line": "async def _cancel_all_tasks(self):\n        pending = (task for task in asyncio.all_tasks() if task is not asyncio.current_task())\n        for task in pending:\n            task.cancel()\n            with contextlib.suppress(asyncio.CancelledError):\n                await task",
+            "span": "for task in pending",
+            "fix": [
+                {
+                    "before": "async def _cancel_all_tasks(self):\n        pending = (task for task in asyncio.all_tasks() if task is not asyncio.current_task())\n        for task in pending:\n            task.cancel()\n            with contextlib.suppress(asyncio.CancelledError):\n                await task",
+                    "after": "async def _cancel_all_tasks(self):\n        pending = [task for task in asyncio.all_tasks() if task is not asyncio.current_task()]\n        for task in pending:\n            task.cancel()\n        await asyncio.gather(*(self._suppress_cancel(task) for task in pending))\n\nasync def _suppress_cancel(self, task):\n        with contextlib.suppress(asyncio.CancelledError):\n            await task"
+                }
+               
+            ]
+        }
+
+]
+}

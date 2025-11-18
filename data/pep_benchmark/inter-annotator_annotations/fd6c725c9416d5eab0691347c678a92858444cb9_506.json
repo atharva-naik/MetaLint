@@ -1,0 +1,18 @@
+{
+  "blob_id": "fd6c725c9416d5eab0691347c678a92858444cb9",
+  "violations": [
+    {
+      "start_lineno": 11,
+      "end_lineno": 11,
+      "pep": "506",
+      "line": "return ''.join(random.choice(string.ascii_lowercase) for _ in range(n))",
+      "span": "random.choice",
+      "fix": [
+        {
+          "before": "random.choice",
+          "after": "secrets.choice"
+        }
+      ]
+    }
+  ]
+}

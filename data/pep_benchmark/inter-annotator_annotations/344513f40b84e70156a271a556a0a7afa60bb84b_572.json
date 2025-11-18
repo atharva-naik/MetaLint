@@ -1,0 +1,18 @@
+{
+  "blob_id": "344513f40b84e70156a271a556a0a7afa60bb84b",
+  "violations": [
+    {
+      "start_lineno": 18,
+      "end_lineno": 19,
+      "pep": "572",
+      "line": "            Is_check_hr_holidays_status= self.env['hr.holidays.status'].search([('id','=',holiday_status_id),('exclude_public_holidays','=',True)])\n            if Is_check_hr_holidays_status:",
+      "span": "Is_check_hr_holidays_status= self.env['hr.holidays.status'].search([('id','=',holiday_status_id),('exclude_public_holidays','=',True)])",
+      "fix": [
+        {
+          "before": "            Is_check_hr_holidays_status= self.env['hr.holidays.status'].search([('id','=',holiday_status_id),('exclude_public_holidays','=',True)])\n            if Is_check_hr_holidays_status:",
+          "after": "            if (Is_check_hr_holidays_status := self.env['hr.holidays.status'].search([('id', '=', holiday_status_id), ('exclude_public_holidays', '=', True)])):"
+        }
+      ]
+    }
+  ]
+}
