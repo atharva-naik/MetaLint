@@ -1,0 +1,18 @@
+{
+  "blob_id": "34ce1215a1f0114d758912539f6b8b23e9087aee",
+  "violations": [
+    {
+      "start_lineno": 7,
+      "end_lineno": 8,
+      "pep": "557",
+      "line": "class Wizard:\n    def __init__(self, name, level):",
+      "span": "Wizard",
+      "fix": [
+        {
+          "before": "class Wizard",
+          "after": "@dataclass\nclass Wizard"
+        }
+      ]
+    }
+  ]
+}

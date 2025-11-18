@@ -1,0 +1,18 @@
+{
+    "blob_id": "1c946e0e7093e1f28907a6763722a826a13762bd",
+    "violations": [
+        {
+            "start_lineno": 5,
+            "end_lineno": 15,
+            "pep": "655",
+            "line": "class Movie1(TypedDict, total=False):\n    name: str\n    year: int\n\nclass Movie2(TypedDict, total=False):\n    name: str\n    year: int\n\nclass Movie3(TypedDict, total=True):\n    name: str\n    year: int",
+            "span": "Movie1, Movie2, Movie3",
+            "fix": [
+                {
+                    "before": "class Movie1(TypedDict, total=False):\n    name: str\n    year: int\n\nclass Movie2(TypedDict, total=False):\n    name: str\n    year: int\n\nclass Movie3(TypedDict, total=True):\n    name: str\n    year: int",
+                    "after": "class Movie(TypedDict):\\n    name: NotRequired[str]\\n    year: NotRequired[int]\\n    earnings: Required[float]"
+                }
+            ]
+        }
+    ]
+}

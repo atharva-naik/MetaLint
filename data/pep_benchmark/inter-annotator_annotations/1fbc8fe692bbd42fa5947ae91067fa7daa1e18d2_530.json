@@ -1,0 +1,20 @@
+{
+    "blob_id": "1fbc8fe692bbd42fa5947ae91067fa7daa1e18d2",
+    "violations": [
+        {
+            "start_lineno": 17,
+            "end_lineno": 22,
+            "pep": "530",
+            "line": "answer = \"Истекает срок годности:\\n\"\n        p = await Product.query.where(and_(Product.user_id == u.user_id,\n                                           Product.expiration_date == dt.datetime.today() + dt.timedelta(u.notifications_advance_days_until_expiration))).gino.all()\n        for pr in p:\n            answer += pr.name + \" - \" + parse(str(pr.expiration_date)).strftime('%d.%m') + \"\\n\"\n        await bot.send_message(u.user_id, answer)",
+            "span": "for pr in p",
+            "fix": [
+                {
+                    "before": "answer = \"Истекает срок годности:\\n\"\n        p = await Product.query.where(and_(Product.user_id == u.user_id,\n                                           Product.expiration_date == dt.datetime.today() + dt.timedelta(u.notifications_advance_days_until_expiration))).gino.all()\n        for pr in p:\n            answer += pr.name + \" - \" + parse(str(pr.expiration_date)).strftime('%d.%m') + \"\\n\"\n        await bot.send_message(u.user_id, answer)",
+                    "after": "products = await Product.query.where(and_(\n            Product.user_id == u.user_id,\n            Product.expiration_date == dt.datetime.today() + dt.timedelta(u.notifications_advance_days_until_expiration)\n        )).gino.all()\n\n        product_lines = [\n            f\"{pr.name} - {parse(str(pr.expiration_date)).strftime('%d.%m')}\"\n            async for pr in async_gen(products)\n        ]\n\n        if product_lines:\n            answer = \"Истекает срок годности:\\n\" + \"\\n\".join(product_lines)\n            await bot.send_message(u.user_id, answer)\n\nasync def async_gen(iterable):\n    for item in iterable:\n        await asyncio.sleep(0)\n        yield item"
+                }
+               
+            ]
+        }
+
+    ]
+}

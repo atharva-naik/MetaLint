@@ -1,0 +1,21 @@
+{
+    "blob_id": "1fd93eb7a3b2ded31c15b2795f677cb28af79054",
+    "violations": [
+        {
+            "start_lineno": 72,
+            "end_lineno": 73,
+            "pep": "530",
+            "line": "for perm in permissions:\n                await test_permission(conn, details, perm, i)",
+            "span": "for perm in permissions",
+            "fix": [
+                {
+                    "before": "for perm in permissions:\n                await test_permission(conn, details, perm, i)",
+                    "after": "await asyncio.gather(*(test_permission(conn, details, perm, i) for perm in permissions))"
+                }
+               
+            ]
+        }
+
+
+    ]
+}

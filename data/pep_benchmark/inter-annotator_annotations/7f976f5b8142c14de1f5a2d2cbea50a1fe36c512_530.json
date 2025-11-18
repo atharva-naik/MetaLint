@@ -1,0 +1,33 @@
+{
+    "blob_id": "7f976f5b8142c14de1f5a2d2cbea50a1fe36c512",
+    "violations": [
+        {
+            "start_lineno": 65,
+            "end_lineno": 72,
+            "pep": "530",
+            "line": "if not sync_token_header:\n            return\n        sync_token_strings = sync_token_header.split(\",\")\n        if not sync_token_strings:\n            return\n        for sync_token_string in sync_token_strings:\n            sync_token = SyncToken.from_sync_token_string(sync_token_string)\n            await self._update_sync_token(sync_token)",
+            "span": "for sync_token_string in sync_token_strings",
+            "fix": [
+                {
+                    "before": "if not sync_token_header:\n            return\n        sync_token_strings = sync_token_header.split(\",\")\n        if not sync_token_strings:\n            return\n        for sync_token_string in sync_token_strings:\n            sync_token = SyncToken.from_sync_token_string(sync_token_string)\n            await self._update_sync_token(sync_token)",
+                    "after": "if sync_token_header:\n        await asyncio.gather(\n            *(self._update_sync_token(SyncToken.from_sync_token_string(token))\n              for token in sync_token_header.split(\",\") if token)\n        )"
+                }
+               
+            ]
+        },
+        {
+            "start_lineno": 75,
+            "end_lineno": 78,
+            "pep": "530",
+            "line": "raw_tokens = full_raw_tokens.split(\",\")\n        for raw_token in raw_tokens:\n            sync_token = SyncToken.from_sync_token_string(raw_token)\n            await self._update_sync_token(sync_token)",
+            "span": "for raw_token in raw_tokens",
+            "fix": [
+                {
+                    "before": "raw_tokens = full_raw_tokens.split(\",\")\n        for raw_token in raw_tokens:\n            sync_token = SyncToken.from_sync_token_string(raw_token)\n            await self._update_sync_token(sync_token)",
+                    "after": "await asyncio.gather(\n        *(self._update_sync_token(SyncToken.from_sync_token_string(raw_token))\n          for raw_token in full_raw_tokens.split(\",\") if raw_token)\n    )"
+                }
+               
+            ]
+        }
+    ]
+}

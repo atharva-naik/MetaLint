@@ -1,0 +1,18 @@
+{
+  "blob_id": "39f7c29ea95996c14613d1e200fbe93a42a90aa3",
+  "violations": [
+    {
+      "start_lineno": 4,
+      "end_lineno": 15,
+      "pep": "557",
+      "line": "class _BRACES():\n\tdef __init__(self,): \n\t\tself.name = \"BRACES\"\n\t\tself.definitions = brace\n\n\t\tself.parents = []\n\t\tself.childen = []\n\t\tself.properties = []\n\t\tself.jsondata = {}\n\n\n\t\tself.basic = ['brace']",
+      "span": "_BRACES",
+      "fix": [
+        {
+          "before": "class _BRACES():\n\tdef __init__(self,): \n\t\tself.name = \"BRACES\"\n\t\tself.definitions = brace\n\n\t\tself.parents = []\n\t\tself.childen = []\n\t\tself.properties = []\n\t\tself.jsondata = {}\n\n\t\tself.basic = ['brace']",
+          "after": "from dataclasses import dataclass, field\nfrom typing import Any, List, Dict\n\n@dataclass\nclass _BRACES:\n    name: str = \"BRACES\"\n    definitions: Any = None  # Replace None with `brace` if brace is defined at module level.\n    parents: List[Any] = field(default_factory=list)\n    childen: List[Any] = field(default_factory=list)  # Note: 'childen' seems like a typo; consider 'children'\n    properties: List[Any] = field(default_factory=list)\n    jsondata: Dict[Any, Any] = field(default_factory=dict)\n    basic: List[str] = field(default_factory=lambda: ['brace'])"
+        }
+      ]
+    }
+  ]
+}

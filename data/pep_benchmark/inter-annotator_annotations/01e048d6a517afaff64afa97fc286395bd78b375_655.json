@@ -1,0 +1,57 @@
+{
+    "blob_id": "01e048d6a517afaff64afa97fc286395bd78b375",
+    "violations": [
+        {
+            "start_lineno": 64,
+            "end_lineno": 98,
+            "pep": "655",
+            "line": "class ABIEventParams(TypedDict, total=False):\n    indexed: bool\n    name: str\n    type: str\n\n\nclass ABIEvent(TypedDict, total=False):\n    anonymous: bool\n    inputs: Sequence[\"ABIEventParams\"]\n    name: str\n    type: Literal[\"event\"]\n\n\nclass ABIFunctionComponents(TypedDict, total=False):\n    # better typed as Sequence['ABIFunctionComponents'], but recursion isnt possible yet\n    # https://github.com/python/mypy/issues/731\n    components: Sequence[Any]\n    name: str\n    type: str\n\n\nclass ABIFunctionParams(TypedDict, total=False):\n    components: Sequence[\"ABIFunctionComponents\"]\n    name: str\n    type: str\n\n\nclass ABIFunction(TypedDict, total=False):\n    constant: bool\n    inputs: Sequence[\"ABIFunctionParams\"]\n    name: str\n    outputs: Sequence[\"ABIFunctionParams\"]\n    payable: bool\n    stateMutability: Literal[\"pure\", \"view\", \"nonpayable\", \"payable\"]\n    type: Literal[\"function\", \"constructor\", \"fallback\", \"receive\"]",
+            "span": "ABIEventParams",
+            "fix": [
+                {
+                    "before": "class ABIEventParams(TypedDict, total=False):\n    indexed: bool\n    name: str\n    type: str\n\n\nclass ABIEvent(TypedDict, total=False):\n    anonymous: bool\n    inputs: Sequence[\"ABIEventParams\"]\n    name: str\n    type: Literal[\"event\"]\n\n\nclass ABIFunctionComponents(TypedDict, total=False):\n    # better typed as Sequence['ABIFunctionComponents'], but recursion isnt possible yet\n    # https://github.com/python/mypy/issues/731\n    components: Sequence[Any]\n    name: str\n    type: str\n\n\nclass ABIFunctionParams(TypedDict, total=False):\n    components: Sequence[\"ABIFunctionComponents\"]\n    name: str\n    type: str\n\n\nclass ABIFunction(TypedDict, total=False):\n    constant: bool\n    inputs: Sequence[\"ABIFunctionParams\"]\n    name: str\n    outputs: Sequence[\"ABIFunctionParams\"]\n    payable: bool\n    stateMutability: Literal[\"pure\", \"view\", \"nonpayable\", \"payable\"]\n    type: Literal[\"function\", \"constructor\", \"fallback\", \"receive\"]",
+                    "after": "class ABIEventParams(TypedDict):\n    indexed: NotRequired[bool]\n    name: NotRequired[str]\n    type: NotRequired[str]\n\n\nclass ABIEvent(TypedDict):\n    anonymous: NotRequired[bool]\n    inputs: NotRequired[Sequence[\"ABIEventParams\"]]\n    name: NotRequired[str]\n    type: NotRequired[Literal[\"event\"]]\n\n\nclass ABIFunctionComponents(TypedDict):\n    components: NotRequired[Sequence[Any]]\n    name: NotRequired[str]\n    type: NotRequired[str]\n\n\nclass ABIFunctionParams(TypedDict):\n    components: NotRequired[Sequence[\"ABIFunctionComponents\"]]\n    name: NotRequired[str]\n    type: NotRequired[str]\n\n\nclass ABIFunction(TypedDict):\n    constant: NotRequired[bool]\n    inputs: NotRequired[Sequence[\"ABIFunctionParams\"]]\n    name: NotRequired[str]\n    outputs: NotRequired[Sequence[\"ABIFunctionParams\"]]\n    payable: NotRequired[bool]\n    stateMutability: NotRequired[Literal[\"pure\", \"view\", \"nonpayable\", \"payable\"]]\n    type: NotRequired[Literal[\"function\", \"constructor\", \"fallback\", \"receive\"]]"
+                }
+            ]
+        },
+        {
+            "start_lineno": 105,
+            "end_lineno": 125,
+            "pep": "655",
+            "line": "class EventData(TypedDict):\n    address: ChecksumAddress\n    args: Dict[str, Any]\n    blockHash: HexBytes\n    blockNumber: int\n    event: str\n    logIndex: int\n    transactionHash: HexBytes\n    transactionIndex: int\n\n\nclass RPCError(TypedDict):\n    code: int\n    message: str\n\n\nclass RPCResponse(TypedDict, total=False):\n    error: Union[RPCError, str]\n    id: int\n    jsonrpc: Literal[\"2.0\"]\n    result: Any",
+            "span": "EventData",
+            "fix": [
+                {
+                    "before": "class EventData(TypedDict):\n    address: ChecksumAddress\n    args: Dict[str, Any]\n    blockHash: HexBytes\n    blockNumber: int\n    event: str\n    logIndex: int\n    transactionHash: HexBytes\n    transactionIndex: int\n\n\nclass RPCError(TypedDict):\n    code: int\n    message: str\n\n\nclass RPCResponse(TypedDict, total=False):\n    error: Union[RPCError, str]\n    id: int\n    jsonrpc: Literal[\"2.0\"]\n    result: Any",
+                    "after": "class EventData(TypedDict):\n    address: Required[ChecksumAddress]\n    args: Required[Dict[str, Any]]\n    blockHash: Required[HexBytes]\n    blockNumber: Required[int]\n    event: Required[str]\n    logIndex: Required[int]\n    transactionHash: Required[HexBytes]\n    transactionIndex: Required[int]\n\n\nclass RPCError(TypedDict):\n    code: Required[int]\n    message: Required[str]\n\n\nclass RPCResponse(TypedDict):\n    id: Required[int]\n    jsonrpc: Required[Literal[\"2.0\"]]\n    result: NotRequired[Any]\n    error: NotRequired[Union[RPCError, str]]"
+                }
+            ]
+        },
+        {
+            "start_lineno": 132,
+            "end_lineno": 143,
+            "pep": "655",
+            "line": "class FormattersDict(TypedDict, total=False):\n    error_formatters: Formatters\n    request_formatters: Formatters\n    result_formatters: Formatters\n\n\nclass FilterParams(TypedDict, total=False):\n    address: Union[Address, ChecksumAddress, List[Address], List[ChecksumAddress]]\n    blockHash: HexBytes\n    fromBlock: BlockIdentifier\n    toBlock: BlockIdentifier\n    topics: Sequence[Optional[Union[_Hash32, Sequence[_Hash32]]]]",
+            "span": "FormattersDict",
+            "fix": [
+                {
+                    "before": "class FormattersDict(TypedDict, total=False):\n    error_formatters: Formatters\n    request_formatters: Formatters\n    result_formatters: Formatters\n\n\nclass FilterParams(TypedDict, total=False):\n    address: Union[Address, ChecksumAddress, List[Address], List[ChecksumAddress]]\n    blockHash: HexBytes\n    fromBlock: BlockIdentifier\n    toBlock: BlockIdentifier\n    topics: Sequence[Optional[Union[_Hash32, Sequence[_Hash32]]]]",
+                    "after": "class FormattersDict(TypedDict):\n    error_formatters: NotRequired[Formatters]\n    request_formatters: NotRequired[Formatters]\n    result_formatters: NotRequired[Formatters]\n\n\nclass FilterParams(TypedDict):\n    address: NotRequired[\n        Union[Address, ChecksumAddress, List[Address], List[ChecksumAddress]]\n    ]\n    blockHash: NotRequired[HexBytes]\n    fromBlock: NotRequired[BlockIdentifier]\n    toBlock: NotRequired[BlockIdentifier]\n    topics: NotRequired[Sequence[Optional[Union[_Hash32, Sequence[_Hash32]]]]]"
+                }
+            ]
+        },
+        {
+            "start_lineno": 403,
+            "end_lineno": 415,
+            "pep": "655",
+            "line": "class TxPoolContent(TypedDict, total=False):\n    pending: Dict[ChecksumAddress, Dict[Nonce, List[PendingTx]]]\n    queued: Dict[ChecksumAddress, Dict[Nonce, List[PendingTx]]]\n\n\nclass TxPoolInspect(TypedDict, total=False):\n    pending: Dict[ChecksumAddress, Dict[Nonce, str]]\n    queued: Dict[ChecksumAddress, Dict[Nonce, str]]\n\n\nclass TxPoolStatus(TypedDict, total=False):\n    pending: int\n    queued: int",
+            "span": "TxPoolContent",
+            "fix": [
+                {
+                    "before": "class TxPoolContent(TypedDict, total=False):\n    pending: Dict[ChecksumAddress, Dict[Nonce, List[PendingTx]]]\n    queued: Dict[ChecksumAddress, Dict[Nonce, List[PendingTx]]]\n\n\nclass TxPoolInspect(TypedDict, total=False):\n    pending: Dict[ChecksumAddress, Dict[Nonce, str]]\n    queued: Dict[ChecksumAddress, Dict[Nonce, str]]\n\n\nclass TxPoolStatus(TypedDict, total=False):\n    pending: int\n    queued: int",
+                    "after": "class TxPool(TypedDict, total=False):\n    pending: NotRequired[Dict[ChecksumAddress, Dict[Nonce, List[PendingTx]]]]\n    queued: NotRequired[Dict[ChecksumAddress, Dict[Nonce, List[PendingTx]]]]\n    status_pending: NotRequired[int]\n    status_queued: NotRequired[int]\n    inspect_pending: NotRequired[Dict[ChecksumAddress, Dict[Nonce, str]]]\n    inspect_queued: NotRequired[Dict[ChecksumAddress, Dict[Nonce, str]]]"
+                }
+            ]
+        }
+    ]
+}

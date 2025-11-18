@@ -1,0 +1,18 @@
+{
+  "blob_id": "876d8881f57e0b75f60ec92bf0347fa8c98532aa",
+  "violations": [
+    {
+      "start_lineno": 1,
+      "end_lineno": 4,
+      "pep": "557",
+      "line": "class book:\n    \n    \n    def __init__(self,bookName,price):",
+      "span": "book",
+      "fix": [
+        {
+          "before": "class book",
+          "after": "from dataclasses import dataclass\n\n@dataclass\nclass Book:\n    bookName: str\n    price: float"
+        }
+      ]
+    }
+  ]
+}

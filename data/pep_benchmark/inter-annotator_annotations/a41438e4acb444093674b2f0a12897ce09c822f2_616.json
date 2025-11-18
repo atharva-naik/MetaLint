@@ -1,0 +1,31 @@
+{
+    "blob_id": "a41438e4acb444093674b2f0a12897ce09c822f2",
+    "violations": [
+      {
+        "start_lineno": 48,
+        "end_lineno": 49,
+        "pep": "616",
+        "line": "if filename.startswith(\"_\"):\n\tfilename = filename[1:]",
+        "span": "if filename.startswith(\"_\"):\n\tfilename = filename[1:]",
+        "fix": [
+          {
+            "before": "if filename.startswith(\"_\"):\n\tfilename = filename[1:]",
+            "after": "filename.removeprefix(\"_\")"
+          }
+        ]
+      },
+      {
+        "start_lineno": 50,
+        "end_lineno": 51,
+        "pep": "616",
+        "line": "if filename.endswith(\"_\"):\n\tfilename = filename[:-1]",
+        "span": "if filename.endswith(\"_\"):\n\tfilename = filename[:-1]",
+        "fix": [
+          {
+            "before": "if filename.endswith(\"_\"):\n\tfilename = filename[:-1]",
+            "after": "filename.removesuffix(\"_\")"
+          }
+        ]
+      }
+    ]
+  }

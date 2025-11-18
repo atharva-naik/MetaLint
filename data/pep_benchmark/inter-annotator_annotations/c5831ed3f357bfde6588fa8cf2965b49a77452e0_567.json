@@ -1,0 +1,19 @@
+{
+    "blob_id": "c5831ed3f357bfde6588fa8cf2965b49a77452e0",
+    "violations": [
+      {
+        "start_lineno": 395,
+        "end_lineno": 395,
+        "pep": "567",
+        "line": "class _Local(threading.local):",
+        "span": "threading.local",
+        "fix": [
+          {
+            "before": "class _Local(threading.local):",
+            "after": "import contextvars\n\nclass _Local:\n    _loop = contextvars.ContextVar('event_loop', default=None)\n    _set_called = contextvars.ContextVar('set_called', default=False)"
+          }
+        ]
+      }
+    ]
+  }
+  

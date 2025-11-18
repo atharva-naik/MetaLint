@@ -1,0 +1,19 @@
+{
+    "blob_id": "4cb2b460d6fc7f782ca70373bfbc121de72a1105",
+    "violations": [
+        {
+            "start_lineno": 90,
+            "end_lineno": 91,
+            "pep": "530",
+            "line": "for url in urls:\n                await get_list(url, sess)",
+            "span": "for url in urls",
+            "fix": [
+                {
+                    "before": "for url in urls:\n                await get_list(url, sess)",
+                    "after": "      await asyncio.gather(*(get_list(url, sess) for url in urls))"
+                }
+               
+            ]
+        }
+    ]
+}

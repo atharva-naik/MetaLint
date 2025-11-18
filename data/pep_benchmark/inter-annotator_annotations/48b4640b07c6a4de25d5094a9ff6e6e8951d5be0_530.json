@@ -1,0 +1,19 @@
+{
+    "blob_id": "48b4640b07c6a4de25d5094a9ff6e6e8951d5be0",
+    "violations": [
+        {
+            "start_lineno": 11,
+            "end_lineno": 15,
+            "pep": "530",
+            "line": "for member in operation['host_group']:\n            for l in await self.planning_svc.select_links(operation, member, phase):\n                l.pop('rewards', [])\n                await self.agent_svc.perform_action(l)\n        await self.planning_svc.wait_for_phase(operation)",
+            "span": "for member in operation['host_group']",
+            "fix": [
+                {
+                    "before": "for member in operation['host_group']:\n            for l in await self.planning_svc.select_links(operation, member, phase):\n                l.pop('rewards', [])\n                await self.agent_svc.perform_action(l)\n        await self.planning_svc.wait_for_phase(operation)",
+                    "after": "async def process_member(member):\n            links = await self.planning_svc.select_links(operation, member, phase)\n            await asyncio.gather(*( \n                self.agent_svc.perform_action({**l, 'rewards': []} if 'rewards' in l else l)\n                for l in links\n            ))\n\n        await asyncio.gather(*(process_member(m) for m in operation['host_group']))\n        await self.planning_svc.wait_for_phase(operation)"
+                }
+               
+            ]
+        }
+    ]
+}

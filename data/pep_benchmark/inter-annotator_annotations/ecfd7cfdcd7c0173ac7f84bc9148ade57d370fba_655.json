@@ -1,0 +1,31 @@
+{
+    "blob_id": "ecfd7cfdcd7c0173ac7f84bc9148ade57d370fba",
+    "violations": [
+        {
+            "start_lineno": 33,
+            "end_lineno": 42,
+            "pep": "655",
+            "line": "class TrackerData(TypedDict):\n    uuid: str\n    shape: str\n\nclass TrackerDelta(TrackerData, total=False):\n    visible: bool\n    name: str\n    value: int\n    maxvalue: int",
+            "span": "TrackerData",
+            "fix": [
+                {
+                    "before": "class TrackerData(TypedDict):\n    uuid: str\n    shape: str\n\nclass TrackerDelta(TrackerData, total=False):\n    visible: bool\n    name: str\n    value: int\n    maxvalue: int",
+                    "after": "class TrackerDelta(TypedDict):\n    uuid: str\n    shape: str\n    visible: NotRequired[bool]\n    name: NotRequired[str]\n    value: NotRequired[int]\n    maxvalue: NotRequired[int]\n"
+                }
+            ]
+        },
+        {
+            "start_lineno": 45,
+            "end_lineno": 56,
+            "pep": "655",
+            "line": "class AuraData(TypedDict):\n    uuid: str\n    shape: str\n\nclass AuraDelta(AuraData, total=False):\n    vision_source: bool\n    visible: bool\n    name: str\n    value: int\n    dim: int\n    colour: str",
+            "span": "AuraData",
+            "fix": [
+                {
+                    "before": "class AuraData(TypedDict):\n    uuid: str\n    shape: str\n\nclass AuraDelta(AuraData, total=False):\n    vision_source: bool\n    visible: bool\n    name: str\n    value: int\n    dim: int\n    colour: str",
+                    "after": "class AuraDelta(TypedDict):\n    uuid: str\n    shape: str\n    vision_source: NotRequired[bool]\n    visible: NotRequired[bool]\n    name: NotRequired[str]\n    value: NotRequired[int]\n    dim: NotRequired[int]\n    colour: NotRequired[str]\n"
+                }
+            ]
+        }
+    ]
+}

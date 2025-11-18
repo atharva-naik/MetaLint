@@ -1,0 +1,40 @@
+{
+    "blob_id": "7535defa22dff0766106cbd29c7abea90b76fd07",
+    "violations": [
+      {
+        "start_lineno": 357,
+        "end_lineno": 357,
+        "pep": "614"
+      },
+      {
+        "start_lineno": 671,
+        "end_lineno": 671,
+        "pep": "614"
+      },
+      {
+        "start_lineno": 689,
+        "end_lineno": 689,
+        "pep": "614"
+      },
+      {
+        "start_lineno": 698,
+        "end_lineno": 698,
+        "pep": "614"
+      },
+      {
+        "start_lineno": 2938,
+        "end_lineno": 2938,
+        "pep": "614"
+      },
+      {
+        "start_lineno": 2958,
+        "end_lineno": 2958,
+        "pep": "614"
+      },
+      {
+        "start_lineno": 3432,
+        "end_lineno": 3432,
+        "pep": "614"
+      }
+    ]
+  }
