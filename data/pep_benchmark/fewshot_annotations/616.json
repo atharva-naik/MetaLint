@@ -1,0 +1,44 @@
+{
+  "instances": [
+    {
+        "code": "def parse_response(self, response):\n        # 解析数据\n        # 删除空数据的网页\n        if response.text == '<err>Empty</err>':\n            logger.info('该页面数据为空')\n            return None\n        indic_name = response.xpath('//tr[2]/td[2]/text()').get()  # 名称\n        logger.info(indic_name)\n        new_id = requests.get(self.url_mysql_api.format(self.table_name, indic_name, response.meta['parent_id'])).json().get('parent_id')\n\n        unit = response.xpath('//tr[2]/td[4]/text()').get()  # 单位\n        region = response.xpath('//tr[2]/td[3]/text()').get()  # 全国、省份、市等地区\n        # 把表格中的时间及数据以列表的形式取出来并解析\n        datatimes = response.xpath('//tr[1]/th/text()').getall()[4:]\n        values = response.xpath('//tr[2]/td/text()').getall()[4:]\n        for datatime, value in zip(datatimes, values):\n            create_time = datatime  # 数据产生时间\n            if create_time.endswith('年'):\n                create_time = create_time[:-1]",
+        "lines": [
+         {
+          "start_lineno": 18,
+          "end_lineno": 19
+         }
+        ]
+    },
+    {
+        "code": "def _resolve_channel(team, query):\n    # Match Slack channel hyperlinks.\n    match = re.match(r\"<#(.*?)\\|.*?>\", query)\n    if match:\n        query = match.group(1)\n    if query in Base.slacks[team].channels:\n        return Base.slacks[team].channels[query]\n    if query.startswith(\"#\"):\n        query = query[1:]\n    for channel in Base.slacks[team].channels.values():\n        if channel[\"name\"] == query:\n            return channel\n    raise KeyError(query)",
+        "lines": [
+         {
+          "start_lineno": 8,
+          "end_lineno": 9
+         }
+        ]
+    },
+    {
+        "code": "if self.config.get(self.section, 'canonicalizeheaders').lower() == 'relaxed':\n            canH = Relaxed\n        if self.config.get(self.section, 'canonicalizebody').lower() == 'relaxed':\n            canB = Relaxed\n        canon = (canH, canB)\n        headerconfig = self.config.get(self.section, 'signheaders')\n        if headerconfig == None or headerconfig.strip() == '':\n            inc_headers = None\n        else:\n            inc_headers = headerconfig.strip().split(',')\n\n        blength = self.config.getboolean(self.section, 'signbodylength')\n\n        dkimhdr = sign(message, selector, domain, privkeycontent, canonicalize=canon,\n                       include_headers=inc_headers, length=blength, logger=suspect.get_tag('debugfile'))\n        if dkimhdr.startswith('DKIM-Signature: '):\n            dkimhdr = dkimhdr[16:]\n\n        suspect.addheader('DKIM-Signature', dkimhdr, immediate=True)",
+        "lines": [
+         {
+          "start_lineno": 16,
+          "end_lineno": 17
+         }
+        ]
+    },
+    {
+        "code": "def make_filename(line):\n    non_letters = re.compile(r\"[^a-z]+\")\n    filename = line[3:].rstrip().lower()\n    filename = non_letters.sub(\"_\", filename)\n    if filename.startswith(\"_\"):\n        filename = filename[1:]\n    if filename.endswith(\"_\"):\n        filename = filename[:-1]\n    return filename + \".md\"",
+        "lines": [
+        {
+        "start_lineno": 5,
+        "end_lineno": 6
+        },
+        {
+        "start_lineno": 7,
+        "end_lineno": 8
+        }
+        ]
+    }
+    ]
+}

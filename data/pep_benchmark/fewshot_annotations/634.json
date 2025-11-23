@@ -1,0 +1,49 @@
+{
+  "instances": [
+    {
+        "code": "def log(self, host, category, data):\n        if type(data) == dict:\n            if '_ansible_verbose_override' in data:\n                # avoid logging extraneous data\n                data = 'omitted'\n            else:\n                data = data.copy()\n                invocation = data.pop('invocation', None)\n                data = json.dumps(data)\n                if invocation is not None:\n                    data = json.dumps(invocation) + \" => %s \" % data",
+        "lines": [
+         {
+          "start_lineno": 2,
+          "end_lineno": 11
+         }
+        ]
+    },
+    {
+    "code": "def main(args):\n    detectorName = args[0]\n    # print detectorName\n\n    priority = None\n    if len(args) > 1:\n        priority = args[1]\n\n    if detectorName == 'SilentDetector':\n        myDetector = SilentTestDetector()\n    elif detectorName == 'AlertingDetector':\n        myDetector = AlertingTestDetector(priority)\n    elif detectorName == 'HaltingDetector':\n        myDetector = HaltingTestDetector()\n    elif detectorName == 'RaiseErrorDetector':\n        myDetector = RaiseErrorTestDetector()\n\n    myDetector.execute()",
+    "lines": [
+         {
+          "start_lineno": 9,
+          "end_lineno": 16
+         }
+        ]
+    },
+    {
+        "code": "from random import randint\nplayer = input('rock (r), paper (p) or scissors (s)?')\nprint(player, 'vs', end=' ')\nchosen = randint(1,3)\n\nif chosen == 1:\n    computer = 'r'\n\nelif chosen == 2:\n    computer = 's'\n\nelse:\n    computer = 's'\n\nprint(computer)\n\nif player == computer:\n    print('DRAW!')\n\nelif player == 'r' and computer == 's':\n    print('player wins!')\n\nelif player == 'r' and computer == 'p':\n    print('player wins!')\n\nelif player == 'p' and computer == 'r':\n    print('player wins!')\n\nelif player == 'p' and computer == 's':\n    print('player wins!')",
+        "lines": [
+         {
+          "start_lineno": 17,
+          "end_lineno": 30
+         }
+        ]
+    },
+    {
+        "code": "class Binary_tree:\n    def __init__(self, root=None, left=None, right=None):\n        self.root = root\n        self.left = left\n        self.right = right\n\n    def cal_value(self):\n        if self.root is None:\n            return 1\n        else:\n            if self.left is None:\n                if self.right is None:\n                    return self.root.value\n                else:\n                    return self.right.cal_value() + self.root.value\n            else:\n                if self.right is None:\n                    return self.root.value + self.left.cal_value()\n                else:\n                    return self.left.cal_value() * self.right.cal_value() + self.root.value",
+        "lines": [
+         {
+          "start_lineno": 8,
+          "end_lineno": 20
+         }
+        ]
+    },
+    {
+        "code": "def produce_trees(nodes):\n    if len(nodes) == 1:\n        return [Binary_tree(nodes[0])]\n    else:\n        s = []\n        for j in range(0, len(nodes)):\n            root_node = nodes[j]\n            left_nodes = nodes[0:j]\n            right_nodes = nodes[j+1:]\n            if len(left_nodes) > 0:\n                if len(right_nodes) > 0:\n                    for left_tree in produce_trees(left_nodes):\n                        for right_tree in produce_trees(right_nodes):\n                            s.append(Binary_tree(root_node, left_tree, right_tree))\n                else:\n                    for left_tree in produce_trees(left_nodes):\n                        s.append(Binary_tree(root_node, left_tree, None))\n            else:\n                for right_tree in produce_trees(right_nodes):\n                    s.append(Binary_tree(root_node, None, right_tree))\n        return s",
+        "lines": [
+         {
+          "start_lineno": 10,
+          "end_lineno": 20
+         }
+        ]
+    }
+    ]
+}

@@ -1,0 +1,53 @@
+{
+  "instances": [
+    {
+        "code": "from IndexerProcessManager import Manager as IndexerProcessManager\nfrom DictionaryManager import Manager as DictionaryManager\nfrom ProcessCommunicator import Communicator as ProcessCommunicator\nfrom TextExtractor import Extractor as TextExtractor\nfrom BufferMonitor import Monitor as BufferMonitor\n\n\ntrigger = Trigger('complete-word', '<alt>slash',\n    'Eclipse like word completition', 'Text Operations')\n\nclass Plugin(object):\n    def __init__(self, editor):\n        self.editor = editor\n\n        self.signals = Signals()\n        self.triggers = TriggerManager(editor)\n        connect_all(self, self.signals, self.triggers, textbuffer=self.editor.textbuffer)\n\n        self.block_word_reset = False\n        self.words = None\n        self.start_word = None\n        self.start_offset = None\n        \n        self.indexer = IndexerProcessManager(self.signals.sender, editor)\n        self.dictionary_manager = DictionaryManager(self.signals.sender, editor)\n        self.communicator = ProcessCommunicator(self.signals.sender, editor)\n        self.extractor = TextExtractor(self.signals.sender, editor)\n        self.buffer_monitor = BufferMonitor(self.signals.sender, editor)",
+        "lines": [
+         {
+          "start_lineno": 8,
+          "end_lineno": 9
+         }
+        ]
+    },
+    {
+        "code": "@trigger\n    def cycle(self, *args):\n        word_to_complete, start = self.get_word_before_cursor()\n        \n        if not word_to_complete:\n            return False\n\n        if not self.start_word or self.start_offset != start.get_offset():\n            self.start_word = word_to_complete\n            self.start_offset = start.get_offset()\n\n        matches = self.get_matches(self.start_word)\n        if matches:\n            idx = 0\n            try:\n                idx = matches.index(word_to_complete)\n                idx = (idx + 1) % len(matches)\n            except ValueError:\n                pass",
+        "lines": [
+         {
+          "start_lineno": 1,
+          "end_lineno": 1
+         }
+        ]
+    },
+    {
+        "code": "CONF = keystone.conf.CONF\nLOG = log.getLogger(__name__)\nMEMOIZE = cache.get_memoization_decorator(group='token')\nREVOCATION_MEMOIZE = cache.get_memoization_decorator(group='token',\n                                                     expiration_group='revoke')\n\n\n@dependency.requires('assignment_api', 'identity_api', 'resource_api',\n                     'token_provider_api', 'trust_api')",
+        "lines": [
+         {
+          "start_lineno": 3,
+          "end_lineno": 3
+         },
+         {
+          "start_lineno": 4,
+          "end_lineno": 5
+         }
+        ]
+    },
+    {
+        "code": "def get_token(self, token_id):\n        return self._get_token(token_id)\n\n    @MEMOIZE\n    def _get_token(self, token_id):\n        # Only ever use the \"unique\" id in the cache key.\n        return self.driver.get_token(token_id)",
+        "lines": [
+         {
+          "start_lineno": 4,
+          "end_lineno": 4
+         }
+        ]
+    },
+    {
+        "code": "@REVOCATION_MEMOIZE\n    def list_revoked_tokens(self):\n        return self.driver.list_revoked_tokens()\n\n    def invalidate_revocation_list(self):\n        # NOTE(morganfainberg): Note that ``self`` needs to be passed to\n        # invalidate() because of the way the invalidation method works on\n        # determining cache-keys.\n        self.list_revoked_tokens.invalidate(self)",
+        "lines": [
+         {
+          "start_lineno": 1,
+          "end_lineno": 1
+         }
+        ]
+    }
+    ]
+}
