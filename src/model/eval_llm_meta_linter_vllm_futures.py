@@ -5,6 +5,7 @@ import pathlib
 import argparse
 import requests
 from tqdm import tqdm
+from typing import Union
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 module_path = str(pathlib.Path(os.path.abspath(__file__)).parent.parent.parent)
@@ -26,6 +27,50 @@ SAMPLE_OUTPUT_FORMAT_NO_VIOLATIONS = """### Final Idiom Violations Found
 
 NO VIOLATIONS FOUND
 """
+
+def add_line_no_to_stack_file(stack_file: str):
+    stack_file_with_lineno = []
+    for lineno, line in enumerate(stack_file.split("\n")):
+        stack_file_with_lineno.append(f"{str(lineno+1).rjust(3)} {line}")
+
+    return "\n".join(stack_file_with_lineno)
+
+def generate_fewshot_example_output(fewshot_eg: list[dict], pep: str):
+    fewshot_eg_text = ""
+    for eg in fewshot_eg:
+        if not isinstance(eg, dict): continue
+        code_with_linenos = add_line_no_to_stack_file(stack_file=eg['code'])
+        code_with_linenos_lines = code_with_linenos.split("\n")
+        JSON_violations = "\n".join([json.dumps({"line": "\n".join(code_with_linenos_lines[line["start_lineno"]-1: line["end_lineno"]]), "fix": None}) for line in eg["lines"]])
+        fewshot_eg_text += """
+Code file:
+
+{code_with_linenos}
+
+Violations per idiom: 
+
+### Final Idiom Violations Found
+
+**Idiom {pep} Violations:**
+
+{violations}
+""".format(code_with_linenos=code_with_linenos, pep=pep, violations=JSON_violations)
+
+    return fewshot_eg_text
+
+def add_fewshot_examples_to_prompt(input_prompt: str, fewshot_eg: list, pep: str):    
+    pre_code_file_prompt, post_code_file_prompt = input_prompt.split("\n\nCode file:\n")
+    augmented_prompt = pre_code_file_prompt + f"""
+
+Here are a few example code files and PEP violations:
+{generate_fewshot_example_output(fewshot_eg, pep=pep)}
+Code file:
+
+"""+post_code_file_prompt
+    print("\x1b[34;1mAUGMENTED PROMPT:\x1b[0m")
+    # print(augmented_prompt)
+    
+    return augmented_prompt
 
 def add_output_instr_to_prompt(input_prompt: str):
     assert input_prompt.strip("\n").endswith("Violations per idiom:")
@@ -55,6 +100,7 @@ def get_args():
                         default="data/ruff_meta_linting/test_v4_new_format_with_lineno.json")
     parser.add_argument("--write_path", type=str, required=True, help="name of the file where predictions should be written")
     parser.add_argument("--untrained_mode", action="store_true", help="used when inferencing untrained model to obtain proper output format.")
+    parser.add_argument("--fewshot_eg", action="store_true", help="add few shot examples (code snippets and JSON labels) in the prompt.")
     parser.add_argument("--no_think", action="store_true", help="Disable chain-of-thought reasoning globally.")
     parser.add_argument("--port", type=int, default=8002, help="Port where vLLM server is being served")
     parser.add_argument("--num_workers", type=int, default=12, help="Number of parallel threads/workers to be used for querying vLLM.")
@@ -111,8 +157,18 @@ def generate_response(index: int, rec: dict, model_name: str, no_think: bool):
 def main(args):
     model_name = args.model_name
     write_path = args.write_path
-
+    
     test_data = json.load(open(args.test_file))
+    if args.fewshot_eg:
+        fewshot_pep_examples = {file.split(".")[0].strip(): json.load(open(os.path.join("data/pep_benchmark/fewshot_annotations", file))) for file in os.listdir("data/pep_benchmark/fewshot_annotations")}
+        print(fewshot_pep_examples.keys())
+        for i in range(len(test_data)):
+            pep = test_data[i]["pep"]
+            test_data[i]['messages'][0]['content'] = add_fewshot_examples_to_prompt(
+                test_data[i]['messages'][0]['content'], 
+                fewshot_eg=fewshot_pep_examples[pep]["instances"],
+                pep=pep,
+            )        
     if args.untrained_mode:
         for i in range(len(test_data)):
             test_data[i]['messages'][0]['content'] = add_output_instr_to_prompt(test_data[i]['messages'][0]['content'])
@@ -183,6 +239,8 @@ if __name__ == "__main__":
     # PEP benchmark evals
 
     # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name Qwen/Qwen3-4B --write_path "data/pep_benchmark_preds/qwen3_4b_untrained_no_think_preds.jsonl" --test_file "data/pep_benchmark/test_pep.json" --untrained_mode --no_think
+
+    # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name Qwen/Qwen3-4B --write_path "data/pep_benchmark_preds_v2/qwen3_4b_untrained_no_think_few_shot_preds.jsonl" --test_file "data/pep_benchmark/test_pep_v2.json" --fewshot_eg --no_think
 
     # python src/model/eval_llm_meta_linter_vllm_futures.py --model_name alignment-handbook/model_checkpoints/qwen3-4b-instruct-sft-think-transfer-v5-lineno/checkpoint-6000/ --write_path "data/pep_benchmark_preds/qwen3_4b_think_sft_preds_6000_transfer_v5.jsonl" --test_file "data/pep_benchmark/test_pep.json"
 
