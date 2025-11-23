@@ -1,0 +1,52 @@
+{
+  "instances": [
+    {
+        "code": "def write_info_to_logger(self, variable_dict):\n        \"\"\"\n        print\n        :param variable_dict: \n        :return: \n        \"\"\"\n        if variable_dict is not None:\n            for tag, value in variable_dict.items():\n                self.log_info[tag] = value",
+        "lines": [
+         {
+          "start_lineno": 8,
+          "end_lineno": 8
+         }
+        ]
+    },
+    {
+        "code": "def internal_paging(next_link=None, raw=False):\n\n            if not next_link:\n                # Construct URL\n                url = '/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/virtualNetworkAvailableEndpointServices'\n                path_format_arguments = {\n                    'location': self._serialize.url(\"location\", location, 'str'),\n                    'subscriptionId': self._serialize.url(\"self.config.subscription_id\", self.config.subscription_id, 'str')\n                }\n                url = self._client.format_url(url, **path_format_arguments)\n\n                # Construct parameters\n                query_parameters = {}\n                query_parameters['api-version'] = self._serialize.query(\"self.api_version\", self.api_version, 'str')\n\n            else:\n                url = next_link\n                query_parameters = {}\n\n            # Construct headers\n            header_parameters = {}\n            header_parameters['Content-Type'] = 'application/json; charset=utf-8'\n            if self.config.generate_client_request_id:\n                header_parameters['x-ms-client-request-id'] = str(uuid.uuid1())\n            if custom_headers:\n                header_parameters.update(custom_headers)\n            if self.config.accept_language is not None:\n                header_parameters['accept-language'] = self._serialize.header(\"self.config.accept_language\", self.config.accept_language, 'str')\n\n            # Construct and send request\n            request = self._client.get(url, query_parameters)\n            response = self._client.send(\n                request, header_parameters, **operation_config)\n\n            if response.status_code not in [200]:\n                exp = CloudError(response)\n                exp.request_id = response.headers.get('x-ms-request-id')\n                raise exp\n\n            return response",
+        "lines": [
+         {
+          "start_lineno": 26,
+          "end_lineno": 26
+         }
+        ]
+    },
+    {
+        "code": "def test_as_completed_update(loop):\n    with cluster() as (s, [a, b]):\n        with Client(s['address'], loop=loop) as c:\n            total = 0\n            todo = list(range(10))\n            expected = sum(map(inc, todo))\n            ac = as_completed([])\n            while todo or not ac.is_empty():\n                if todo:\n                    work, todo = todo[:4], todo[4:]\n                    ac.update(c.map(inc, work))\n                batch = ac.next_batch(block=True)\n                total += sum(r.result() for r in batch)\n            assert total == expected",
+        "lines": [
+         {
+          "start_lineno": 11,
+          "end_lineno": 11
+         }
+        ]
+    },
+    {
+        "code": "self.assertDictEqual({}, {})\n\n        c = {'x': 1}\n        d = {}\n        self.assertRaises(unittest2.TestCase.failureException,\n                          self.assertDictEqual, c, d)\n\n\n        d.update(c)\n        self.assertDictEqual(c, d)\n\n\n        d['x'] = 0\n        self.assertRaises(unittest2.TestCase.failureException,\n                          self.assertDictEqual, c, d, 'These are unequal')\n\n\n        self.assertRaises(self.failureException, self.assertDictEqual, None, d)\n        self.assertRaises(self.failureException, self.assertDictEqual, [], d)\n        self.assertRaises(self.failureException, self.assertDictEqual, 1, 1)",
+        "lines": [
+         {
+          "start_lineno": 8,
+          "end_lineno": 8
+         }
+        ]
+    },
+    {
+        "code": "def _update(self) -> None:\n        \"\"\"Moves steps from _pending to _executable / _pending_skip / _pending_retry\n        as a function of what has been _completed\n        \"\"\"\n        new_steps_to_execute = []\n        new_steps_to_skip = []\n        new_steps_to_abandon = []\n\n\n        successful_or_skipped_steps = self._success | self._skipped\n        failed_or_abandoned_steps = self._failed | self._abandoned\n\n\n        if self._new_dynamic_mappings:\n            new_step_deps = self._plan.resolve(self._successful_dynamic_outputs)\n            for step_key, deps in new_step_deps.items():\n                self._pending[step_key] = deps\n\n\n            self._new_dynamic_mappings = False\n",
+        "lines": [
+         {
+          "start_lineno": 14,
+          "end_lineno": 15
+         }
+        ]
+    }
+
+
+
+]
+}

@@ -1,0 +1,49 @@
+{
+  "instances": [
+    {
+        "code": "class BaseConfirmationTokenDict(TypedDict):\n    code: str\n    action: ActionLiteralStr\n\n\nclass ConfirmationTokenDict(BaseConfirmationTokenDict):\n    # SEE packages/postgres-database/src/simcore_postgres_database/models/confirmations.py\n    user_id: int\n    created_at: datetime\n    # SEE handlers_confirmation.py::email_confirmation to determine what type is associated to each action\n    data: str | None",
+        "lines": [
+            {
+            "start_lineno": 1,
+            "end_lineno": 11
+            }
+        ]
+    },
+    {
+        "code": "class AdmissionregistrationV1beta1WebhookClientConfig:\n    ca_bundle: typing.Optional[str]\n    service: typing.Optional[\n        kubernetes.client.AdmissionregistrationV1beta1ServiceReference\n    ]\n    url: typing.Optional[str]\n    def __init__(\n        self,\n        *,\n        ca_bundle: typing.Optional[str] = ...,\n        service: typing.Optional[\n            kubernetes.client.AdmissionregistrationV1beta1ServiceReference\n        ] = ...,\n        url: typing.Optional[str] = ...\n    ) -> None: ...\n    def to_dict(self) -> AdmissionregistrationV1beta1WebhookClientConfigDict: ...",
+        "lines": [
+            {
+            "start_lineno": 1,
+            "end_lineno": 8
+            }
+        ]
+    },
+    {
+       "code": "class ContinueParameters(TypedDict, total=False):\n    url: Optional[str]\n    method: Optional[str]\n    headers: Optional[List[NameValue]]\n    postData: Optional[str]\n\n\nclass ParsedMessageParams(TypedDict):\n    type: str\n    guid: str\n    initializer: Dict\n\n\nclass ParsedMessagePayload(TypedDict, total=False):\n    id: int\n    guid: str\n    method: str\n    params: ParsedMessageParams\n    result: Any\n    error: ErrorPayload\n\n\nclass Document(TypedDict):\n    request: Optional[Any]",
+         "lines": [
+             {
+                "start_lineno": 8,
+                "end_lineno": 20
+             }
+         ]
+    },
+    {
+        "code": "OptResult = typing.Optional[Result]\n\n\nclass _TResultBase(types.TypedDict, total=False):\n    \"\"\"TResult base class for keys that might not be present.\"\"\"\n\n    reason: str\n\n\nclass TResult(_TResultBase, total=True):\n    \"\"\"Record the result of validation.\"\"\"\n\n    valid: bool",
+        "lines": [
+            {
+            "start_lineno": 4,
+            "end_lineno": 13
+            }
+        ]
+    },
+    {
+        "code": "TProperties = typing.Dict[str, TProperty]\n\n\nclass _TModelBase(types.TypedDict, total=False):\n    \"\"\"TModel base class for keys that might not be present.\"\"\"\n\n    properties: TProperties\n\n\nclass TModel(_TModelBase, total=True):\n    \"\"\"Record validation result of a model.\"\"\"\n\n    result: TResult\n\n\nTModels = typing.Dict[str, TModel]",
+        "lines": [
+            {
+            "start_lineno": 4,
+            "end_lineno": 13
+            }
+        ]
+    }
+    ]
+}
