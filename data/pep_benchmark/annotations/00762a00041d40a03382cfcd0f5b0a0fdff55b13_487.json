@@ -1,19 +1,19 @@
 {
     "blob_id": "00762a00041d40a03382cfcd0f5b0a0fdff55b13",
     "violations": [
-      {
-        "start_lineno": 9,
-        "end_lineno": 11,
-        "pep": "487",
-        "line": "class Assembler(metaclass=abc.ABCMeta):",
-        "span": "class Assembler(metaclass=abc.ABCMeta):",
-        "fix": [
-          {
-            "before": "class Assembler(metaclass=abc.ABCMeta):\n\n    @abc.abstractmethod\n    def add_batch(self, prediction, batch: dict):\n        pass",
-            "after": "class Assembler:\n\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)\n        if not hasattr(cls, 'add_batch') or not callable(getattr(cls, 'add_batch')):\n            raise NotImplementedError(\"Subclasses of Assembler must implement 'add_batch' method\")"
-          }
-        ]
-      }
+    	{
+			"start_lineno": 9,
+			"end_lineno": 11,
+			"pep": "487",
+			"line": "class Assembler(metaclass=abc.ABCMeta):",
+			"span": "class Assembler(metaclass=abc.ABCMeta):",
+			"fix": [
+				{
+					"before": "class Assembler(metaclass=abc.ABCMeta):\n\n    @abc.abstractmethod\n    def add_batch(self, prediction, batch: dict):\n        pass",
+					"after": "class Assembler:\n\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)\n        if not hasattr(cls, 'add_batch') or not callable(getattr(cls, 'add_batch')):\n            raise NotImplementedError(\"Subclasses of Assembler must implement 'add_batch' method\")"
+				}
+			]
+		}
     ]
-  }
+}
   
