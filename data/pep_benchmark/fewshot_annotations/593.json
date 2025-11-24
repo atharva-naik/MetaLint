@@ -1,29 +1,25 @@
 {
   "instances": [
     {
-  "code": "class HubitatLock(HubitatEntity, LockDevice):\n    \"\"\"Representation of a Hubitat lock.\"\"\"\n\n\n    @property\n    def code_format(self) -> Optional[str]:\n        \"\"\"Regex for code format or None if no code is required.\"\"\"\n        code_length = self.get_attr(hm.ATTR_CODE_LENGTH)\n        if code_length is not None:\n            return f\"^\\\\d{code_length}$\"\n        return None\n",
+  "code": "def process_score(score: int):\n    \"\"\"score must be between 0 and 100\"\"\"\n    if not 0 <= score <= 100:\n        raise ValueError(\"Invalid score\")\n    return score",
   "lines": [
          {
-          "start_lineno": 5,
-          "end_lineno": 6
+          "start_lineno": 1,
+          "end_lineno": 1
          }
         ]
     },
     {
-        "code":"@scope.define def sklearn_OrthogonalMatchingPursuitCV(*args, **kwargs): return linear_model.OrthogonalMatchingPursuitCV(*args, **kwargs) def orthogonal_matching_pursuit(name: str, n_nonzero_coefs: int = None, tol: typing.Union[float, Apply] = None, fit_intercept: bool = True, precompute: typing.Union[str, bool] = \"auto\"):",
+        "code":"def create_user(name: str, age: int):\n    \"\"\"name is required, age is optional\"\"\"\n    pass",
         "lines": [
              {
-            "start_lineno": 7,
-            "end_lineno": 7
-             },
-             {
-            "start_lineno": 8,
-            "end_lineno": 8
-        }
+            "start_lineno": 1,
+            "end_lineno": 1
+             }
         ]
     },
     {
-    "code": "def _parse_hashtags(self, caption: str) -> List[str]: \"\"\"Parse the hastags from the post's caption using regex\"\"\" pattern = r\"#(\\w+)\" return re.findall(pattern, caption)",
+    "code": "config: dict[str, str] = {\n    \"host\": \"localhost\",\n    \"port\": \"8080\"\n}",
     "lines": [
             {
             "start_lineno": 1,
@@ -32,34 +28,12 @@
             ]
     },
     {
-  "code": "def __init__(self, *, host: str = 'logging.googleapis.com', credentials: ga_credentials.Credentials = None, credentials_file: Optional[str] = None, scopes: Optional[Sequence[str]] = None, channel: aio.Channel = None, api_mtls_endpoint: str = None, client_cert_source: Callable[[], Tuple[bytes, bytes]] = None, ssl_channel_credentials: grpc.ChannelCredentials = None, client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None, quota_project_id=None, client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO) -> None:",
-    "lines": [
-             {
-            "start_lineno": 7,
-            "end_lineno": 7
-             },
-            {
-            "start_lineno": 8,
-            "end_lineno": 8
-            }
-        ]
+  "code": "def add(a: int, b: int) -> int:\n    return a + b",
+    "lines": []
     },
     {
-  "code": "__all__ = ['JobTriggerArgs', 'JobTrigger']\n\n\n@pulumi.input_type\nclass JobTriggerArgs:\n    def __init__(__self__, *,\n                 location: pulumi.Input[str],\n                 project: pulumi.Input[str],\n                 description: Optional[pulumi.Input[str]] = None,\n                 display_name: Optional[pulumi.Input[str]] = None,\n                 inspect_job: Optional[pulumi.Input['GooglePrivacyDlpV2InspectJobConfigArgs']] = None,\n                 name: Optional[pulumi.Input[str]] = None,\n                 status: Optional[pulumi.Input['JobTriggerStatus']] = None,\n                 trigger_id: Optional[pulumi.Input[str]] = None,\n                 triggers: Optional[pulumi.Input[Sequence[pulumi.Input['GooglePrivacyDlpV2TriggerArgs']]]] = None):",
-    "lines": [
-                 {
-                "start_lineno": 8,
-                "end_lineno": 8
-                 },
-                 {
-                "start_lineno": 9,
-                "end_lineno": 9
-                },
-                {
-                "start_lineno": 11,
-                "end_lineno": 11
-                }
-            ]
+  "code": "usernames: list[str] = [\"alice\", \"bob\", \"charlie\"]",
+    "lines": []
 }
 ]
 }
