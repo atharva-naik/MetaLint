@@ -1,49 +1,39 @@
 {
   "instances": [
     {
-    "code": "async def on_authenticate_success(self):\n        \"\"\" Execute after user authenticate \"\"\"\n        await self.get_user_channels(self.user)\n        await self.channel_layer.group_add('general', self.channel_name)\n        # connect to channel for all groups\n        if self.dialogs:\n            for dialog in self.dialogs:\n                await self.channel_layer.group_add(f'dialog_{dialog}', self.channel_name)\n        if self._groups:\n            for group in self._groups:\n                await self.channel_layer.group_add(f'group_{group}', self.channel_name)\n",        
-    "lines": [
-         {
-          "start_lineno": 6,
-          "end_lineno": 11
-         }
+      "code": "async def get_processed(items):\n    out = []\n    async for x in items:\n        out.append(await process(x))\n    return out\n",
+      "lines": [
+        {
+          "start_lineno": 3,
+          "end_lineno": 5
+        }
+      ]
+    },
+    {
+        "code": "async def active_users(users):\n    active = []\n    async for u in users:\n        if await u.is_active():\n            active.append(u)\n    return active\n",
+        "lines": [
+          {
+            "start_lineno": 3,
+            "end_lineno": 6
+          }
         ]
     },
     {
-  "code": "async def read_users(database: Database, limit: int):\n    if not isinstance(limit, int):\n        logging.error(\n            f\"Read Users Error:Limit Param Must be an Integer:Got: {type(limit)}\"\n        )\n    query = user_table.select().limit(limit)\n    users = []\n    async for row in database.iterate(query):\n        users.append(build_model_from_row(row, BottifyUserModel))\n    if not users:\n        logging.error(f\"Read Users Error:Failed to Read Any Users\")\n    return users\n",
-    "lines": [
-             {
-            "start_lineno": 7,
-            "end_lineno": 9
-             }
-    ]
-},
-{
-  "code": "async def task_wait_n(n: int, max_delay: int) -> typing.List[float]:\n    \"\"\"wait-n: call the function task_wait_random n times\n        returns a list of floats containing random delay\n    \"\"\"\n    delay_tasks = list()\n    for i in range(n):\n        delay = task_wait_random(max_delay)\n        delay_tasks += [delay]\n    rands = list()\n    for promises in as_completed(delay_tasks):\n        rands += [await promises]\n    return rands\n",
-    "lines": [
-             {
-            "start_lineno": 5,
-            "end_lineno": 11
-             }
-            ]
-},
-{
-  "code": "asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())\n\n\ndef get_tasks(session):\n    tasks = []\n    for symbol in symbols:\n        tasks.append(asyncio.create_task(session.get(url.format(symbol, api_key), ssl=False)))\n    return tasks\n",
-    "lines": [
-             {
-            "start_lineno": 4,
-            "end_lineno": 7
-             }
-            ]
-},
-{
-  "code": "async def get_symobls():\n    async with aiohttp.ClientSession() as session:\n        tasks = get_tasks(session)\n        responses = await asyncio.gather(*tasks)    # (*tasks) -> (session.get(APPL API Call), session.get(GOOG API Call)) etc....\n        # So it makes task easier than hardcoding\n        for response in responses:\n            results.append(await response.json())\n",
-    "lines": [
-             {
-            "start_lineno": 6,
-            "end_lineno": 7
-             }
-            ]
-}
-]
+        "code": "async def upper_stream(items):\n    async for x in items:\n        yield (await fetch(x)).upper()\n",
+        "lines": [
+          {
+            "start_lineno": 2,
+            "end_lineno": 3
+          }
+        ]
+    },
+    {
+        "code":"values = [x * 2 for x in range(10)]\nfiltered = [x for x in values if x > 5]\n",
+        "lines": []
+    },
+    {
+        "code": "async def get_total(a, b):\n    await asyncio.sleep(1)\n    return a + b\n\nresult = await get_total(3, 4)\n",
+        "lines": []
+    }
+  ]
 }

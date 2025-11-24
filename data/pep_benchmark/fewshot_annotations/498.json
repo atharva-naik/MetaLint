@@ -1,0 +1,39 @@
+{
+  "instances": [
+    {
+      "code": "def greet(name, city):\n    return \"Hello {}, welcome to {}!\".format(name, city)\n\nprint(greet(\"Alice\", \"Pittsburgh\"))\n",
+      "lines": [
+        {
+          "start_lineno": 2,
+          "end_lineno": 2
+        }
+      ]
+    },
+    {
+        "code": "x = 3\nmsg = \"The square of \" + str(x) + \" is \" + str(x * x)\nprint(msg)\n",
+        "lines": [
+          {
+            "start_lineno": 2,
+            "end_lineno": 2
+          }
+        ]
+    },
+    {
+        "code": "user = \"Bob\"\nrole = \"admin\"\ntext = (\n    \"User: {}\\n\"\n    \"Role: {}\\n\"\n).format(user, role)\n\nprint(text)\n",
+        "lines": [
+          {
+            "start_lineno": 3,
+            "end_lineno": 6
+          }
+        ]
+    },
+    {
+        "code": "banner = \"===== SYSTEM READY =====\"\nprint(banner) \n",
+        "lines": []
+    },
+    {
+        "code": "template = \"{:>10} | {:>10} | {:>10}\"\nrow = template.format(\"ID\", \"Name\", \"Status\")\nprint(row)",
+        "lines": []
+    }
+  ]
+}

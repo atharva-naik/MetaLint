@@ -1,49 +1,39 @@
 {
   "instances": [
     {
-        "code": "async def next(self) -> t.List[t.Dict]:\n        data = await self.cursor.fetchmany(self.batch_size)\n        return await self.query._process_results(data)\n\n\n    def __aiter__(self):\n        return self\n\n\n    async def __anext__(self):\n        response = await self.next()\n        if response == []:\n            raise StopAsyncIteration()\n        return response\n",
+        "code":"async def fetch_all(urls):\n    results = []\n    for u in urls:\n        results.append(await fetch(u))\n    return results",
         "lines": [
          {
-          "start_lineno": 5,
-          "end_lineno": 12
+          "start_lineno": 1,
+          "end_lineno": 5
          }
         ]
     },
     {
-  "code": "class ReadHandler(BaseHandler):\n    reader = None\n\n\n    @abstractmethod\n    async def read(self):\n        ...\n\n\n    def __aiter__(self):\n        return self\n\n\n    async def __anext__(self):\n        try:\n            return await self.read()\n        except EndOfChannel:\n            raise StopAsyncIteration\n",
+  "code": "async def read_lines(reader):\n    lines = []\n    while True:\n        line = await reader.readline()\n        if not line:\n            break\n        lines.append(line)\n    return lines\n",
     "lines": [
          {
-          "start_lineno": 8,
-          "end_lineno": 15
+          "start_lineno": 1,
+          "end_lineno": 8
          }
         ]
 },
 {
-  "code": "class Monitor:\n    queue: Queue\n\n\n    def __init__(self):\n        self.queue = Queue()\n\n\n        create_task(self.query_running())\n        create_task(self.query_started())\n\n\n    async def query_running(self) -> None:\n        containers = await Docker().containers.list()\n        for container in containers:\n            await container.show()\n            await self.handle(container)\n\n\n    async def query_started(self) -> None:\n        channel = Docker().events.subscribe()\n        while channel:\n            event = await channel.get()\n            if event['Type'] == 'container' and event['status'] == 'start':\n                container = Docker().containers.container(event['id'])\n                await container.show()\n                await self.handle(container)\n\n\n    async def handle(self, container: DockerContainer) -> None:\n        try:\n            await self.queue.put((\n                container['Config']['Labels']['domain'],\n                next(iter(container['NetworkSettings']['Networks'].values()))['IPAddress'],\n            ))\n        except KeyError:\n            pass\n\n\n    def __aiter__(self):\n        return self\n\n\n    async def __anext__(self):\n        return await self.queue.get()\n",
+  "code": "async def ticker(n):\n    ticks = []\n    for _ in range(n):\n        await asyncio.sleep(1)\n        ticks.append(\"tick\")\n    return ticks\n",
     "lines": [
          {
-          "start_lineno": 34,
-          "end_lineno": 38
+          "start_lineno": 1,
+          "end_lineno": 6
          }
         ]
 },
 {
-  "code": "class async_zip:\n        def __init__(self, *largs):\n            self.nexts = [obj.__anext__ for obj in largs]\n\n\n        async def _accumulate(self, f, items, i):\n            items[i] = await f()\n\n\n        @aiter_compat\n        def __aiter__(self):\n            return self\n\n\n        async def __anext__(self):\n            nexts = self.nexts\n            items = [\n                None,\n            ] * len(nexts)\n            got_stop = False\n\n\n            def handle(exc):\n                nonlocal got_stop\n                if isinstance(exc, StopAsyncIteration):\n                    got_stop = True\n                    return None\n                else:  # pragma: no cover\n                    return exc\n\n\n            with _core.MultiError.catch(handle):\n                async with _core.open_nursery() as nursery:\n                    for i, f in enumerate(nexts):\n                        nursery.start_soon(self._accumulate, f, items, i)\n\n\n            if got_stop:\n                raise StopAsyncIteration\n            return items\n",
-        "lines": [
-         {
-          "start_lineno":  9,
-          "end_lineno":  34
-         }
-        ]
+  "code":"def count(n):\n    for i in range(n):\n        yield i\n\nfor x in count(5):\n    print(x)\n",
+        "lines": []
 },
 {
-  "code": "def __init__(\n        self, expected_content_length: Optional[int], max_content_length: Optional[int]\n    ) -> None:\n        self._data = bytearray()\n        self._complete: asyncio.Event = asyncio.Event()\n        self._has_data: asyncio.Event = asyncio.Event()\n        self._max_content_length = max_content_length\n        # Exceptions must be raised within application (not ASGI)\n        # calls, this is achieved by having the ASGI methods set this\n        # to an exception on error.\n        self._must_raise: Optional[Exception] = None\n        if (\n            expected_content_length is not None\n            and max_content_length is not None\n            and expected_content_length > max_content_length\n        ):\n            from ..exceptions import RequestEntityTooLarge  # noqa Avoiding circular import\n\n\n            self._must_raise = RequestEntityTooLarge()\n\n\n    def __aiter__(self) -> \"Body\":\n        return self\n\n\n    async def __anext__(self) -> bytes:\n        if self._must_raise is not None:\n            raise self._must_raise\n\n\n        # if we got all of the data in the first shot, then self._complete is\n        # set and self._has_data will not get set again, so skip the await\n        # if we already have completed everything\n        if not self._complete.is_set():\n            await self._has_data.wait()\n\n\n        if self._complete.is_set() and len(self._data) == 0:\n            raise StopAsyncIteration()\n\n\n        data = bytes(self._data)\n        self._data.clear()\n        self._has_data.clear()\n        return data\n\n\n    def __await__(self) -> Generator[Any, None, Any]:\n        # Must check the _must_raise before and after waiting on the\n        # completion event as it may change whilst waiting and the\n        # event may not be set if there is already an issue.\n\n\n        if self._must_raise is not None:\n            raise self._must_raise\n\n\n        yield from self._complete.wait().__await__()\n\n\n        if self._must_raise is not None:\n            raise self._must_raise\n        return bytes(self._data)\n",
-        "lines": [
-         {
-          "start_lineno": 21,
-          "end_lineno":  40
-         }
-        ]
+  "code": "async def compute_total(a, b):\n    await asyncio.sleep(1)\n    return a + b\n\nresult = await compute_total(5, 7)\nprint(result)\n",
+        "lines": []
 }
   ]
 }
