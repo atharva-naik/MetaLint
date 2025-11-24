@@ -1,0 +1,39 @@
+{
+  "instances": [
+    {
+      "code": "import random\ndef generate_token():\n    return hex(random.getrandbits(128))  # predictable\n\nprint(generate_token())\n",
+      "lines": [
+        {
+          "start_lineno": 3,
+          "end_lineno": 3
+        }
+      ]
+    },
+    {
+        "code": "import random, base64\ndef password_reset_code():\n    n = random.getrandbits(64)\n    return base64.urlsafe_b64encode(n.to_bytes(8, \"big\")).decode()\n\nprint(password_reset_code())\n",
+        "lines": [
+          {
+            "start_lineno": 3,
+            "end_lineno": 3
+          }
+        ]
+    },
+    {
+        "code": "import random\nALPHABET = \"abcdefghijklmnopqrstuvwxyz0123456789\"\n\ndef make_key(n=12):\n    return \"\".join(random.choice(ALPHABET) for _ in range(n))\n",
+        "lines": [
+          {
+            "start_lineno": 5,
+            "end_lineno": 5
+          }
+        ]
+    },
+    {
+        "code": "import random\n\n# A simulation or game of chance where predictability is fine\ndef roll_die():\n    return random.randint(1, 6)\n\nprint(roll_die())\n",
+        "lines": []
+    },
+    {
+        "code": "import hashlib\n\ndef hash_file(path):\n    with open(path, \"rb\") as f:\n        return hashlib.sha256(f.read()).hexdigest()\n\nprint(hash_file(\"data.txt\"))\n",
+        "lines": []
+    }
+  ]
+}

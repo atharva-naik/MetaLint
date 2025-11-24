@@ -1,0 +1,51 @@
+{
+  "instances": [
+    {
+      "code": "import random\ndef generate_token():\n    return hex(random.getrandbits(128))  # predictable\n\nprint(generate_token())\n",
+      "lines": [
+        {
+          "start_lineno": 2,
+          "end_lineno": 2
+        },
+        {
+          "start_lineno": 3,
+          "end_lineno": 3
+        }
+      ]
+    },
+    {
+        "code": "MAX_RETRIES = 5      # type: int\nTIMEOUT = 1.5        # type: float\nENABLED = True       # type: bool\n",
+        "lines": [
+          {
+            "start_lineno": 1,
+            "end_lineno": 1
+          },
+          {
+            "start_lineno": 2,
+            "end_lineno": 2
+          },
+            {
+                "start_lineno": 3,
+                "end_lineno": 3
+            }
+        ]
+    },
+    {
+        "code": "def parse_count(text):\n    count = int(text) \n    return count\n",
+        "lines": [
+          {
+            "start_lineno": 2,
+            "end_lineno": 2
+          }
+        ]
+    },
+    {
+        "code": "import random\n\n# A simulation or game of chance where predictability is fine\ndef roll_die():\n    return random.randint(1, 6)\n\nprint(roll_die())\n",
+        "lines": []
+    },
+    {
+        "code": "from dataclasses import dataclass\n\n@dataclass\nclass Point:\n    x: float\n    y: float\n\np = Point(1.0, 2.0)  \n",
+        "lines": []
+    }
+  ]
+}

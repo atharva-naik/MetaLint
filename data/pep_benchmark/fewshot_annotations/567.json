@@ -1,0 +1,39 @@
+{
+  "instances": [
+    {
+      "code": "import asyncio\n\ncurrent_user = None\n\nasync def process():\n    await asyncio.sleep(0.1)\n    print(f\"Processing for {current_user}\")\n\nasync def handle_request(user):\n    global current_user\n    current_user = user\n    await process()\n\nasync def main():\n    await asyncio.gather(\n        handle_request(\"Alice\"),\n        handle_request(\"Bob\")\n    )\n\nasyncio.run(main())",
+      "lines": [
+        {
+          "start_lineno": 3,
+          "end_lineno": 3
+        }
+      ]
+    },
+    {
+        "code": "import asyncio\n\nasync def log_request(user):\n    print(f\"Request by {user}\")\n\nasync def handle_request(user):\n    await log_request(user)\n\nasync def main():\n    await asyncio.gather(\n        handle_request(\"Alice\"),\n        handle_request(\"Bob\")\n    )\n\nasyncio.run(main())\n",
+        "lines": [
+          {
+            "start_lineno": 3,
+            "end_lineno": 3
+          }
+        ]
+    },
+    {
+        "code": "import asyncio\n\nstate = {}\n\nasync def task(id):\n    state[\"id\"] = id\n    await asyncio.sleep(0.1)\n    print(state[\"id\"])  # Race condition\n\nasync def main():\n    await asyncio.gather(task(1), task(2))\n\nasyncio.run(main())\n",
+        "lines": [
+          {
+            "start_lineno": 5,
+            "end_lineno": 8
+          }
+        ]
+    },
+    {
+        "code":    "x = 10\ny = 20\nz = x + y\nprint(z)\n",
+        "lines": []
+    },
+    {
+        "code": "import threading\n\nlocal = threading.local()\nlocal.user = \"Alice\"\nprint(local.user)\n",
+        "lines": []
+    }
+  ]
+}

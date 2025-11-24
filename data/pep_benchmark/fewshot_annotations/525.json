@@ -1,0 +1,39 @@
+{
+  "instances": [
+    {
+        "code":"async def fetch_all(urls):\n    results = []\n    for u in urls:\n        results.append(await fetch(u))\n    return results",
+        "lines": [
+         {
+          "start_lineno": 1,
+          "end_lineno": 5
+         }
+        ]
+    },
+    {
+  "code": "async def read_lines(reader):\n    lines = []\n    while True:\n        line = await reader.readline()\n        if not line:\n            break\n        lines.append(line)\n    return lines\n",
+    "lines": [
+         {
+          "start_lineno": 1,
+          "end_lineno": 8
+         }
+        ]
+},
+{
+  "code": "async def ticker(n):\n    ticks = []\n    for _ in range(n):\n        await asyncio.sleep(1)\n        ticks.append(\"tick\")\n    return ticks\n",
+    "lines": [
+         {
+          "start_lineno": 1,
+          "end_lineno": 6
+         }
+        ]
+},
+{
+  "code":"def count(n):\n    for i in range(n):\n        yield i\n\nfor x in count(5):\n    print(x)\n",
+        "lines": []
+},
+{
+  "code": "async def compute_total(a, b):\n    await asyncio.sleep(1)\n    return a + b\n\nresult = await compute_total(5, 7)\nprint(result)\n",
+        "lines": []
+}
+  ]
+}
