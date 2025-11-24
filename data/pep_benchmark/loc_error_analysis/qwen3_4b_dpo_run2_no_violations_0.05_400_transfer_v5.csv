@@ -1,0 +1,2824 @@
+id,source,model_response,gt_lines,pred_lines,gt_linenos,pred_linenos
+9f8972df704dcb99c707e8427f7fa0da95e460a6_614,pep_benchmark/PEP614,"**Idiom 614 Violations:**
+
+{""line"": "" 11 def add_patient(user_id, data):"", ""fix"": null}
+{""line"": "" 16 def get_patient(user_id):"", ""fix"": null}
+
+","  7 register = partial(register, server=hippa)
+ 10 @register
+ 15 @register"," 11 def add_patient(user_id, data):
+ 16 def get_patient(user_id):","{'7', '10', '15'}","{'11', '16'}"
+774933a7d78bec56eba238a91f08a854499957f0_525,pep_benchmark/PEP525,"**Idiom 525 Violations:**
+
+{""line"": ""1082     async def get_stream(self, *command_args, conn_type=\""I\"", offset=0):"", ""fix"": null}
+
+","722             def __aiter__(cls):
+723                 cls.directories = collections.deque()
+724                 return cls
+725 
+726             async def __anext__(cls):
+727                 if cls.stream is None:
+728                     cls.stream = await cls._new_stream(path)
+729                 while True:
+730                     line = await cls.stream.readline()
+731                     while not line:
+732                         await cls.stream.finish()
+733                         if cls.directories:
+734                             current_path, info = cls.directories.popleft()
+735                             cls.stream = await cls._new_stream(current_path)
+736                             line = await cls.stream.readline()
+737                         else:
+738                             raise StopAsyncIteration","1082     async def get_stream(self, *command_args, conn_type=""I"", offset=0):","{'726', '738', '737', '722', '734', '735', '725', '728', '729', '733', '730', '727', '731', '724', '736', '723', '732'}",{'1082'}
+13f6a301539f7a1edd24c3d259ad5391980283c4_614,pep_benchmark/PEP614,"**Idiom 614 Violations:**
+
+{""line"": "" 29 def test_remove_duplicate_point():"", ""fix"": null}
+{""line"": "" 34 class TestCase:"", ""fix"": null}
+{""line"": "" 43 # To apply a mark to a module"", ""fix"": null}
+
+"," 20 timeout10 = pytest.mark.timeout(10, method='thread')
+ 23 @timeout10
+ 28 @timeout10
+ 33 @timeout10"," 29 def test_remove_duplicate_point():
+ 34 class TestCase:
+ 43 # To apply a mark to a module","{'28', '23', '20', '33'}","{'34', '43', '29'}"
+a41438e4acb444093674b2f0a12897ce09c822f2_616,pep_benchmark/PEP616,"**Idiom 616 Violations:**
+
+{""line"": "" 46     filename = line[3:].rstrip().lower()"", ""fix"": [{""before"": ""rstrip"", ""after"": ""removeprefix""}]}
+
+"," 48     if filename.startswith(""_""):
+ 49         filename = filename[1:]
+ 50     if filename.endswith(""_""):
+ 51         filename = filename[:-1]
+ 81             if line.startswith(""##""):
+ 82                 line = line[1:]", 46     filename = line[3:].rstrip().lower(),"{'48', '49', '51', '50', '81', '82'}",{'46'}
+5fcb0fdd0cc7bcc8eab83fdebeabfa6a556b9cf7_506,pep_benchmark/PEP506,"**Idiom 506 Violations:**
+
+{""line"": "" 20     random = Random()"", ""fix"": null}
+
+"," 22         str += chars[random.randint(0, length)]", 20     random = Random(),{'22'},{'20'}
+76f4fffd4cb585a12df6abcdecfc432201e57e1b_487,pep_benchmark/PEP487,"**Idiom 487 Violations:**
+
+{""line"": "" 72     def get_transport_class(cls, label: str = None,) -> Type[FirestoreTransport]:"", ""fix"": null}
+
+"," 60 class FirestoreClientMeta(type):
+ 91 class FirestoreClient(metaclass=FirestoreClientMeta):"," 72     def get_transport_class(cls, label: str = None,) -> Type[FirestoreTransport]:","{'91', '60'}",{'72'}
+8e75b7716a428394722adb3cf988320cd3c06197_525,pep_benchmark/PEP525,"**Idiom 525 Violations:**
+
+{""line"": "" 79     def __await__(self) -> Generator[Any, None, Any]:"", ""fix"": null}
+
+"," 58     def __aiter__(self) -> ""Body"":
+ 59         return self
+ 60 
+ 61     async def __anext__(self) -> bytes:
+ 62         if self._must_raise is not None:
+ 63             raise self._must_raise
+ 64 
+ 65         # if we got all of the data in the first shot, then self._complete is
+ 66         # set and self._has_data will not get set again, so skip the await
+ 67         # if we already have completed everything
+ 68         if not self._complete.is_set():
+ 69             await self._has_data.wait()
+ 70 
+ 71         if self._complete.is_set() and len(self._data) == 0:
+ 72             raise StopAsyncIteration()
+ 73 
+ 74         data = bytes(self._data)
+ 75         self._data.clear()
+ 76         self._has_data.clear()
+ 77         return data"," 79     def __await__(self) -> Generator[Any, None, Any]:","{'71', '70', '72', '62', '67', '63', '68', '74', '66', '60', '76', '58', '59', '64', '75', '69', '73', '61', '77', '65'}",{'79'}
+a68f53cd1db7d11fa873f49b103edd158d281b2b_567,pep_benchmark/PEP567,"**Idiom 567 Violations:**
+
+{""line"": ""299 thread_context = ThreadLocalIO()"", ""fix"": null}
+
+",291 class ThreadLocalIO(threading.local):,299 thread_context = ThreadLocalIO(),{'291'},{'299'}
+18e6318436dbf83474673ebfbd3c01d9e5df1458_526,pep_benchmark/PEP526,"**Idiom 526 Violations:**
+
+{""line"": "" 81     _stubs: Dict[str, Callable]"", ""fix"": null}
+{""line"": "" 92             credentials_file: str = None,"", ""fix"": null}
+{""line"": "" 93             scopes: Sequence[str] = None,"", ""fix"": null}
+{""line"": "" 98             host: Optional[str] = \""accessapproval.googleapis.com\"","", ""fix"": null}
+{""line"": "" 99             credentials: credentials.Credentials = None,"", ""fix"": null}
+{""line"": ""102                 credentials_file: str = None,"", ""fix"": null}
+{""line"": ""105             credentials_file: str = None,"", ""fix"": null}
+{""line"": ""108             scopes: Optional(Sequence[str]) = None,"", ""fix"": null}
+{""line"": ""108             scopes: Optional(Sequence[str]) = None,"", ""fix"": null}
+{""line"": ""185         scopes: Optional[Sequence[str]] = None,"", ""fix"": null}
+{""line"": ""186         quota_project_id: Optional[str] = None,"", ""fix"": null}
+
+","168         self._stubs = {}  # type: Dict[str, Callable]"," 81     _stubs: Dict[str, Callable]
+ 92             credentials_file: str = None,
+ 93             scopes: Sequence[str] = None,
+ 98             host: Optional[str] = ""accessapproval.googleapis.com"",
+ 99             credentials: credentials.Credentials = None,
+102                 credentials_file: str = None,
+105             credentials_file: str = None,
+108             scopes: Optional(Sequence[str]) = None,
+108             scopes: Optional(Sequence[str]) = None,
+185         scopes: Optional[Sequence[str]] = None,
+186         quota_project_id: Optional[str] = None,",{'168'},"{'105', '108', '93', '99', '98', '92', '185', '186', '81', '102'}"
+09c1687a4b08cb721255bd2a93f7a2f982162518_526,pep_benchmark/PEP526,"**Idiom 526 Violations:**
+
+{""line"": "" 26     LIVE_SPEECH = \""\"""", ""fix"": null}
+{""line"": "" 27     LIVE_SPEECH_TIMEOUT = 3"", ""fix"": null}
+{""line"": "" 28     LIVE_SPEECH_TIME = 0"", ""fix"": null}
+
+"," 34         speech_recognition = self.require(StatisticsComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent"," 26     LIVE_SPEECH = """"
+ 27     LIVE_SPEECH_TIMEOUT = 3
+ 28     LIVE_SPEECH_TIME = 0",{'34'},"{'27', '28', '26'}"
+89fab4fcabe6e2074fdd715ac2ce5c40451d9261_567,pep_benchmark/PEP567,"**Idiom 567 Violations:**
+
+{""line"": "" 290     if not isinstance(op, Operation):"", ""fix"": null}
+
+","3641 class _DefaultStack(threading.local):
+3642   """"""A thread-local stack of objects for providing implicit defaults.""""""
+3643 
+3644   def __init__(self):
+3645     super(_DefaultStack, self).__init__()
+3646     self._enforce_nesting = True
+3647     self.stack = []
+3648 
+3649   def get_default(self):
+3650     return self.stack[-1] if len(self.stack) >= 1 else None
+3651 "," 290     if not isinstance(op, Operation):","{'3643', '3642', '3645', '3650', '3647', '3641', '3644', '3648', '3651', '3649', '3646'}",{'290'}
+5ed80189210dbe91edf25f3ff2488ed0e16954df_530,pep_benchmark/PEP530,"**Idiom 530 Violations:**
+
+{""line"": "" 29             ids: List[int]"", ""fix"": null}
+
+"," 48         for i in ids:
+ 49             try:
+ 50                 input_user = await self.resolve_peer(i)
+ 51             except PeerIdInvalid:
+ 52                 continue
+ 53             else:
+ 54                 if isinstance(input_user, raw.types.InputPeerUser):
+ 55                     contacts.append(input_user)", 29             ids: List[int],"{'53', '48', '49', '51', '52', '50', '54', '55'}",{'29'}
+914ec3514c8c8b70adda09891a4f445a0b940703_655,pep_benchmark/PEP655,"**Idiom 655 Violations:**
+
+{""line"": "" 26     caBundle: typing.Optional[str]"", ""fix"": [{""before"": ""typing.Optional[str]"", ""after"": ""str | None""}]}
+{""line"": "" 28         kubernetes.client.AdmissionregistrationV1beta1ServiceReferenceDict"", ""fix"": [{""before"": ""typing.Optional[...]"", ""after"": ""..."" | None}]}
+{""line"": "" 30     url: typing.Optional[str]"", ""fix"": [{""before"": ""typing.Optional[str]"", ""after"": ""str | None""}]}
+
+","  6 class AdmissionregistrationV1beta1WebhookClientConfig:
+  7     ca_bundle: typing.Optional[str]
+  8     service: typing.Optional[
+  9         kubernetes.client.AdmissionregistrationV1beta1ServiceReference
+ 10     ]
+ 11     url: typing.Optional[str]
+ 12     def __init__(
+ 13         self,"," 26     caBundle: typing.Optional[str]
+ 30     url: typing.Optional[str]","{'6', '11', '10', '9', '13', '8', '7', '12'}","{'26', '30'}"
+90a8ea67ce2787b72dfc81dd227b2670458b3f6a_634,pep_benchmark/PEP634,"**Idiom 634 Violations:**
+
+{""line"": "" 28     def from_py(cls, typeObj, val, vld_mask=None):"", ""fix"": null}
+
+"," 10     if isinstance(v, RtlSignalBase):  # is signal
+ 11         assert isinstance(v._dtype, Bits)
+ 12         return v
+ 13     elif isinstance(v, Value):
+ 14         if isinstance(v, Bits):
+ 15             return v
+ 16         else:
+ 17             return v._auto_cast(INT)
+ 18     else:
+ 19         return INT.from_py(v)"," 28     def from_py(cls, typeObj, val, vld_mask=None):","{'17', '11', '14', '10', '15', '18', '16', '19', '13', '12'}",{'28'}
+03497a95150d99dff62165057919d33f9289e724_584,pep_benchmark/PEP584,"**Idiom 584 Violations:**
+
+{""line"": ""140     slurm_config = merge_dicts(SETTINGS.SLURM_DEFAULT, slurm_config)"", ""fix"": null}
+
+","147         for k, v in SETTINGS.SBATCH_OPTIONS_TEMPLATES[sbatch_options_template].items():
+148             if k not in slurm_config['sbatch_options']:
+149                 slurm_config['sbatch_options'][k] = v","140     slurm_config = merge_dicts(SETTINGS.SLURM_DEFAULT, slurm_config)","{'147', '149', '148'}",{'140'}
+31e4bc74fec32c2cfc89f9b14d2ab712773f7e42_525,pep_benchmark/PEP525,"**Idiom 525 Violations:**
+
+{""line"": "" 254     def _timeout_for(self, limit: Optional[Limit]) -> Optional[float]:"", ""fix"": null}
+{""line"": "" 264     @property"", ""fix"": null}
+{""line"": "" 265     def id(self) -> Mapping[str, str]:"", ""fix"": null}
+{""line"": "" 266     def communicate(self, command_factory: Callable[[], BaseCommand[Protocol, T]]) -> T:"", ""fix"": null}
+{""line"": "" 270     def analyse(self, board: chess.Board, limit: Limit, *, multipv: int, game: object = None, info: Info = INFO_ALL, root_moves: Optional[Iterable[chess.Move]] = None, options: ConfigMapping = {}) -> List[InfoDict]: ..."", ""fix"": null}
+{""line"": "" 270     def analyse(self, board: chess.Board, limit: Limit, *, multipv: Optional[int] = None, game: object = None, info: Info = INFO_ALL, root_moves: Optional[Iterable[chess.Move]] = None, options: ConfigMapping = {}) -> Union[InfoDict, List[InfoDict]]: ..."", ""fix"": null}
+{""line"": "" 270     def analyse(self, board: chess.Board, limit: Limit, *, multipv: Optional[int] = None, game: object = None, info: Info = INFO_ALL, root_moves: Optional[Iterable[chess.Move]] = None, options: ConfigMapping = {}) -> Union[InfoDict, List[InfoDict]]:"", ""fix"": null}
+{""line"": "" 277     def popen_uci(cls, command: Union[str, List[str]], *, timeout: Optional[float] = 10.0, debug: bool = False, setpgrp: bool = False, **popen_args: Any) -> SimpleEngine:"", ""fix"": null}
+{""line"": "" 278     @classmethod"", ""fix"": null}
+{""line"": "" 279     def popen_xboard(cls, command: Union[str, List[str]], *, timeout: Optional[float] = 10.0, debug: bool = False, setpgrp: bool = False, **popen_args: Any) -> SimpleEngine:"", ""fix"": null}
+{""line"": "" 279     def popen_xboard(cls, command: Union[str, List[str]], *, timeout: Optional[float] = 10.0, debug: bool = False, setpgrp: bool = False, **popen_args: Any) -> SimpleEngine:"", ""fix"": null}
+{""line"": "" 282     def next(self) -> Optional[InfoDict]:"", ""fix"": null}
+{""line"": "" 283     def __aiter__(self) -> Iterator[InfoDict]:"", ""fix"": null}
+{""line"": "" 283     def __anext__(self) -> InfoDict:"", ""fix"": null}
+{""line"": "" 283     def __anext__(self) -> InfoDict:"", ""fix"": null}
+{""line"": "" 283     def __anext__(self) -> InfoDict:"", ""fix"": null}
+{""line"": "" 283     def __anext__(self) -> InfoDict:"", ""fix"": null}
+{""line"": "" 283     def __anext__(self) -> InfoDict:"", ""fix"": null}
+
+","2431 class AnalysisResult:
+2432     """"""
+2433     Handle to ongoing engine analysis.
+2434     Returned by :func:`chess.engine.Protocol.analysis()`.
+2435 
+2436     Can be used to asynchronously iterate over information sent by the engine.
+2437 
+2438     Automatically stops the analysis when used as a context manager.
+2439     """"""
+2440 
+2441     multipv: List[chess.engine.InfoDict]
+2442     """"""
+2443     A list of dictionaries with aggregated information sent by the engine.
+2444     One item for each root move.
+2445     """"""
+2446 
+2447     def __init__(self, stop: Optional[Callable[[], None]] = None):
+2448         self._stop = stop
+2449         self._queue: asyncio.Queue[InfoDict] = asyncio.Queue()
+2450         self._posted_kork = False
+2451         self._seen_kork = False
+2452         self._finished: asyncio.Future[BestMove] = asyncio.Future()
+2453         self.multipv = [{}]"," 254     def _timeout_for(self, limit: Optional[Limit]) -> Optional[float]:
+ 264     @property
+ 265     def id(self) -> Mapping[str, str]:
+ 266     def communicate(self, command_factory: Callable[[], BaseCommand[Protocol, T]]) -> T:
+ 270     def analyse(self, board: chess.Board, limit: Limit, *, multipv: int, game: object = None, info: Info = INFO_ALL, root_moves: Optional[Iterable[chess.Move]] = None, options: ConfigMapping = {}) -> List[InfoDict]: ...
+ 270     def analyse(self, board: chess.Board, limit: Limit, *, multipv: Optional[int] = None, game: object = None, info: Info = INFO_ALL, root_moves: Optional[Iterable[chess.Move]] = None, options: ConfigMapping = {}) -> Union[InfoDict, List[InfoDict]]: ...
+ 270     def analyse(self, board: chess.Board, limit: Limit, *, multipv: Optional[int] = None, game: object = None, info: Info = INFO_ALL, root_moves: Optional[Iterable[chess.Move]] = None, options: ConfigMapping = {}) -> Union[InfoDict, List[InfoDict]]:
+ 277     def popen_uci(cls, command: Union[str, List[str]], *, timeout: Optional[float] = 10.0, debug: bool = False, setpgrp: bool = False, **popen_args: Any) -> SimpleEngine:
+ 278     @classmethod
+ 279     def popen_xboard(cls, command: Union[str, List[str]], *, timeout: Optional[float] = 10.0, debug: bool = False, setpgrp: bool = False, **popen_args: Any) -> SimpleEngine:
+ 279     def popen_xboard(cls, command: Union[str, List[str]], *, timeout: Optional[float] = 10.0, debug: bool = False, setpgrp: bool = False, **popen_args: Any) -> SimpleEngine:
+ 282     def next(self) -> Optional[InfoDict]:
+ 283     def __aiter__(self) -> Iterator[InfoDict]:
+ 283     def __anext__(self) -> InfoDict:
+ 283     def __anext__(self) -> InfoDict:
+ 283     def __anext__(self) -> InfoDict:
+ 283     def __anext__(self) -> InfoDict:
+ 283     def __anext__(self) -> InfoDict:","{'2440', '2434', '2433', '2437', '2438', '2441', '2451', '2450', '2445', '2453', '2436', '2431', '2435', '2443', '2448', '2432', '2439', '2449', '2444', '2452', '2446', '2447', '2442'}","{'283', '279', '266', '277', '254', '282', '264', '265', '278', '270'}"
+12911d8b9dc97a2d97624a39e7132108654f6313_526,pep_benchmark/PEP526,"**Idiom 526 Violations:**
+
+{""line"": "" 26     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]"", ""fix"": null}
+
+"," 62         cls = kwargs.pop('cls', None)  # type: ClsType[""models.DiskPoolListResult""]
+133         cls = kwargs.pop('cls', None)  # type: ClsType[""models.DiskPoolListResult""]
+198         cls = kwargs.pop('cls', None)  # type: ClsType[""models.DiskPool""]
+217         query_parameters = {}  # type: Dict[str, Any]
+221         header_parameters = {}  # type: Dict[str, Any]"," 26     ClsType = Optional[Callable[[PipelineResponse[HttpRequest, HttpResponse], T, Dict[str, Any]], Any]]","{'198', '217', '133', '221', '62'}",{'26'}
+fd6c725c9416d5eab0691347c678a92858444cb9_506,pep_benchmark/PEP506,"**Idiom 506 Violations:**
+
+{""line"": "" 16         name, password = random_string(8), random_string(15)"", ""fix"": null}
+{""line"": "" 16         name, password = random_string(8), random_string(15)"", ""fix"": null}
+
+", 11     return ''.join(random.choice(string.ascii_lowercase) for _ in range(n))," 16         name, password = random_string(8), random_string(15)
+ 16         name, password = random_string(8), random_string(15)",{'11'},{'16'}
+977d41c6ec56eeaedd517be4b0c4fa000c530c90_526,pep_benchmark/PEP526,"**Idiom 526 Violations:**
+
+{""line"": "" 33 Operation = Dict[str, Any]"", ""fix"": null}
+{""line"": "" 81         instance_name: str,"", ""fix"": null}
+{""line"": "" 87         operation = (\n219             self.get_conn()  # pylint: disable=no-member\n220             .projects()\n221             .locations()\n222             .instances()\n223             .get(name=self._name(project_id, location, instance_name))\n224             .execute(num_retries=self.num_retries)\n225         )"", ""fix"": null}
+{""line"": ""167         instance: Dict[str, Any],"", ""fix"": null}
+{""line"": ""179         namespace: str = \""default\"","", ""fix"": null}
+{""line"": ""277         pipeline: Dict[str, Any],"", ""fix"": null}
+{""line"": ""344     ) -> Dict[Any, Any]:"", ""fix"": null}
+{""line"": ""360         query: Dict[str, str] = {}"", ""fix"": null}
+{""line"": ""379         runtime_args: Optional[Dict[str, Any]] = None"", ""fix"": null}
+
+", 41     _conn = None  # type: Optional[Resource]," 33 Operation = Dict[str, Any]
+ 81         instance_name: str,
+ 87         operation = (
+219             self.get_conn()  # pylint: disable=no-member
+220             .projects()
+221             .locations()
+222             .instances()
+223             .get(name=self._name(project_id, location, instance_name))
+224             .execute(num_retries=self.num_retries)
+225         )
+167         instance: Dict[str, Any],
+179         namespace: str = ""default"",
+277         pipeline: Dict[str, Any],
+344     ) -> Dict[Any, Any]:
+360         query: Dict[str, str] = {}
+379         runtime_args: Optional[Dict[str, Any]] = None",{'41'},"{'223', '220', '379', '360', '222', '277', '167', '344', '87', '225', '33', '179', '81', '224', '221', '219'}"
+5371def4c9a318093a1628fa6841d168af224c7e_525,pep_benchmark/PEP525,"**Idiom 525 Violations:**
+
+{""line"": "" 4046     async def __anext__(self):"", ""fix"": null}
+
+","4188     def __aiter__(self):
+4189         return self
+4190 
+4191     def _get_and_raise(self):
+4192         res = self.queue.get()
+4193         if self.with_results:
+4194             future, result = res
+4195             if self.raise_errors and future.status == ""error"":
+4196                 typ, exc, tb = result
+4197                 raise exc.with_traceback(tb)
+4198         return res
+4199 
+4200     def __next__(self):
+4201         while self.queue.empty():
+4202             if self.is_empty():
+4203                 raise StopIteration()
+4204             with self.thread_condition:
+4205                 self.thread_condition.wait(timeout=0.100)
+4206         return self._get_and_raise()
+4207 
+4208     async def __anext__(self):
+4209         if not self.futures and self.queue.empty():
+4210             raise StopAsyncIteration
+4211         while self.queue.empty():
+4212             if not self.futures:
+4213                 raise StopAsyncIteration
+4214             await self.condition.wait()
+4215 
+4216         return self._get_and_raise()", 4046     async def __anext__(self):,"{'4204', '4215', '4209', '4213', '4189', '4210', '4208', '4212', '4211', '4197', '4216', '4196', '4193', '4203', '4190', '4199', '4207', '4192', '4202', '4201', '4198', '4195', '4188', '4200', '4194', '4206', '4191', '4205', '4214'}",{'4046'}
+34ce1215a1f0114d758912539f6b8b23e9087aee_557,pep_benchmark/PEP557,"**Idiom 557 Violations:**
+
+{""line"": "" 27 import collections"", ""fix"": null}
+
+","  7 class Wizard:
+  8     def __init__(self, name, level):", 27 import collections,"{'7', '8'}",{'27'}
+7535defa22dff0766106cbd29c7abea90b76fd07_614,pep_benchmark/PEP614,"**Idiom 614 Violations:**
+
+{""line"": "" 359     def where(self, crit):"", ""fix"": null}
+{""line"": "" 92     def except_(self, other, **kwargs):"", ""fix"": null}
+{""line"": "" 93     def except_all(self, other, **kwargs):"", ""fix"": null}
+{""line"": "" 94     def intersect(self, other, **kwargs):"", ""fix"": null}
+{""line"": "" 95     def intersect_all(self, other, **kwargs):"", ""fix"": null}
+{""line"": ""3696     def __init__(self, text, columns, positional=False):"", ""fix"": null}
+{""line"": ""3706     def bindparams(self, *binds, **bind_as_values):"", ""fix"": null}
+
+","357     _memoized_property = util.group_expirable_memoized_property([""_columns""])
+671     @_memoized_property
+689     @_memoized_property
+698     @_memoized_property
+2938     @_memoized_property.method
+2958     @_memoized_property
+3432     @_memoized_property"," 359     def where(self, crit):
+ 92     def except_(self, other, **kwargs):
+ 93     def except_all(self, other, **kwargs):
+ 94     def intersect(self, other, **kwargs):
+ 95     def intersect_all(self, other, **kwargs):
+3696     def __init__(self, text, columns, positional=False):
+3706     def bindparams(self, *binds, **bind_as_values):","{'2938', '698', '2958', '357', '689', '3432', '671'}","{'3696', '95', '93', '3706', '92', '94', '359'}"
+8fa126ce0fa1347e3d7d19f07d8a497efe151547_525,pep_benchmark/PEP525,"**Idiom 525 Violations:**
+
+{""line"": "" 741 class AsyncMockAssert(unittest.TestCase):"", ""fix"": null}
+
+","670         def __aiter__(self):
+671             return self
+672 
+673         async def __anext__(self):
+674             try:
+675                 return self.items.pop()
+676             except IndexError:
+677                 pass
+678 
+679             raise StopAsyncIteration", 741 class AsyncMockAssert(unittest.TestCase):,"{'672', '679', '673', '670', '674', '671', '675', '677', '678', '676'}",{'741'}
+aeed89968b2b343d9a37676cb3b50c9351691afe_525,pep_benchmark/PEP525,"**Idiom 525 Violations:**
+
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):"", ""fix"": null}
+{""line"": "" 158             for methname, meth in mcls._iter_methods(b","315     def __aiter__(self):
+316         return self
+317 
+318     async def __anext__(self):
+319         if self._stop_request:
+320             raise StopAsyncIteration
+321 
+322         if self._started_at == 0:
+323             # First run
+324             self._started_at = time.monotonic()
+325         else:
+326             # Second or greater run -- delay before yielding
+327             await asyncio.sleep(self._delay)
+328 
+329         return _TryRunner(self)"," 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):
+ 158             for methname, meth in mcls._iter_methods(bases, ns.copy()):","{'326', '318', '324', '322', '319', '317', '315', '321', '325', '327', '320', '323', '316', '329', '328'}",{'158'}
+af10293346f7b65582ba00acb0a37422e3527ef7_487,pep_benchmark/PEP487,"**Idiom 487 Violations:**
+
+{""line"": "" 201 class Table(object, metaclass=MetaTable):"", ""fix"": null}
+
+"," 17 class MetaTable(type):
+ 18 	
+ 19 	existingClasses = []
+ 20 
+ 21 	possible_types = [String, Integer, Float, DateTime, Coordinate, Foreign]
+ 22 
+ 23 	def __init__(cls, name, bases, attrs):
+ 24 		if attrs['__qualname__'] in cls.existingClasses: ## This should fix case 7 duplicate but it's not, probably bypassing init bc same name
+ 25 			raise AttributeError(""existing class"")
+ 26 		for col, val in attrs.items():
+ 27 			if val == ""Table"":
+ 28 				break			
+ 29 			if col == ""pk"" or col == ""version"" or col == ""save"" or col ==""delete"":
+ 30 				raise AttributeError (""invalid column name - reserved"")
+ 31 			colSplit = list(col)
+ 32 			if col.startswith(""__"")==False and col.endswith(""__"")==False:
+ 33 				if colSplit[0] == ""_"" or colSplit[0].isdigit():
+ 34 					raise AttributeError (""invalid column name"")
+ 35 				if ""_"" in colSplit:
+ 36 					raise AttributeError(""inv column name _"")
+ 37 			if isinstance(val, Integer) or isinstance(val, String) or isinstance(val,Float) or isinstance(val,Foreign) or isinstance(val, DateTime) or isinstance(val, Coordinate):
+ 38 				val.setname(col)
+ 39 		cls.existingClasses.append(attrs['__qualname__'])
+ 40 		tempAttributes = list(attrs)	
+ 41 		temptemp = list()
+ 42 		for i in tempAttributes:
+ 43 			if i[:2] != '__':		
+ 44 				temptemp.append(i.replace(""_"",""""))
+ 45 				
+ 46 		classes[name] = temptemp
+ 47 		classnames.append(temptemp)
+ 48 		pass
+ 49 
+ 50 
+ 51     # Returns an existing object from the table, if it exists.
+ 52     #   db: database object, the database to get the object from
+ 53     #   pk: int, primary key (ID)
+ 54 	def get(cls, db, pk):
+ 55 		attrlist = []
+ 56 		columns = {}
+ 57 		names = []
+ 58 		values, version = db.get(cls.__name__, pk)
+ 59 
+ 60 		for item in cls.__dict__:
+ 61 		 	if item.startswith('__') == False:
+ 62 		 		attrlist.append(item)
+ 63 
+ 64 		for value in cls.__dict__.values():
+ 65 			for name in cls.__class__.__dict__['possible_types']:
+ 66 				if isinstance(value, name):
+ 67 					names.append(value)
+ 68 
+ 69 		for i, field in enumerate(attrlist):
+ 70 			if (isinstance(names[i], Foreign)):
+ 71 				columns[field] = names[i].table.get(db, values[i])
+ 72 			else:
+ 73 				columns[field] = values[i]
+ 74 
+ 75 		obj = cls(db, **columns)
+ 76 		obj.__dict__['pk']=pk	
+ 77 		obj.__dict__['version']=version"," 201 class Table(object, metaclass=MetaTable):","{'44', '71', '24', '70', '22', '72', '19', '23', '29', '33', '25', '46', '28', '52', '43', '67', '38', '55', '53', '65', '63', '48', '68', '66', '51', '31', '41', '74', '35', '40', '60', '76', '50', '27', '21', '47', '36', '17', '49', '58', '59', '30', '64', '18', '39', '37', '32', '54', '57', '42', '75', '20', '69', '73', '61', '45', '77', '34', '26', '56', '62'}",{'201'}
+7ce16a1fa946f6f8b2058f51820c8df868e6bd26_614,pep_benchmark/PEP614,"**Idiom 614 Violations:**
+
+{""line"": "" 50         PAYPAL = settings.PAYPAL"", ""fix"": null}
+{""line"": ""116         PAYPAL = settings.PAYPAL"", ""fix"": null}
+
+"," 31 csrf_exempt_m = method_decorator(csrf_exempt)
+ 89     @csrf_exempt_m"," 50         PAYPAL = settings.PAYPAL
+116         PAYPAL = settings.PAYPAL","{'89', '31'}","{'50', '116'}"
+f6b1a51ee6611bfd553bac6868e00644b1f1e80f_584,pep_benchmark/PEP584,"**Idiom 584 Violations:**
+
+{""line"": "" 56         self._pending: Dict[str, Set[str]] = self._plan.get_executable_step_deps()"", ""fix"": null}
+{""line"": "" 60         self._gathering_dynamic_outputs: Dict[str, Dict[str, List[str]]] = {}"", ""fix"": null}
+{""line"": "" 62         self._successful_dynamic_outputs: Dict[str, Dict[str, List[str]]] = ("", ""fix"": null}
+{""line"": "" 89         self._executable: List[str] = []"", ""fix"": null}
+{""line"": "" 90         self._pending_skip: List[str] = []"", ""fix"": null}
+{""line"": "" 91         self._pending_retry: List[str] = []"", ""fix"": null}
+{""line"": "" 92         self._pending_abandon: List[str] = []"", ""fix"": null}
+{""line"": "" 72             self._waiting_to_retry = Dict[str, float]()"", ""fix"": null}
+{""line"": "" 99         steps = sorted("", ""fix"": null}
+{""line"": ""199                 skipped_inputs: List[str] = []"", ""fix"": null}
+{""line"": ""218     def get_steps_to_execute(self, limit: int = None) -> List[ExecutionStep]:"", ""fix"": null}
+{""line"": ""299                 skipped_inputs: List[str] = []"", ""fix"": null}
+{""line"": ""319                 abandoned_inputs: List[str] = []"", ""fix"": null}
+{""line"": ""322                 abandoned_inputs.extend("", ""fix"": null}
+{""line"": ""328                 abandoned_inputs.extend("", ""fix"": null}
+{""line"": ""387     def _mark_complete(self, step_key: str) -> None:"", ""fix"": null}
+{""line"": ""409                 time.time() + dagster_event.step_retry_data.seconds_to_wait"", ""fix"": null}
+{""line"": ""461             dynamic_mappings=dict(self._successful_dynamic_outputs),"", ""fix"": null}
+
+","158             for step_key, deps in new_step_deps.items():
+159                 self._pending[step_key] = deps"," 56         self._pending: Dict[str, Set[str]] = self._plan.get_executable_step_deps()
+ 60         self._gathering_dynamic_outputs: Dict[str, Dict[str, List[str]]] = {}
+ 62         self._successful_dynamic_outputs: Dict[str, Dict[str, List[str]]] = (
+ 89         self._executable: List[str] = []
+ 90         self._pending_skip: List[str] = []
+ 91         self._pending_retry: List[str] = []
+ 92         self._pending_abandon: List[str] = []
+ 72             self._waiting_to_retry = Dict[str, float]()
+ 99         steps = sorted(
+199                 skipped_inputs: List[str] = []
+218     def get_steps_to_execute(self, limit: int = None) -> List[ExecutionStep]:
+299                 skipped_inputs: List[str] = []
+319                 abandoned_inputs: List[str] = []
+322                 abandoned_inputs.extend(
+328                 abandoned_inputs.extend(
+387     def _mark_complete(self, step_key: str) -> None:
+409                 time.time() + dagster_event.step_retry_data.seconds_to_wait
+461             dynamic_mappings=dict(self._successful_dynamic_outputs),","{'158', '159'}","{'322', '90', '319', '387', '299', '461', '199', '99', '60', '89', '92', '72', '91', '409', '328', '218', '56', '62'}"
+55e3d170a237581e30ec9940f39f02d38962bdef_567,pep_benchmark/PEP567,"**Idiom 567 Violations:**
+
+{""line"": "" 99 class GraphID:"", ""fix"": null}
+{""line"": ""105 class FunctionID:"", ""fix"": null}
+
+",263 local = threading.local()," 99 class GraphID:
+105 class FunctionID:",{'263'},"{'105', '99'}"
+1fd93eb7a3b2ded31c15b2795f677cb28af79054_530,pep_benchmark/PEP530,"**Idiom 530 Violations:**
+
+{""line"": "" 65 async def check_permissions(conn, details, permissions=[]):"", ""fix"": null}
+
+"," 72             for perm in permissions:
+ 73                 await test_permission(conn, details, perm, i)"," 65 async def check_permissions(conn, details, permissions=[]):","{'73', '72'}",{'65'}
+04b53760e0bbc628107debaced06fe875fc3272a_526,pep_benchmark/PEP526,"**Idiom 526 Violations:**
+
+{""line"": "" 19             Layer(\n 20                 \""VolumeFogTint\"",\n 21                 \""\u9488\u790d\u9ad8\u6539\"",\n 22                 \""COPY\"",\n 23             ),"", ""fix"": null}
+{""line"": "" 25             Layer(\n 26                 \""depth\"",\n 27                 \""\u6539\u6837\u3002\"","", ""fix"": null}
+{""line"": "" 31                 \""P\"",\n 32                 \""\u4f4d\u7f6e\u3002\"","", ""fix"": null}
+{""line"": "" 36                 \""BumpNormals\"",\n 37                 \""\u5b88\u62a4\u673a\u7a7a\u3002\"","", ""fix"": null}
+{""line"": "" 42                 \""MotionVectors\"",\n 43                 \""\u9488\u7a7a\u5206\u9488\u3002\"","", ""fix"": null}
+{""line"": "" 47                 \""PuzzleMatte\"",\n 48                 \""\u6237\u6837\u9488\u3002\"","", ""fix"": null}
+{""line"": "" 52                 \""DiffuseLightingRaw\"",\n 53                 \""\u5f53\u6539\u65f6\u6c42\u52a0\u5f62\u63a7\u533a\u3002\"","", ""fix"": null}
+{""line"": "" 57                 \""DiffuseFilter\"",\n 58                 \""\u63a7\u533a\u5206\u9488\u3002\"","", ""fix"": null}
+{""line"": "" 62                 \""DiffuseLighting\"",\n 63                 \""\u63a7\u533a\u5206\u9488\u3002\"","", ""fix"": null}
+{""line"": "" 73                 \""SSS\"",\n 74                 \""\u672a\u8981\u9884\u5f62\u63a7\u533a\u3002\"","", ""fix"": null}
+{""line"": "" 78                 \""GI\"",\n 79                 \""\u5176\u4ed6\u63a7\u533a\u3002\"","", ""fix"": null}
+{""line"": "" 89                 \""GIRaw\"",\n 90                 \""\u5f53\u6539\u65f6\u63a7\u533a\u3002\"","", ""fix"": null}
+{""line"": "" 94                 \""SpecularLighting\"",\n 95                 \""\u9ad8\u533a\u3002\"","", ""fix"": null}
+{""line"": "" 99                 \""Reflections\"",\n100                 \""\u53ef\u56de\u533a\u3002\"","", ""fix"": null}
+{""line"": ""104                 \""Refractions\"",\n105                 \""\u63a5\u56de\u533a\u3002\"","", ""fix"": null}
+{""line"": ""109                 \""TransLightingRaw\"",\n110                 \""\u5f53\u6539\u65f6\u9488\u673a\u3002\"","", ""fix"": null}
+{""line"": ""114                 \""TransTint\"",\n115                 \""\u9488\u673a\u6539\u65f6\u3002\"","", ""fix"": null}
+{""line"": ""119                 \""TransLighting\"",\n120                 \""\u9488\u673a\u6539\u65f6\u3002\"","", ""fix"": null}
+{""line"": ""130                 \""TransGIRaw\"",\n131                 \""\u5f53\u6539\u65f6\u9488\u673a\u63a7\u533a\u3002\"","", ""fix"": null}
+{""line"": ""135                 \""TransGI\"",\n136                 \""\u9488\u673a\u63a7\u533a\u3002\"","", ""fix"": null}
+{""line"": ""146                 \""VolumeLighting\"",\n147                 \""\u4e2a\u7aef\u533a\u3002\"","", ""fix"": null}
+{""line"": ""151                 \""Emission\"",\n152                 \""\u80fd\u533a\u3002\"","", ""fix"": null}
+{""line"": ""156                 \""Caustics\"",\n157                 \""\u7a0b\u62a4\u533a\u3002\"","", ""fix"": null}
+
+",165     # type: (RedshiftAOVSpec) -> AOVSpec," 19             Layer(
+ 20                 ""VolumeFogTint"",
+ 21                 ""针礍高改"",
+ 22                 ""COPY"",
+ 23             ),
+ 25             Layer(
+ 26                 ""depth"",
+ 27                 ""改样。"",
+ 31                 ""P"",
+ 32                 ""位置。"",
+ 36                 ""BumpNormals"",
+ 37                 ""守护机空。"",
+ 42                 ""MotionVectors"",
+ 43                 ""针空分针。"",
+ 47                 ""PuzzleMatte"",
+ 48                 ""户样针。"",
+ 52                 ""DiffuseLightingRaw"",
+ 53                 ""当改时求加形控区。"",
+ 57                 ""DiffuseFilter"",
+ 58                 ""控区分针。"",
+ 62                 ""DiffuseLighting"",
+ 63                 ""控区分针。"",
+ 73                 ""SSS"",
+ 74                 ""未要预形控区。"",
+ 78                 ""GI"",
+ 79                 ""其他控区。"",
+ 89                 ""GIRaw"",
+ 90                 ""当改时控区。"",
+ 94                 ""SpecularLighting"",
+ 95                 ""高区。"",
+ 99                 ""Reflections"",
+100                 ""可回区。"",
+104                 ""Refractions"",
+105                 ""接回区。"",
+109                 ""TransLightingRaw"",
+110                 ""当改时针机。"",
+114                 ""TransTint"",
+115                 ""针机改时。"",
+119                 ""TransLighting"",
+120                 ""针机改时。"",
+130                 ""TransGIRaw"",
+131                 ""当改时针机控区。"",
+135                 ""TransGI"",
+136                 ""针机控区。"",
+146                 ""VolumeLighting"",
+147                 ""个端区。"",
+151                 ""Emission"",
+152                 ""能区。"",
+156                 ""Caustics"",
+157                 ""程护区。"",",{'165'},"{'146', '156', '110', '22', '19', '23', '147', '152', '52', '25', '43', '53', '136', '130', '95', '63', '48', '74', '90', '31', '89', '104', '94', '120', '27', '119', '21', '79', '47', '109', '105', '157', '36', '58', '99', '78', '100', '115', '151', '37', '32', '135', '57', '42', '20', '73', '114', '26', '131', '62'}"
+fbb4d1fad27280d5d45f3df2c0153603579b91a3_498,pep_benchmark/PEP498,"**Idiom 498 Violations:**
+
+{""line"": "" 23                                 'cohort a sample 004c1-r-cilia2-physData.csv',"", ""fix"": null}
+{""line"": "" 24                                 'cohort a sample 005c1-r-cilia2-physData.csv',"", ""fix"": null}
+{""line"": "" 25                                 'cohort a sample 082c1-l-cilia3-physData.csv',"", ""fix"": null}
+{""line"": "" 26                                 'cohort a sample 091c1-7-Cilia4-physData.csv']) ]"", ""fix"": null}
+{""line"": "" 27                                 'cohort a sample 004c1-r-cilia2-physData.csv',"", ""fix"": null}
+{""line"": "" 28                                 'cohort a sample 005c1-r-cilia2-physData.csv',"", ""fix"": null}
+{""line"": "" 29                                 'cohort a sample 082c1-l-cilia3-physData.csv',"", ""fix"": null}
+{""line"": "" 30                                 'cohort a sample 091c1-7-Cilia4-physData.csv']) ]"", ""fix"": null}
+
+"," 96         print(""Plotting (%d/%d)"" % (i+1, len(figs)))
+136         print(""Plotting (%d/%d)"" % (i+1, len(figs)))
+177         print(""Plotting (%d/%d)"" % (i+1, len(figs)))
+200         print(""Plotting (%d/%d)"" % (i+1, len(figs)))
+242         print(""Plotting (%d/%d)"" % (i+1, len(figs)))"," 23                                 'cohort a sample 004c1-r-cilia2-physData.csv',
+ 24                                 'cohort a sample 005c1-r-cilia2-physData.csv',
+ 25                                 'cohort a sample 082c1-l-cilia3-physData.csv',
+ 26                                 'cohort a sample 091c1-7-Cilia4-physData.csv']) ]
+ 27                                 'cohort a sample 004c1-r-cilia2-physData.csv',
+ 28                                 'cohort a sample 005c1-r-cilia2-physData.csv',
+ 29                                 'cohort a sample 082c1-l-cilia3-physData.csv',
+ 30                                 'cohort a sample 091c1-7-Cilia4-physData.csv']) ]","{'136', '242', '177', '200', '96'}","{'24', '30', '23', '28', '29', '25', '27', '26'}"
+48be5602192f9e2b380b2a11ddd1a2d018a74bf3_525,pep_benchmark/PEP525,"**Idiom 525 Violations:**
+
+{""line"": "" 67     async def partitions(self, size=None):"", ""fix"": null}
+
+","167     def __aiter__(self):
+168         return self
+169 
+170     async def __anext__(self):
+171         row = await greenlet_spawn(self._onerow_getter, self)
+172         if row is _NO_ROW:
+173             raise StopAsyncIteration()
+174         else:
+175             return row
+466     def __aiter__(self):
+467         return self
+468 
+469     async def __anext__(self):
+470         row = await greenlet_spawn(self._onerow_getter, self)
+471         if row is _NO_ROW:
+472             raise StopAsyncIteration()
+473         else:
+474             return row
+631     def __aiter__(self):
+632         return self
+633 
+634     async def __anext__(self):
+635         row = await greenlet_spawn(self._onerow_getter, self)
+636         if row is _NO_ROW:
+637             raise StopAsyncIteration()
+638         else:
+639             return row"," 67     async def partitions(self, size=None):","{'469', '170', '636', '168', '638', '637', '471', '631', '174', '634', '171', '474', '466', '167', '639', '468', '172', '175', '169', '632', '472', '635', '467', '633', '470', '473', '173'}",{'67'}
+b1646692715479ef070ad3519cbfe1f18f97d93b_634,pep_benchmark/PEP634,"**Idiom 634 Violations:**
+
+{""line"": "" 13     if comp_num == 1:"", ""fix"": null}
+{""line"": "" 15     if comp_num == 2:"", ""fix"": null}
+{""line"": "" 17     if comp_num == 3:"", ""fix"": null}
+
+"," 24     if comp_val == ""rock"":
+ 25         if player_choice == ""rock"":
+ 26             output = ""tied""
+ 27         elif player_choice == ""paper"":
+ 28             output = ""win""
+ 29         elif player_choice == ""scissors"":
+ 30             output = ""lose""
+ 31     elif comp_val == ""paper"":
+ 32         if player_choice == ""rock"":
+ 33             output = ""lose""
+ 34         elif player_choice == ""paper"":
+ 35             output = ""tied""
+ 36         elif player_choice == ""scissors"":
+ 37             output = ""win""
+ 38     elif comp_val == ""scissors"":
+ 39         if player_choice == ""rock"":
+ 40             output = ""lost""
+ 41         elif player_choice == ""paper"":
+ 42             output = ""win""
+ 43         elif player_choice == ""scissors"":
+ 44             output = ""tied"""," 13     if comp_num == 1:
+ 15     if comp_num == 2:
+ 17     if comp_num == 3:","{'44', '24', '29', '33', '25', '28', '43', '38', '31', '41', '35', '40', '27', '36', '30', '39', '37', '32', '42', '34', '26'}","{'17', '13', '15'}"
+32139b2170a081ba136905e9724007af77e53693_506,pep_benchmark/PEP506,"**Idiom 506 Violations:**
+
+{""line"": ""  7 def randomStr(minLen, maxLen):"", ""fix"": null}
+{""line"": "" 23         seed += hashlib.md5(randomStr(minLen,maxLen).encode('utf-8')).hexdigest()"", ""fix"": null}
+
+","  8     strLen = random.choice(range(minLen,maxLen))
+ 22         idLen = random.choice(valid_lengths)
+ 49         idLen = random.choice(valid_lengths)
+  9     return ''.join(random.choice(string.ascii_lowercase) for i in range(strLen))","  7 def randomStr(minLen, maxLen):
+ 23         seed += hashlib.md5(randomStr(minLen,maxLen).encode('utf-8')).hexdigest()","{'22', '49', '9', '8'}","{'7', '23'}"
+84729b6e7088d0c87f9bb275e824fe621b5e7eea_655,pep_benchmark/PEP655,"**Idiom 655 Violations:**
+
+{""line"": "" 70     value: Optional[Any]"", ""fix"": null}
+{""line"": "" 74     url: Optional[str]"", ""fix"": null}
+{""line"": "" 75     method: Optional[str]"", ""fix"": null}
+{""line"": "" 76     headers: Optional[List[NameValue]]"", ""fix"": null}
+{""line"": "" 77     postData: Optional[str]"", ""fix"": null}
+{""line"": "" 96     request: Optional[Any]"", ""fix"": null}
+{""line"": ""102     newDocument: Optional[Document]"", ""fix"": null}
+{""line"": ""103     error: Optional[str]"", ""fix"": null}
+{""line"": ""177 def patch_error_message(message: Optional[str]) -> Optional[str]:"", ""fix"": null}
+{""line"": ""190 def locals_to_params(args: Dict) -> Dict:"", ""fix"": null}
+{""line"": ""190 def locals_to_params(args: Dict) -> Dict:"", ""fix"": null}
+{""line"": ""209         times: Optional[int],"", ""fix"": null}
+{""line"": ""222     def handle(self, route: \""Route\"", request: \""Request\"") -> Union[Coroutine, Any]:"", ""fix"": null}
+{""line"": ""244 def make_dirs_for_file(path: Union[Path, str]) -> None:"", ""fix"": null}
+{""line"": ""250 async def async_writefile(file: Union[str, Path], data: Union[str, bytes]) -> None:"", ""fix"": null}
+{""line"": ""250 async def async_writefile(file: Union[str, Path], data: Union[str, bytes]) -> None:"", ""fix"": null}
+{""line"": ""259 async def async_readfile(file: Union[str, Path]) -> bytes:"", ""fix"": null}
+
+"," 80 class ParsedMessageParams(TypedDict):
+ 81     type: str
+ 82     guid: str
+ 83     initializer: Dict
+ 84 
+ 85 
+ 86 class ParsedMessagePayload(TypedDict, total=False):
+ 87     id: int
+ 88     guid: str
+ 89     method: str
+ 90     params: ParsedMessageParams
+ 91     result: Any
+ 92     error: ErrorPayload"," 70     value: Optional[Any]
+ 74     url: Optional[str]
+ 75     method: Optional[str]
+ 76     headers: Optional[List[NameValue]]
+ 77     postData: Optional[str]
+ 96     request: Optional[Any]
+102     newDocument: Optional[Document]
+103     error: Optional[str]
+177 def patch_error_message(message: Optional[str]) -> Optional[str]:
+190 def locals_to_params(args: Dict) -> Dict:
+190 def locals_to_params(args: Dict) -> Dict:
+209         times: Optional[int],
+222     def handle(self, route: ""Route"", request: ""Request"") -> Union[Coroutine, Any]:
+244 def make_dirs_for_file(path: Union[Path, str]) -> None:
+250 async def async_writefile(file: Union[str, Path], data: Union[str, bytes]) -> None:
+250 async def async_writefile(file: Union[str, Path], data: Union[str, bytes]) -> None:
+259 async def async_readfile(file: Union[str, Path]) -> bytes:","{'88', '90', '85', '84', '92', '89', '83', '91', '87', '81', '82', '80', '86'}","{'75', '259', '74', '222', '70', '244', '177', '190', '77', '76', '103', '96', '250', '102', '209'}"
+ef38d9916a46ee155d2a4ba156aff0275c60a7f3_526,pep_benchmark/PEP526,"**Idiom 526 Violations:**
+
+{""line"": ""221         # type: () -> tp.Text"", ""fix"": null}
+
+"," 95         self._element = element  # type: WebElement
+ 96         self._driver = driver  # type: EyesWebDriver
+ 99         self.position_provider = None  # type: Optional[SeleniumPositionProvider]
+100         self._original_overflow = None  # type: Optional[Text]",221         # type: () -> tp.Text,"{'95', '99', '100', '96'}",{'221'}
+a35fc58e8d48e6b0306595b3c3cdc5d79273a1aa_584,pep_benchmark/PEP584,"**Idiom 584 Violations:**
+
+{""line"": "" 42     def _update_summary(self, history_dict: Dict[str, Any]) -> bool:"", ""fix"": null}
+{""line"": "" 62     def _history_update(self, record: Record, history_dict: Dict) -> None:"", ""fix"": null}
+{""line"": "" 81         run_start = record.request.run_start"", ""fix"": null}
+{""line"": "" 99             run_meta = meta.Meta(settings=self._settings, interface=self._interface)"", ""fix"": null}
+{""line"": ""102         for item in summary.update:"", ""fix"": null}
+{""line"": ""140             target = self._consolidated_summary"", ""fix"": null}
+{""line"": ""159             target = self._consolidated_summary"", ""fix"": null}
+{""line"": ""162         for item in summary.remove:"", ""fix"": null}
+{""line"": ""171     def handle_history(self, record: Record) -> None:"", ""fix"": null}
+{""line"": ""198                 self._sampled_history.setdefault(k, sample.UniformSampleAccumulator())"", ""fix"": null}
+{""line"": ""202         updated = self._update_summary(history_dict)"", ""fix"": null}
+{""line"": ""203         if updated:"", ""fix"": null}
+{""line"": ""210         best_key: Optional[Tuple[str, ...]] = None"", ""fix"": null}
+{""line"": ""219             best_key = tuple(kl + [\""best\""])"", ""fix"": null}
+{""line"": ""228             best_key = tuple(kl + [\""best\""])"", ""fix"": null}
+{""line"": ""238         if s.min or best_key and not goal_max:"", ""fix"": null}
+{""line"": ""241             best_key = tuple(kl + [\""min\""])"", ""fix"": null}
+{""line"": ""248             best_key = tuple(kl + [\""min\""])"", ""fix"": null}
+{""line"": ""252         if s.mean:"", ""fix"": null}
+{""line"": ""257             num_key = tuple(kl + [\""num\""])"", ""fix"": null}
+{""line"": ""259             self._metric_track[num_key] = num"", ""fix"": null}
+{""line"": ""262         return updated"", ""fix"": null}
+{""line"": ""267         if isinstance(v, dict) and not handler_util.metric_is_wandb_dict(v):"", ""fix"": null}
+{""line"": ""299         for k, v in six.iteritems(history_dict):"", ""fix"": null}
+{""line"": ""308             updated = False"", ""fix"": null}
+{""line"": ""310                 if self._update_summary_list(kl=kl[:] + [nk], v=nv, d=d):"", ""fix"": null}
+{""line"": ""322         for k, v in six.iteritems(history_dict):"", ""fix"": null}
+{""line"": ""324                 updated = True"", ""fix"": null}
+{""line"": ""327     def _history_assign_step(self, record: Record, history_dict: Dict) -> None:"", ""fix"": null}
+{""line"": ""328         has_step = record.history.HasField(\""step\"")"", ""fix"": null}
+{""line"": ""337             history_dict[\""_step\""] = self._step"", ""fix"": null}
+{""line"": ""340     def _history_define_metric("", ""fix"": null}
+{""line"": ""346         if hkey.startswith(\""_\""):"", ""fix"": null}
+{""line"": ""348         for k, mglob in six.iteritems(self._metric_globs):"", ""fix"": null}
+{""line"": ""351                     m = wandb_internal_pb2.MetricRecord()"", ""fix"": null}
+{""line"": ""355                     m.name = hkey"", ""fix"": null}
+{""line"": ""382     def handle_summary(self, record: Record) -> None:"", ""fix"": null}
+{""line"": ""428             if len(item.nested_key) > 0:"", ""fix"": null}
+{""line"": ""440             target = self._consolidated_summary"", ""fix"": null}
+{""line"": ""459             for prop in key[:-1]:"", ""fix"": null}
+{""line"": ""463             key = tuple(item.nested_key)"", ""fix"": null}
+{""line"": ""469         if self._tb_watcher:"", ""fix"": null}
+{""line"": ""550             self._metric_defines.setdefault("", ""fix"": null}
+{""line"": ""554             self._metric_defines.setdefault("", ""fix"": null}
+{""line"": ""562             m = wandb_internal_pb2.MetricRecord(name=metric.step_metric)"", ""fix"": null}
+{""line"": ""568             self._dispatch_record(record)"", ""fix"": null}
+{""line"": ""572         metric = record.metric"", ""fix"": null}
+{""line"": ""574             self._metric_globs.setdefault("", ""fix"": null}
+{""line"": ""578             self._metric_globs.setdefault("", ""fix"": null}
+{""line"": ""614         for key, sampled in six.iteritems(self._sampled_history):"", ""fix"": null}
+{""line"": ""618             if all(isinstance(i, numbers.Integral) for i in values):"", ""fix"": null}
+{""line"": ""620             elif all(isinstance(i, numbers.Real) for i in values):"", ""fix"": null}
+
+","319             self._consolidated_summary.update(history_dict)
+408             history_dict.update(update_history)"," 42     def _update_summary(self, history_dict: Dict[str, Any]) -> bool:
+ 62     def _history_update(self, record: Record, history_dict: Dict) -> None:
+ 81         run_start = record.request.run_start
+ 99             run_meta = meta.Meta(settings=self._settings, interface=self._interface)
+102         for item in summary.update:
+140             target = self._consolidated_summary
+159             target = self._consolidated_summary
+162         for item in summary.remove:
+171     def handle_history(self, record: Record) -> None:
+198                 self._sampled_history.setdefault(k, sample.UniformSampleAccumulator())
+202         updated = self._update_summary(history_dict)
+203         if updated:
+210         best_key: Optional[Tuple[str, ...]] = None
+219             best_key = tuple(kl + [""best""])
+228             best_key = tuple(kl + [""best""])
+238         if s.min or best_key and not goal_max:
+241             best_key = tuple(kl + [""min""])
+248             best_key = tuple(kl + [""min""])
+252         if s.mean:
+257             num_key = tuple(kl + [""num""])
+259             self._metric_track[num_key] = num
+262         return updated
+267         if isinstance(v, dict) and not handler_util.metric_is_wandb_dict(v):
+299         for k, v in six.iteritems(history_dict):
+308             updated = False
+310                 if self._update_summary_list(kl=kl[:] + [nk], v=nv, d=d):
+322         for k, v in six.iteritems(history_dict):
+324                 updated = True
+327     def _history_assign_step(self, record: Record, history_dict: Dict) -> None:
+328         has_step = record.history.HasField(""step"")
+337             history_dict[""_step""] = self._step
+340     def _history_define_metric(
+346         if hkey.startswith(""_""):
+348         for k, mglob in six.iteritems(self._metric_globs):
+351                     m = wandb_internal_pb2.MetricRecord()
+355                     m.name = hkey
+382     def handle_summary(self, record: Record) -> None:
+428             if len(item.nested_key) > 0:
+440             target = self._consolidated_summary
+459             for prop in key[:-1]:
+463             key = tuple(item.nested_key)
+469         if self._tb_watcher:
+550             self._metric_defines.setdefault(
+554             self._metric_defines.setdefault(
+562             m = wandb_internal_pb2.MetricRecord(name=metric.step_metric)
+568             self._dispatch_record(record)
+572         metric = record.metric
+574             self._metric_globs.setdefault(
+578             self._metric_globs.setdefault(
+614         for key, sampled in six.iteritems(self._sampled_history):
+618             if all(isinstance(i, numbers.Integral) for i in values):
+620             elif all(isinstance(i, numbers.Real) for i in values):","{'408', '319'}","{'140', '324', '469', '554', '262', '572', '81', '618', '162', '102', '459', '159', '322', '340', '428', '578', '252', '568', '238', '562', '327', '241', '614', '210', '248', '171', '328', '219', '351', '198', '203', '355', '267', '99', '382', '550', '308', '257', '42', '346', '337', '574', '299', '348', '440', '202', '463', '620', '259', '310', '228', '62'}"
+94e8678eb13ad08d2e29aaba4882f7e8be6a1472_567,pep_benchmark/PEP567,"**Idiom 567 Violations:**
+
+{""line"": "" 24 class BottleException(Exception):"", ""fix"": null}
+
+","1667     ls = threading.local()
+2916         if not isinstance(threading.local(), local.local):
+3306         self.context = threading.local()
+3736 local = threading.local()", 24 class BottleException(Exception):,"{'3736', '1667', '3306', '2916'}",{'24'}
+ae57ca3ec61c32f4def59f3d41a5a8963ab92a16_614,pep_benchmark/PEP614,"**Idiom 614 Violations:**
+
+{""line"": "" 57     # skip dtype not supported on GPU"", ""fix"": null}
+{""line"": ""174     if mltest.is_gpu_device_name(ml.device) and not dtype in gpu_dtypes:"", ""fix"": null}
+{""line"": ""263     if mltest.is_gpu_device_name(ml.device) and not dtype in gpu_dtypes:"", ""fix"": null}
+
+"," 38 dtypes = pytest.mark.parametrize('dtype', [np.float32, np.float64])
+ 44 @dtypes
+162 @dtypes
+248 @dtypes"," 57     # skip dtype not supported on GPU
+174     if mltest.is_gpu_device_name(ml.device) and not dtype in gpu_dtypes:
+263     if mltest.is_gpu_device_name(ml.device) and not dtype in gpu_dtypes:","{'44', '248', '38', '162'}","{'174', '263', '57'}"
+f58f6c1f2d54c143b3cd04eee6c9a630ac363b14_567,pep_benchmark/PEP567,"**Idiom 567 Violations:**
+
+{""line"": "" 22 _local = threading.local()"", ""fix"": null}
+{""line"": "" 57     name = func.__name__"", ""fix"": null}
+{""line"": "" 58     doc = func.__doc__ or ''"", ""fix"": null}
+{""line"": "" 62         indent = [len(list(itertools.takewhile(str.isspace, line)))"", ""fix"": null}
+{""line"": "" 57     name = func.__name__"", ""fix"": null}
+{""line"": "" 62         indent = [len(list(itertools.takewhile(str.isspace, line)))"", ""fix"": null}
+
+",222 _local = threading.local()," 22 _local = threading.local()
+ 57     name = func.__name__
+ 58     doc = func.__doc__ or ''
+ 62         indent = [len(list(itertools.takewhile(str.isspace, line)))
+ 57     name = func.__name__
+ 62         indent = [len(list(itertools.takewhile(str.isspace, line)))",{'222'},"{'58', '62', '57', '22'}"
+7259a6daa5ad32d000e0e60e1142ebaeb71de9cd_593,pep_benchmark/PEP593,"**Idiom 593 Violations:**
+
+{""line"": "" 10 def sign_shape(pts: ndarray) -> float64:"", ""fix"": null}
+{""line"": "" 17 def area(pts: ndarray) -> float64:"", ""fix"": null}
+{""line"": "" 45 def remove_flat_angles(points: ndarray) -> ndarray:"", ""fix"": null}
+{""line"": "" 66 def remove_identicals("", ""fix"": null}
+{""line"": "" 77 def curvature(points: ndarray, t: ndarray) -> ndarray:"", ""fix"": null}
+{""line"": ""120 def path_length(points: ndarray) -> float64:"", ""fix"": null}
+{""line"": ""150 def angles_rad(pts: ndarray) -> ndarray:"", ""fix"": null}
+{""line"": ""156 def angles_deg(pts: ndarray) -> ndarray:"", ""fix"": null}
+{""line"": ""165     spike_length: Union[float64, int, float] = 0,"", ""fix"": null}
+
+",169 ) -> ndarray:," 10 def sign_shape(pts: ndarray) -> float64:
+ 17 def area(pts: ndarray) -> float64:
+ 45 def remove_flat_angles(points: ndarray) -> ndarray:
+ 66 def remove_identicals(
+ 77 def curvature(points: ndarray, t: ndarray) -> ndarray:
+120 def path_length(points: ndarray) -> float64:
+150 def angles_rad(pts: ndarray) -> ndarray:
+156 def angles_deg(pts: ndarray) -> ndarray:
+165     spike_length: Union[float64, int, float] = 0,",{'169'},"{'150', '156', '17', '66', '165', '45', '10', '77', '120'}"
+763eb611fc29cf105ba11ec6b8c8c76850de42a2_506,pep_benchmark/PEP506,"**Idiom 506 Violations:**
+
+{""line"": ""  3 def generate_number(difficulty):"", ""fix"": null}
+{""line"": ""  7 def get_guess_from_user(difficulty):"", ""fix"": null}
+
+","  5     return (random.randrange(1, difficulty+1, 1))","  3 def generate_number(difficulty):
+  7 def get_guess_from_user(difficulty):",{'5'},"{'7', '3'}"
+a53236a1327ca58c7e3ee57969432b6a8433982b_526,pep_benchmark/PEP526,"**Idiom 526 Violations:**
+
+{""line"": "" 41 Address = str"", ""fix"": null}
+{""line"": "" 64             \""message_id\"","", ""fix"": null}
+{""line"": ""164     def _body(self) -> Dict:"", ""fix"": null}
+{""line"": ""175     def _body(self, body: Dict) -> None:"", ""fix"": null}
+{""line"": ""186     def dialogue_reference(self) -> Tuple[str, str]:"", ""fix"": null}
+{""line"": ""350     def serializer(self) -> Type[Serializer]:"", ""fix"": null}
+
+"," 47     protocol_id = None  # type: PublicId
+ 48     protocol_specification_id = None  # type: PublicId
+ 49     serializer = None  # type: Type[""Serializer""]"," 41 Address = str
+ 64             ""message_id"",
+164     def _body(self) -> Dict:
+175     def _body(self, body: Dict) -> None:
+186     def dialogue_reference(self) -> Tuple[str, str]:
+350     def serializer(self) -> Type[Serializer]:","{'49', '48', '47'}","{'164', '41', '64', '350', '186', '175'}"
+6d1c38c962bce9fb96e01c990c0ca37799f8ecdf_614,pep_benchmark/PEP614,"**Idiom 614 Violations:**
+
+{""line"": "" 99 @pytest.mark.parametrize('template', list_templates)"", ""fix"": null}
+
+"," 15 latest_param = pytest.mark.skipif(LooseVersion(param.__version__) < '1.10.0a4',
+ 16                                   reason=""requires param>=1.10.0a4"")
+ 98 @latest_param"," 99 @pytest.mark.parametrize('template', list_templates)","{'16', '98', '15'}",{'99'}
+8503b6e02d9d7832faf289ad41014228b8fce7b4_593,pep_benchmark/PEP593,"**Idiom 593 Violations:**
+
+{""line"": "" 26 PathOrStr = Union[str, Path]"", ""fix"": null}
+{""line"": "" 27 ListOfPathsOrStrs = Iterable[Union[str, Path]]"", ""fix"": null}
+
+","160     sources: ListOfPathsOrStrs,
+161     destination: PathOrStr = None,"," 26 PathOrStr = Union[str, Path]
+ 27 ListOfPathsOrStrs = Iterable[Union[str, Path]]","{'160', '161'}","{'27', '26'}"
+caaa453007d1b589f7d8dbcbc1bca02f4a9b55ab_487,pep_benchmark/PEP487,"**Idiom 487 Violations:**
+
+{""line"": "" 53 class __metaclass__(type):"", ""fix"": null}
+
+","353     class __metaclass__(type):
+354         def __new__(cls, name, bases, attrs):
+355             # First, determine the method defined for this very class. We
+356             # need to pop the ``method`` attribute from ``attrs``, so that we
+357             # create the class without the argument; allowing us then to look
+358             # at a ``method`` attribute that parents may have defined.
+359             #
+360             # method defaults to 'output' if argv is set, to ""implement
+361             # no default method"" without an argv.
+362             if not 'method' in attrs and 'argv' in attrs:
+363                 chosen = 'output'
+364             else:
+365                 chosen = attrs.pop('method', False)
+366 
+367             # Create the class first, since this helps us look at any
+368             # method attributes defined in the parent hierarchy.
+369             klass = type.__new__(cls, name, bases, attrs)
+370             parent_method = getattr(klass, 'method', None)
+371 
+372             # Assign the method argument that we initially popped again.
+373             klass.method = chosen
+374 
+375             try:
+376                 # Don't do anything for this class itself
+377                 ExternalTool
+378             except NameError:
+379                 return klass
+380 
+381             # If the class already has a method attribute, this indicates
+382             # that a parent class already dealt with it and enabled/disabled
+383             # the methods, and we won't again.
+384             if parent_method is not None:
+385                 return klass
+386 
+387             methods = ('output', 'input', 'open')
+388 
+389             if chosen is not None:
+390                 assert not chosen or chosen in methods, \
+391                     '%s not a supported filter method' % chosen
+392                 # Disable those methods not chosen.
+393                 for m in methods:", 53 class __metaclass__(type):,"{'366', '371', '358', '361', '374', '379', '380', '393', '389', '373', '357', '363', '378', '364', '381', '388', '390', '369', '370', '354', '367', '353', '365', '387', '362', '359', '386', '355', '360', '383', '375', '384', '382', '385', '372', '356', '392', '376', '377', '368', '391'}",{'53'}
+54c2c7f3ffcb4e4ed90513a1268dfb34424e6ee1_616,pep_benchmark/PEP616,"**Idiom 616 Violations:**
+
+{""line"": "" 84                     chrom = chrom[3:]"", ""fix"": null}
+
+","114         return ext_bed_ints
+115 ", 84                     chrom = chrom[3:],"{'115', '114'}",{'84'}
+a411d3953f6f6fef482b2a58eccc1c4caa04d6a0_616,pep_benchmark/PEP616,"**Idiom 616 Violations:**
+
+{""line"": "" 76 "", ""fix"": null}
+
+","275         if dkimhdr.startswith('DKIM-Signature: '):
+276             dkimhdr = dkimhdr[16:]", 76 ,"{'276', '275'}",{'76'}
+c1463e181d9ca6653273bc9c4ab0a17b1a74be37_526,pep_benchmark/PEP526,"**Idiom 526 Violations:**
+
+{""line"": "" 219     FAILED = 'Enrichment failed'"", ""fix"": null}
+{""line"": "" 190     IN_PROGRESS = 'Enrichment is in progress'"", ""fix"": null}
+{""line"": "" 191     SUCCESSFUL = 'Enrichment successfully handled'"", ""fix"": null}
+{""line"": "" 192     HANDLED = (EXCEEDED_TIMEOUT, FAILED, SUCCESSFUL)"", ""fix"": null}
+
+","522     raw_list = []  # type: list
+884     incidents = []  # type: list
+1387     result = {}  # type: Dict[str, str]
+1585     kwargs_normalsearch = {
+1586         ""earliest_time"": time_str,
+1587         ""exec_mode"": ""blocking""  # A blocking search runs synchronously, and returns a job when it's finished.
+1588     }  # type: Dict[str,Any]
+1701     total_parsed_results = []  # type: List[Dict[str,Any]]
+1702     dbot_scores = []  # type: List[Dict[str,Any]]
+279         incident = {}  # type: Dict[str,Any]"," 219     FAILED = 'Enrichment failed'
+ 190     IN_PROGRESS = 'Enrichment is in progress'
+ 191     SUCCESSFUL = 'Enrichment successfully handled'
+ 192     HANDLED = (EXCEEDED_TIMEOUT, FAILED, SUCCESSFUL)","{'1702', '1588', '1701', '279', '1585', '1587', '884', '1586', '522', '1387'}","{'191', '192', '219', '190'}"
+7aa1d8dd9d57294f1a609acef3640fd396fb9900_593,pep_benchmark/PEP593,"**Idiom 593 Violations:**
+
+{""line"": "" 48     def load(self, mapping=None, keys: List[str] = None, exclude: List[str] = None):"", ""fix"": null}
+{""line"": "" 48     def load(self, mapping=None, keys: List[str] = None, exclude: List[str] = None):"", ""fix"": null}
+{""line"": "" 49     def scrape(self, mapping=None, keys: List[str] = None, exclude: List[str] = None) -> None:"", ""fix"": null}
+{""line"": "" 49     def scrape(self, mapping=None, keys: List[str] = None, exclude: List[str] = None) -> None:"", ""fix"": null}
+{""line"": ""102     def get_recent_comments(self) -> List[Comment]:"", ""fix"": null}
+
+","154     def _parse_hashtags(self, caption: str) -> List[str]:
+154     def _parse_hashtags(self, caption: str) -> List[str]:"," 48     def load(self, mapping=None, keys: List[str] = None, exclude: List[str] = None):
+ 48     def load(self, mapping=None, keys: List[str] = None, exclude: List[str] = None):
+ 49     def scrape(self, mapping=None, keys: List[str] = None, exclude: List[str] = None) -> None:
+ 49     def scrape(self, mapping=None, keys: List[str] = None, exclude: List[str] = None) -> None:
+102     def get_recent_comments(self) -> List[Comment]:",{'154'},"{'49', '48', '102'}"
+4472dc064fdd0a206239a7944df5fb56b83f2647_525,pep_benchmark/PEP525,"**Idiom 525 Violations:**
+
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 99     def test_awaits_asserts_with_any(self):"", ""fix"": null}
+{""line"": "" 9","671         def __aiter__(self): pass
+672 
+673         async def __anext__(self): pass"," 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):
+ 99     def test_awaits_asserts_with_any(self):","{'672', '671', '673'}",{'99'}
+da46dbf12237b84f60bee5af7194298d82426bf6_498,pep_benchmark/PEP498,"**Idiom 498 Violations:**
+
+{""line"": "" 99   def input_fn_builder(features, seq_length, is_training, drop_remainder):"", ""fix"": null}
+{""line"": ""1040 def convert_examples_to_features(examples, label_list, max_seq_length,"", ""fix"": null}
+
+","217       guid = ""%s-%s"" % (set_type, i)
+259       guid = ""%s-%s"" % (set_type, i)
+301         guid = ""%s-%s"" % (set_type, i)
+648     tf.logging.info(""guid: %s"" % (example.guid))
+649     tf.logging.info(""tokens: %s"" % "" "".join(
+651     tf.logging.info(""input_ids: %s"" % "" "".join([str(x) for x in input_ids]))
+652     tf.logging.info(""input_mask: %s"" % "" "".join([str(x) for x in input_mask]))
+653     tf.logging.info(""segment_ids: %s"" % "" "".join([str(x) for x in segment_ids]))
+654     tf.logging.info(""label: %s (id = %d)"" % (example.label, label_id))
+673       tf.logging.info(""Writing example %d of %d"" % (ex_index, len(examples)))
+839       tf.logging.info(""  name = %s, shape = %s"" % (name, features[name].shape))
+1047       tf.logging.info(""Writing example %d of %d"" % (ex_index, len(examples)))"," 99   def input_fn_builder(features, seq_length, is_training, drop_remainder):
+1040 def convert_examples_to_features(examples, label_list, max_seq_length,","{'1047', '649', '648', '217', '673', '652', '653', '301', '839', '651', '654', '259'}","{'99', '1040'}"
+fc402ae81366952acb346097c3df72e9c0ad4921_614,pep_benchmark/PEP614,"**Idiom 614 Violations:**
+
+{""line"": "" 3692             single_obj_list = [collectives_object_test_list[0]] * self.world_size"", ""fix"": null}
+{""line"": "" 3696                 self.assertNotEqual(objects, collectives_object_test_list)"", ""fix"": null}
+{""line"": "" 3726                 # Note that the model can have different shape buffers if we pass"", ""fix"": null}
+{""line"": "" 3728                 model.fc2.register_buffer("", ""fix"": null}
+{""line"": "" 3739                     f\""{model_fc2_name}.{param_name}\"""", ""fix"": null}
+{""line"": "" 3743                     f\""{model_fc2_name}.{buf_name}\"""", ""fix"": null}
+{""line"": "" 3749                     model, proxy_param_names + proxy_buffer_names"", ""fix"": null}
+{""line"": "" 3751                 ddp = torch.nn.parallel.DistributedDataParallel("", ""fix"": null}
+{""line"": "" 3759                 ddp.module.fc2 = nn.Linear(1, 1, bias=False).to(device_id)"", ""fix"": null}
+{""line"": "" 3761                 local_model = copy.deepcopy(ddp.module).cuda(self.rank)"", ""fix"": null}
+{""line"": "" 3763                 inp = torch.ones(1, dtype=torch.float).to(device_id) * (self.rank + 1)"", ""fix"": null}
+{""line"": "" 3826             class ToyModel(nn.Module):"", ""fix"": null}
+{""line"": "" 3842             model = ToyModel().to(torch.cuda.current_device())"", ""fix"": null}
+{""line"": "" 3843             ddp_model = torch.nn.parallel.DistributedDataParallel("", ""fix"": null}
+{""line"": "" 3905                 def __init__(_self):  # noqa: B902"", ""fix"": null}
+{""line"": "" 3909                 def forward(_self, x, expected_type):  # noqa: B902"", ""fix"": null}
+{""line"": "" 3920             def train_iter(inp, input_type):"", ""fix"": null}
+{""line"": "" 3942             a = torch.rand(batch, dim)"", ""fix"": null}
+{""line"": "" 3943             b = torch.rand(batch, dim)"", ""fix"": null}
+{""line"": "" 3963             batch = 5"", ""fix"": null}
+{""line"": "" 3964             dim = 10"", ""fix"": null}
+{""line"": "" 3966             a = torch.rand(batch, dim, device=self.rank)"", ""fix"": null}
+{""line"": "" 3967             b = torch.rand(batch, dim, device=self.rank)"", ""fix"": null}
+{""line"": "" 3972                     _self.lin = nn.Linear(10, 1)"", ""fix"": null}
+{""line"": "" 3974                 def forward(_self, input, expected_type):  # noqa"", ""fix"": null}
+
+"," 78 skipIfNoTorchVision = unittest.skipIf(not HAS_TORCHVISION, ""no torchvision"")
+2919         @skipIfNoTorchVision"," 3692             single_obj_list = [collectives_object_test_list[0]] * self.world_size
+ 3696                 self.assertNotEqual(objects, collectives_object_test_list)
+ 3726                 # Note that the model can have different shape buffers if we pass
+ 3728                 model.fc2.register_buffer(
+ 3739                     f""{model_fc2_name}.{param_name}""
+ 3743                     f""{model_fc2_name}.{buf_name}""
+ 3749                     model, proxy_param_names + proxy_buffer_names
+ 3751                 ddp = torch.nn.parallel.DistributedDataParallel(
+ 3759                 ddp.module.fc2 = nn.Linear(1, 1, bias=False).to(device_id)
+ 3761                 local_model = copy.deepcopy(ddp.module).cuda(self.rank)
+ 3763                 inp = torch.ones(1, dtype=torch.float).to(device_id) * (self.rank + 1)
+ 3826             class ToyModel(nn.Module):
+ 3842             model = ToyModel().to(torch.cuda.current_device())
+ 3843             ddp_model = torch.nn.parallel.DistributedDataParallel(
+ 3905                 def __init__(_self):  # noqa: B902
+ 3909                 def forward(_self, x, expected_type):  # noqa: B902
+ 3920             def train_iter(inp, input_type):
+ 3942             a = torch.rand(batch, dim)
+ 3943             b = torch.rand(batch, dim)
+ 3963             batch = 5
+ 3964             dim = 10
+ 3966             a = torch.rand(batch, dim, device=self.rank)
+ 3967             b = torch.rand(batch, dim, device=self.rank)
+ 3972                     _self.lin = nn.Linear(10, 1)
+ 3974                 def forward(_self, input, expected_type):  # noqa","{'2919', '78'}","{'3843', '3759', '3964', '3743', '3972', '3696', '3761', '3763', '3967', '3739', '3726', '3842', '3905', '3826', '3692', '3966', '3943', '3728', '3909', '3942', '3920', '3974', '3751', '3963', '3749'}"
+a1f5c30475148e584ad26cc88a8a538ff31162ca_526,pep_benchmark/PEP526,"**Idiom 526 Violations:**
+
+{""line"": "" 19     for i in range(len(preds)):"", ""fix"": null}
+{""line"": "" 20         if len(preds[i]['rois']) == 0:"", ""fix"": null}
+{""line"": "" 34     old_h, old_w, c = image.shape"", ""fix"": null}
+{""line"": "" 35     if old_w > old_h:"", ""fix"": null}
+{""line"": "" 39         new_w = width"", ""fix"": null}
+{""line"": "" 40         new_h = int(width / old_w * old_h)"", ""fix"": null}
+{""line"": "" 48             image = cv2.resize(image, (new_w, new_h))"", ""fix"": null}
+{""line"": "" 49         else:"", ""fix"": null}
+{""line"": "" 52     padding_h = height - new_h"", ""fix"": null}
+{""line"": "" 53     padding_w = width - new_w"", ""fix"": null}
+{""line"": "" 66 def preprocess(*image_path, max_size=512, mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)):"", ""fix"": null}
+{""line"": "" 66 def preprocess(*image_path, max_size=512, mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)):"", ""fix"": null}
+{""line"": "" 77 def preprocess_video(*frame_from_video, max_size=512, mean=(0.406, 0.456, 0.485), std=(0.225, 0.224, 0.229)):"", ""fix"": null}
+{""line"": "" 77 def preprocess_video(*frame_from_video, max_size=512, mean=(0.406, 0.456, 0.485), std=(0.225, 0.224, 0.229)):"", ""fix"": null}
+{""line"": "" 88 def postprocess(x, anchors, regression, classification, regressBoxes, clipBoxes, threshold, iou_threshold):"", ""fix"": null}
+{""line"": "" 88 def postprocess(x, anchors, regression, classification, regressBoxes, clipBoxes, threshold, iou_threshold):"", ""fix"": null}
+{""line"": ""130     for i in range(len(imgs)):"", ""fix"": null}
+{""line"": ""132             continue"", ""fix"": null}
+{""line"": ""137             (x1, y1, x2, y2) = preds[i]['rois'][j].astype(np.int)"", ""fix"": null}
+{""line"": ""141             obj = obj_list[preds[i]['class_ids'][j]]"", ""fix"": null}
+{""line"": ""149     weights_path = sorted(weights_path,"", ""fix"": null}
+{""line"": ""213     return weights_path"", ""fix"": null}
+{""line"": ""230                 else:"", ""fix"": null}
+{""line"": ""231                     module.bias.data.zero_()"", ""fix"": null}
+{""line"": ""240     fan_in, fan_out = _calculate_fan_in_and_fan_out(tensor)"", ""fix"": null}
+{""line"": ""241     std = math.sqrt(gain / float(fan_in))"", ""fix"": null}
+{""line"": ""243     return _no_grad_normal_(tensor, 0., std)"", ""fix"": null}
+{""line"": ""245 STANDARD_COLORS = ["", ""fix"": null}
+{""line"": ""273 def from_colorname_to_bgr(color):"", ""fix"": null}
+{""line"": ""279 def standard_to_bgr(list_color_name):"", ""fix"": null}
+{""line"": ""282         standard.append(from_colorname_to_bgr(list_color_name[i]))"", ""fix"": null}
+{""line"": ""287     index = int(obj_list.index(label))"", ""fix"": null}
+{""line"": ""292     tl = line_thickness or int(round(0.001 * max(img.shape[0:2])))  # line thickness"", ""fix"": null}
+{""line"": ""298         s_size = cv2.getTextSize(str('{:.0%}'.format(score)), 0, fontScale=float(tl) / 3, thickness=tf)[0]"", ""fix"": null}
+{""line"": ""299         t_size = cv2.getTextSize(label, 0, fontScale=float(tl) / 3, thickness=tf)[0]"", ""fix"": null}
+{""line"": ""300         c2 = c1[0] + t_size[0] + s_size[0] + 15, c1[1] - t_size[1] - 3"", ""fix"": null}
+{""line"": ""302         cv2.putText(img, '{}: {:.0%}'.format(label, score), (c1[0], c1[1] - 2), 0, float(tl) / 3, [0, 0, 0],"", ""fix"": null}
+{""line"": ""304                 cv2.putText(img, '{}: {:.0%}'.format(label, score), (c1[0], c1[1] - 2), 0, float(tl) / 3, [0, 0, 0],"", ""fix"": null}
+{""line"": ""310     if s not in {'False', 'True'}:"", ""fix"": null}
+
+","235     # type: (Tensor, float) -> Tensor"," 19     for i in range(len(preds)):
+ 20         if len(preds[i]['rois']) == 0:
+ 34     old_h, old_w, c = image.shape
+ 35     if old_w > old_h:
+ 39         new_w = width
+ 40         new_h = int(width / old_w * old_h)
+ 48             image = cv2.resize(image, (new_w, new_h))
+ 49         else:
+ 52     padding_h = height - new_h
+ 53     padding_w = width - new_w
+ 66 def preprocess(*image_path, max_size=512, mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)):
+ 66 def preprocess(*image_path, max_size=512, mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)):
+ 77 def preprocess_video(*frame_from_video, max_size=512, mean=(0.406, 0.456, 0.485), std=(0.225, 0.224, 0.229)):
+ 77 def preprocess_video(*frame_from_video, max_size=512, mean=(0.406, 0.456, 0.485), std=(0.225, 0.224, 0.229)):
+ 88 def postprocess(x, anchors, regression, classification, regressBoxes, clipBoxes, threshold, iou_threshold):
+ 88 def postprocess(x, anchors, regression, classification, regressBoxes, clipBoxes, threshold, iou_threshold):
+130     for i in range(len(imgs)):
+132             continue
+137             (x1, y1, x2, y2) = preds[i]['rois'][j].astype(np.int)
+141             obj = obj_list[preds[i]['class_ids'][j]]
+149     weights_path = sorted(weights_path,
+213     return weights_path
+230                 else:
+231                     module.bias.data.zero_()
+240     fan_in, fan_out = _calculate_fan_in_and_fan_out(tensor)
+241     std = math.sqrt(gain / float(fan_in))
+243     return _no_grad_normal_(tensor, 0., std)
+245 STANDARD_COLORS = [
+273 def from_colorname_to_bgr(color):
+279 def standard_to_bgr(list_color_name):
+282         standard.append(from_colorname_to_bgr(list_color_name[i]))
+287     index = int(obj_list.index(label))
+292     tl = line_thickness or int(round(0.001 * max(img.shape[0:2])))  # line thickness
+298         s_size = cv2.getTextSize(str('{:.0%}'.format(score)), 0, fontScale=float(tl) / 3, thickness=tf)[0]
+299         t_size = cv2.getTextSize(label, 0, fontScale=float(tl) / 3, thickness=tf)[0]
+300         c2 = c1[0] + t_size[0] + s_size[0] + 15, c1[1] - t_size[1] - 3
+302         cv2.putText(img, '{}: {:.0%}'.format(label, score), (c1[0], c1[1] - 2), 0, float(tl) / 3, [0, 0, 0],
+304                 cv2.putText(img, '{}: {:.0%}'.format(label, score), (c1[0], c1[1] - 2), 0, float(tl) / 3, [0, 0, 0],
+310     if s not in {'False', 'True'}:",{'235'},"{'292', '141', '132', '287', '19', '52', '243', '304', '53', '130', '48', '66', '300', '35', '40', '213', '241', '149', '49', '273', '302', '39', '231', '245', '88', '20', '279', '282', '299', '77', '240', '298', '34', '230', '310', '137'}"
+359a28c88ad52d35b7b48ffb1acf6fd23c7d0217_526,pep_benchmark/PEP526,"**Idiom 526 Violations:**
+
+{""line"": ""1152     ) -> Tuple[Set[storage.Blob], Set[storage.Blob], Set[storage.Blob]]:"", ""fix"": null}
+{""line"": ""1152     ) -> Tuple[Set[storage.Blob], Set[storage.Blob], Set[storage.Blob]]:"", ""fix"": null}
+{""line"": ""1152     ) -> Tuple[Set[storage.Blob], Set[storage.Blob], Set[storage.Blob]]:"", ""fix"": null}
+
+","122     _conn = None  # type: Optional[storage.Client]
+1172         to_copy_blobs = {source_names_index[a] for a in to_copy}  # type: Set[storage.Blob]
+1173         to_delete_blobs = {destination_names_index[a] for a in to_delete}  # type: Set[storage.Blob]
+1176         to_rewrite_blobs = set()  # type: Set[storage.Blob]","1152     ) -> Tuple[Set[storage.Blob], Set[storage.Blob], Set[storage.Blob]]:
+1152     ) -> Tuple[Set[storage.Blob], Set[storage.Blob], Set[storage.Blob]]:
+1152     ) -> Tuple[Set[storage.Blob], Set[storage.Blob], Set[storage.Blob]]:","{'1173', '122', '1172', '1176'}",{'1152'}
+5ba3d71f031f2528eb944ce455051ce4a21a7ba5_487,pep_benchmark/PEP487,"**Idiom 487 Violations:**
+
+{""line"": "" 36     def __new__(cls, name, bases, namespace, no_struct_members=False, **kwds):"", ""fix"": null}
+
+"," 35 class StructMeta(type):
+ 47 class Struct3(metaclass=StructMeta, no_struct_members=True):"," 36     def __new__(cls, name, bases, namespace, no_struct_members=False, **kwds):","{'35', '47'}",{'36'}
+75dd18a9f659149830a1213c1aa2f69044258dc9_614,pep_benchmark/PEP614,"**Idiom 614 Violations:**
+
+{""line"": "" 24 class MOUSEINPUT(ctypes.Structure):"", ""fix"": null}
+{""line"": "" 73 class KEYBDINPUT(ctypes.Structure):"", ""fix"": null}
+{""line"": "" 89 class HARDWAREINPUT(ctypes.Structure):"", ""fix"": null}
+{""line"": "" 99 class INPUT_union(ctypes.Union):"", ""fix"": null}
+{""line"": ""108 class INPUT(ctypes.Structure):"", ""fix"": null}
+{""line"": ""121 LPINPUT = ctypes.POINTER(INPUT)"", ""fix"": null}
+{""line"": ""137 class MessageLoop(object):"", ""fix"": null}
+{""line"": ""143     _LPMSG = ctypes.POINTER(wintypes.MSG)"", ""fix"": null}
+{""line"": ""172     def __iter__(self):"", ""fix"": null}
+{""line"": ""195     def stop(self):"", ""fix"": null}
+{""line"": ""219     def post(self, msg, wparam, lparam):"", ""fix"": null}
+{""line"": ""266     def _handler(self, code, msg, lpdata):"", ""fix"": null}
+{""line"": ""313 class KeyTranslator(object):"", ""fix"": null}
+{""line"": ""345     _MAPVK_VK_TO_VSC = 0"", ""fix"": null}
+{""line"": ""346     _MAPVK_VK_TO_CHAR = 2"", ""fix"": null}
+{""line"": ""393     def _handle(self, code, msg, lpdata):"", ""fix"": null}
+{""line"": ""445     _MAPVK_VK_TO_VSC = 0"", ""fix"": null}
+{""line"": ""446     _MAPVK_VK_TO_CHAR = 2"", ""fix"": null}
+{""line"": ""594         out = (ctypes.wintypes.WCHAR * 5)()"", ""fix"": null}
+{""line"": ""633         out = (ctypes.wintypes.WCHAR * 5)()"", ""fix"": null}
+{""line"": ""639     def _thread_input(self):"", ""fix"": null}
+
+","237     _HOOKPROC = ctypes.WINFUNCTYPE(
+238         wintypes.LPARAM,
+239         ctypes.c_int32, wintypes.WPARAM, wintypes.LPARAM)
+295     @_HOOKPROC"," 24 class MOUSEINPUT(ctypes.Structure):
+ 73 class KEYBDINPUT(ctypes.Structure):
+ 89 class HARDWAREINPUT(ctypes.Structure):
+ 99 class INPUT_union(ctypes.Union):
+108 class INPUT(ctypes.Structure):
+121 LPINPUT = ctypes.POINTER(INPUT)
+137 class MessageLoop(object):
+143     _LPMSG = ctypes.POINTER(wintypes.MSG)
+172     def __iter__(self):
+195     def stop(self):
+219     def post(self, msg, wparam, lparam):
+266     def _handler(self, code, msg, lpdata):
+313 class KeyTranslator(object):
+345     _MAPVK_VK_TO_VSC = 0
+346     _MAPVK_VK_TO_CHAR = 2
+393     def _handle(self, code, msg, lpdata):
+445     _MAPVK_VK_TO_VSC = 0
+446     _MAPVK_VK_TO_CHAR = 2
+594         out = (ctypes.wintypes.WCHAR * 5)()
+633         out = (ctypes.wintypes.WCHAR * 5)()
+639     def _thread_input(self):","{'237', '238', '295', '239'}","{'393', '108', '24', '345', '195', '143', '266', '89', '121', '219', '445', '639', '99', '313', '172', '346', '73', '594', '446', '633', '137'}"
+facc9e42975c18da9e564f87a1e2145f5d6616c2_487,pep_benchmark/PEP487,"**Idiom 487 Violations:**
+
+{""line"": "" 48     def _XDR_OPERATION_TYPE(self) -> stellar_xdr.OperationType:"", ""fix"": null}
+
+", 14 class Operation(metaclass=ABCMeta):, 48     def _XDR_OPERATION_TYPE(self) -> stellar_xdr.OperationType:,{'14'},{'48'}
+23c681e160a0cbf136433a9f28f3f3e0d81d19e7_584,pep_benchmark/PEP584,"**Idiom 584 Violations:**
+
+{""line"": "" 573 def eval_mixarray(gt_dict, val_preds, cls_num, iou_thres=0.5, use_07_metric=False):"", ""fix"": null}
+
+","107             for cls, count in Counter(true_labels_list).items():
+108                 true_labels_dict[cls] += count
+204             for cls, count in Counter(true_labels_list).items():
+205                 true_labels_dict[cls] += count"," 573 def eval_mixarray(gt_dict, val_preds, cls_num, iou_thres=0.5, use_07_metric=False):","{'204', '205', '107', '108'}",{'573'}
+f00209d2c8adb18f187d9a07b18295d08eb5a998_614,pep_benchmark/PEP614,"**Idiom 614 Violations:**
+
+{""line"": "" 77   def testCreateFeedForwardCommonTowerNetworkWithFeatureColumns("", ""fix"": null}
+
+"," 32 parameters = parameterized.named_parameters(
+ 33     {
+ 34         'testcase_name': 'batch2feat4act3',
+ 35         'batch_size': 2,
+ 36         'feature_dim': 4,
+ 37         'num_actions': 3
+ 38     }, {
+ 39         'testcase_name': 'batch1feat7act9',
+ 40         'batch_size': 1,
+ 41         'feature_dim': 7,
+ 42         'num_actions': 9
+ 43     })
+ 49   @parameters
+ 63   @parameters", 77   def testCreateFeedForwardCommonTowerNetworkWithFeatureColumns(,"{'42', '36', '63', '49', '41', '34', '35', '40', '39', '33', '37', '32', '43', '38'}",{'77'}
+190d219199ef9bdadc90095b6dd5311302a03299_584,pep_benchmark/PEP584,"**Idiom 584 Violations:**
+
+{""line"": ""1146                     br'\\newpage'"", ""fix"": null}
+
+",1039         infoDict.update(metadata),1146                     br'\newpage',{'1039'},{'1146'}
+71c04b80dcacbb8ded9593cd570f0a35bb752890_593,pep_benchmark/PEP593,"**Idiom 593 Violations:**
+
+{""line"": "" 54 class AwairRequiredKeysMixin:"", ""fix"": null}
+{""line"": "" 61 class AwairSensorEntityDescription(SensorEntityDescription, AwairRequiredKeysMixin):"", ""fix"": null}
+
+","263     def extra_state_attributes(self) -> dict[str, Any]:"," 54 class AwairRequiredKeysMixin:
+ 61 class AwairSensorEntityDescription(SensorEntityDescription, AwairRequiredKeysMixin):",{'263'},"{'61', '54'}"
+d70aed126581db9394bea152e044ad72f2a6b429_584,pep_benchmark/PEP584,"**Idiom 584 Violations:**
+
+{""line"": ""1224         self.assertNotEquals(3, 5)"", ""fix"": null}
+{""line"": ""1225         self.assertEquals(3, 3)"", ""fix"": null}
+{""line"": ""1226         self.assertAlmostEquals(2.0, 2.0)"", ""fix"": null}
+{""line"": ""1227         self.assertNotAlmostEquals(3.0, 5.0)"", ""fix"": null}
+{""line"": ""1228         self.assert_(True)"", ""fix"": null}
+
+",761         d.update(c),"1224         self.assertNotEquals(3, 5)
+1225         self.assertEquals(3, 3)
+1226         self.assertAlmostEquals(2.0, 2.0)
+1227         self.assertNotAlmostEquals(3.0, 5.0)
+1228         self.assert_(True)",{'761'},"{'1225', '1227', '1224', '1226', '1228'}"
+3efae0f43f7ecea57e09428e351009f7349a8273_634,pep_benchmark/PEP634,"**Idiom 634 Violations:**
+
+{""line"": ""  9 elif chosen == 2:"", ""fix"": null}
+{""line"": "" 10     computer = 's'"", ""fix"": null}
+{""line"": "" 12 else:"", ""fix"": null}
+{""line"": "" 13     computer = 's'"", ""fix"": null}
+
+"," 17 if player == computer:
+ 18     print('DRAW!')
+ 19 
+ 20 elif player == 'r' and computer == 's':
+ 21     print('player wins!')
+ 22 
+ 23 elif player == 'r' and computer == 'p':
+ 24     print('player wins!')
+ 25 
+ 26 elif player == 'p' and computer == 'r':
+ 27     print('player wins!')
+ 28 
+ 29 elif player == 'p' and computer == 's':
+ 30     print('player wins!')","  9 elif chosen == 2:
+ 10     computer = 's'
+ 12 else:
+ 13     computer = 's'","{'20', '17', '24', '30', '18', '22', '19', '23', '28', '29', '25', '27', '26', '21'}","{'9', '13', '10', '12'}"
+3305807a13f174ff87ead377d7acd503806033be_593,pep_benchmark/PEP593,"**Idiom 593 Violations:**
+
+{""line"": "" 21                  active_directory_id: Optional[pulumi.Input[str]] = None,"", ""fix"": null}
+{""line"": "" 22                  dns: Optional[pulumi.Input[str]] = None,"", ""fix"": null}
+{""line"": "" 23                  domain: Optional[pulumi.Input[str]] = None,"", ""fix"": null}
+{""line"": "" 24                  organizational_unit: Optional[pulumi.Input[str]] = None,"", ""fix"": null}
+{""line"": "" 25                  password: Optional[pulumi.Input[str]] = None,"", ""fix"": null}
+{""line"": "" 26                  smb_server_name: Optional[pulumi.Input[str]] = None,"", ""fix"": null}
+{""line"": "" 27                  status: Optional[pulumi.Input[str]] = None,"", ""fix"": null}
+{""line"": "" 28                  username: Optional[pulumi.Input[str]] = None):"", ""fix"": null}
+{""line"": "" 59     def active_directory_id(self) -> Optional[pulumi.Input[str]]:"", ""fix"": null}
+{""line"": "" 66     def active_directory_id(self, value: Optional[pulumi.Input[str]]):"", ""fix"": null}
+{""line"": "" 71     def dns(self) -> Optional[pulumi.Input[str]]:"", ""fix"": null}
+{""line"": "" 78     def dns(self, value: Optional[pulumi.Input[str]]):"", ""fix"": null}
+{""line"": "" 83     def domain(self) -> Optional[pulumi.Input[str]]:"", ""fix"": null}
+{""line"": "" 90     def domain(self, value: Optional[pulumi.Input[str]]):"", ""fix"": null}
+{""line"": "" 95     def organizational_unit(self) -> Optional[pulumi.Input[str]]:"", ""fix"": null}
+{""line"": ""102     def organizational_unit(self, value: Optional[pulumi.Input[str]]):"", ""fix"": null}
+{""line"": ""107     def password(self) -> Optional[pulumi.Input[str]]:"", ""fix"": null}
+{""line"": ""114     def password(self, value: Optional[pulumi.Input[str]]):"", ""fix"": null}
+{""line"": ""119     def smb_server_name(self) -> Optional[pulumi.Input[str]]:"", ""fix"": null}
+{""line"": ""126     def smb_server_name(self, value: Optional[pulumi.Input[str]]):"", ""fix"": null}
+{""line"": ""131     def status(self) -> Optional[pulumi.Input[str]]:"", ""fix"": null}
+{""line"": ""138     def status(self, value: Optional[pulumi.Input[str]]):"", ""fix"": null}
+{""line"": ""143     def username(self) -> Optional[pulumi.Input[str]]:"", ""fix"": null}
+{""line"": ""150     def username(self, value: Optional[pulumi.Input[str]]):"", ""fix"": null}
+{""line"": ""191     def allowed_clients(self) -> Optional[pulumi.Input[str]]:"", ""fix"": null}
+{""line"": ""198     def allowed_clients(self, value: Optional[pulumi.Input[str]]):"", ""fix"": null}
+{""line"": ""203     def cifs(self) -> Optional[pulumi.Input[bool]]:"", ""fix"": null}
+{""line"": ""210     def cifs(self, value: Optional[pulumi.Input[bool]]):"", ""fix"": null}
+{""line"": ""215     def nfsv3(self) -> Optional[pulumi.Input[bool]]:"", ""fix"": null}
+{""line"": ""222     def nfsv3(self, value: Optional[pulumi.Input[bool]]):"", ""fix"": null}
+{""line"": ""227     def nfsv4(self) -> Optional[pulumi.Input[bool]]:"", ""fix"": null}
+{""line"": ""234     def nfsv4(self, value: Optional[pulumi.Input[bool]]):"", ""fix"": null}
+{""line"": ""239     def rule_index(self) -> Optional[pulumi.Input[int]]:"", ""fix"": null}
+{""line"": ""246     def rule_index(self, value: Optional[pulumi.Input[int]]):"", ""fix"": null}
+{""line"": ""251     def unix_read_only(self) -> Optional[pulumi.Input[bool]]:"", ""fix"": null}
+{""line"": ""258     def unix_read_only(self, value: Optional[pulumi.Input[bool]]):"", ""fix"": null}
+{""line"": ""263     def unix_read_write(self) -> Optional[pulumi.Input[bool]]:"", ""fix"": null}
+{""line"": ""270     def unix_read_write(self, value: Optional[pulumi.Input[bool]]):"", ""fix"": null}
+{""line"": ""277                  rules: Optional[pulumi.Input[Sequence[pulumi.Input['ExportPolicyRuleArgs']]]] = None:"", ""fix"": null}
+{""line"": ""287     def rules(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ExportPolicyRuleArgs']]]]:"", ""fix"": null}
+{""line"": ""294     def rules(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ExportPolicyRuleArgs']]]]):"", ""fix"": null}
+
+","160                  nfsv4: Optional[pulumi.Input[bool]] = None,"," 21                  active_directory_id: Optional[pulumi.Input[str]] = None,
+ 22                  dns: Optional[pulumi.Input[str]] = None,
+ 23                  domain: Optional[pulumi.Input[str]] = None,
+ 24                  organizational_unit: Optional[pulumi.Input[str]] = None,
+ 25                  password: Optional[pulumi.Input[str]] = None,
+ 26                  smb_server_name: Optional[pulumi.Input[str]] = None,
+ 27                  status: Optional[pulumi.Input[str]] = None,
+ 28                  username: Optional[pulumi.Input[str]] = None):
+ 59     def active_directory_id(self) -> Optional[pulumi.Input[str]]:
+ 66     def active_directory_id(self, value: Optional[pulumi.Input[str]]):
+ 71     def dns(self) -> Optional[pulumi.Input[str]]:
+ 78     def dns(self, value: Optional[pulumi.Input[str]]):
+ 83     def domain(self) -> Optional[pulumi.Input[str]]:
+ 90     def domain(self, value: Optional[pulumi.Input[str]]):
+ 95     def organizational_unit(self) -> Optional[pulumi.Input[str]]:
+102     def organizational_unit(self, value: Optional[pulumi.Input[str]]):
+107     def password(self) -> Optional[pulumi.Input[str]]:
+114     def password(self, value: Optional[pulumi.Input[str]]):
+119     def smb_server_name(self) -> Optional[pulumi.Input[str]]:
+126     def smb_server_name(self, value: Optional[pulumi.Input[str]]):
+131     def status(self) -> Optional[pulumi.Input[str]]:
+138     def status(self, value: Optional[pulumi.Input[str]]):
+143     def username(self) -> Optional[pulumi.Input[str]]:
+150     def username(self, value: Optional[pulumi.Input[str]]):
+191     def allowed_clients(self) -> Optional[pulumi.Input[str]]:
+198     def allowed_clients(self, value: Optional[pulumi.Input[str]]):
+203     def cifs(self) -> Optional[pulumi.Input[bool]]:
+210     def cifs(self, value: Optional[pulumi.Input[bool]]):
+215     def nfsv3(self) -> Optional[pulumi.Input[bool]]:
+222     def nfsv3(self, value: Optional[pulumi.Input[bool]]):
+227     def nfsv4(self) -> Optional[pulumi.Input[bool]]:
+234     def nfsv4(self, value: Optional[pulumi.Input[bool]]):
+239     def rule_index(self) -> Optional[pulumi.Input[int]]:
+246     def rule_index(self, value: Optional[pulumi.Input[int]]):
+251     def unix_read_only(self) -> Optional[pulumi.Input[bool]]:
+258     def unix_read_only(self, value: Optional[pulumi.Input[bool]]):
+263     def unix_read_write(self) -> Optional[pulumi.Input[bool]]:
+270     def unix_read_write(self, value: Optional[pulumi.Input[bool]]):
+277                  rules: Optional[pulumi.Input[Sequence[pulumi.Input['ExportPolicyRuleArgs']]]] = None:
+287     def rules(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ExportPolicyRuleArgs']]]]:
+294     def rules(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ExportPolicyRuleArgs']]]]):",{'160'},"{'138', '71', '24', '287', '22', '23', '239', '25', '28', '294', '215', '102', '143', '95', '90', '66', '277', '258', '107', '234', '263', '251', '191', '27', '210', '119', '21', '126', '150', '198', '203', '59', '78', '83', '270', '222', '246', '227', '114', '26', '131'}"
+19eb34cc2e0ee681bb8269176c02159e113e644b_593,pep_benchmark/PEP593,"**Idiom 593 Violations:**
+
+{""line"": "" 16 def _get_connection_options(data: Dict[str, Any]) -> Dict[str, ConnectionOptions]:"", ""fix"": null}
+{""line"": "" 16 def _get_connection_options(data: Dict[str, Any]) -> Dict[str, ConnectionOptions]:"", ""fix"": null}
+{""line"": "" 31     typ: Type[HostOrGroup], data: Dict[str, Any], name: str, defaults: Defaults"", ""fix"": null}
+{""line"": "" 31     typ: Type[HostOrGroup], data: Dict[str, Any], name: str, defaults: Defaults"", ""fix"": null}
+{""line"": "" 57         filter_parameters: Optional[Dict[str, Any]] = {},"", ""fix"": null}
+{""line"": "" 91         url = f\""{self.base_url}/api/dcim/devices/?limit=0\"""", ""fix"": null}
+{""line"": "" 91         url = f\""{self.base_url}/api/dcim/devices/?limit=0\"""", ""fix"": null}
+{""line"": "" 93         for device in nb_devices:"", ""fix"": null}
+{""line"": ""112             serialized_device: Dict[Any, Any] = {}"", ""fix"": null}
+{""line"": ""183         filter_parameters: Optional[Dict[str, Any]] = None,"", ""fix"": null}
+{""line"": ""198         filter_parameters: Optional[Dict[str, Any]] = None,"", ""fix"": null}
+{""line"": ""221         nb_devices: List[Dict[str, Any]] = []"", ""fix"": null}
+{""line"": ""241             serialized_device: Dict[Any, Any] = {}"", ""fix"": null}
+{""line"": ""276     def _get_resources(self, url: str, params: Dict[str, Any]) -> List[Dict[str, Any]]:"", ""fix"": null}
+{""line"": ""276     def _get_resources(self, url: str, params: Dict[str, Any]) -> List[Dict[str, Any]]:"", ""fix"": null}
+{""line"": ""278         resources: List[Dict[str, Any]] = []"", ""fix"": null}
+
+"," 39         platform=data.get(""platform""),"," 16 def _get_connection_options(data: Dict[str, Any]) -> Dict[str, ConnectionOptions]:
+ 16 def _get_connection_options(data: Dict[str, Any]) -> Dict[str, ConnectionOptions]:
+ 31     typ: Type[HostOrGroup], data: Dict[str, Any], name: str, defaults: Defaults
+ 31     typ: Type[HostOrGroup], data: Dict[str, Any], name: str, defaults: Defaults
+ 57         filter_parameters: Optional[Dict[str, Any]] = {},
+ 91         url = f""{self.base_url}/api/dcim/devices/?limit=0""
+ 91         url = f""{self.base_url}/api/dcim/devices/?limit=0""
+ 93         for device in nb_devices:
+112             serialized_device: Dict[Any, Any] = {}
+183         filter_parameters: Optional[Dict[str, Any]] = None,
+198         filter_parameters: Optional[Dict[str, Any]] = None,
+221         nb_devices: List[Dict[str, Any]] = []
+241             serialized_device: Dict[Any, Any] = {}
+276     def _get_resources(self, url: str, params: Dict[str, Any]) -> List[Dict[str, Any]]:
+276     def _get_resources(self, url: str, params: Dict[str, Any]) -> List[Dict[str, Any]]:
+278         resources: List[Dict[str, Any]] = []",{'39'},"{'183', '198', '93', '31', '276', '112', '278', '16', '91', '241', '221', '57'}"
+9f76a97420025c95d107945b9f624f5d726d6b48_487,pep_benchmark/PEP487,"**Idiom 487 Violations:**
+
+{""line"": "" 55 UNDEFINED = object()"", ""fix"": null}
+
+","758 class PortFixture(fixtures.Fixture, metaclass=abc.ABCMeta):", 55 UNDEFINED = object(),{'758'},{'55'}
+233adb4ff781e507a481630760cb618e5e3ef4c3_593,pep_benchmark/PEP593,"**Idiom 593 Violations:**
+
+{""line"": "" 19                  policy: pulumi.Input['OperatorPolicyPolicyArgs'],"", ""fix"": null}
+{""line"": "" 44     def policy(self, value: pulumi.Input['OperatorPolicyPolicyArgs']):"", ""fix"": null}
+{""line"": "" 61     def name(self) -> Optional[pulumi.Input[str]]:"", ""fix"": null}
+{""line"": "" 68     def name(self, value: Optional[pulumi.Input[str]]):"", ""fix"": null}
+{""line"": "" 75                  name: Optional[pulumi.Input[str]] = None,"", ""fix"": null}
+{""line"": "" 76                  policy: Optional[pulumi.Input['OperatorPolicyPolicyArgs']] = None,"", ""fix"": null}
+{""line"": "" 77                  vhost: Optional[pulumi.Input[str]] = None):"", ""fix"": null}
+{""line"": "" 94     def name(self) -> Optional[pulumi.Input[str]]:"", ""fix"": null}
+{""line"": ""101     def name(self, value: Optional[pulumi.Input[str]]):"", ""fix"": null}
+{""line"": ""106     def policy(self) -> Optional[pulumi.Input['OperatorPolicyPolicyArgs']]:"", ""fix"": null}
+{""line"": ""114     def policy(self, value: Optional[pulumi.Input['OperatorPolicyPolicyArgs']]):"", ""fix"": null}
+{""line"": ""119     def vhost(self) -> Optional[pulumi.Input[str]]:"", ""fix"": null}
+{""line"": ""126     def vhost(self, value: Optional[pulumi.Input[str]]):"", ""fix"": null}
+{""line"": ""135                  name: Optional[pulumi.Input[str]] = None,"", ""fix"": null}
+{""line"": ""136                  policy: Optional[pulumi.Input[pulumi.InputType['OperatorPolicyPolicyArgs']]] = None,"", ""fix"": null}
+{""line"": ""137                  vhost: Optional[pulumi.Input[str]] = None,"", ""fix"": null}
+{""line"": ""244                  opts: Optional[pulumi.ResourceOptions] = None,"", ""fix"": null}
+{""line"": ""245                  name: Optional[pulumi.Input[str]] = None,"", ""fix"": null}
+{""line"": ""246                  policy: Optional[pulumi.Input[pulumi.InputType['OperatorPolicyPolicyArgs']]] = None,"", ""fix"": null}
+{""line"": ""247                  vhost: Optional[pulumi.Input[str]] = None,"", ""fix"": null}
+{""line"": ""273             opts: Optional[pulumi.ResourceOptions] = None,"", ""fix"": null}
+{""line"": ""274             name: Optional[pulumi.Input[str]] = None,"", ""fix"": null}
+{""line"": ""275             policy: Optional[pulumi.Input[pulumi.InputType['OperatorPolicyPolicyArgs']]] = None,"", ""fix"": null}
+{""line"": ""276             vhost: Optional[pulumi.Input[str]] = None) -> 'OperatorPolicy':"", ""fix"": null}
+
+","235     def __init__(__self__, resource_name: str, *args, **kwargs):"," 19                  policy: pulumi.Input['OperatorPolicyPolicyArgs'],
+ 44     def policy(self, value: pulumi.Input['OperatorPolicyPolicyArgs']):
+ 61     def name(self) -> Optional[pulumi.Input[str]]:
+ 68     def name(self, value: Optional[pulumi.Input[str]]):
+ 75                  name: Optional[pulumi.Input[str]] = None,
+ 76                  policy: Optional[pulumi.Input['OperatorPolicyPolicyArgs']] = None,
+ 77                  vhost: Optional[pulumi.Input[str]] = None):
+ 94     def name(self) -> Optional[pulumi.Input[str]]:
+101     def name(self, value: Optional[pulumi.Input[str]]):
+106     def policy(self) -> Optional[pulumi.Input['OperatorPolicyPolicyArgs']]:
+114     def policy(self, value: Optional[pulumi.Input['OperatorPolicyPolicyArgs']]):
+119     def vhost(self) -> Optional[pulumi.Input[str]]:
+126     def vhost(self, value: Optional[pulumi.Input[str]]):
+135                  name: Optional[pulumi.Input[str]] = None,
+136                  policy: Optional[pulumi.Input[pulumi.InputType['OperatorPolicyPolicyArgs']]] = None,
+137                  vhost: Optional[pulumi.Input[str]] = None,
+244                  opts: Optional[pulumi.ResourceOptions] = None,
+245                  name: Optional[pulumi.Input[str]] = None,
+246                  policy: Optional[pulumi.Input[pulumi.InputType['OperatorPolicyPolicyArgs']]] = None,
+247                  vhost: Optional[pulumi.Input[str]] = None,
+273             opts: Optional[pulumi.ResourceOptions] = None,
+274             name: Optional[pulumi.Input[str]] = None,
+275             policy: Optional[pulumi.Input[pulumi.InputType['OperatorPolicyPolicyArgs']]] = None,
+276             vhost: Optional[pulumi.Input[str]] = None) -> 'OperatorPolicy':",{'235'},"{'44', '19', '136', '68', '275', '76', '94', '119', '126', '273', '276', '247', '245', '274', '135', '75', '101', '246', '244', '61', '77', '114', '137', '106'}"
+035d6ecea6b4ccc576382efc05661c81a944fa2d_616,pep_benchmark/PEP616,"**Idiom 616 Violations:**
+
+{""line"": "" 68     if result == '//': result = '/'"", ""fix"": null}
+
+","280     if os_path.startswith(root):
+281         os_path = os_path[len(root):]", 68     if result == '//': result = '/',"{'281', '280'}",{'68'}
+0dc38b5ce96f3cedb10b11870c56bae3bfdd6c0b_634,pep_benchmark/PEP634,"**Idiom 634 Violations:**
+
+{""line"": "" 24     if \""刘\u4e2d\u9488\u4f5c\u5916\"" in msg.text:"", ""fix"": null}
+
+"," 31         if ""查单"" in msg.text:
+ 32             num = re.sub(""查单"", """", msg.text)
+ 33             if num == """":
+ 34                 for row in sqlQuery('select * from orderStatus order by id desc limit 10 '):
+ 35                     itchat.send_msg('利达单号'+ row[1] + ' ,国内快递号'+row[2], msg['FromUserName'])
+ 36             else:
+ 37                 for row in sqlQuery('select * from orderStatus order by id desc limit'+num):
+ 38                     itchat.send_msg('利达单号'+ row[1] + ' ,国内快递号'+row[2], msg['FromUserName'])
+ 39         elif ""查买"" in msg.text:
+ 40             # itemName = re.sub(""查买"", """",msg.text)
+ 41             for row in sqlQuery('select * from Products order by P_id desc limit 10'):
+ 42                 itchat.send_msg('最近需要购买'+ row[1]+' ,共需要' + str(row[2]), msg['FromUserName'])
+ 43         elif ""买"" in msg.text:
+ 44             print(msg.text)
+ 45             reString = re.sub(""买"", """", msg.text)
+ 46             itemQua = re.findall(u""([^\u4e00-\u9fa5])"", reString)
+ 47             itemName = re.findall(u""([\u4e00-\u9fa5])"", reString)
+ 48             itemQua = ''.join(itemQua)
+ 49             itemName = ''.join(itemName)
+ 50             sql = """"""insert into Products (Pname, Pquality) values (  """""" + ""\""""+itemName+""\"""" + "", "" + itemQua + "")""
+ 51             conn = pymysql.connect(host='192.168.31.168', port=3307, user='test', password='123456', db='test',
+ 52                                    use_unicode=True)
+ 53             cursor = conn.cursor()
+ 54             cursor.execute(sql)
+ 55             conn.commit()
+ 56             conn.close()
+ 57             itchat.send_msg(itemName + itemQua, msg['FromUserName'])
+ 58         elif msg.text == ""功能"":
+ 59             itchat.send_msg('回复查单+数字显示最近单号，默认显示10，例:查单 15显示最近15个订单', msg['FromUserName'])
+ 60             itchat.send_msg('回复查买+数字显示最近下单买的东西，默认显示是，例：查买 15显示最近15个需要购买的状态', msg['FromUserName'])
+ 61             itchat.send_msg('回复买+物品+数量,下单购买物品，例：买 小熊糖 10', msg['FromUserName'])
+ 62             itchat.send_msg('回复再见退出神奇的下单模式', msg['FromUserName'])
+ 63             # itchat.send_msg(msg['FromUserName'], msg['FromUserName'])
+ 64         elif msg.text == ""再见"":
+ 65             users.remove(msg['FromUserName'])
+ 66             itchat.send_msg('小同志忙完了？再会再会~记得我们的接头暗号：刘主任辛苦了，要不然没人搭理你哦', msg['FromUserName'])
+ 67             return
+ 68         else:
+ 69             itchat.send_msg('没有找到指定命令，请发送 功能 查看具体命令', msg['FromUserName'])"," 24     if ""刘中针作外"" in msg.text:","{'44', '52', '33', '46', '67', '43', '38', '55', '53', '65', '63', '48', '68', '66', '51', '31', '41', '35', '40', '60', '50', '47', '36', '49', '58', '59', '64', '39', '37', '32', '54', '57', '42', '69', '61', '45', '34', '56', '62'}",{'24'}
+4c96feebf28e15904048549ba0a8a9d9d82d2a0a_614,pep_benchmark/PEP614,"**Idiom 614 Violations:**
+
+{""line"": "" 21 def arg_parser(default_port, default_address):"", ""fix"": null}
+{""line"": "" 21 def arg_parser(default_port, default_address):"", ""fix"": null}
+{""line"": "" 43 def config_load():"", ""fix"": null}
+{""line"": "" 65 def main():"", ""fix"": null}
+
+"," 17 log = Log(logger)
+ 20 @log
+ 42 @log
+ 64 @log"," 21 def arg_parser(default_port, default_address):
+ 21 def arg_parser(default_port, default_address):
+ 43 def config_load():
+ 65 def main():","{'17', '42', '20', '64'}","{'43', '21', '65'}"
+c012ef65b8dc8d20f5f05558bf5b70301021dc61_526,pep_benchmark/PEP526,"**Idiom 526 Violations:**
+
+{""line"": "" 37 def array_arg(value: str) -> T.List[str]:"", ""fix"": null}
+{""line"": "" 55 def parse_introspect_data(builddir: Path) -> T.Dict[str, T.List[dict]]:"", ""fix"": null}
+{""line"": "" 55 def parse_introspect_data(builddir: Path) -> T.Dict[str, T.List[dict]]:"", ""fix"": null}
+{""line"": ""105 def get_target_from_intro_data(target: ParsedTargetName, builddir: Path, introspect_data: T.Dict[str, T.Any]) -> T.Dict[str, T.Any]:"", ""fix"": null}
+{""line"": ""105 def get_target_from_intro_data(target: ParsedTargetName, builddir: Path, introspect_data: T.Dict[str, T.Any]) -> T.Dict[str, T.Any]:"", ""fix"": null}
+{""line"": ""141 def generate_target_name_vs(target: ParsedTargetName, builddir: Path, introspect_data: dict) -> str:"", ""fix"": null}
+{""line"": ""185 def get_parsed_args_vs(options: 'argparse.Namespace', builddir: Path) -> T.Tuple[T.List[str], T.Optional[T.Dict[str, str]]]:"", ""fix"": null}
+{""line"": ""185 def get_parsed_args_vs(options: 'argparse.Namespace', builddir: Path) -> T.Tuple[T.List[str], T.Optional[T.Dict[str, str]]]:"", ""fix"": null}
+{""line"": ""241 def get_parsed_args_xcode(options: 'argparse.Namespace', builddir: Path) -> T.Tuple[T.List[str], T.Optional[T.Dict[str, str]]]:"", ""fix"": null}
+{""line"": ""241 def get_parsed_args_xcode(options: 'argparse.Namespace', builddir: Path) -> T.Tuple[T.List[str], T.Optional[T.Dict[str, str]]]:"", ""fix"": null}
+
+"," 65     parsed_data = defaultdict(list) # type: T.Dict[str, T.List[dict]]
+110     found_targets = []  # type: T.List[T.Dict[str, T.Any]]
+179     target_name = re.sub(r""[\%\$\@\;\.\(\)']"", '_', intro_target['id'])  # type: str
+339     cmd = []    # type: T.List[str]
+340     env = None  # type: T.Optional[T.Dict[str, str]]"," 37 def array_arg(value: str) -> T.List[str]:
+ 55 def parse_introspect_data(builddir: Path) -> T.Dict[str, T.List[dict]]:
+ 55 def parse_introspect_data(builddir: Path) -> T.Dict[str, T.List[dict]]:
+105 def get_target_from_intro_data(target: ParsedTargetName, builddir: Path, introspect_data: T.Dict[str, T.Any]) -> T.Dict[str, T.Any]:
+105 def get_target_from_intro_data(target: ParsedTargetName, builddir: Path, introspect_data: T.Dict[str, T.Any]) -> T.Dict[str, T.Any]:
+141 def generate_target_name_vs(target: ParsedTargetName, builddir: Path, introspect_data: dict) -> str:
+185 def get_parsed_args_vs(options: 'argparse.Namespace', builddir: Path) -> T.Tuple[T.List[str], T.Optional[T.Dict[str, str]]]:
+185 def get_parsed_args_vs(options: 'argparse.Namespace', builddir: Path) -> T.Tuple[T.List[str], T.Optional[T.Dict[str, str]]]:
+241 def get_parsed_args_xcode(options: 'argparse.Namespace', builddir: Path) -> T.Tuple[T.List[str], T.Optional[T.Dict[str, str]]]:
+241 def get_parsed_args_xcode(options: 'argparse.Namespace', builddir: Path) -> T.Tuple[T.List[str], T.Optional[T.Dict[str, str]]]:","{'340', '110', '339', '179', '65'}","{'105', '141', '185', '241', '37', '55'}"
+7c34d2d988005658e74f76d614ab7492c43a9917_525,pep_benchmark/PEP525,"**Idiom 525 Violations:**
+
+{""line"": "" 226 async def async_yield(value):"", ""fix"": null}
+
+","2060         def __aiter__(self):
+2061             return self
+2062 
+2063         async def __anext__(self):
+2064             nexts = self.nexts
+2065             items = [
+2066                 None,
+2067             ] * len(nexts)
+2068             got_stop = False
+2069 
+2070             def handle(exc):
+2071                 nonlocal got_stop
+2072                 if isinstance(exc, StopAsyncIteration):
+2073                     got_stop = True
+2074                     return None
+2075                 else:  # pragma: no cover
+2076                     return exc
+2077 
+2078             with _core.MultiError.catch(handle):
+2079                 async with _core.open_nursery() as nursery:
+2080                     for i, f in enumerate(nexts):
+2081                         nursery.start_soon(self._accumulate, f, items, i)
+2082 
+2083             if got_stop:
+2084                 raise StopAsyncIteration
+2085             return items", 226 async def async_yield(value):,"{'2082', '2064', '2060', '2067', '2072', '2063', '2075', '2076', '2069', '2083', '2070', '2080', '2079', '2085', '2074', '2065', '2084', '2078', '2066', '2071', '2062', '2081', '2061', '2073', '2068', '2077'}",{'226'}
+f5a0e695f1a50cbc20de0463e14d5f362bb054ee_616,pep_benchmark/PEP616,"**Idiom 616 Violations:**
+
+{""line"": ""112 \t\tdetails = details.strip() + '\\n'"", ""fix"": [{""before"": ""details.strip()"", ""after"": ""details.removeprefix(details.strip())""}]}
+
+","114 		if exc_name.startswith('king_phisher.third_party.'):
+115 			exc_name = exc_name[25:]",112 		details = details.strip() + '\n',"{'115', '114'}",{'112'}
+c45df71d4e6711fc98b9b1a02c3b7b022c4fbafd_526,pep_benchmark/PEP526,"**Idiom 526 Violations:**
+
+{""line"": "" 40     def discography_entries(self) -> dict[str, list[DiscographyEntry]]:"", ""fix"": null}
+{""line"": "" 62     def discography(self) -> list[DiscographyEntry]:"", ""fix"": null}
+
+","129         discography = defaultdict(list)                                     # type: dict[str, list[DiscographyEntry]]"," 40     def discography_entries(self) -> dict[str, list[DiscographyEntry]]:
+ 62     def discography(self) -> list[DiscographyEntry]:",{'129'},"{'62', '40'}"
+c5831ed3f357bfde6588fa8cf2965b49a77452e0_567,pep_benchmark/PEP567,"**Idiom 567 Violations:**
+
+{""line"": "" 99         equal = self.__eq__(other)"", ""fix"": null}
+
+",395     class _Local(threading.local):, 99         equal = self.__eq__(other),{'395'},{'99'}
+2ec8e14bb3c3f8bcd4be9ec399b5c4fc7907db07_506,pep_benchmark/PEP506,"**Idiom 506 Violations:**
+
+{""line"": "" 29         key.append(i)"", ""fix"": null}
+
+", 30     random.shuffle(key), 29         key.append(i),{'30'},{'29'}
+09720d321f63f021019918984dce887b72d21bb5_567,pep_benchmark/PEP567,"**Idiom 567 Violations:**
+
+{""line"": "" 56 if \""urlCommands\"" in dir(__builtin__):"", ""fix"": null}
+
+",110 class Disque(threading.local):," 56 if ""urlCommands"" in dir(__builtin__):",{'110'},{'56'}
