@@ -1,0 +1,39 @@
+{
+  "instances": [
+    {
+      "code": "async def get_processed(items):\n    out = []\n    async for x in items:\n        out.append(await process(x))\n    return out\n",
+      "lines": [
+        {
+          "start_lineno": 3,
+          "end_lineno": 5
+        }
+      ]
+    },
+    {
+        "code": "async def active_users(users):\n    active = []\n    async for u in users:\n        if await u.is_active():\n            active.append(u)\n    return active\n",
+        "lines": [
+          {
+            "start_lineno": 3,
+            "end_lineno": 6
+          }
+        ]
+    },
+    {
+        "code": "async def upper_stream(items):\n    async for x in items:\n        yield (await fetch(x)).upper()\n",
+        "lines": [
+          {
+            "start_lineno": 2,
+            "end_lineno": 3
+          }
+        ]
+    },
+    {
+        "code":"values = [x * 2 for x in range(10)]\nfiltered = [x for x in values if x > 5]\n",
+        "lines": []
+    },
+    {
+        "code": "async def get_total(a, b):\n    await asyncio.sleep(1)\n    return a + b\n\nresult = await get_total(3, 4)\n",
+        "lines": []
+    }
+  ]
+}
