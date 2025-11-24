@@ -1,49 +1,39 @@
 {
   "instances": [
     {
-        "code": "class Player():\n    def __init__(self, name, current_room, items, awake=True):\n        self.name = name\n        self.current_room = current_room\n        self.items = items\n        self.awake = awake",
-        "lines": [
-         {
+      "code": "class User:\n    def __init__(self, id, name):\n        self.id = id\n        self.name = name\n    def __repr__(self):\n        return f\"User(id={self.id}, name={self.name})\"\n    def __eq__(self, other):\n        return self.id == other.id and self.name == other.name\n",
+      "lines": [
+        {
           "start_lineno": 1,
-          "end_lineno": 2
-         }
+          "end_lineno": 8
+        }
+      ]
+    },
+    {
+        "code": "class Config:\n    def __init__(self, retries=3, timeout=1.5):\n        self.retries = retries\n        self.timeout = timeout\n",
+        "lines": [
+          {
+            "start_lineno": 1,
+            "end_lineno": 4
+          }
         ]
     },
     {
-        "code": "class Player:\n    minAge = 18\n    maxAge = 50\n\n    def __init__(self,name,age):\n        self.name = name\n        self.age = age",
+        "code": "class Point:\n    def __init__(self, x, y):\n        self.x, self.y = x, y\n    def __lt__(self, other):\n        return (self.x, self.y) < (other.x, other.y)\n",
         "lines": [
-         {
-          "start_lineno": 1,
-          "end_lineno": 5
-         }
+          {
+            "start_lineno": 1,
+            "end_lineno": 2
+          }
         ]
     },
     {
-        "code": "class Wizard:\n    def __init__(self, name, level):\n        self.level = level\n        self.name = name\n\n\ngandolf = Wizard(\"Gandolf\", 42)\nprint(gandolf.__dict__)",
-        "lines": [
-         {
-          "start_lineno": 1,
-          "end_lineno": 2
-         }
-        ]
+        "code":"class ConnectionPool:\n    def __init__(self, max_conn):\n        self.max_conn = max_conn\n        self.active = []\n    def acquire(self): ...\n    def release(self): ...\n    def stats(self): ...\n",
+        "lines": []
     },
     {
-        "code": "class _BRACES():\n\tdef __init__(self,): \n\t\tself.name = \"BRACES\"\n\t\tself.definitions = brace\n\n\t\tself.parents = []\n\t\tself.childen = []\n\t\tself.properties = []\n\t\tself.jsondata = {}\n\n\n\t\tself.basic = ['brace']",
-        "lines": [
-         {
-          "start_lineno": 1,
-          "end_lineno": 12
-         }
-        ]
-    },
-    {
-        "code": "class _STATIONERS():\n\tdef __init__(self,): \n\t\tself.name = \"STATIONERS\"\n\t\tself.definitions = stationer\n\n\t\tself.parents = []\n\t\tself.childen = []\n\t\tself.properties = []\n\t\tself.jsondata = {}\n\n\n\t\tself.basic = ['stationer']",
-        "lines": [
-         {
-          "start_lineno": 1,
-          "end_lineno": 2
-         }
-        ]
+        "code": "from collections import namedtuple\n\nPoint = namedtuple(\"Point\", [\"x\", \"y\"])\np = Point(1, 2)\n",
+        "lines": []
     }
-    ]
+  ]
 }

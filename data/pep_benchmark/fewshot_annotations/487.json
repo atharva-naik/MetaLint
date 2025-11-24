@@ -1,0 +1,39 @@
+{
+  "instances": [
+    {
+      "code": "class Registry(type):\n    items = []\n    def __new__(mcls, name, bases, ns):\n        cls = super().__new__(mcls, name, bases, ns)\n        Registry.items.append(cls)\n        return cls\n\nclass Base(metaclass=Registry):\n    pass\n\nclass A(Base): pass\nclass B(Base): pass\n",
+      "lines": [
+        {
+          "start_lineno": 1,
+          "end_lineno": 1
+        }
+      ]
+    },
+    {
+        "code": "class RequireFields(type):\n    def __new__(mcls, name, bases, ns):\n        if \"fields\" not in ns:\n            raise TypeError(\"Missing 'fields' attribute\")\n        return super().__new__(mcls, name, bases, ns)\n\nclass Model(metaclass=RequireFields):\n    pass\n\nclass User(Model):\n    fields = [\"id\", \"name\"]  # OK\n\nclass Bad(Model):\n    pass  # Error: Missing 'fields'",
+        "lines": [
+          {
+            "start_lineno": 1,
+            "end_lineno": 1
+          }
+        ]
+    },
+    {
+        "code": "class Field:\n    def __init__(self):\n        self.name = None\n\nclass Model:\n    id = Field()\n    id.name = \"id\"   # must be assigned manually\n",
+        "lines": [
+          {
+            "start_lineno": 1,
+            "end_lineno": 1
+          }
+        ]
+    },
+    {
+        "code": "class Math:\n    def sq(self, x): return x * x\n    def cube(self, x): return x * x * x",
+        "lines": []
+    },
+    {
+        "code": "from dataclasses import dataclass\n\n@dataclass\nclass Point:\n    x: int\n    y: int",
+        "lines": []
+    }
+  ]
+}
