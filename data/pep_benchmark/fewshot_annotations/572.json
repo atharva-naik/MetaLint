@@ -1,0 +1,39 @@
+{
+    "instances": [
+      {
+    "code": "line = f.readline()\nwhile line:\n    process(line)\n    line = f.readline()",
+    "lines": [
+           {
+            "start_lineno": 1,
+            "end_lineno": 4
+           }
+        ]
+      },
+      {
+          "code": "import re\n\nm = re.search(r\"user=(\\w+)\", text)\nif m:\n    user = m.group(1)\n    handle_user(user)",
+          "lines": [
+            {
+              "start_lineno": 3,
+              "end_lineno": 4
+            }
+          ]
+      },
+      {
+        "code": "if compute_score(data) > 0.8:\n    print(compute_score(data))",
+       "lines": [
+            {
+              "start_lineno": 1,
+              "end_lineno": 2
+            }
+          ]
+      },
+      {
+        "code": "result = (x := transform(a)) + (y := transform(b)) ",
+        "lines": []
+      },
+      {
+        "code": "while (item := next(gen, None)) is not None:\n    process(item)",
+        "lines": []
+      }
+  ]
+}

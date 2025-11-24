@@ -68,7 +68,7 @@ Code file:
 
 """+post_code_file_prompt
     print("\x1b[34;1mAUGMENTED PROMPT:\x1b[0m")
-    # print(augmented_prompt)
+    print(augmented_prompt)
     
     return augmented_prompt
 
