@@ -67,9 +67,8 @@ Here are a few example code files and PEP violations:
 Code file:
 
 """+post_code_file_prompt
-    print("\x1b[34;1mAUGMENTED PROMPT:\x1b[0m")
-    print(augmented_prompt)
-    
+    # print("\x1b[34;1mAUGMENTED PROMPT:\x1b[0m")
+    # print(augmented_prompt)
     return augmented_prompt
 
 def add_output_instr_to_prompt(input_prompt: str):
@@ -101,11 +100,24 @@ def get_args():
     parser.add_argument("--write_path", type=str, required=True, help="name of the file where predictions should be written")
     parser.add_argument("--untrained_mode", action="store_true", help="used when inferencing untrained model to obtain proper output format.")
     parser.add_argument("--fewshot_eg", action="store_true", help="add few shot examples (code snippets and JSON labels) in the prompt.")
+    parser.add_argument("--remove_eg", action="store_true", help="remove examples from instruction prompts.")
     parser.add_argument("--no_think", action="store_true", help="Disable chain-of-thought reasoning globally.")
     parser.add_argument("--port", type=int, default=8002, help="Port where vLLM server is being served")
     parser.add_argument("--num_workers", type=int, default=12, help="Number of parallel threads/workers to be used for querying vLLM.")
 
     return parser.parse_args()
+
+def remove_eg_from_instances(input_prompt: str, without_eg_prompts: dict, pep: str):
+    pre_code_file_prompt, post_code_file_prompt = input_prompt.split("\n\nCode file:\n")
+    prompt_without_examples = without_eg_prompts[pep] + f"""
+
+Code file:
+
+"""+post_code_file_prompt
+    # print(prompt_without_examples)
+    # print("\x1b[34;1mAUGMENTED PROMPT:\x1b[0m")
+    # print(augmented_prompt)
+    return prompt_without_examples
 
 args = get_args()
 # vLLM server details
@@ -168,6 +180,15 @@ def main(args):
                 test_data[i]['messages'][0]['content'], 
                 fewshot_eg=fewshot_pep_examples[pep]["instances"],
                 pep=pep,
+            )        
+    if args.remove_eg:
+        prompts_dir = "data/pep_benchmark/prompts_without_examples"
+        without_eg_prompts = {file.split(".")[0].strip(): open(os.path.join(prompts_dir, file)).read() for file in os.listdir(prompts_dir)}
+        for i in range(len(test_data)):
+            test_data[i]['messages'][0]['content'] = remove_eg_from_instances(
+                test_data[i]['messages'][0]['content'],
+                without_eg_prompts=without_eg_prompts,
+                pep=test_data[i]['pep'],
             )        
     if args.untrained_mode:
         for i in range(len(test_data)):
