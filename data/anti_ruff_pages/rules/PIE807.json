@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for lambdas that can be replaced with the list or dict builtins.",
-    "why-is-this-bad": "Using container builtins are more succinct and idiomatic than wrapping\nthe literal in a lambda.",
-    "example": "from dataclasses import dataclass, field\n\n\n@dataclass\nclass Foo:\n    bar: list[int] = field(default_factory=lambda: [])\n\n\n\nUse instead:\n\n\nfrom dataclasses import dataclass, field\n\n\n@dataclass\nclass Foo:\n    bar: list[int] = field(default_factory=list)\n    baz: dict[str, int] = field(default_factory=dict)",
-    "example-split": {
-        "example-before": "from dataclasses import dataclass, field\n\n\n@dataclass\nclass Foo:\n    bar: list[int] = field(default_factory=lambda: [])\n\n",
-        "example-after": "\nfrom dataclasses import dataclass, field"
-    }
-}

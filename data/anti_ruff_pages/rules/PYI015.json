@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for assignments in stubs with default values that are not \"simple\"\n(i.e., int, float, complex, bytes, str, bool, None, ..., or\nsimple container literals).",
-    "why-is-this-bad": "Stub (.pyi) files exist to define type hints, and are not evaluated at\nruntime. As such, assignments in stub files should not include values,\nas they are ignored by type checkers.\n\n\nHowever, the use of such values may be useful for IDEs and other consumers\nof stub files, and so \"simple\" values may be worth including and are\npermitted by this rule.\n\n\nInstead of including and reproducing a complex value, use ... to indicate\nthat the assignment has a default value, but that the value is non-simple\nor varies according to the current platform or Python version.",
-    "example": "foo: str = \"...\"\n\n\n\nUse instead:\n\n\nfoo: str = ...",
-    "example-split": {
-        "example-before": "foo: str = \"...\"\n\n",
-        "example-after": "\nfoo: str = ..."
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for imports of the ftplib module.",
-    "why-is-this-bad": "FTP is considered insecure. Instead, use SSH, SFTP, SCP, or another\nencrypted protocol.",
-    "example": "import ftplib",
-    "example-split": {
-        "example-before": "import ftplib",
-        "example-after": "import ftplib"
-    }
-}

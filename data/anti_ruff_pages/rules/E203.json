@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the use of extraneous whitespace before \",\", \";\" or \":\".",
-    "why-is-this-bad": "PEP 8 recommends the omission of whitespace in the following cases:\n\n\n\n\"Immediately inside parentheses, brackets or braces.\"\n\"Immediately before a comma, semicolon, or colon.\"",
-    "example": "if x == 4: print(x, y); x, y = y , x\n\n\n\nUse instead:\n\n\nif x == 4: print(x, y); x, y = y, x",
-    "example-split": {
-        "example-before": "if x == 4: print(x, y); x, y = y , x\n\n",
-        "example-after": "\nif x == 4: print(x, y); x, y = y, x"
-    }
-}

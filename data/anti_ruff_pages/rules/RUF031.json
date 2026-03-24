@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for consistent style regarding whether nonempty tuples in subscripts\nare parenthesized.\n\n\nThe exact nature of this violation depends on the setting\nlint.ruff.parenthesize-tuple-in-subscript. By default, the use of\nparentheses is considered a violation.\n\n\nThis rule is not applied inside \"typing contexts\" (type annotations,\ntype aliases and subscripted class bases), as these have their own specific\nconventions around them.",
-    "why-is-this-bad": "It is good to be consistent and, depending on the codebase, one or the other\nconvention may be preferred.",
-    "example": "directions = {(0, 1): \"North\", (1, 0): \"East\", (0, -1): \"South\", (-1, 0): \"West\"}\ndirections[(0, 1)]\n\n\n\nUse instead (with default setting):\n\n\ndirections = {(0, 1): \"North\", (1, 0): \"East\", (0, -1): \"South\", (-1, 0): \"West\"}\ndirections[0, 1]",
-    "example-split": {
-        "example-before": "directions = {(0, 1): \"North\", (1, 0): \"East\", (0, -1): \"South\", (-1, 0): \"West\"}\ndirections[(0, 1)]\n\n\n\nUse instead (with default setting):\n\n\ndirections = {(0, 1): \"North\", (1, 0): \"East\", (0, -1): \"South\", (-1, 0): \"West\"}\ndirections[0, 1]",
-        "example-after": "directions = {(0, 1): \"North\", (1, 0): \"East\", (0, -1): \"South\", (-1, 0): \"West\"}\ndirections[(0, 1)]"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for pass statements in empty stub bodies.",
-    "why-is-this-bad": "For stylistic consistency, ... should always be used rather than pass\nin stub files.",
-    "example": "def foo(bar: int) -> list[int]: pass\n\n\n\nUse instead:\n\n\ndef foo(bar: int) -> list[int]: ...",
-    "example-split": {
-        "example-before": "def foo(bar: int) -> list[int]: pass\n\n",
-        "example-after": "\ndef foo(bar: int) -> list[int]: ..."
-    }
-}

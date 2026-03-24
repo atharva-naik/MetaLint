@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Check for the use of wildcard imports outside of the module namespace.",
-    "why-is-this-bad": "The use of wildcard imports outside of the module namespace (e.g., within\nfunctions) can lead to confusion, as the import can shadow local variables.\n\n\nThough wildcard imports are discouraged by PEP 8, when necessary, they\nshould be placed in the module namespace (i.e., at the top-level of a\nmodule).",
-    "example": "def foo():\n    from math import *\n\n\n\nUse instead:\n\n\nfrom math import *\n\n\ndef foo(): ...",
-    "example-split": {
-        "example-before": "def foo():\n    from math import *\n\n",
-        "example-after": "\nfrom math import *"
-    }
-}

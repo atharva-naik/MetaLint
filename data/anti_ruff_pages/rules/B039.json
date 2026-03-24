@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of mutable objects as ContextVar defaults.",
-    "why-is-this-bad": "The ContextVar default is evaluated once, when the ContextVar is defined.\n\n\nThe same mutable object is then shared across all .get() method calls to\nthe ContextVar. If the object is modified, those modifications will persist\nacross calls, which can lead to unexpected behavior.\n\n\nInstead, prefer to use immutable data structures. Alternatively, take\nNone as a default, and initialize a new mutable object inside for each\ncall using the .set() method.\n\n\nTypes outside the standard library can be marked as immutable with the\nlint.flake8-bugbear.extend-immutable-calls configuration option.",
-    "example": "from contextvars import ContextVar\n\n\ncv: ContextVar[list] = ContextVar(\"cv\", default=[])\n\n\n\nUse instead:\n\n\nfrom contextvars import ContextVar\n\n\ncv: ContextVar[list | None] = ContextVar(\"cv\", default=None)\n\n...\n\nif cv.get() is None:\n    cv.set([])",
-    "example-split": {
-        "example-before": "from contextvars import ContextVar\n\n\ncv: ContextVar[list] = ContextVar(\"cv\", default=[])\n\n",
-        "example-after": "\nfrom contextvars import ContextVar"
-    }
-}

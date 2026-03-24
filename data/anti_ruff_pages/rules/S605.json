@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for calls that start a process with a shell, providing guidance on\nwhether the usage is safe or not.",
-    "why-is-this-bad": "Starting a process with a shell can introduce security risks, such as\ncode injection vulnerabilities. It's important to be aware of whether the\nusage of the shell is safe or not.\n\n\nThis rule triggers on functions like os.system, popen, etc., which\nstart processes with a shell. It evaluates whether the provided command\nis a literal string or an expression. If the command is a literal string,\nit's considered safe. If the command is an expression, it's considered\n(potentially) unsafe.",
-    "example": "import os\n\n# Safe usage (literal string)\ncommand = \"ls -l\"\nos.system(command)\n\n# Potentially unsafe usage (expression)\ncmd = get_user_input()\nos.system(cmd)",
-    "example-split": {
-        "example-before": "import os\n\n# Safe usage (literal string)\ncommand = \"ls -l\"\nos.system(command)\n\n# Potentially unsafe usage (expression)\ncmd = get_user_input()\nos.system(cmd)",
-        "example-after": "import os"
-    }
-}

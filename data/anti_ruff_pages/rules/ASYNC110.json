@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the use of an async sleep function in a while loop.",
-    "why-is-this-bad": "Instead of sleeping in a while loop, and waiting for a condition\nto become true, it's preferable to await on an Event object such\nas: asyncio.Event, trio.Event, or anyio.Event.",
-    "example": "DONE = False\n\n\nasync def func():\n    while not DONE:\n        await asyncio.sleep(1)\n\n\n\nUse instead:\n\n\nDONE = asyncio.Event()\n\n\nasync def func():\n    await DONE.wait()",
-    "example-split": {
-        "example-before": "DONE = False\n\n\nasync def func():\n    while not DONE:\n        await asyncio.sleep(1)\n\n",
-        "example-after": "\nDONE = asyncio.Event()"
-    }
-}

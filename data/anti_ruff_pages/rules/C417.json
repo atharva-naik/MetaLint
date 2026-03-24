@@ -1,5 +1,0 @@
-{
-    "what-it-does": "Checks for unnecessary map() calls with lambda functions.",
-    "why-is-this-bad": "Using map(func, iterable) when func is a lambda is slower than\nusing a generator expression or a comprehension, as the latter approach\navoids the function call overhead, in addition to being more readable.\n\n\nThis rule also applies to map() calls within list(), set(), and\ndict() calls. For example:\n\n\n\nInstead of list(map(lambda num: num * 2, nums)), use\n    [num * 2 for num in nums].\nInstead of set(map(lambda num: num % 2 == 0, nums)), use\n    {num % 2 == 0 for num in nums}.\nInstead of dict(map(lambda v: (v, v ** 2), values)), use\n    {v: v ** 2 for v in values}.",
-    "fix-safety": "This rule's fix is marked as unsafe, as it may occasionally drop comments\nwhen rewriting the call. In most cases, though, comments will be preserved."
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of .stack on Pandas objects.",
-    "why-is-this-bad": "Prefer .melt to .stack, which has the same functionality but with\nsupport for direct column renaming and no dependence on MultiIndex.",
-    "example": "import pandas as pd\n\ncities_df = pd.read_csv(\"cities.csv\")\ncities_df.set_index(\"city\").stack()\n\n\n\nUse instead:\n\n\nimport pandas as pd\n\ncities_df = pd.read_csv(\"cities.csv\")\ncities_df.melt(id_vars=\"city\")",
-    "example-split": {
-        "example-before": "import pandas as pd\n\ncities_df = pd.read_csv(\"cities.csv\")\ncities_df.set_index(\"city\").stack()\n\n",
-        "example-after": "\nimport pandas as pd"
-    }
-}

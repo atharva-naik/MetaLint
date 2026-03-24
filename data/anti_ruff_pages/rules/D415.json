@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for docstrings in which the first line does not end in a punctuation\nmark, such as a period, question mark, or exclamation point.",
-    "why-is-this-bad": "The first line of a docstring should end with a period, question mark, or\nexclamation point, for grammatical correctness and consistency.\n\n\nThis rule may not apply to all projects; its applicability is a matter of\nconvention. By default, this rule is enabled when using the google\nconvention, and disabled when using the numpy and pep257 conventions.",
-    "example": "def average(values: list[float]) -> float:\n    \"\"\"Return the mean of the given values\"\"\"\n\n\n\nUse instead:\n\n\ndef average(values: list[float]) -> float:\n    \"\"\"Return the mean of the given values.\"\"\"",
-    "example-split": {
-        "example-before": "def average(values: list[float]) -> float:\n    \"\"\"Return the mean of the given values\"\"\"\n\n",
-        "example-after": "\ndef average(values: list[float]) -> float:\n    \"\"\"Return the mean of the given values.\"\"\""
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of datetime.datetime.max and datetime.datetime.min.",
-    "why-is-this-bad": "datetime.max and datetime.min are non-timezone-aware datetime objects.\n\n\nAs such, operations on datetime.max and datetime.min may behave\nunexpectedly, as in:\n\n\n# Timezone: UTC-14\ndatetime.max.timestamp()  # ValueError: year 10000 is out of range\ndatetime.min.timestamp()  # ValueError: year 0 is out of range",
-    "example": "datetime.max\n\n\n\nUse instead:\n\n\ndatetime.max.replace(tzinfo=datetime.UTC)",
-    "example-split": {
-        "example-before": "datetime.max\n\n",
-        "example-after": "\ndatetime.max.replace(tzinfo=datetime.UTC)"
-    }
-}

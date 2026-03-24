@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for \"XXX\" comments.",
-    "why-is-this-bad": "\"XXX\" comments are used to describe an issue that should be resolved.\n\n\nConsider resolving the issue before deploying the code, or, at minimum,\nusing a more descriptive comment tag (e.g, \"TODO\").",
-    "example": "def speed(distance, time):\n    return distance / time  # XXX: Raises ZeroDivisionError for time = 0.",
-    "example-split": {
-        "example-before": "def speed(distance, time):\n    return distance / time  # XXX: Raises ZeroDivisionError for time = 0.",
-        "example-after": "def speed(distance, time):\n    return distance / time  # XXX: Raises ZeroDivisionError for time = 0."
-    }
-}

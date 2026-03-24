@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for comparisons against NaN values.",
-    "why-is-this-bad": "Comparing against a NaN value can lead to unexpected results. For example,\nfloat(\"NaN\") == float(\"NaN\") will return False and, in general,\nx == float(\"NaN\") will always return False, even if x is NaN.\n\n\nTo determine whether a value is NaN, use math.isnan or np.isnan\ninstead of comparing against NaN directly.",
-    "example": "if x == float(\"NaN\"):\n    pass\n\n\n\nUse instead:\n\n\nimport math\n\nif math.isnan(x):\n    pass",
-    "example-split": {
-        "example-before": "if x == float(\"NaN\"):\n    pass\n\n",
-        "example-after": "\nimport math"
-    }
-}

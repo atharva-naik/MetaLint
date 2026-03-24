@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of insecure XML parsers.",
-    "why-is-this-bad": "Many XML parsers are vulnerable to XML attacks (such as entity expansion),\nwhich cause excessive memory and CPU usage by exploiting recursion. An\nattacker could use such methods to access unauthorized resources.\n\n\nConsider using the defusedxml package when parsing untrusted XML data,\nto protect against XML attacks.\n\n\nIn preview, this rule will also flag references to insecure XML parsers.",
-    "example": "from xml.sax.expatreader import create_parser\n\nparser = create_parser()\n\n\n\nUse instead:\n\n\nfrom defusedxml.sax import create_parser\n\nparser = create_parser()",
-    "example-split": {
-        "example-before": "from xml.sax.expatreader import create_parser\n\nparser = create_parser()\n\n",
-        "example-after": "\nfrom defusedxml.sax import create_parser"
-    }
-}

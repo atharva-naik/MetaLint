@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for key-based dict accesses during .items() iterations.",
-    "why-is-this-bad": "When iterating over a dict via .items(), the current value is already\navailable alongside its key. Using the key to look up the value is\nunnecessary.",
-    "example": "FRUITS = {\"apple\": 1, \"orange\": 10, \"berry\": 22}\n\nfor fruit_name, fruit_count in FRUITS.items():\n    print(FRUITS[fruit_name])\n\n\n\nUse instead:\n\n\nFRUITS = {\"apple\": 1, \"orange\": 10, \"berry\": 22}\n\nfor fruit_name, fruit_count in FRUITS.items():\n    print(fruit_count)",
-    "example-split": {
-        "example-before": "FRUITS = {\"apple\": 1, \"orange\": 10, \"berry\": 22}\n\nfor fruit_name, fruit_count in FRUITS.items():\n    print(FRUITS[fruit_name])\n\n",
-        "example-after": "\nFRUITS = {\"apple\": 1, \"orange\": 10, \"berry\": 22}"
-    }
-}

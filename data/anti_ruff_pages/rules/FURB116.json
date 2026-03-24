@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of bin(...)[2:] (or hex, or oct) to convert\nan integer into a string.",
-    "why-is-this-bad": "When converting an integer to a baseless binary, hexadecimal, or octal\nstring, using f-strings is more concise and readable than using the\nbin, hex, or oct functions followed by a slice.",
-    "example": "print(bin(1337)[2:])\n\n\n\nUse instead:\n\n\nprint(f\"{1337:b}\")",
-    "example-split": {
-        "example-before": "print(bin(1337)[2:])\n\n",
-        "example-after": "\nprint(f\"{1337:b}\")"
-    }
-}

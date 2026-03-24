@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Check for method calls that initiate a subprocess without a shell.",
-    "why-is-this-bad": "Starting a subprocess without a shell can prevent attackers from executing\narbitrary shell commands; however, it is still error-prone. Consider\nvalidating the input.",
-    "example": "import subprocess\n\ncmd = input(\"Enter a command: \").split()\nsubprocess.run(cmd)",
-    "example-split": {
-        "example-before": "import subprocess\n\ncmd = input(\"Enter a command: \").split()\nsubprocess.run(cmd)",
-        "example-after": "import subprocess"
-    }
-}

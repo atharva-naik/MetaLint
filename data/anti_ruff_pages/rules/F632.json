@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for is and is not comparisons against literals, like integers,\nstrings, or lists.",
-    "why-is-this-bad": "The is and is not comparators operate on identity, in that they check\nwhether two objects are the same object. If the objects are not the same\nobject, the comparison will always be False. Using is and is not with\nconstant literals often works \"by accident\", but are not guaranteed to produce\nthe expected result.\n\n\nAs of Python 3.8, using is and is not with constant literals will produce\na SyntaxWarning.\n\n\nThis rule will also flag is and is not comparisons against non-constant\nliterals, like lists, sets, and dictionaries. While such comparisons will\nnot raise a SyntaxWarning, they are still likely to be incorrect, as they\nwill compare the identities of the objects instead of their values, which\nwill always evaluate to False.\n\n\nInstead, use == and != to compare literals, which will compare the\nvalues of the objects instead of their identities.",
-    "example": "x = 200\nif x is 200:\n    print(\"It's 200!\")\n\n\n\nUse instead:\n\n\nx = 200\nif x == 200:\n    print(\"It's 200!\")",
-    "example-split": {
-        "example-before": "x = 200\nif x is 200:\n    print(\"It's 200!\")\n\n",
-        "example-after": "\nx = 200\nif x == 200:\n    print(\"It's 200!\")"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for functions in stub (.pyi) files that contain multiple\nstatements.",
-    "why-is-this-bad": "Stub files are never executed, and are only intended to define type hints.\nAs such, functions in stub files should not contain functional code, and\nshould instead contain only a single statement (e.g., ...).",
-    "example": "def function():\n    x = 1\n    y = 2\n    return x + y\n\n\n\nUse instead:\n\n\ndef function(): ...",
-    "example-split": {
-        "example-before": "def function():\n    x = 1\n    y = 2\n    return x + y\n\n",
-        "example-after": "\ndef function(): ..."
-    }
-}

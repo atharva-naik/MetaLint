@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of the functools.lru_cache and functools.cache\ndecorators on methods.",
-    "why-is-this-bad": "Using the functools.lru_cache and functools.cache decorators on methods\ncan lead to memory leaks, as the global cache will retain a reference to\nthe instance, preventing it from being garbage collected.\n\n\nInstead, refactor the method to depend only on its arguments and not on the\ninstance of the class, or use the @lru_cache decorator on a function\noutside of the class.\n\n\nThis rule ignores instance methods on enumeration classes, as enum members\nare singletons.",
-    "example": "from functools import lru_cache\n\n\ndef square(x: int) -> int:\n    return x * x\n\n\nclass Number:\n    value: int\n\n    @lru_cache\n    def squared(self):\n        return square(self.value)\n\n\n\nUse instead:\n\n\nfrom functools import lru_cache\n\n\n@lru_cache\ndef square(x: int) -> int:\n    return x * x\n\n\nclass Number:\n    value: int\n\n    def squared(self):\n        return square(self.value)",
-    "example-split": {
-        "example-before": "from functools import lru_cache\n\n\ndef square(x: int) -> int:\n    return x * x\n\n\nclass Number:\n    value: int\n\n    @lru_cache\n    def squared(self):\n        return square(self.value)\n\n",
-        "example-after": "\nfrom functools import lru_cache"
-    }
-}

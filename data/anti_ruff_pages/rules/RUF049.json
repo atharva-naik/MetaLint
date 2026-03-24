@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for enum classes which are also decorated with @dataclass.",
-    "why-is-this-bad": "Decorating an enum with @dataclass() does not cause any errors at runtime,\nbut may cause erroneous results:\n\n\n@dataclass\nclass E(Enum):\n    A = 1\n    B = 2\n\nprint(E.A == E.B)  # True",
-    "example": "from dataclasses import dataclass\nfrom enum import Enum\n\n\n@dataclass\nclass E(Enum): ...\n\n\n\nUse instead:\n\n\nfrom enum import Enum\n\n\nclass E(Enum): ...",
-    "example-split": {
-        "example-before": "from dataclasses import dataclass\nfrom enum import Enum\n\n\n@dataclass\nclass E(Enum): ...\n\n",
-        "example-after": "\nfrom enum import Enum"
-    }
-}

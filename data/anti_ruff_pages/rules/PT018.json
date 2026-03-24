@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for assertions that combine multiple independent conditions.",
-    "why-is-this-bad": "Composite assertion statements are harder to debug upon failure, as the\nfailure message will not indicate which condition failed.",
-    "example": "def test_foo():\n    assert something and something_else\n\n\ndef test_bar():\n    assert not (something or something_else)\n\n\n\nUse instead:\n\n\ndef test_foo():\n    assert something\n    assert something_else\n\n\ndef test_bar():\n    assert not something\n    assert not something_else",
-    "example-split": {
-        "example-before": "def test_foo():\n    assert something and something_else\n\n\ndef test_bar():\n    assert not (something or something_else)\n\n",
-        "example-after": "\ndef test_foo():\n    assert something\n    assert something_else"
-    }
-}

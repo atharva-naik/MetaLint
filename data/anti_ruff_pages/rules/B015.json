@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for useless comparisons.",
-    "why-is-this-bad": "Useless comparisons have no effect on the program, and are often included\nby mistake. If the comparison is intended to enforce an invariant, prepend\nthe comparison with an assert. Otherwise, remove it entirely.",
-    "example": "foo == bar\n\n\n\nUse instead:\n\n\nassert foo == bar, \"`foo` and `bar` should be equal.\"",
-    "example-split": {
-        "example-before": "foo == bar\n\n",
-        "example-after": "\nassert foo == bar, \"`foo` and `bar` should be equal.\""
-    }
-}

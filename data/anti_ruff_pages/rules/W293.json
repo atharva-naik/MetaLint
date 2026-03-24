@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for superfluous whitespace in blank lines.",
-    "why-is-this-bad": "According to PEP 8, \"avoid trailing whitespace anywhere. Because it\u2019s usually\ninvisible, it can be confusing\"",
-    "example": "class Foo(object):\\n    \\n    bang = 12\n\n\n\nUse instead:\n\n\nclass Foo(object):\\n\\n    bang = 12",
-    "example-split": {
-        "example-before": "class Foo(object):\\n    \\n    bang = 12\n\n",
-        "example-after": "\nclass Foo(object):\\n\\n    bang = 12"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of yield from in async functions.",
-    "why-is-this-bad": "Python doesn't support the use of yield from in async functions, and will\nraise a SyntaxError in such cases.\n\n\nInstead, considering refactoring the code to use an async for loop instead.",
-    "example": "async def numbers():\n    yield from [1, 2, 3, 4, 5]\n\n\n\nUse instead:\n\n\nasync def numbers():\n    async for number in [1, 2, 3, 4, 5]:\n        yield number",
-    "example-split": {
-        "example-before": "async def numbers():\n    yield from [1, 2, 3, 4, 5]\n\n",
-        "example-after": "\nasync def numbers():\n    async for number in [1, 2, 3, 4, 5]:\n        yield number"
-    }
-}

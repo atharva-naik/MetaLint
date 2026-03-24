@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of the builtin exec function.",
-    "why-is-this-bad": "The exec() function is insecure as it allows for arbitrary code\nexecution.",
-    "example": "exec(\"print('Hello World')\")",
-    "example-split": {
-        "example-before": "exec(\"print('Hello World')\")",
-        "example-after": "exec(\"print('Hello World')\")"
-    }
-}

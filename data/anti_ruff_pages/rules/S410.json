@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for imports of the lxml module.",
-    "why-is-this-bad": "Using various methods from the lxml module to parse untrusted XML data is\nknown to be vulnerable to XML attacks. Replace vulnerable imports with the\nequivalent defusedxml package.",
-    "example": "import lxml",
-    "example-split": {
-        "example-before": "import lxml",
-        "example-after": "import lxml"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks that class methods have return type annotations.",
-    "why-is-this-bad": "Type annotations are a good way to document the return types of functions. They also\nhelp catch bugs, when used alongside a type checker, by ensuring that the types of\nany returned values, and the types expected by callers, match expectation.",
-    "example": "class Foo:\n    @classmethod\n    def bar(cls):\n        return 1\n\n\n\nUse instead:\n\n\nclass Foo:\n    @classmethod\n    def bar(cls) -> int:\n        return 1",
-    "example-split": {
-        "example-before": "class Foo:\n    @classmethod\n    def bar(cls):\n        return 1\n\n",
-        "example-after": "\nclass Foo:\n    @classmethod\n    def bar(cls) -> int:\n        return 1"
-    }
-}

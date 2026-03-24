@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of calls to django.utils.safestring.mark_safe.",
-    "why-is-this-bad": "Cross-site scripting (XSS) vulnerabilities allow attackers to execute\narbitrary JavaScript. To guard against XSS attacks, Django templates\nassumes that data is unsafe and automatically escapes malicious strings\nbefore rending them.\n\n\ndjango.utils.safestring.mark_safe marks a string as safe for use in HTML\ntemplates, bypassing XSS protection. This is dangerous because it may allow\ncross-site scripting attacks if the string is not properly escaped.\n\n\nIn preview, this rule will also flag references to django.utils.safestring.mark_safe.",
-    "example": "from django.utils.safestring import mark_safe\n\ncontent = mark_safe(\"<script>alert('Hello, world!')</script>\")  # XSS.\n\n\n\nUse instead:\n\n\ncontent = \"<script>alert('Hello, world!')</script>\"  # Safe if rendered.",
-    "example-split": {
-        "example-before": "from django.utils.safestring import mark_safe\n\ncontent = mark_safe(\"<script>alert('Hello, world!')</script>\")  # XSS.\n\n",
-        "example-after": "\ncontent = \"<script>alert('Hello, world!')</script>\"  # Safe if rendered."
-    }
-}

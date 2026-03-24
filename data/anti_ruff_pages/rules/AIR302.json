@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of deprecated Airflow functions and values.",
-    "why-is-this-bad": "Airflow 3.0 removed various deprecated functions, members, and other\nvalues. Some have more modern replacements. Others are considered too niche\nand not worth to be maintained in Airflow.",
-    "example": "from airflow.utils.dates import days_ago\n\n\nyesterday = days_ago(today, 1)\n\n\n\nUse instead:\n\n\nfrom datetime import timedelta\n\n\nyesterday = today - timedelta(days=1)",
-    "example-split": {
-        "example-before": "from airflow.utils.dates import days_ago\n\n\nyesterday = days_ago(today, 1)\n\n",
-        "example-after": "\nfrom datetime import timedelta"
-    }
-}

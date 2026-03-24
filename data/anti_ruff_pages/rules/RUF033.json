@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for __post_init__ dataclass methods with parameter defaults.",
-    "why-is-this-bad": "Adding a default value to a parameter in a __post_init__ method has no\nimpact on whether the parameter will have a default value in the dataclass's\ngenerated __init__ method. To create an init-only dataclass parameter with\na default value, you should use an InitVar field in the dataclass's class\nbody and give that InitVar field a default value.\n\n\nAs the documentation states:\n\n\n\nInit-only fields are added as parameters to the generated __init__()\nmethod, and are passed to the optional __post_init__() method. They are\nnot otherwise used by dataclasses.",
-    "example": "from dataclasses import InitVar, dataclass\n\n\n@dataclass\nclass Foo:\n    bar: InitVar[int] = 0\n\n    def __post_init__(self, bar: int = 1, baz: int = 2) -> None:\n        print(bar, baz)\n\n\nfoo = Foo()  # Prints '0 2'.\n\n\n\nUse instead:\n\n\nfrom dataclasses import InitVar, dataclass\n\n\n@dataclass\nclass Foo:\n    bar: InitVar[int] = 1\n    baz: InitVar[int] = 2\n\n    def __post_init__(self, bar: int, baz: int) -> None:\n        print(bar, baz)\n\n\nfoo = Foo()  # Prints '1 2'.",
-    "example-split": {
-        "example-before": "from dataclasses import InitVar, dataclass\n\n\n@dataclass\nclass Foo:\n    bar: InitVar[int] = 0\n\n    def __post_init__(self, bar: int = 1, baz: int = 2) -> None:\n        print(bar, baz)\n\n\nfoo = Foo()  # Prints '0 2'.\n\n",
-        "example-after": "\nfrom dataclasses import InitVar, dataclass"
-    }
-}

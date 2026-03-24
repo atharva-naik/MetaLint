@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for function definitions that include too many arguments.\n\n\nBy default, this rule allows up to five arguments, as configured by the\nlint.pylint.max-args option.",
-    "why-is-this-bad": "Functions with many arguments are harder to understand, maintain, and call.\nConsider refactoring functions with many arguments into smaller functions\nwith fewer arguments, or using objects to group related arguments.",
-    "example": "def calculate_position(x_pos, y_pos, z_pos, x_vel, y_vel, z_vel, time):\n    new_x = x_pos + x_vel * time\n    new_y = y_pos + y_vel * time\n    new_z = z_pos + z_vel * time\n    return new_x, new_y, new_z\n\n\n\nUse instead:\n\n\nfrom typing import NamedTuple\n\n\nclass Vector(NamedTuple):\n    x: float\n    y: float\n    z: float\n\n\ndef calculate_position(pos: Vector, vel: Vector, time: float) -> Vector:\n    return Vector(*(p + v * time for p, v in zip(pos, vel)))",
-    "example-split": {
-        "example-before": "def calculate_position(x_pos, y_pos, z_pos, x_vel, y_vel, z_vel, time):\n    new_x = x_pos + x_vel * time\n    new_y = y_pos + y_vel * time\n    new_z = z_pos + z_vel * time\n    return new_x, new_y, new_z\n\n",
-        "example-after": "\nfrom typing import NamedTuple"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks that append, extend and remove methods are not called on\n__all__.",
-    "why-is-this-bad": "Different type checkers have varying levels of support for calling these\nmethods on __all__. Instead, use the += operator to add items to\n__all__, which is known to be supported by all major type checkers.",
-    "example": "import sys\n\n__all__ = [\"A\", \"B\"]\n\nif sys.version_info >= (3, 10):\n    __all__.append(\"C\")\n\nif sys.version_info >= (3, 11):\n    __all__.remove(\"B\")\n\n\n\nUse instead:\n\n\nimport sys\n\n__all__ = [\"A\"]\n\nif sys.version_info < (3, 11):\n    __all__ += [\"B\"]\n\nif sys.version_info >= (3, 10):\n    __all__ += [\"C\"]",
-    "example-split": {
-        "example-before": "import sys\n\n__all__ = [\"A\", \"B\"]\n\nif sys.version_info >= (3, 10):\n    __all__.append(\"C\")\n\nif sys.version_info >= (3, 11):\n    __all__.remove(\"B\")\n\n",
-        "example-after": "\nimport sys"
-    }
-}

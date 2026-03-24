@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for calls to ssl.wrap_socket() without an ssl_version.",
-    "why-is-this-bad": "This method is known to provide a default value that maximizes\ncompatibility, but permits use of insecure protocols.",
-    "example": "import ssl\n\nssl.wrap_socket()\n\n\n\nUse instead:\n\n\nimport ssl\n\nssl.wrap_socket(ssl_version=ssl.PROTOCOL_TLSv1_2)",
-    "example-split": {
-        "example-before": "import ssl\n\nssl.wrap_socket()\n\n",
-        "example-after": "\nimport ssl"
-    }
-}

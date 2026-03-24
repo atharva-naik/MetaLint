@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for quoted type annotations in stub (.pyi) files, which should be avoided.",
-    "why-is-this-bad": "Stub files natively support forward references in all contexts, as stubs\nare never executed at runtime. (They should be thought of as \"data files\"\nfor type checkers and IDEs.) As such, quotes are never required for type\nannotations in stub files, and should be omitted.",
-    "example": "def function() -> \"int\": ...\n\n\n\nUse instead:\n\n\ndef function() -> int: ...",
-    "example-split": {
-        "example-before": "def function() -> \"int\": ...\n\n",
-        "example-after": "\ndef function() -> int: ..."
-    }
-}

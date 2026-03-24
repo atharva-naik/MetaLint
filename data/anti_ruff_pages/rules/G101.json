@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for extra keywords in logging statements that clash with\nLogRecord attributes.",
-    "why-is-this-bad": "The logging module provides a mechanism for passing additional values to\nbe logged using the extra keyword argument. These values are then passed\nto the LogRecord constructor.\n\n\nProviding a value via extra that clashes with one of the attributes of\nthe LogRecord constructor will raise a KeyError when the LogRecord is\nconstructed.",
-    "example": "import logging\n\nlogging.basicConfig(format=\"%(name) - %(message)s\", level=logging.INFO)\n\nusername = \"Maria\"\n\nlogging.info(\"Something happened\", extra=dict(name=username))\n\n\n\nUse instead:\n\n\nimport logging\n\nlogging.basicConfig(format=\"%(user_id)s - %(message)s\", level=logging.INFO)\n\nusername = \"Maria\"\n\nlogging.info(\"Something happened\", extra=dict(user_id=username))",
-    "example-split": {
-        "example-before": "import logging\n\nlogging.basicConfig(format=\"%(name) - %(message)s\", level=logging.INFO)\n\nusername = \"Maria\"\n\nlogging.info(\"Something happened\", extra=dict(name=username))\n\n",
-        "example-after": "\nimport logging"
-    }
-}

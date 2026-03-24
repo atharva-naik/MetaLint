@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for assignments to the variable df.",
-    "why-is-this-bad": "Although df is a common variable name for a Pandas DataFrame, it's not a\ngreat variable name for production code, as it's non-descriptive and\nprone to name conflicts.\n\n\nInstead, use a more descriptive variable name.",
-    "example": "import pandas as pd\n\ndf = pd.read_csv(\"animals.csv\")\n\n\n\nUse instead:\n\n\nimport pandas as pd\n\nanimals = pd.read_csv(\"animals.csv\")",
-    "example-split": {
-        "example-before": "import pandas as pd\n\ndf = pd.read_csv(\"animals.csv\")\n\n",
-        "example-after": "\nimport pandas as pd"
-    }
-}

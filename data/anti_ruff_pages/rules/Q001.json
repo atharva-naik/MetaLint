@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for multiline strings that use single quotes or double quotes,\ndepending on the value of the lint.flake8-quotes.multiline-quotes\nsetting.",
-    "why-is-this-bad": "Consistency is good. Use either single or double quotes for multiline\nstrings, but be consistent.",
-    "example": "foo = '''\nbar\n'''\n\n\n\nAssuming multiline-quotes is set to double, use instead:\n\n\nfoo = \"\"\"\nbar\n\"\"\"",
-    "example-split": {
-        "example-before": "foo = '''\nbar\n'''\n\n\n\nAssuming multiline-quotes is set to double, use instead:\n\n\nfoo = \"\"\"\nbar\n\"\"\"",
-        "example-after": "foo = '''\nbar\n'''"
-    }
-}

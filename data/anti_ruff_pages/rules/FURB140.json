@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for generator expressions, list and set comprehensions that can\nbe replaced with itertools.starmap.",
-    "why-is-this-bad": "When unpacking values from iterators to pass them directly to\na function, prefer itertools.starmap.\n\n\nUsing itertools.starmap is more concise and readable. Furthermore, it is\nmore efficient than generator expressions, and in some versions of Python,\nit is more efficient than comprehensions.",
-    "example": "all(predicate(a, b) for a, b in some_iterable)\n\n\n\nUse instead:\n\n\nfrom itertools import starmap\n\n\nall(starmap(predicate, some_iterable))",
-    "example-split": {
-        "example-before": "all(predicate(a, b) for a, b in some_iterable)\n\n",
-        "example-after": "\nfrom itertools import starmap"
-    }
-}

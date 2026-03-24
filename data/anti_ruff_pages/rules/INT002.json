@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for str.format calls in gettext function calls.",
-    "why-is-this-bad": "In the gettext API, the gettext function (often aliased to _) returns\na translation of its input argument by looking it up in a translation\ncatalog.\n\n\nCalling gettext with a formatted string as its argument can cause\nunexpected behavior. Since the formatted string is resolved before the\nfunction call, the translation catalog will look up the formatted string,\nrather than the str.format-style template.\n\n\nInstead, format the value returned by the function call, rather than\nits argument.",
-    "example": "from gettext import gettext as _\n\nname = \"Maria\"\n_(\"Hello, %s!\" % name)  # Looks for \"Hello, Maria!\".\n\n\n\nUse instead:\n\n\nfrom gettext import gettext as _\n\nname = \"Maria\"\n_(\"Hello, %s!\") % name  # Looks for \"Hello, %s!\".",
-    "example-split": {
-        "example-before": "from gettext import gettext as _\n\nname = \"Maria\"\n_(\"Hello, %s!\" % name)  # Looks for \"Hello, Maria!\".\n\n",
-        "example-after": "\nfrom gettext import gettext as _"
-    }
-}

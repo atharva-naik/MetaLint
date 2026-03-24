@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for unnecessary calls to encode as UTF-8.",
-    "why-is-this-bad": "UTF-8 is the default encoding in Python, so there is no need to call\nencode when UTF-8 is the desired encoding. Instead, use a bytes literal.",
-    "example": "\"foo\".encode(\"utf-8\")\n\n\n\nUse instead:\n\n\nb\"foo\"",
-    "example-split": {
-        "example-before": "\"foo\".encode(\"utf-8\")\n\n",
-        "example-after": "\nb\"foo\""
-    }
-}

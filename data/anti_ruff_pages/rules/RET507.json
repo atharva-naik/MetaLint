@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for else statements with a continue statement in the preceding\nif block.",
-    "why-is-this-bad": "The else statement is not needed, as the continue statement will always\ncontinue onto the next iteration of a loop. Removing the else will reduce\nnesting and make the code more readable.",
-    "example": "def foo(bar, baz):\n    for i in bar:\n        if i < baz:\n            continue\n        else:\n            x = 0\n\n\n\nUse instead:\n\n\ndef foo(bar, baz):\n    for i in bar:\n        if i < baz:\n            continue\n        x = 0",
-    "example-split": {
-        "example-before": "def foo(bar, baz):\n    for i in bar:\n        if i < baz:\n            continue\n        else:\n            x = 0\n\n",
-        "example-after": "\ndef foo(bar, baz):\n    for i in bar:\n        if i < baz:\n            continue\n        x = 0"
-    }
-}

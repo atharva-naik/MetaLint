@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for dunder methods that have no special meaning in Python 3.",
-    "why-is-this-bad": "Misspelled or no longer supported dunder name methods may cause your code to not function\nas expected.\n\n\nSince dunder methods are associated with customizing the behavior\nof a class in Python, introducing a dunder method such as __foo__\nthat diverges from standard Python dunder methods could potentially\nconfuse someone reading the code.\n\n\nThis rule will detect all methods starting and ending with at least\none underscore (e.g., _str_), but ignores known dunder methods (like\n__init__), as well as methods that are marked with @override.\n\n\nAdditional dunder methods names can be allowed via the\nlint.pylint.allow-dunder-method-names setting.",
-    "example": "class Foo:\n    def __init_(self): ...\n\n\n\nUse instead:\n\n\nclass Foo:\n    def __init__(self): ...",
-    "example-split": {
-        "example-before": "class Foo:\n    def __init_(self): ...\n\n",
-        "example-after": "\nclass Foo:\n    def __init__(self): ..."
-    }
-}

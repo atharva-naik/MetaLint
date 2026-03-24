@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for unnecessary @pytest.mark.asyncio decorators applied to fixtures.",
-    "why-is-this-bad": "pytest.mark.asyncio is unnecessary for fixtures.",
-    "example": "import pytest\n\n\n@pytest.mark.asyncio()\n@pytest.fixture()\nasync def my_fixture():\n    return 0\n\n\n\nUse instead:\n\n\nimport pytest\n\n\n@pytest.fixture()\nasync def my_fixture():\n    return 0",
-    "example-split": {
-        "example-before": "import pytest\n\n\n@pytest.mark.asyncio()\n@pytest.fixture()\nasync def my_fixture():\n    return 0\n\n",
-        "example-after": "\nimport pytest"
-    }
-}

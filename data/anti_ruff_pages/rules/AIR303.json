@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of Airflow functions and values that have been moved to it providers.\n(e.g., apache-airflow-providers-fab)",
-    "why-is-this-bad": "Airflow 3.0 moved various deprecated functions, members, and other\nvalues to its providers. The user needs to install the corresponding provider and replace\nthe original usage with the one in the provider",
-    "example": "from airflow.auth.managers.fab.fab_auth_manage import FabAuthManager\n\n\n\nUse instead:\n\n\nfrom airflow.providers.fab.auth_manager.fab_auth_manage import FabAuthManager",
-    "example-split": {
-        "example-before": "from airflow.auth.managers.fab.fab_auth_manage import FabAuthManager\n\n",
-        "example-after": "\nfrom airflow.providers.fab.auth_manager.fab_auth_manage import FabAuthManager"
-    }
-}

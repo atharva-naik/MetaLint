@@ -1,4 +1,0 @@
-{
-    "what-it-does": "Checks for the use of too many expressions in starred assignment statements.",
-    "why-is-this-bad": "In assignment statements, starred expressions can be used to unpack iterables.\n\n\nIn Python 3, no more than 1 \\<< 8 assignments are allowed before a starred\nexpression, and no more than 1 \\<< 24 expressions are allowed after a starred\nexpression."
-}

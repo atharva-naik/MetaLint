@@ -1,5 +1,0 @@
-{
-    "what-it-does": "Checks for unnecessary default type arguments for Generator and\nAsyncGenerator on Python 3.13+.",
-    "why-is-this-bad": "Python 3.13 introduced the ability for type parameters to specify default\nvalues. Following this change, several standard-library classes were\nupdated to add default values for some of their type parameters. For\nexample, Generator[int] is now equivalent to\nGenerator[int, None, None], as the second and third type parameters of\nGenerator now default to None.\n\n\nOmitting type arguments that match the default values can make the code\nmore concise and easier to read.",
-    "fix-safety": "This rule's fix is marked as safe, unless the type annotation contains comments."
-}

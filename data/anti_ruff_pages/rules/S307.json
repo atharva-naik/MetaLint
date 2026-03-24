@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of the builtin eval() function.",
-    "why-is-this-bad": "The eval() function is insecure as it enables arbitrary code execution.\n\n\nIf you need to evaluate an expression from a string, consider using\nast.literal_eval() instead, which will raise an exception if the\nexpression is not a valid Python literal.\n\n\nIn preview, this rule will also flag references to eval.",
-    "example": "x = eval(input(\"Enter a number: \"))\n\n\n\nUse instead:\n\n\nfrom ast import literal_eval\n\nx = literal_eval(input(\"Enter a number: \"))",
-    "example-split": {
-        "example-before": "x = eval(input(\"Enter a number: \"))\n\n",
-        "example-after": "\nfrom ast import literal_eval"
-    }
-}

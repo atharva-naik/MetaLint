@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for printf-style format strings with invalid format characters.",
-    "why-is-this-bad": "In printf-style format strings, the % character is used to indicate\nplaceholders. If a % character is not followed by a valid format\ncharacter, it will raise a ValueError at runtime.",
-    "example": "\"Hello, %S\" % \"world\"\n\n\n\nUse instead:\n\n\n\"Hello, %s\" % \"world\"",
-    "example-split": {
-        "example-before": "\"Hello, %S\" % \"world\"\n\n",
-        "example-after": "\n\"Hello, %s\" % \"world\""
-    }
-}

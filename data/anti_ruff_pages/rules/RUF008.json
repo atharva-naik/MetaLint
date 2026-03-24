@@ -1,4 +1,0 @@
-{
-    "what-it-does": "Checks for mutable default values in dataclass attributes.",
-    "why-is-this-bad": "Mutable default values share state across all instances of the dataclass.\nThis can lead to bugs when the attributes are changed in one instance, as\nthose changes will unexpectedly affect all other instances.\n\n\nInstead of sharing mutable defaults, use the field(default_factory=...)\npattern.\n\n\nIf the default value is intended to be mutable, it must be annotated with\ntyping.ClassVar; otherwise, a ValueError will be raised."
-}

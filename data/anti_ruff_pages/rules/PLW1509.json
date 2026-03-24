@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of subprocess.Popen with a preexec_fn argument.",
-    "why-is-this-bad": "The preexec_fn argument is unsafe within threads as it can lead to\ndeadlocks. Furthermore, preexec_fn is targeted for deprecation.\n\n\nInstead, consider using task-specific arguments such as env,\nstart_new_session, and process_group. These are not prone to deadlocks\nand are more explicit.",
-    "example": "import os, subprocess\n\nsubprocess.Popen(foo, preexec_fn=os.setsid)\nsubprocess.Popen(bar, preexec_fn=os.setpgid(0, 0))\n\n\n\nUse instead:\n\n\nimport subprocess\n\nsubprocess.Popen(foo, start_new_session=True)\nsubprocess.Popen(bar, process_group=0)  # Introduced in Python 3.11",
-    "example-split": {
-        "example-before": "import os, subprocess\n\nsubprocess.Popen(foo, preexec_fn=os.setsid)\nsubprocess.Popen(bar, preexec_fn=os.setpgid(0, 0))\n\n",
-        "example-after": "\nimport subprocess"
-    }
-}

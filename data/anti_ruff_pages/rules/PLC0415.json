@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for import statements outside of a module's top-level scope, such\nas within a function or class definition.",
-    "why-is-this-bad": "PEP 8 recommends placing imports not only at the top-level of a module,\nbut at the very top of the file, \"just after any module comments and\ndocstrings, and before module globals and constants.\"\n\n\nimport statements have effects that are global in scope; defining them at\nthe top level has a number of benefits. For example, it makes it easier to\nidentify the dependencies of a module, and ensures that any invalid imports\nare caught regardless of whether a specific function is called or class is\ninstantiated.\n\n\nAn import statement would typically be placed within a function only to\navoid a circular dependency, to defer a costly module load, or to avoid\nloading a dependency altogether in a certain runtime environment.",
-    "example": "def print_python_version():\n    import platform\n\n    print(python.python_version())\n\n\n\nUse instead:\n\n\nimport platform\n\n\ndef print_python_version():\n    print(python.python_version())",
-    "example-split": {
-        "example-before": "def print_python_version():\n    import platform\n\n    print(python.python_version())\n\n",
-        "example-after": "\nimport platform"
-    }
-}

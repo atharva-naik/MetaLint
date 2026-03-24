@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for redundant Final[Literal[...]] annotations.",
-    "why-is-this-bad": "All constant variables annotated as Final are understood as implicitly\nhaving Literal types by a type checker. As such, a Final[Literal[...]]\nannotation can often be replaced with a bare Final, annotation, which\nwill have the same meaning to the type checker while being more concise and\nmore readable.",
-    "example": "from typing import Final, Literal\n\nx: Final[Literal[42]]\ny: Final[Literal[42]] = 42\n\n\n\nUse instead:\n\n\nfrom typing import Final, Literal\n\nx: Final = 42\ny: Final = 42",
-    "example-split": {
-        "example-before": "from typing import Final, Literal\n\nx: Final[Literal[42]]\ny: Final[Literal[42]] = 42\n\n",
-        "example-after": "\nfrom typing import Final, Literal"
-    }
-}

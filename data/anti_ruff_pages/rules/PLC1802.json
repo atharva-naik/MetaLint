@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for usage of call of 'len' on sequences\nin boolean test context.",
-    "why-is-this-bad": "Empty sequences are considered false in a boolean context.\nYou can either remove the call to 'len'\nor compare the length against a scalar.",
-    "example": "fruits = [\"orange\", \"apple\"]\nvegetables = []\n\nif len(fruits):\n    print(fruits)\n\nif not len(vegetables):\n    print(vegetables)\n\n\n\nUse instead:\n\n\nfruits = [\"orange\", \"apple\"]\n\nif fruits:\n    print(fruits)\n\nif not vegetables:\n    print(vegetables)",
-    "example-split": {
-        "example-before": "fruits = [\"orange\", \"apple\"]\nvegetables = []\n\nif len(fruits):\n    print(fruits)\n\nif not len(vegetables):\n    print(vegetables)\n\n",
-        "example-after": "\nfruits = [\"orange\", \"apple\"]"
-    }
-}

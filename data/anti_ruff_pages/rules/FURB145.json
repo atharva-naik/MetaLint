@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for unbounded slice expressions to copy a list.",
-    "why-is-this-bad": "The list.copy method is more readable and consistent with copying other\ntypes.",
-    "example": "a = [1, 2, 3]\nb = a[:]\n\n\n\nUse instead:\n\n\na = [1, 2, 3]\nb = a.copy()",
-    "example-split": {
-        "example-before": "a = [1, 2, 3]\nb = a[:]\n\n",
-        "example-after": "\na = [1, 2, 3]\nb = a.copy()"
-    }
-}

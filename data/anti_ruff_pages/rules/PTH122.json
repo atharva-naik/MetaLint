@@ -1,4 +1,0 @@
-{
-    "what-it-does": "Checks for uses of os.path.splitext.",
-    "why-is-this-bad": "pathlib offers a high-level API for path manipulation, as compared to\nthe lower-level API offered by os.path. When possible, using Path object\nmethods such as Path.suffix and Path.stem can improve readability over\nthe os.path module's counterparts (e.g., os.path.splitext()).\n\n\nos.path.splitext() specifically returns a tuple of the file root and\nextension (e.g., given splitext('/foo/bar.py'), os.path.splitext()\nreturns (\"foo/bar\", \".py\"). These outputs can be reconstructed through a\ncombination of Path.suffix (\".py\"), Path.stem (\"bar\"), and\nPath.parent (\"foo\")."
-}

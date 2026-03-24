@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for __init__ methods that are turned into generators by the\ninclusion of yield or yield from expressions.",
-    "why-is-this-bad": "The __init__ method is the constructor for a given Python class,\nresponsible for initializing, rather than creating, new objects.\n\n\nThe __init__ method has to return None. By including a yield or\nyield from expression in an __init__, the method will return a\ngenerator object when called at runtime, resulting in a runtime error.",
-    "example": "class InitIsGenerator:\n    def __init__(self, i):\n        yield i",
-    "example-split": {
-        "example-before": "class InitIsGenerator:\n    def __init__(self, i):\n        yield i",
-        "example-after": "class InitIsGenerator:\n    def __init__(self, i):\n        yield i"
-    }
-}

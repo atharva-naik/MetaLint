@@ -1,4 +1,0 @@
-{
-    "what-it-does": "Checks for banned imports.",
-    "why-is-this-bad": "Projects may want to ensure that specific modules or module members are\nnot imported or accessed.\n\n\nSecurity or other company policies may be a reason to impose\nrestrictions on importing external Python libraries. In some cases,\nprojects may adopt conventions around the use of certain modules or\nmodule members that are not enforceable by the language itself.\n\n\nThis rule enforces certain import conventions project-wide automatically."
-}

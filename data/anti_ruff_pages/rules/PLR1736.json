@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for index-based list accesses during enumerate iterations.",
-    "why-is-this-bad": "When iterating over a list with enumerate, the current item is already\navailable alongside its index. Using the index to look up the item is\nunnecessary.",
-    "example": "letters = [\"a\", \"b\", \"c\"]\n\nfor index, letter in enumerate(letters):\n    print(letters[index])\n\n\n\nUse instead:\n\n\nletters = [\"a\", \"b\", \"c\"]\n\nfor index, letter in enumerate(letters):\n    print(letter)",
-    "example-split": {
-        "example-before": "letters = [\"a\", \"b\", \"c\"]\n\nfor index, letter in enumerate(letters):\n    print(letters[index])\n\n",
-        "example-after": "\nletters = [\"a\", \"b\", \"c\"]"
-    }
-}

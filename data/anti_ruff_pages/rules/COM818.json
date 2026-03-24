@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the presence of trailing commas on bare (i.e., unparenthesized)\ntuples.",
-    "why-is-this-bad": "The presence of a misplaced comma will cause Python to interpret the value\nas a tuple, which can lead to unexpected behaviour.",
-    "example": "import json\n\n\nfoo = json.dumps({\"bar\": 1}),\n\n\n\nUse instead:\n\n\nimport json\n\n\nfoo = json.dumps({\"bar\": 1})\n\n\n\nIn the event that a tuple is intended, then use instead:\n\n\nimport json\n\n\nfoo = (json.dumps({\"bar\": 1}),)",
-    "example-split": {
-        "example-before": "import json\n\n\nfoo = json.dumps({\"bar\": 1}),\n\n",
-        "example-after": "\nimport json"
-    }
-}
