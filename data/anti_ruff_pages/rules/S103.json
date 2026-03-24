@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for files with overly permissive permissions.",
-    "why-is-this-bad": "Overly permissive file permissions may allow unintended access and\narbitrary code execution.",
-    "example": "import os\n\nos.chmod(\"/etc/secrets.txt\", 0o666)  # rw-rw-rw-\n\n\n\nUse instead:\n\n\nimport os\n\nos.chmod(\"/etc/secrets.txt\", 0o600)  # rw-------",
-    "example-split": {
-        "example-before": "import os\n\nos.chmod(\"/etc/secrets.txt\", 0o666)  # rw-rw-rw-\n\n",
-        "example-after": "\nimport os"
-    }
-}

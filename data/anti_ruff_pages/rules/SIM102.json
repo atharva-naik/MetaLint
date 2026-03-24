@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for nested if statements that can be collapsed into a single if\nstatement.",
-    "why-is-this-bad": "Nesting if statements leads to deeper indentation and makes code harder to\nread. Instead, combine the conditions into a single if statement with an\nand operator.",
-    "example": "if foo:\n    if bar:\n        ...\n\n\n\nUse instead:\n\n\nif foo and bar:\n    ...",
-    "example-split": {
-        "example-before": "if foo:\n    if bar:\n        ...\n\n",
-        "example-after": "\nif foo and bar:\n    ..."
-    }
-}

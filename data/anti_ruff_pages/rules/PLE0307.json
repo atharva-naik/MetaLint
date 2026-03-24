@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for __str__ implementations that return a type other than str.",
-    "why-is-this-bad": "The __str__ method should return a str object. Returning a different\ntype may cause unexpected behavior.",
-    "example": "class Foo:\n    def __str__(self):\n        return True\n\n\n\nUse instead:\n\n\nclass Foo:\n    def __str__(self):\n        return \"Foo\"",
-    "example-split": {
-        "example-before": "class Foo:\n    def __str__(self):\n        return True\n\n",
-        "example-after": "\nclass Foo:\n    def __str__(self):\n        return \"Foo\""
-    }
-}

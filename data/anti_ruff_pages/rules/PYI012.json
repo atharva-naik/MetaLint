@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the presence of the pass statement in non-empty class bodies\nin .pyi files.",
-    "why-is-this-bad": "The pass statement is always unnecessary in non-empty class bodies in\nstubs.",
-    "example": "class MyClass:\n    x: int\n    pass\n\n\n\nUse instead:\n\n\nclass MyClass:\n    x: int",
-    "example-split": {
-        "example-before": "class MyClass:\n    x: int\n    pass\n\n",
-        "example-after": "\nclass MyClass:\n    x: int"
-    }
-}

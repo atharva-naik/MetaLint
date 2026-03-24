@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for os.getenv calls with an invalid key argument.",
-    "why-is-this-bad": "os.getenv only supports strings as the first argument (key).\n\n\nIf the provided argument is not a string, os.getenv will throw a\nTypeError at runtime.",
-    "example": "os.getenv(1)\n\n\n\nUse instead:\n\n\nos.getenv(\"1\")",
-    "example-split": {
-        "example-before": "os.getenv(1)\n\n",
-        "example-after": "\nos.getenv(\"1\")"
-    }
-}

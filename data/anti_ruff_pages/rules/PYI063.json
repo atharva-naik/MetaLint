@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the presence of PEP 484-style positional-only parameters.",
-    "why-is-this-bad": "Historically, PEP 484 recommended prefixing parameter names with double\nunderscores (__) to indicate to a type checker that they were\npositional-only. However, PEP 570 (introduced in Python 3.8) introduced\ndedicated syntax for positional-only arguments. If a forward slash (/) is\npresent in a function signature on Python 3.8+, all parameters prior to the\nslash are interpreted as positional-only.\n\n\nThe new syntax should be preferred as it is more widely used, more concise\nand more readable. It is also respected by Python at runtime, whereas the\nold-style syntax was only understood by type checkers.",
-    "example": "def foo(__x: int) -> None: ...\n\n\n\nUse instead:\n\n\ndef foo(x: int, /) -> None: ...",
-    "example-split": {
-        "example-before": "def foo(__x: int) -> None: ...\n\n",
-        "example-after": "\ndef foo(x: int, /) -> None: ..."
-    }
-}

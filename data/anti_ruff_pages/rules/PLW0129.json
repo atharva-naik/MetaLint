@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for assert statements that use a string literal as the first\nargument.",
-    "why-is-this-bad": "An assert on a non-empty string literal will always pass, while an\nassert on an empty string literal will always fail.",
-    "example": "assert \"always true\"",
-    "example-split": {
-        "example-before": "assert \"always true\"",
-        "example-after": "assert \"always true\""
-    }
-}

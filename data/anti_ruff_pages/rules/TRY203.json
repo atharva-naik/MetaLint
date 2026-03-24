@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for immediate uses of raise within exception handlers.",
-    "why-is-this-bad": "Capturing an exception, only to immediately reraise it, has no effect.\nInstead, remove the error-handling code and let the exception propagate\nupwards without the unnecessary try-except block.",
-    "example": "def foo():\n    try:\n        bar()\n    except NotImplementedError:\n        raise\n\n\n\nUse instead:\n\n\ndef foo():\n    bar()",
-    "example-split": {
-        "example-before": "def foo():\n    try:\n        bar()\n    except NotImplementedError:\n        raise\n\n",
-        "example-after": "\ndef foo():\n    bar()"
-    }
-}

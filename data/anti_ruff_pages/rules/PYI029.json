@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for redundant definitions of __str__ or __repr__ in stubs.",
-    "why-is-this-bad": "Defining __str__ or __repr__ in a stub is almost always redundant,\nas the signatures are almost always identical to those of the default\nequivalent, object.__str__ and object.__repr__, respectively.",
-    "example": "class Foo:\n    def __repr__(self) -> str: ...",
-    "example-split": {
-        "example-before": "class Foo:\n    def __repr__(self) -> str: ...",
-        "example-after": "class Foo:\n    def __repr__(self) -> str: ..."
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for type checks that do not raise TypeError.",
-    "why-is-this-bad": "The Python documentation states that TypeError should be raised upon\nencountering an inappropriate type.",
-    "example": "def foo(n: int):\n    if isinstance(n, int):\n        pass\n    else:\n        raise ValueError(\"n must be an integer\")\n\n\n\nUse instead:\n\n\ndef foo(n: int):\n    if isinstance(n, int):\n        pass\n    else:\n        raise TypeError(\"n must be an integer\")",
-    "example-split": {
-        "example-before": "def foo(n: int):\n    if isinstance(n, int):\n        pass\n    else:\n        raise ValueError(\"n must be an integer\")\n\n",
-        "example-after": "\ndef foo(n: int):\n    if isinstance(n, int):\n        pass\n    else:\n        raise TypeError(\"n must be an integer\")"
-    }
-}

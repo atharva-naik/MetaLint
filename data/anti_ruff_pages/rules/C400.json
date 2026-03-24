@@ -1,5 +1,0 @@
-{
-    "what-it-does": "Checks for unnecessary generators that can be rewritten as list\ncomprehensions (or with list() directly).",
-    "why-is-this-bad": "It is unnecessary to use list() around a generator expression, since\nthere are equivalent comprehensions for these types. Using a\ncomprehension is clearer and more idiomatic.\n\n\nFurther, if the comprehension can be removed entirely, as in the case of\nlist(x for x in foo), it's better to use list(foo) directly, since it's\neven more direct.",
-    "fix-safety": "This rule's fix is marked as unsafe, as it may occasionally drop comments\nwhen rewriting the call. In most cases, though, comments will be preserved."
-}

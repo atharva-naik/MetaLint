@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for docstrings on class definitions that are preceded by a blank\nline.",
-    "why-is-this-bad": "Avoid introducing any blank lines between a class definition and its\ndocstring, for consistency.\n\n\nThis rule may not apply to all projects; its applicability is a matter of\nconvention. By default, this rule is enabled when using the google,\nnumpy, and pep257 conventions.\n\n\nFor an alternative, see D203.",
-    "example": "class PhotoMetadata:\n\n    \"\"\"Metadata about a photo.\"\"\"\n\n\n\nUse instead:\n\n\nclass PhotoMetadata:\n    \"\"\"Metadata about a photo.\"\"\"",
-    "example-split": {
-        "example-before": "class PhotoMetadata:\n\n    \"\"\"Metadata about a photo.\"\"\"\n\n",
-        "example-after": "\nclass PhotoMetadata:\n    \"\"\"Metadata about a photo.\"\"\""
-    }
-}

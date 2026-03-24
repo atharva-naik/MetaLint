@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for and expressions that contain falsey values.",
-    "why-is-this-bad": "If the expression is used as a condition, it can be replaced in-full with\nFalse.\n\n\nIn other cases, the expression can be short-circuited to the first falsey\nvalue.\n\n\nBy using False (or the first falsey value), the code is more concise\nand easier to understand, since it no longer contains redundant conditions.",
-    "example": "if x and [] and y:\n    pass\n\na = x and [] and y\n\n\n\nUse instead:\n\n\nif False:\n    pass\n\na = x and []",
-    "example-split": {
-        "example-before": "if x and [] and y:\n    pass\n\na = x and [] and y\n\n",
-        "example-after": "\nif False:\n    pass"
-    }
-}

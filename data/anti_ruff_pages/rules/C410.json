@@ -1,5 +1,0 @@
-{
-    "what-it-does": "Checks for list() calls that take unnecessary list or tuple literals as\narguments.",
-    "why-is-this-bad": "It's unnecessary to use a list or tuple literal within a list() call,\nsince there is a literal syntax for these types.\n\n\nIf a list literal is passed in, then the outer call to list() should be\nremoved. Otherwise, if a tuple literal is passed in, then it should be\nrewritten as a list literal.",
-    "fix-safety": "This rule's fix is marked as unsafe, as it may occasionally drop comments\nwhen rewriting the call. In most cases, though, comments will be preserved."
-}

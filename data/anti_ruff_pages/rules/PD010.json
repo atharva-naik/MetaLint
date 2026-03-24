@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of .pivot or .unstack on Pandas objects.",
-    "why-is-this-bad": "Prefer .pivot_table to .pivot or .unstack. .pivot_table is more general\nand can be used to implement the same behavior as .pivot and .unstack.",
-    "example": "import pandas as pd\n\ndf = pd.read_csv(\"cities.csv\")\ndf.pivot(index=\"city\", columns=\"year\", values=\"population\")\n\n\n\nUse instead:\n\n\nimport pandas as pd\n\ndf = pd.read_csv(\"cities.csv\")\ndf.pivot_table(index=\"city\", columns=\"year\", values=\"population\")",
-    "example-split": {
-        "example-before": "import pandas as pd\n\ndf = pd.read_csv(\"cities.csv\")\ndf.pivot(index=\"city\", columns=\"year\", values=\"population\")\n\n",
-        "example-after": "\nimport pandas as pd"
-    }
-}

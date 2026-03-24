@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of trio.sleep(0) or anyio.sleep(0).",
-    "why-is-this-bad": "trio.sleep(0) is equivalent to calling trio.lowlevel.checkpoint().\nHowever, the latter better conveys the intent of the code.",
-    "example": "import trio\n\n\nasync def func():\n    await trio.sleep(0)\n\n\n\nUse instead:\n\n\nimport trio\n\n\nasync def func():\n    await trio.lowlevel.checkpoint()",
-    "example-split": {
-        "example-before": "import trio\n\n\nasync def func():\n    await trio.sleep(0)\n\n",
-        "example-after": "\nimport trio"
-    }
-}

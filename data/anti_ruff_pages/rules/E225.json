@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for missing whitespace around all operators.",
-    "why-is-this-bad": "According to PEP 8, there should be one space before and after all\noperators.",
-    "example": "if number==42:\n    print('you have found the meaning of life')\n\n\n\nUse instead:\n\n\nif number == 42:\n    print('you have found the meaning of life')",
-    "example-split": {
-        "example-before": "if number==42:\n    print('you have found the meaning of life')\n\n",
-        "example-after": "\nif number == 42:\n    print('you have found the meaning of life')"
-    }
-}

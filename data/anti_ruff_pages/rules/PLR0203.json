@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the use of a staticmethod being made without the decorator.",
-    "why-is-this-bad": "When it comes to consistency and readability, it's preferred to use the decorator.",
-    "example": "class Foo:\n    def bar(arg1, arg2): ...\n\n    bar = staticmethod(bar)\n\n\n\nUse instead:\n\n\nclass Foo:\n    @staticmethod\n    def bar(arg1, arg2): ...",
-    "example-split": {
-        "example-before": "class Foo:\n    def bar(arg1, arg2): ...\n\n    bar = staticmethod(bar)\n\n",
-        "example-after": "\nclass Foo:\n    @staticmethod\n    def bar(arg1, arg2): ..."
-    }
-}

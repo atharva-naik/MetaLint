@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for literals that are similar to constants in math module.",
-    "why-is-this-bad": "Hard-coding mathematical constants like \u03c0 increases code duplication,\nreduces readability, and may lead to a lack of precision.",
-    "example": "A = 3.141592 * r**2\n\n\n\nUse instead:\n\n\nA = math.pi * r**2",
-    "example-split": {
-        "example-before": "A = 3.141592 * r**2\n\n",
-        "example-after": "\nA = math.pi * r**2"
-    }
-}

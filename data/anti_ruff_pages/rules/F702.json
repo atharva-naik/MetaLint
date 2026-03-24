@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for continue statements outside of loops.",
-    "why-is-this-bad": "The use of a continue statement outside of a for or while loop will\nraise a SyntaxError.",
-    "example": "def foo():\n    continue  # SyntaxError",
-    "example-split": {
-        "example-before": "def foo():\n    continue  # SyntaxError",
-        "example-after": "def foo():\n    continue  # SyntaxError"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Check for if-else-blocks that can be replaced with a ternary operator.\nMoreover, in preview, check if these ternary expressions can be\nfurther simplified to binary expressions.",
-    "why-is-this-bad": "if-else-blocks that assign a value to a variable in both branches can\nbe expressed more concisely by using a ternary or binary operator.",
-    "example": "if foo:\n    bar = x\nelse:\n    bar = y\n\n\n\nUse instead:\n\n\nbar = x if foo else y\n\n\n\nOr, in preview:\n\n\nif cond:\n    z = cond\nelse:\n    z = other_cond\n\n\n\nUse instead:\n\n\nz = cond or other_cond",
-    "example-split": {
-        "example-before": "if foo:\n    bar = x\nelse:\n    bar = y\n\n",
-        "example-after": "\nz = cond or other_cond"
-    }
-}

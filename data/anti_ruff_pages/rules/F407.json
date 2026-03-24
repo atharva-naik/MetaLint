@@ -1,4 +1,0 @@
-{
-    "what-it-does": "Checks for __future__ imports that are not defined in the current Python\nversion.",
-    "why-is-this-bad": "Importing undefined or unsupported members from the __future__ module is\na SyntaxError."
-}

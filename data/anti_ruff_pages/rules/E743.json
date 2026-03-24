@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the use of the characters 'l', 'O', or 'I' as function names.",
-    "why-is-this-bad": "In some fonts, these characters are indistinguishable from the\nnumerals one and zero. When tempted to use 'l', use 'L' instead.",
-    "example": "def l(x): ...\n\n\n\nUse instead:\n\n\ndef long_name(x): ...",
-    "example-split": {
-        "example-before": "def l(x): ...\n\n",
-        "example-after": "\ndef long_name(x): ..."
-    }
-}

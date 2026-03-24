@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for subclasses of str that lack a __slots__ definition.",
-    "why-is-this-bad": "In Python, the __slots__ attribute allows you to explicitly define the\nattributes (instance variables) that a class can have. By default, Python\nuses a dictionary to store an object's attributes, which incurs some memory\noverhead. However, when __slots__ is defined, Python uses a more compact\ninternal structure to store the object's attributes, resulting in memory\nsavings.\n\n\nSubclasses of str inherit all the attributes and methods of the built-in\nstr class. Since strings are typically immutable, they don't require\nadditional attributes beyond what the str class provides. Defining\n__slots__ for subclasses of str prevents the creation of a dictionary\nfor each instance, reducing memory consumption.",
-    "example": "class Foo(str):\n    pass\n\n\n\nUse instead:\n\n\nclass Foo(str):\n    __slots__ = ()",
-    "example-split": {
-        "example-before": "class Foo(str):\n    pass\n\n",
-        "example-after": "\nclass Foo(str):\n    __slots__ = ()"
-    }
-}

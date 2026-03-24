@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for insecure logging.config.listen calls.",
-    "why-is-this-bad": "logging.config.listen starts a server that listens for logging\nconfiguration requests. This is insecure, as parts of the configuration are\npassed to the built-in eval function, which can be used to execute\narbitrary code.",
-    "example": "import logging\n\nlogging.config.listen(9999)",
-    "example-split": {
-        "example-before": "import logging\n\nlogging.config.listen(9999)",
-        "example-after": "import logging"
-    }
-}

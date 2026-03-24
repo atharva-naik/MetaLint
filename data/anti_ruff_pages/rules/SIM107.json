@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for return statements in try-except and finally blocks.",
-    "why-is-this-bad": "The return statement in a finally block will always be executed, even if\nan exception is raised in the try or except block. This can lead to\nunexpected behavior.",
-    "example": "def squared(n):\n    try:\n        sqr = n**2\n        return sqr\n    except Exception:\n        return \"An exception occurred\"\n    finally:\n        return -1  # Always returns -1.\n\n\n\nUse instead:\n\n\ndef squared(n):\n    try:\n        return_value = n**2\n    except Exception:\n        return_value = \"An exception occurred\"\n    finally:\n        return_value = -1\n    return return_value",
-    "example-split": {
-        "example-before": "def squared(n):\n    try:\n        sqr = n**2\n        return sqr\n    except Exception:\n        return \"An exception occurred\"\n    finally:\n        return -1  # Always returns -1.\n\n",
-        "example-after": "\ndef squared(n):\n    try:\n        return_value = n**2\n    except Exception:\n        return_value = \"An exception occurred\"\n    finally:\n        return_value = -1\n    return return_value"
-    }
-}

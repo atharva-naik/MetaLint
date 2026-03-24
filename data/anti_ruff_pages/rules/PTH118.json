@@ -1,4 +1,0 @@
-{
-    "what-it-does": "Checks for uses of os.path.join.",
-    "why-is-this-bad": "pathlib offers a high-level API for path manipulation, as compared to\nthe lower-level API offered by os.path. When possible, using Path object\nmethods such as Path.joinpath() or the / operator can improve\nreadability over the os.path module's counterparts (e.g., os.path.join())."
-}

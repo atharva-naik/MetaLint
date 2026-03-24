@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for missing explicit return statements at the end of functions\nthat can return non-None values.",
-    "why-is-this-bad": "The lack of an explicit return statement at the end of a function that\ncan return non-None values can cause confusion. Python implicitly returns\nNone if no other return value is present. Adding an explicit\nreturn None can make the code more readable by clarifying intent.",
-    "example": "def foo(bar):\n    if not bar:\n        return 1\n\n\n\nUse instead:\n\n\ndef foo(bar):\n    if not bar:\n        return 1\n    return None",
-    "example-split": {
-        "example-before": "def foo(bar):\n    if not bar:\n        return 1\n\n",
-        "example-after": "\ndef foo(bar):\n    if not bar:\n        return 1\n    return None"
-    }
-}

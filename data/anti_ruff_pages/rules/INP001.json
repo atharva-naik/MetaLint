@@ -1,4 +1,0 @@
-{
-    "what-it-does": "Checks for packages that are missing an __init__.py file.",
-    "why-is-this-bad": "Python packages are directories that contain a file named __init__.py.\nThe existence of this file indicates that the directory is a Python\npackage, and so it can be imported the same way a module can be\nimported.\n\n\nDirectories that lack an __init__.py file can still be imported, but\nthey're indicative of a special kind of package, known as a \"namespace\npackage\" (see: PEP 420).\nNamespace packages are less widely used, so a package that lacks an\n__init__.py file is typically meant to be a regular package, and\nthe absence of the __init__.py file is probably an oversight."
-}

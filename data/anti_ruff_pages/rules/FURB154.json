@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for consecutive global (or nonlocal) statements.",
-    "why-is-this-bad": "The global and nonlocal keywords accepts multiple comma-separated names.\nInstead of using multiple global (or nonlocal) statements for separate\nvariables, you can use a single statement to declare multiple variables at\nonce.",
-    "example": "def func():\n    global x\n    global y\n\n    print(x, y)\n\n\n\nUse instead:\n\n\ndef func():\n    global x, y\n\n    print(x, y)",
-    "example-split": {
-        "example-before": "def func():\n    global x\n    global y\n\n    print(x, y)\n\n",
-        "example-after": "\ndef func():\n    global x, y"
-    }
-}

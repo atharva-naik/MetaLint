@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for break statements outside of loops.",
-    "why-is-this-bad": "The use of a break statement outside of a for or while loop will\nraise a SyntaxError.",
-    "example": "def foo():\n    break",
-    "example-split": {
-        "example-before": "def foo():\n    break",
-        "example-after": "def foo():\n    break"
-    }
-}

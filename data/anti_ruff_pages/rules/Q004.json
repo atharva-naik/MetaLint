@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for strings that include unnecessarily escaped quotes.",
-    "why-is-this-bad": "If a string contains an escaped quote that doesn't match the quote\ncharacter used for the string, it's unnecessary and can be removed.",
-    "example": "foo = \"bar\\'s\"\n\n\n\nUse instead:\n\n\nfoo = \"bar's\"",
-    "example-split": {
-        "example-before": "foo = \"bar\\'s\"\n\n",
-        "example-after": "\nfoo = \"bar's\""
-    }
-}

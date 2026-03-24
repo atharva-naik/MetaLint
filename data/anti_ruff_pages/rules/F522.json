@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for str.format calls with unused keyword arguments.",
-    "why-is-this-bad": "Unused keyword arguments are redundant, and often indicative of a mistake.\nThey should be removed.",
-    "example": "\"Hello, {name}\".format(greeting=\"Hello\", name=\"World\")\n\n\n\nUse instead:\n\n\n\"Hello, {name}\".format(name=\"World\")",
-    "example-split": {
-        "example-before": "\"Hello, {name}\".format(greeting=\"Hello\", name=\"World\")\n\n",
-        "example-after": "\n\"Hello, {name}\".format(name=\"World\")"
-    }
-}

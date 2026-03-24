@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for docstring summary lines that are not positioned on the first\nphysical line of the docstring.",
-    "why-is-this-bad": "PEP 257 recommends that multi-line docstrings consist of \"a summary line\njust like a one-line docstring, followed by a blank line, followed by a\nmore elaborate description.\"\n\n\nThe summary line should be located on the first physical line of the\ndocstring, immediately after the opening quotes.\n\n\nThis rule may not apply to all projects; its applicability is a matter of\nconvention. By default, this rule is enabled when using the google\nconvention, and disabled when using the numpy and pep257 conventions.\n\n\nFor an alternative, see D213.",
-    "example": "def sort_list(l: list[int]) -> list[int]:\n    \"\"\"\n    Return a sorted copy of the list.\n\n    Sort the list in ascending order and return a copy of the result using the\n    bubble sort algorithm.\n    \"\"\"\n\n\n\nUse instead:\n\n\ndef sort_list(l: list[int]) -> list[int]:\n    \"\"\"Return a sorted copy of the list.\n\n    Sort the list in ascending order and return a copy of the result using the bubble\n    sort algorithm.\n    \"\"\"",
-    "example-split": {
-        "example-before": "def sort_list(l: list[int]) -> list[int]:\n    \"\"\"\n    Return a sorted copy of the list.\n\n    Sort the list in ascending order and return a copy of the result using the\n    bubble sort algorithm.\n    \"\"\"\n\n",
-        "example-after": "\ndef sort_list(l: list[int]) -> list[int]:\n    \"\"\"Return a sorted copy of the list."
-    }
-}

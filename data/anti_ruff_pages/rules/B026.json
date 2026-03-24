@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for function calls that use star-argument unpacking after providing a\nkeyword argument",
-    "why-is-this-bad": "In Python, you can use star-argument unpacking to pass a list or tuple of\narguments to a function.\n\n\nProviding a star-argument after a keyword argument can lead to confusing\nbehavior, and is only supported for backwards compatibility.",
-    "example": "def foo(x, y, z):\n    return x, y, z\n\n\nfoo(1, 2, 3)  # (1, 2, 3)\nfoo(1, *[2, 3])  # (1, 2, 3)\n# foo(x=1, *[2, 3])  # TypeError\n# foo(y=2, *[1, 3])  # TypeError\nfoo(z=3, *[1, 2])  # (1, 2, 3)  # No error, but confusing!\n\n\n\nUse instead:\n\n\ndef foo(x, y, z):\n    return x, y, z\n\n\nfoo(1, 2, 3)  # (1, 2, 3)\nfoo(x=1, y=2, z=3)  # (1, 2, 3)\nfoo(*[1, 2, 3])  # (1, 2, 3)\nfoo(*[1, 2], 3)  # (1, 2, 3)",
-    "example-split": {
-        "example-before": "def foo(x, y, z):\n    return x, y, z\n\n\nfoo(1, 2, 3)  # (1, 2, 3)\nfoo(1, *[2, 3])  # (1, 2, 3)\n# foo(x=1, *[2, 3])  # TypeError\n# foo(y=2, *[1, 3])  # TypeError\nfoo(z=3, *[1, 2])  # (1, 2, 3)  # No error, but confusing!\n\n",
-        "example-after": "\ndef foo(x, y, z):\n    return x, y, z"
-    }
-}

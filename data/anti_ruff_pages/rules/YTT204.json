@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for comparisons that test sys.version_info.minor against an integer.",
-    "why-is-this-bad": "Comparisons based on the current minor version number alone can cause\nsubtle bugs and would likely lead to unintended effects if the Python\nmajor version number were ever incremented (e.g., to Python 4).\n\n\nInstead, compare sys.version_info to a tuple, including the major and\nminor version numbers, to future-proof the code.",
-    "example": "import sys\n\nif sys.version_info.minor < 7:\n    print(\"Python 3.6 or earlier.\")  # This will be printed on Python 4.0.\n\n\n\nUse instead:\n\n\nimport sys\n\nif sys.version_info < (3, 7):\n    print(\"Python 3.6 or earlier.\")",
-    "example-split": {
-        "example-before": "import sys\n\nif sys.version_info.minor < 7:\n    print(\"Python 3.6 or earlier.\")  # This will be printed on Python 4.0.\n\n",
-        "example-after": "\nimport sys"
-    }
-}

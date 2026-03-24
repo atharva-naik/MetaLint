@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for functions with \"dunder\" names (that is, names with two\nleading and trailing underscores) that are not documented.",
-    "why-is-this-bad": "PEP 8 recommends that only documented \"dunder\" methods are used:\n\n\n\n...\"magic\" objects or attributes that live in user-controlled\nnamespaces. E.g. __init__, __import__ or __file__. Never invent\nsuch names; only use them as documented.",
-    "example": "def __my_function__():\n    pass\n\n\n\nUse instead:\n\n\ndef my_function():\n    pass",
-    "example-split": {
-        "example-before": "def __my_function__():\n    pass\n\n",
-        "example-after": "\ndef my_function():\n    pass"
-    }
-}

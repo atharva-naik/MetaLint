@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for the use of locals() in render functions.",
-    "why-is-this-bad": "Using locals() can expose internal variables or other unintentional\ndata to the rendered template.",
-    "example": "from django.shortcuts import render\n\n\ndef index(request):\n    posts = Post.objects.all()\n    return render(request, \"app/index.html\", locals())\n\n\n\nUse instead:\n\n\nfrom django.shortcuts import render\n\n\ndef index(request):\n    posts = Post.objects.all()\n    context = {\"posts\": posts}\n    return render(request, \"app/index.html\", context)",
-    "example-split": {
-        "example-before": "from django.shortcuts import render\n\n\ndef index(request):\n    posts = Post.objects.all()\n    return render(request, \"app/index.html\", locals())\n\n",
-        "example-after": "\nfrom django.shortcuts import render"
-    }
-}

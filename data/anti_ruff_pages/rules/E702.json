@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for multiline statements on one line.",
-    "why-is-this-bad": "According to PEP 8, including multi-clause statements on the same line is\ndiscouraged.",
-    "example": "do_one(); do_two(); do_three()\n\n\n\nUse instead:\n\n\ndo_one()\ndo_two()\ndo_three()",
-    "example-split": {
-        "example-before": "do_one(); do_two(); do_three()\n\n",
-        "example-after": "\ndo_one()\ndo_two()\ndo_three()"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for problematic sys.version_info-related conditions in stubs.",
-    "why-is-this-bad": "Stub files support simple conditionals to test for differences in Python\nversions using sys.version_info. However, there are a number of common\nmistakes involving sys.version_info comparisons that should be avoided.\nFor example, comparing against a string can lead to unexpected behavior.",
-    "example": "import sys\n\nif sys.version_info[0] == \"2\": ...\n\n\n\nUse instead:\n\n\nimport sys\n\nif sys.version_info[0] == 2: ...",
-    "example-split": {
-        "example-before": "import sys\n\nif sys.version_info[0] == \"2\": ...\n\n",
-        "example-after": "\nimport sys"
-    }
-}

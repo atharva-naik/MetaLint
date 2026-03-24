@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for itertools.batched calls without an explicit strict parameter.",
-    "why-is-this-bad": "By default, if the length of the iterable is not divisible by\nthe second argument to itertools.batched, the last batch\nwill be shorter than the rest.\n\n\nIn Python 3.13, a strict parameter was added which allows controlling if the batches must be of uniform length.\nPass strict=True to raise a ValueError if the batches are of non-uniform length.\nOtherwise, pass strict=False to make the intention explicit.",
-    "example": "itertools.batched(iterable, n)\n\n\n\nUse instead if the batches must be of uniform length:\n\n\nitertools.batched(iterable, n, strict=True)\n\n\n\nOr if the batches can be of non-uniform length:\n\n\nitertools.batched(iterable, n, strict=False)",
-    "example-split": {
-        "example-before": "itertools.batched(iterable, n)\n\n\n\nUse instead if the batches must be of uniform length:\n\n\nitertools.batched(iterable, n, strict=True)\n\n\n\nOr if the batches can be of non-uniform length:\n\n\nitertools.batched(iterable, n, strict=False)",
-        "example-after": "itertools.batched(iterable, n)"
-    }
-}

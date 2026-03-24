@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for uses of typing.NoReturn (and typing_extensions.NoReturn) for\nparameter annotations.",
-    "why-is-this-bad": "Prefer Never over NoReturn for parameter annotations. Never has a\nclearer name in these contexts, since it makes little sense to talk about a\nparameter annotation \"not returning\".\n\n\nThis is a purely stylistic lint: the two types have identical semantics for\ntype checkers. Both represent Python's \"bottom type\" (a type that has no\nmembers).",
-    "example": "from typing import NoReturn\n\ndef foo(x: NoReturn): ...\n\n\n\nUse instead:\n\n\nfrom typing import Never\n\ndef foo(x: Never): ...",
-    "example-split": {
-        "example-before": "from typing import NoReturn\n\ndef foo(x: NoReturn): ...\n\n",
-        "example-after": "\nfrom typing import Never"
-    }
-}

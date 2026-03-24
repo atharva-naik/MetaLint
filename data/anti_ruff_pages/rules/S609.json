@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for possible wildcard injections in calls to subprocess.Popen().",
-    "why-is-this-bad": "Wildcard injections can lead to unexpected behavior if unintended files are\nmatched by the wildcard. Consider using a more specific path instead.",
-    "example": "import subprocess\n\nsubprocess.Popen([\"chmod\", \"777\", \"*.py\"])\n\n\n\nUse instead:\n\n\nimport subprocess\n\nsubprocess.Popen([\"chmod\", \"777\", \"main.py\"])",
-    "example-split": {
-        "example-before": "import subprocess\n\nsubprocess.Popen([\"chmod\", \"777\", \"*.py\"])\n\n",
-        "example-after": "\nimport subprocess"
-    }
-}

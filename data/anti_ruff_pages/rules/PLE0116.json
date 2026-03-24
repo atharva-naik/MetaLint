@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for continue statements inside finally",
-    "why-is-this-bad": "continue statements were not allowed within finally clauses prior to\nPython 3.8. Using a continue statement within a finally clause can\ncause a SyntaxError.",
-    "example": "while True:\n    try:\n        pass\n    finally:\n        continue\n\n\n\nUse instead:\n\n\nwhile True:\n    try:\n        pass\n    except Exception:\n        pass\n    else:\n        continue",
-    "example-split": {
-        "example-before": "while True:\n    try:\n        pass\n    finally:\n        continue\n\n",
-        "example-after": "\nwhile True:\n    try:\n        pass\n    except Exception:\n        pass\n    else:\n        continue"
-    }
-}

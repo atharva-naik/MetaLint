@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for indexed access to lists, strings, tuples, bytes, and comprehensions\nusing a type other than an integer or slice.",
-    "why-is-this-bad": "Only integers or slices can be used as indices to these types. Using\nother types will result in a TypeError at runtime and a SyntaxWarning at\nimport time.",
-    "example": "var = [1, 2, 3][\"x\"]\n\n\n\nUse instead:\n\n\nvar = [1, 2, 3][0]",
-    "example-split": {
-        "example-before": "var = [1, 2, 3][\"x\"]\n\n",
-        "example-after": "\nvar = [1, 2, 3][0]"
-    }
-}

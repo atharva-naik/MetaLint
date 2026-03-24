@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for block comments that start with multiple leading # characters.",
-    "why-is-this-bad": "Per PEP 8, \"Block comments generally consist of one or more paragraphs built\nout of complete sentences, with each sentence ending in a period.\"\n\n\nEach line of a block comment should start with a # followed by a single space.\n\n\nShebangs (lines starting with #!, at the top of a file) are exempt from this\nrule.",
-    "example": "### Block comment\n\n\n\nUse instead:\n\n\n# Block comment\n\n\n\nAlternatively, this rule makes an exception for comments that consist\nsolely of # characters, as in:\n\n\n##############\n# Block header\n##############",
-    "example-split": {
-        "example-before": "### Block comment\n\n",
-        "example-after": "\n# Block comment"
-    }
-}

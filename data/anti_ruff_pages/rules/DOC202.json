@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for function docstrings with unnecessary \"Returns\" sections.",
-    "why-is-this-bad": "A function without an explicit return statement should not have a\n\"Returns\" section in its docstring.\n\n\nThis rule is not enforced for abstract methods. It is also ignored for\n\"stub functions\": functions where the body only consists of pass, ...,\nraise NotImplementedError, or similar.",
-    "example": "def say_hello(n: int) -> None:\n    \"\"\"Says hello to the user.\n\n    Args:\n        n: Number of times to say hello.\n\n    Returns:\n        Doesn't return anything.\n    \"\"\"\n    for _ in range(n):\n        print(\"Hello!\")\n\n\n\nUse instead:\n\n\ndef say_hello(n: int) -> None:\n    \"\"\"Says hello to the user.\n\n    Args:\n        n: Number of times to say hello.\n    \"\"\"\n    for _ in range(n):\n        print(\"Hello!\")",
-    "example-split": {
-        "example-before": "def say_hello(n: int) -> None:\n    \"\"\"Says hello to the user.\n\n    Args:\n        n: Number of times to say hello.\n\n    Returns:\n        Doesn't return anything.\n    \"\"\"\n    for _ in range(n):\n        print(\"Hello!\")\n\n",
-        "example-after": "\ndef say_hello(n: int) -> None:\n    \"\"\"Says hello to the user."
-    }
-}

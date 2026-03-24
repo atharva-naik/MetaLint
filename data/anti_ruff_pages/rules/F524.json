@@ -1,9 +1,0 @@
-{
-    "what-it-does": "Checks for str.format calls with placeholders that are missing arguments.",
-    "why-is-this-bad": "In str.format calls, omitting arguments for placeholders will raise a\nKeyError at runtime.",
-    "example": "\"{greeting}, {name}\".format(name=\"World\")\n\n\n\nUse instead:\n\n\n\"{greeting}, {name}\".format(greeting=\"Hello\", name=\"World\")",
-    "example-split": {
-        "example-before": "\"{greeting}, {name}\".format(name=\"World\")\n\n",
-        "example-after": "\n\"{greeting}, {name}\".format(greeting=\"Hello\", name=\"World\")"
-    }
-}
